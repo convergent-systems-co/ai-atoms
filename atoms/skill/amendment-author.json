@@ -1,0 +1,58 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/amendment-author",
+  "version": "1.0.0",
+  "name": "Amendment Author",
+  "description": "Guided workflow for authoring and publishing governance amendments against the four canonical files (Constitution, Common, Code, Writing). Walks the full lifecycle: identify the violation or gap, draft the amendment stub, review it against the governance model, apply it to the governance file, and optionally publish it as a versioned amendment atom. Triggers on: /amendment-author, 'author an amendment', 'create an amendment', 'propose a governance change'.",
+  "system_prompt_fragment": "Guide the user through authoring a governance amendment. Step 1 IDENTIFY: ask 'What rule was violated or what gap needs addressing?' Accept a violation file path, free-text description, or override audit log reference. Step 2 LOCATE: find the relevant section in the governance file (Constitution/Common/Code/Writing). Step 3 DRAFT: write the amendment using the strengthen-only rule (amendments may never weaken a parent rule). Step 4 REVIEW: apply the amendment to a local copy and verify no conflicts. Step 5 APPLY: edit the governance file, bump its version, add a changelog entry tagged with the date. Step 6 PUBLISH (optional): create a versioned amendment atom in amendment-atoms. End each step with Did/Next/Blocked/Artifact.",
+  "applicable_domains": [
+    "governance",
+    "meta",
+    "atoms"
+  ],
+  "invocation_contract": {
+    "inputs": [
+      {
+        "name": "violation_or_gap",
+        "type": "string",
+        "description": "Violation file path, audit log reference, or free-text description of what needs addressing.",
+        "required": true
+      },
+      {
+        "name": "target_file",
+        "type": "string",
+        "description": "Which governance file to amend (Constitution/Common/Code/Writing). Inferred if not provided.",
+        "required": false
+      }
+    ],
+    "outputs": [
+      {
+        "name": "amendment_text",
+        "type": "string",
+        "description": "The drafted amendment text ready to apply."
+      },
+      {
+        "name": "amended_file",
+        "type": "string",
+        "description": "Path to the updated governance file."
+      }
+    ],
+    "side_effects": [
+      "edits governance file at ~/.ai/",
+      "optionally creates amendment atom in amendment-atoms catalog"
+    ]
+  },
+  "authored_by": "convergent-systems-key",
+  "tags": [
+    "governance",
+    "amendment",
+    "constitution",
+    "meta",
+    "lifecycle"
+  ],
+  "lifecycle": "stable",
+  "invocation": [
+    "/amendment-author"
+  ]
+}

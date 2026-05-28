@@ -1,0 +1,40 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/make-review",
+  "version": "1.0.0",
+  "name": "Make Review",
+  "description": "Adversarial code reviewer sweep on the current branch diff against main. Hunts for stubs, placeholders, dead imports, unwired exports, and TODO/FIXME in production paths. Returns HIGH/MEDIUM/LOW findings with file:line citations. HIGH blocks merge.",
+  "system_prompt_fragment": "Run the code reviewer sweep on the current branch diff (git diff main...HEAD --name-only). Hunt for: stubs (panic/not-implemented/empty bodies) — HIGH; placeholder values (REPLACE_ME, <YOUR_VALUE>) — HIGH; TODO/FIXME in non-test production files — MEDIUM; unwired exports (zero non-test callers) — MEDIUM; dead imports — LOW; commented-out code blocks — LOW. Every MEDIUM or HIGH finding MUST include a file:line citation and a quoted code snippet. Return verdict: PASS | WARN | BLOCK.",
+  "invocation": [
+    "/make review"
+  ],
+  "applicable_domains": [
+    "code",
+    "review"
+  ],
+  "invocation_contract": {
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "findings",
+        "type": "array",
+        "description": "List of severity-tagged findings with file:line citations."
+      },
+      {
+        "name": "verdict",
+        "type": "string",
+        "description": "PASS | WARN | BLOCK"
+      }
+    ],
+    "side_effects": []
+  },
+  "tags": [
+    "review",
+    "code-quality",
+    "stubs",
+    "adversarial"
+  ],
+  "authored_by": "convergent-systems-key",
+  "lifecycle": "stable"
+}

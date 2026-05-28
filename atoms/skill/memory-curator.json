@@ -1,0 +1,57 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/memory-curator",
+  "version": "1.0.0",
+  "name": "Memory Curator",
+  "description": "Guided workflow for reviewing, curating, and archiving AI memory entries at ~/.ai/memory/. Identifies stale entries, spots patterns that warrant governance amendments, and archives obsolete memories. Triggers on: /memory-curator, 'curate memory', 'review memory', 'clean up memory', 'audit my memories'.",
+  "system_prompt_fragment": "Curate the memory store at ~/.ai/memory/. Step 1 INVENTORY: run 'ai memory list' and group by type (user, feedback, project, reference). Report total counts. Step 2 REVIEW: for each memory, check: is it still accurate? Is it still relevant? Is it duplicated? Does it contain secrets (violates Common.md §4)? Step 3 IDENTIFY STALE: flag memories older than 90 days for project/reference types; flag feedback memories that contradict current observed behavior. Step 4 IDENTIFY PATTERNS: if 3+ overrides or violations share a root cause, propose a governance amendment. Step 5 CURATE: archive stale entries (move to ~/.ai/memory/archive/), remove duplicates, add missing entries. End each step with Did/Next/Blocked/Artifact.",
+  "applicable_domains": [
+    "meta",
+    "governance",
+    "memory"
+  ],
+  "invocation_contract": {
+    "inputs": [
+      {
+        "name": "filter_type",
+        "type": "string",
+        "description": "Optional: filter to a specific memory type (user/feedback/project/reference).",
+        "required": false
+      }
+    ],
+    "outputs": [
+      {
+        "name": "inventory",
+        "type": "string",
+        "description": "Summary of memory entries by type with counts."
+      },
+      {
+        "name": "stale_list",
+        "type": "array",
+        "description": "Memory entries flagged for archiving."
+      },
+      {
+        "name": "amendment_proposals",
+        "type": "array",
+        "description": "Governance amendments warranted by patterns found."
+      }
+    ],
+    "side_effects": [
+      "may archive memory files to ~/.ai/memory/archive/",
+      "may remove duplicate memory files"
+    ]
+  },
+  "authored_by": "convergent-systems-key",
+  "tags": [
+    "memory",
+    "governance",
+    "meta",
+    "curation",
+    "maintenance"
+  ],
+  "lifecycle": "stable",
+  "invocation": [
+    "/memory-curator"
+  ]
+}

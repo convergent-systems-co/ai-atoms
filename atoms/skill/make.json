@@ -1,0 +1,35 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/make",
+  "version": "1.0.0",
+  "name": "Make — Unified Dispatcher",
+  "description": "Dispatcher for the make skill suite. Reads the subcommand and invokes the matching skill immediately. Subcommands: work/sprint (PM + delivery team), clean (purge merged branches), build (commit+push+PR+merge), test (run test suite), status (sprint snapshot), sync (pull all repos), review (code reviewer sweep), doctor (governance health check), atoms (atom ecosystem ops).",
+  "system_prompt_fragment": "Read the first word after /make and dispatch to the matching skill immediately. Do not summarize, plan, or ask clarifying questions — just dispatch.\n\nDispatch table:\n  work / sprint → make-work\n  clean         → make-clean\n  build         → make-build\n  test          → make-test\n  status        → make-status\n  sync          → make-sync\n  review        → make-review\n  doctor        → make-doctor\n  atoms         → make-atoms\n\nIf the subcommand is unknown or missing, print the usage table and stop.",
+  "invocation": [
+    "/make work",
+    "/make sprint",
+    "/make clean",
+    "/make build",
+    "/make test",
+    "/make status",
+    "/make sync",
+    "/make review",
+    "/make doctor",
+    "/make atoms"
+  ],
+  "applicable_domains": [
+    "code",
+    "delivery",
+    "git",
+    "project"
+  ],
+  "tags": [
+    "make",
+    "dispatcher",
+    "delivery",
+    "workflow"
+  ],
+  "authored_by": "convergent-systems-key",
+  "lifecycle": "stable"
+}

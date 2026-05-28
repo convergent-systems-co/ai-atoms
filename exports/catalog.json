@@ -1,8 +1,44 @@
 {
   "catalog": "ai-atoms",
   "version": "0.1.0",
-  "built_at": "2026-05-28T12:50:11+00:00",
+  "built_at": "2026-05-28T16:08:20+00:00",
   "atoms": [
+    {
+      "schema": "https://ai-atoms.com/schemas/hook-v1.json",
+      "type": "hook",
+      "id": "hook/audit-command",
+      "version": "1.0.0",
+      "name": "Audit Command Wrapper",
+      "description": "PostToolUse hook that records every wrapped command invocation (git, gh, etc.) to the audit log. Makes the appearance side of the audit trail reliable — absence of an audit line for an expected command is itself visible during forensic review. Records WRAPPED_CMD, WRAPPED_ARGV, WRAPPED_EXIT, and WRAPPED_DURATION.",
+      "event": "PostToolUse",
+      "language": "python",
+      "trigger": {
+        "type": "always"
+      },
+      "blocking": false,
+      "side_effects": [
+        "appends invocation record to ~/.ai/audit/interactions/<YYYY-MM>.jsonl"
+      ],
+      "authored_by": "convergent-systems-key",
+      "tags": [
+        "audit",
+        "logging",
+        "governance",
+        "commands",
+        "claude-code"
+      ],
+      "lifecycle": "stable",
+      "platforms": [
+        "linux",
+        "macos",
+        "windows"
+      ],
+      "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run audit-command' in settings.json — the ai binary discovers Python on each OS. Reads env vars WRAPPED_CMD etc. — set by the ai command wrappers on all platforms.",
+      "script": "#!/usr/bin/env python3\n\"\"\"hooks/audit-command.py — wrapper postHook that records every wrapped\ncommand invocation to the audit log.\n\nPer SPEC.md §10.5.4: \"If a bypass leaves no audit line where one\nwould normally appear, the gap itself is visible.\" This hook makes\nthe appearance side reliable; the absence side is what surfaces in\nforensic review.\n\nInputs (from the wrapper environment):\n  WRAPPED_CMD       — the underlying command (\"git\", \"gh\", etc.)\n  WRAPPED_ARGV      — the argv it was invoked with, JSON-encoded\n  WRAPPED_EXIT      — the exit code of the real command\n  WRAPPED_DURATION  — wall-clock seconds the command took (string)\n\nSelf-check:\n  --self-check\n\"\"\"\nfrom __future__ import annotations\n\nimport argparse\nimport datetime as dt\nimport json\nimport os\nimport sys\nfrom pathlib import Path\n\nsys.path.insert(0, str(Path(__file__).resolve().parent))\nimport _lib  # noqa: E402\n\n\ndef audit_dir() -> Path:\n    root = os.environ.get(\"AI_ROOT\", str(Path.home() / \".ai\"))\n    return Path(root) / \"audit\" / \"interactions\"\n\n\ndef month_file() -> Path:\n    now = dt.datetime.now(dt.timezone.utc)\n    return audit_dir() / f\"{now.strftime('%Y-%m')}.jsonl\"\n\n\ndef chronon() -> str:\n    now = dt.datetime.now(dt.timezone.utc)\n    return now.strftime(\"%Y-%m-%dT%H:%M:%S.\") + f\"{now.microsecond // 1000:03d}Z\"\n\n\ndef main(argv: list[str]) -> int:\n    parser = argparse.ArgumentParser(add_help=True)\n    parser.add_argument(\"--self-check\", action=\"store_true\")\n    args = parser.parse_args(argv)\n    if args.self_check:\n        try:\n            audit_dir().mkdir(parents=True, exist_ok=True)\n        except Exception as e:\n            _lib.log(\"self-check FAIL:\", e)\n            return 1\n        _lib.log(\"self-check OK\")\n        return 0\n\n    cmd = os.environ.get(\"WRAPPED_CMD\", \"\")\n    argv_json = os.environ.get(\"WRAPPED_ARGV\", \"[]\")\n    exit_code = os.environ.get(\"WRAPPED_EXIT\", \"0\")\n    duration = os.environ.get(\"WRAPPED_DURATION\", \"\")\n\n    try:\n        wrapped_argv = json.loads(argv_json)\n    except json.JSONDecodeError:\n        wrapped_argv = []\n\n    # Redact the argv (the secret patterns include URL-with-credentials).\n    redacted_argv = [_lib.redact(str(a)) for a in wrapped_argv]\n    probe_payload = json.dumps(redacted_argv)[:1000]\n\n    event = {\n        \"chronon\": chronon(),\n        \"trace\": os.environ.get(\"AI_SESSION_ID\", \"\"),\n        \"cwd\": os.getcwd(),\n        \"actor\": \"tool\",\n        \"kind\": \"invocation-result\",\n        \"engine\": \"command-wrapper\",\n        \"probe\": cmd,\n        \"probe_payload\": probe_payload,\n        \"emission_marker\": f\"exit={exit_code} duration={duration}\",\n    }\n\n    try:\n        audit_dir().mkdir(parents=True, exist_ok=True)\n        with open(month_file(), \"a\", encoding=\"utf-8\") as f:\n            f.write(json.dumps(event, ensure_ascii=False) + \"\\n\")\n    except Exception as e:\n        # Never block; audit failures are themselves auditable.\n        _lib.log(\"audit-command append failed:\", e)\n    return 0\n\n\nif __name__ == \"__main__\":\n    sys.exit(main(sys.argv[1:]))\n",
+      "depends_on": [
+        "hook/lib"
+      ]
+    },
     {
       "schema": "https://ai-atoms.com/schemas/hook-v1.json",
       "type": "hook",
@@ -26,7 +62,17 @@
         "governance",
         "claude-code"
       ],
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "platforms": [
+        "linux",
+        "macos",
+        "windows"
+      ],
+      "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run audit-logger' in settings.json — the ai binary discovers Python on each OS. Writes to ~/.ai/audit/ — path resolves correctly cross-platform via Python pathlib.",
+      "script": "#!/usr/bin/env python3\n\"\"\"hooks/audit.py — interaction audit logger.\n\nAppends one JSONL line per event to\n~/.ai/audit/interactions/<YYYY-MM>.jsonl using the\ndomain-specific vocabulary defined in ~/.ai/Common.md §5.2 (chronon,\ntrace, cwd, actor, kind, engine, stimulus, probe, probe_payload,\nemission_marker).\n\nWired into Claude Code via every event (SessionStart, UserPromptSubmit,\nPreToolUse, PostToolUse, Stop, SessionEnd, SubagentStop, PreCompact, and\nadditional event types listed in KIND_MAP below).\n\nReads the event payload from stdin as JSON. Always exits 0 (audit\nmust never block).\n\nVocabulary mapping (deliberate non-mirror of Claude/Copilot terms):\n\n    Common term     ->  This system\n    ─────────────────────────────────\n    session         ->  trace\n    turn            ->  exchange\n    tool call       ->  invocation / probe\n    user message    ->  request / stimulus\n    assistant turn  ->  emission\n    timestamp       ->  chronon\n    model           ->  engine\n\nSelf-check:\n  --self-check    Verify the audit directory is writable.\n\"\"\"\nfrom __future__ import annotations\n\nimport datetime as dt\nimport json\nimport os\nimport sys\nfrom pathlib import Path\n\nsys.path.insert(0, str(Path(__file__).resolve().parent))\nimport _lib  # noqa: E402\n\n# Mapping from Claude Code event names to our vocabulary.\n# Vocabulary deliberately does NOT mirror Claude or Copilot terms per Common.md §5.2.\nKIND_MAP = {\n    # Core Claude Code events (PascalCase)\n    \"SessionStart\": \"trace-open\",\n    \"SessionEnd\": \"trace-close\",\n    \"UserPromptSubmit\": \"request\",\n    \"PreToolUse\": \"invocation-attempt\",\n    \"PostToolUse\": \"invocation-result\",\n    \"PostToolUseFailure\": \"invocation-failure\",\n    \"Stop\": \"emission\",\n    \"SubagentStart\": \"subagent-trace-open\",\n    \"SubagentStop\": \"subagent-emission\",\n    \"Notification\": \"signal\",\n    \"PreCompact\": \"compaction-attempt\",\n    \"ErrorOccurred\": \"fault\",\n    \"PermissionRequest\": \"permission-prompt\",\n    # Copilot CLI camelCase event names\n    \"userPromptSubmitted\": \"request\",\n    \"agentStop\": \"emission\",\n}\n\n\ndef audit_dir() -> Path:\n    \"\"\"Path to ~/.ai/audit/interactions/. AI_ROOT overrides $HOME/.ai.\"\"\"\n    root = os.environ.get(\"AI_ROOT\", str(Path.home() / \".ai\"))\n    return Path(root) / \"audit\" / \"interactions\"\n\n\ndef month_file() -> Path:\n    \"\"\"The audit JSONL for the current UTC month.\"\"\"\n    now = dt.datetime.now(dt.timezone.utc)\n    return audit_dir() / f\"{now.strftime('%Y-%m')}.jsonl\"\n\n\ndef chronon() -> str:\n    \"\"\"ISO-8601 with millisecond precision and 'Z' suffix.\"\"\"\n    now = dt.datetime.now(dt.timezone.utc)\n    return now.strftime(\"%Y-%m-%dT%H:%M:%S.\") + f\"{now.microsecond // 1000:03d}Z\"\n\n\ndef _truncate(s: str, limit: int) -> str:\n    if len(s) <= limit:\n        return s\n    return s[:limit] + \"...[truncated]\"\n\n\ndef _actor_for(kind: str) -> str:\n    if kind == \"request\":\n        return \"human\"\n    if kind in (\"emission\", \"subagent-emission\", \"signal\", \"subagent-trace-open\"):\n        return \"assistant\"\n    if \"invocation\" in kind or kind == \"permission-prompt\":\n        return \"tool\"\n    return \"system\"\n\n\ndef normalize_event(raw: dict) -> dict:\n    \"\"\"Map a raw Claude/Copilot event payload to the canonical schema.\n\n    Truncates stimulus to 2000 chars and probe_payload to 1000\n    chars per Common.md §5.2. Redacts secrets via _lib.redact().\"\"\"\n    # Primary key is hookEventName (Claude Code PascalCase); fall back to\n    # hook_event_name, then event.\n    claude_kind = (\n        raw.get(\"hookEventName\")\n        or raw.get(\"hook_event_name\")\n        or raw.get(\"event\")\n        or \"\"\n    )\n    kind = KIND_MAP.get(claude_kind, claude_kind.lower() if claude_kind else \"signal\")\n\n    event = {\n        \"chronon\": chronon(),\n        \"trace\": (\n            raw.get(\"session_id\")\n            or raw.get(\"sessionId\")\n            or raw.get(\"trace\")\n            or \"\"\n        ),\n        \"cwd\": raw.get(\"cwd\") or raw.get(\"workingDirectory\") or os.getcwd(),\n        \"actor\": raw.get(\"actor\") or _actor_for(kind),\n        \"kind\": kind,\n        \"engine\": raw.get(\"engine\") or raw.get(\"model\") or raw.get(\"modelName\") or \"\",\n    }\n\n    # Per-kind payload fields — only include fields relevant to the event type.\n    if kind == \"request\":\n        stimulus = raw.get(\"prompt\") or raw.get(\"stimulus\") or \"\"\n        event[\"stimulus\"] = _lib.redact(_truncate(str(stimulus), 2000))\n\n    elif kind in (\"invocation-attempt\", \"invocation-result\", \"invocation-failure\"):\n        event[\"probe\"] = (\n            raw.get(\"tool_name\")\n            or raw.get(\"toolName\")\n            or raw.get(\"probe\")\n            or \"\"\n        )\n        payload = (\n            raw.get(\"tool_input\")\n            or raw.get(\"toolInput\")\n            or raw.get(\"toolArgs\")\n            or raw.get(\"probe_payload\")\n            or {}\n        )\n        if isinstance(payload, (dict, list)):\n            payload = json.dumps(payload)\n        event[\"probe_payload\"] = _lib.redact(_truncate(str(payload), 1000))\n        # Record that a result is present (don't log content — can be large)\n        if kind == \"invocation-result\":\n            result_val = (\n                raw.get(\"tool_response\")\n                or raw.get(\"toolResponse\")\n                or raw.get(\"toolResult\")\n                or raw.get(\"tool_result\")\n            )\n            if result_val is not None:\n                event[\"probe_result_marker\"] = \"present\"\n\n    elif kind in (\"emission\", \"subagent-emission\"):\n        event[\"emission_marker\"] = (\n            raw.get(\"stopReason\")\n            or raw.get(\"stop_reason\")\n            or raw.get(\"emission_marker\")\n            or \"stop\"\n        )\n        if raw.get(\"transcriptPath\") or raw.get(\"transcript_path\"):\n            event[\"transcript_marker\"] = \"present\"\n\n    elif kind == \"compaction-attempt\":\n        event[\"compaction_trigger\"] = raw.get(\"trigger\") or \"\"\n\n    elif kind == \"fault\":\n        err = raw.get(\"error\") or {}\n        if isinstance(err, dict):\n            event[\"fault_name\"] = err.get(\"name\", \"\")\n            event[\"fault_message\"] = _truncate(err.get(\"message\", \"\"), 500)\n        else:\n            event[\"fault_name\"] = \"\"\n            event[\"fault_message\"] = \"\"\n        event[\"fault_context\"] = (\n            raw.get(\"errorContext\") or raw.get(\"error_context\") or \"\"\n        )\n        event[\"fault_recoverable\"] = bool(raw.get(\"recoverable\", False))\n\n    elif kind == \"permission-prompt\":\n        event[\"probe\"] = raw.get(\"tool_name\") or raw.get(\"toolName\") or \"\"\n        event[\"permission_reason\"] = _truncate(str(raw.get(\"reason\", \"\")), 500)\n\n    elif kind == \"signal\":\n        event[\"signal_type\"] = (\n            raw.get(\"notification_type\")\n            or raw.get(\"notificationType\")\n            or \"\"\n        )\n        event[\"signal_message\"] = _truncate(str(raw.get(\"message\", \"\")), 500)\n\n    return event\n\n\ndef main(argv: list) -> int:\n    if \"--self-check\" in argv:\n        try:\n            audit_dir().mkdir(parents=True, exist_ok=True)\n            test = month_file().with_suffix(\".jsonl.self-check\")\n            test.write_text(\"\", encoding=\"utf-8\")\n            test.unlink(missing_ok=True)\n        except Exception as e:\n            _lib.log(\"self-check FAIL:\", e)\n            return 1\n        _lib.log(\"self-check OK\")\n        return 0\n\n    raw_input = sys.stdin.read()\n    if not raw_input.strip():\n        return 0\n\n    try:\n        raw = json.loads(raw_input)\n    except json.JSONDecodeError:\n        raw = {\"raw\": raw_input}\n\n    try:\n        event = normalize_event(raw)\n        # Redaction pass: scrub the structured fields in-place, but\n        # ONLY when the per-kind field is present. Per Common.md §4.5\n        # the redaction itself is non-optional; per §5.2 the per-kind\n        # fields are kind-scoped (stimulus only for `request`,\n        # probe/probe_payload only for invocation-*, emission_marker\n        # only for emission/subagent-emission). Materializing empty\n        # strings for unrelated kinds pollutes downstream greps.\n        if \"stimulus\" in event:\n            event[\"stimulus\"] = _lib.redact(event[\"stimulus\"])\n        if \"probe_payload\" in event:\n            event[\"probe_payload\"] = _lib.redact(event[\"probe_payload\"])\n        audit_dir().mkdir(parents=True, exist_ok=True)\n        with open(month_file(), \"a\", encoding=\"utf-8\") as f:\n            f.write(json.dumps(event, ensure_ascii=False, separators=(\",\", \":\")) + \"\\n\")\n    except Exception as e:\n        _lib.log(\"audit append failed:\", e)\n        # Audit failures must NEVER block — exit 0 anyway.\n    return 0\n\n\nif __name__ == \"__main__\":\n    sys.exit(main(sys.argv[1:]))\n",
+      "depends_on": [
+        "hook/lib"
+      ]
     },
     {
       "schema": "https://ai-atoms.com/schemas/hook-v1.json",
@@ -53,7 +99,343 @@
         "branch-protection",
         "claude-code"
       ],
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "platforms": [
+        "linux",
+        "macos",
+        "windows"
+      ],
+      "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run branch-guard' in settings.json — the ai binary discovers Python on each OS. Inspects git command strings — git works cross-platform. Python shebang ignored on Windows; invoked via 'ai hooks run'.",
+      "script": "#!/usr/bin/env python3\n\"\"\"hooks/branch-guard.py — deny direct mutation of protected branches.\n\nImplements ~/.ai/Common.md §2.2 (protected-branch gate) and\n~/.ai/Common.md §5.5 hook-driven enforcement.\n\nDefault protected set: main, master, release/*.\nOverride list at ~/.ai/governance/policy/branch-guard.json:\n    {\"names\": [\"main\", \"master\"], \"patterns\": [\"release/*\"]}\n\nTriggers on `git {commit,merge,rebase,cherry-pick,revert,am,pull}`\nwhen HEAD resolves to a protected branch, and on `git push` whose\nrefspec targets one.\n\nTwo invocation modes:\n\n  - **Claude PreToolUse**:  reads the tool payload on stdin (JSON).\n    Inspects the command for `git` invocations and exits 1 on\n    violation.\n\n  - **Command-wrapper preHook**: invoked by ~/.ai/bin/git via\n    hooks/command-wrappers.toml. Receives argv as positional args.\n\nSelf-check:\n  --self-check  loads the override JSON (if present), compiles\n                the patterns, prints OK.\n\"\"\"\nfrom __future__ import annotations\n\nimport argparse\nimport fnmatch\nimport json\nimport os\nimport subprocess\nimport sys\nfrom datetime import datetime, timezone\nfrom pathlib import Path\n\nsys.path.insert(0, str(Path(__file__).resolve().parent))\nimport _lib  # noqa: E402\n\n\nGUARDED_SUBCOMMANDS = {\n    \"commit\", \"merge\", \"rebase\", \"cherry-pick\", \"revert\", \"am\", \"pull\",\n}\n\n\ndef policy_path() -> Path:\n    root = os.environ.get(\"AI_ROOT\", str(Path.home() / \".ai\"))\n    return Path(root) / \"governance\" / \"policy\" / \"branch-guard.json\"\n\n\ndef load_policy() -> dict:\n    \"\"\"Return {\"names\": [...], \"patterns\": [...]}. Defaults if absent.\"\"\"\n    p = policy_path()\n    if p.is_file():\n        try:\n            return json.loads(p.read_text(encoding=\"utf-8\"))\n        except json.JSONDecodeError as e:\n            _lib.log(\"branch-guard policy parse error:\", e)\n    return {\"names\": [\"main\", \"master\"], \"patterns\": [\"release/*\"]}\n\n\ndef is_protected(branch: str, policy: dict) -> bool:\n    if not branch:\n        return False\n    if branch in (policy.get(\"names\") or []):\n        return True\n    for pat in policy.get(\"patterns\") or []:\n        if fnmatch.fnmatch(branch, pat):\n            return True\n    return False\n\n\ndef current_branch() -> str:\n    try:\n        result = subprocess.run(\n            [\"git\", \"symbolic-ref\", \"--short\", \"HEAD\"],\n            capture_output=True, text=True, check=False,\n        )\n        if result.returncode == 0:\n            return result.stdout.strip()\n    except FileNotFoundError:\n        pass\n    return \"\"\n\n\ndef parse_push_refspec(args: list[str]) -> list[str]:\n    \"\"\"Return the list of destination ref names targeted by a `git push`.\n\n    Recognizes: `git push origin main`, `git push origin local:remote`,\n    `git push --all`, and bare `git push` (which pushes the current\n    branch's tracking ref). Best-effort; the goal is to refuse the\n    common case, not to match git's full refspec grammar.\"\"\"\n    # Filter out flags to find positional args.\n    pos = [a for a in args if not a.startswith(\"-\")]\n    if not pos:\n        # Bare `git push` — destination is the current branch's\n        # upstream, equivalent to the current branch.\n        return [current_branch()]\n    # First positional is the remote (typically); subsequent are\n    # refspecs.\n    refspecs = pos[1:] if len(pos) >= 2 else [current_branch()]\n    targets = []\n    for r in refspecs:\n        # local:remote → take the right-hand side.\n        if \":\" in r:\n            targets.append(r.split(\":\", 1)[1])\n        else:\n            targets.append(r)\n    return [t for t in targets if t]\n\n\ndef _ai_root() -> Path:\n    \"\"\"Return the effective AI_ROOT path.\"\"\"\n    return Path(os.environ.get(\"AI_ROOT\", str(Path.home() / \".ai\")))\n\n\ndef _utc_timestamp() -> str:\n    \"\"\"Return a UTC ISO-8601 timestamp safe for use in filenames.\n\n    Includes microseconds so that two events within the same second each\n    produce a distinct filename (e.g. two rapid blocking calls in a test).\n    \"\"\"\n    return datetime.now(tz=timezone.utc).strftime(\"%Y-%m-%dT%H%M%S-%fZ\")\n\n\ndef write_violation_record(subcmd: str, branch: str) -> None:\n    \"\"\"Write a violation audit record to $AI_ROOT/audit/violations/.\n\n    Per Common.md §5.3 — one markdown file per violation event.\n    The file is write-and-forget; failure to write MUST NOT prevent the\n    guard from denying the operation.\n    \"\"\"\n    ai_root = _ai_root()\n    vdir = ai_root / \"audit\" / \"violations\"\n    try:\n        vdir.mkdir(parents=True, exist_ok=True)\n        ts = _utc_timestamp()\n        fpath = vdir / f\"{ts}-branch-guard.md\"\n        content = (\n            f\"# Violation — {ts}\\n\\n\"\n            f\"- **File / Rule violated:** Common.md §2.2 — protected-branch gate\\n\"\n            f\"- **What happened:** `git {subcmd}` was attempted on protected branch '{branch}'.\\n\"\n            f\"- **How noticed:** hook-detected (branch-guard.py PreToolUse / wrapper)\\n\"\n            f\"- **Remediation:** Operation denied. Branch off and open a PR.\\n\"\n            f\"- **Proposed amendment (if any):** none\\n\"\n        )\n        fpath.write_text(content, encoding=\"utf-8\")\n    except Exception as e:  # noqa: BLE001 — best-effort; guard must not crash\n        _lib.log(f\"warning: could not write violation record: {e}\")\n\n\ndef write_drift_record(subcmd: str, branch: str, detail: str) -> None:\n    \"\"\"Write a drift (near-miss) audit record to $AI_ROOT/audit/drift/.\n\n    Called when a quantitative check passes but is ≥90% of its threshold,\n    indicating the system is approaching a policy boundary without crossing it.\n    This is a defense-in-depth signal; the operation is NOT denied.\n\n    Currently the branch-guard has no quantitative threshold checks — this\n    function is wired and tested as a contract for when such checks are added.\n    \"\"\"\n    ai_root = _ai_root()\n    ddir = ai_root / \"audit\" / \"drift\"\n    try:\n        ddir.mkdir(parents=True, exist_ok=True)\n        ts = _utc_timestamp()\n        fpath = ddir / f\"{ts}-branch-guard.md\"\n        content = (\n            f\"# Drift — {ts}\\n\\n\"\n            f\"- **Hook:** branch-guard.py\\n\"\n            f\"- **Near-miss:** `git {subcmd}` on branch '{branch}'\\n\"\n            f\"- **Detail:** {detail}\\n\"\n            f\"- **Action:** none (operation permitted; drift record written for audit)\\n\"\n        )\n        fpath.write_text(content, encoding=\"utf-8\")\n    except Exception as e:  # noqa: BLE001 — best-effort; drift must not crash guard\n        _lib.log(f\"warning: could not write drift record: {e}\")\n\n\ndef violation(subcmd: str, branch: str) -> int:\n    _lib.log(f\"blocking — `git {subcmd}` would mutate protected branch '{branch}'.\")\n    _lib.log(\"Per ~/.ai/Common.md §2.2 (protected-branch gate).\")\n    _lib.log(\"Resolution: branch off (e.g. `git checkout -b work/<slug>`), commit there, and open a PR.\")\n    write_violation_record(subcmd, branch)\n    return 1\n\n\ndef from_claude_payload() -> int:\n    \"\"\"PreToolUse mode: read JSON payload on stdin, inspect command.\"\"\"\n    raw = sys.stdin.read()\n    if not raw.strip():\n        return 0\n    try:\n        payload = json.loads(raw)\n    except json.JSONDecodeError:\n        return 0\n    cmd = (\n        payload.get(\"command\")\n        or payload.get(\"tool_input\", {}).get(\"command\")\n        or payload.get(\"input\", {}).get(\"command\")\n        or \"\"\n    ) if isinstance(payload, dict) else \"\"\n    if not cmd.strip().startswith(\"git \"):\n        return 0\n    # Tokenize roughly. We don't need shell-exact tokenization; the\n    # subcommand is the second word.\n    parts = cmd.split()\n    if len(parts) < 2:\n        return 0\n    return check_invocation(parts[1:])\n\n\ndef check_invocation(argv: list[str]) -> int:\n    \"\"\"Common code for command-wrapper and PreToolUse paths.\n\n    argv is the args AFTER `git` (so argv[0] is the subcommand).\"\"\"\n    if not argv:\n        return 0\n    subcmd = argv[0]\n    policy = load_policy()\n    branch = current_branch()\n\n    if subcmd in GUARDED_SUBCOMMANDS and is_protected(branch, policy):\n        return violation(subcmd, branch)\n\n    if subcmd == \"push\":\n        for target in parse_push_refspec(argv[1:]):\n            if is_protected(target, policy):\n                return violation(\"push\", target)\n\n    return 0\n\n\ndef main(argv: list[str]) -> int:\n    parser = argparse.ArgumentParser(add_help=True)\n    parser.add_argument(\"--self-check\", action=\"store_true\")\n    parser.add_argument(\"--mode\", choices=[\"claude\", \"wrapper\"], default=None,\n                        help=\"invocation mode (auto-detected by default)\")\n    parser.add_argument(\"rest\", nargs=argparse.REMAINDER)\n    args = parser.parse_args(argv)\n\n    if args.self_check:\n        _ = load_policy()\n        return _lib.self_check_ok()\n\n    # Auto-detect: if there's data on stdin, it's a Claude payload.\n    if args.mode == \"claude\" or (args.mode is None and not sys.stdin.isatty()):\n        return from_claude_payload()\n\n    # Wrapper mode: argv is the git command line after \"git\".\n    return check_invocation(args.rest)\n\n\nif __name__ == \"__main__\":\n    sys.exit(main(sys.argv[1:]))\n",
+      "depends_on": [
+        "hook/lib"
+      ]
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/hook-v1.json",
+      "type": "hook",
+      "id": "hook/checkpoint-tick",
+      "version": "1.0.0",
+      "name": "Checkpoint Tick",
+      "description": "30-minute background tick that writes a HANDOFF.md so context-window resets don't lose state. Implements Common.md §U10 (handoff + checkpoint) and §U13 (context-window discipline). If more than 30 minutes have elapsed since the last tick, invokes the /checkpoint skill or emits a minimal HANDOFF.md template at cwd. Updates the timestamp on every run.",
+      "event": "Stop",
+      "language": "python",
+      "trigger": {
+        "type": "always"
+      },
+      "blocking": false,
+      "side_effects": [
+        "writes HANDOFF.md at cwd",
+        "updates ~/.config/aiConstitution/checkpoints/<project>/.last-tick"
+      ],
+      "authored_by": "convergent-systems-key",
+      "tags": [
+        "checkpoint",
+        "handoff",
+        "context-window",
+        "continuity",
+        "claude-code"
+      ],
+      "lifecycle": "stable",
+      "platforms": [
+        "linux",
+        "macos",
+        "windows"
+      ],
+      "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run checkpoint-tick' in settings.json — the ai binary discovers Python on each OS. Already contains sys.platform == 'win32' logic for config dir (%APPDATA%\\aiConstitution on Windows).",
+      "script": "#!/usr/bin/env python3\n\"\"\"hooks/checkpoint-tick.py — 30-minute background tick that writes a\nHANDOFF.md so context-window resets don't lose state.\n\nPer ~/.ai/Common.md §U10 (handoff + checkpoint) + §U13 (context-window\ndiscipline). Wires into Claude Code's session.\n\nBehavior:\n  - On invocation, if more than 30 minutes have passed since the last\n    tick (tracked at ~/.config/aiConstitution/checkpoints/<project>/.last-tick),\n    invoke the `/checkpoint` skill if available, otherwise emit a\n    minimal HANDOFF.md template at the cwd.\n  - Updates the timestamp.\n\nSelf-check:\n  --self-check  Verifies the checkpoint directory is writable.\n\"\"\"\nfrom __future__ import annotations\n\nimport argparse\nimport datetime as dt\nimport hashlib\nimport os\nimport sys\nfrom pathlib import Path\n\nsys.path.insert(0, str(Path(__file__).resolve().parent))\nimport _lib  # noqa: E402\n\n\ndef config_dir() -> Path:\n    \"\"\"~/.config/aiConstitution/ — per Common.md §5.5 the canonical\n    machine-local mutable-state root.\"\"\"\n    env = os.environ.get(\"AICONST_CONFIG_DIR\")\n    if env:\n        return Path(env)\n    if sys.platform == \"win32\":\n        appdata = os.environ.get(\"APPDATA\")\n        if appdata:\n            return Path(appdata) / \"aiConstitution\"\n    return Path.home() / \".config\" / \"aiConstitution\"\n\n\ndef checkpoints_dir() -> Path:\n    return config_dir() / \"checkpoints\"\n\n\ndef project_hash(cwd: str) -> str:\n    return hashlib.sha256(cwd.encode(\"utf-8\")).hexdigest()[:16]\n\n\ndef last_tick(cwd: str) -> dt.datetime | None:\n    f = checkpoints_dir() / project_hash(cwd) / \".last-tick\"\n    if not f.is_file():\n        return None\n    try:\n        return dt.datetime.fromisoformat(f.read_text(encoding=\"utf-8\").strip())\n    except (ValueError, OSError):\n        return None\n\n\ndef write_tick(cwd: str) -> None:\n    d = checkpoints_dir() / project_hash(cwd)\n    d.mkdir(parents=True, exist_ok=True)\n    (d / \".last-tick\").write_text(\n        dt.datetime.now(dt.timezone.utc).isoformat(),\n        encoding=\"utf-8\",\n    )\n\n\ndef needs_tick(cwd: str, threshold_minutes: int = 30) -> bool:\n    prev = last_tick(cwd)\n    if prev is None:\n        return True\n    age = dt.datetime.now(dt.timezone.utc) - prev\n    return age.total_seconds() >= threshold_minutes * 60\n\n\ndef emit_minimal_handoff(cwd: str) -> None:\n    \"\"\"Write a stub HANDOFF.md if none exists. The /checkpoint skill\n    produces a richer version when available.\"\"\"\n    handoff = Path(cwd) / \"HANDOFF.md\"\n    if handoff.exists():\n        return\n    body = f\"\"\"# HANDOFF — {dt.datetime.now(dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')}\n\n(Background checkpoint tick from ~/.ai/hooks/checkpoint-tick.py.)\n\n**Current state:** (fill in)\n**Last known-good commit:** (run `git rev-parse HEAD`)\n**Next steps:** (fill in)\n**Open questions:** (fill in)\n**Files in flight:** (fill in)\n\nPer ~/.ai/Common.md §U10.\n\"\"\"\n    try:\n        handoff.write_text(body, encoding=\"utf-8\")\n        _lib.log(f\"wrote stub {handoff}\")\n    except OSError as e:\n        _lib.log(\"could not write HANDOFF.md:\", e)\n\n\ndef main(argv: list[str]) -> int:\n    parser = argparse.ArgumentParser(add_help=True)\n    parser.add_argument(\"--self-check\", action=\"store_true\")\n    parser.add_argument(\"--threshold-minutes\", type=int, default=30)\n    args = parser.parse_args(argv)\n\n    if args.self_check:\n        try:\n            checkpoints_dir().mkdir(parents=True, exist_ok=True)\n        except Exception as e:\n            _lib.log(\"self-check FAIL:\", e)\n            return 1\n        _lib.log(\"self-check OK\")\n        return 0\n\n    cwd = os.getcwd()\n    if not needs_tick(cwd, args.threshold_minutes):\n        return 0\n\n    emit_minimal_handoff(cwd)\n    write_tick(cwd)\n    return 0\n\n\nif __name__ == \"__main__\":\n    sys.exit(main(sys.argv[1:]))\n",
+      "depends_on": [
+        "hook/lib"
+      ]
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/hook-v1.json",
+      "type": "hook",
+      "id": "hook/destructive-gh-guard",
+      "version": "1.0.0",
+      "name": "Destructive GitHub CLI Guard",
+      "description": "Blocks high-blast-radius, irreversible gh CLI operations per Common.md §2.2. Denies without explicit --force-i-mean-it confirmation: gh repo delete, gh release delete, gh secret delete, and gh auth logout. All other gh subcommands pass through.",
+      "event": "PreToolUse",
+      "language": "python",
+      "trigger": {
+        "type": "tool-name",
+        "pattern": "Bash"
+      },
+      "blocking": true,
+      "side_effects": [
+        "blocks tool call with explanation and bypass instructions"
+      ],
+      "authored_by": "convergent-systems-key",
+      "tags": [
+        "governance",
+        "gh-cli",
+        "destructive",
+        "guard",
+        "claude-code"
+      ],
+      "lifecycle": "stable",
+      "platforms": [
+        "linux",
+        "macos",
+        "windows"
+      ],
+      "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run destructive-gh-guard' in settings.json — the ai binary discovers Python on each OS. gh CLI available on all platforms. Python logic is cross-platform.",
+      "script": "#!/usr/bin/env python3\n\"\"\"hooks/destructive-gh-guard.py — gate destructive `gh` operations\nper Common.md §2.2.\n\nBlocks (without --force-i-mean-it confirmation):\n\n  gh repo delete <repo>\n  gh release delete <tag>\n  gh secret delete <name>\n  gh auth logout\n\nThese are the high-blast-radius / irreversible operations on the\ndefault `gh` surface. Other subcommands pass through.\n\nSelf-check:\n  --self-check\n\"\"\"\nfrom __future__ import annotations\n\nimport argparse\nimport os\nimport sys\nfrom pathlib import Path\n\nsys.path.insert(0, str(Path(__file__).resolve().parent))\nimport _lib  # noqa: E402\n\n\nGUARDED = [\n    (\"repo\", \"delete\"),\n    (\"release\", \"delete\"),\n    (\"secret\", \"delete\"),\n    (\"auth\", \"logout\"),\n]\n\n# Escape hatch: the user can set AI_ALLOW_DESTRUCTIVE_GH=1 for a single\n# session to bypass these checks. Setting this is itself a §2.2 action\n# and is logged.\nBYPASS_ENV = \"AI_ALLOW_DESTRUCTIVE_GH\"\n\n\ndef check_invocation(argv: list[str]) -> int:\n    \"\"\"argv is the args AFTER `gh`.\"\"\"\n    if len(argv) < 2:\n        return 0\n    a, b = argv[0], argv[1]\n    if (a, b) not in GUARDED:\n        return 0\n\n    if os.environ.get(BYPASS_ENV) == \"1\":\n        _lib.log(f\"`gh {a} {b}` — bypass active ({BYPASS_ENV}=1). Logged.\")\n        return 0\n\n    _lib.log(f\"blocking — `gh {a} {b}` is a §2.2 destructive operation.\")\n    _lib.log(\"Per Common.md §2.2 + §2.4: name what will be destroyed, snapshot if reversible, wait for an unambiguous yes.\")\n    _lib.log(f\"To bypass for one session only: AI_ALLOW_DESTRUCTIVE_GH=1 gh {a} {b} ...\")\n    return 1\n\n\ndef from_claude_payload() -> int:\n    import json\n    raw = sys.stdin.read()\n    if not raw.strip():\n        return 0\n    try:\n        payload = json.loads(raw)\n    except json.JSONDecodeError:\n        return 0\n    cmd = (\n        payload.get(\"command\")\n        or payload.get(\"tool_input\", {}).get(\"command\")\n        or \"\"\n    ) if isinstance(payload, dict) else \"\"\n    if not cmd.strip().startswith(\"gh \"):\n        return 0\n    return check_invocation(cmd.split()[1:])\n\n\ndef main(argv: list[str]) -> int:\n    parser = argparse.ArgumentParser(add_help=True)\n    parser.add_argument(\"--self-check\", action=\"store_true\")\n    parser.add_argument(\"--mode\", choices=[\"claude\", \"wrapper\"], default=None)\n    parser.add_argument(\"rest\", nargs=argparse.REMAINDER)\n    args = parser.parse_args(argv)\n\n    if args.self_check:\n        return _lib.self_check_ok()\n    if args.mode == \"claude\" or (args.mode is None and not sys.stdin.isatty()):\n        return from_claude_payload()\n    return check_invocation(args.rest)\n\n\nif __name__ == \"__main__\":\n    sys.exit(main(sys.argv[1:]))\n",
+      "depends_on": [
+        "hook/lib"
+      ]
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/hook-v1.json",
+      "type": "hook",
+      "id": "hook/destructive-kubectl-guard",
+      "version": "1.0.0",
+      "name": "Destructive kubectl Guard",
+      "description": "Blocks destructive kubectl operations per Common.md §2.2. Opt-in via command-wrappers.toml. Denies kubectl delete, kubectl drain, and kubectl cordon without the bypass env AI_ALLOW_DESTRUCTIVE_KUBECTL=1. All other kubectl subcommands pass through.",
+      "event": "PreToolUse",
+      "language": "python",
+      "trigger": {
+        "type": "tool-name",
+        "pattern": "Bash"
+      },
+      "blocking": true,
+      "side_effects": [
+        "blocks tool call with explanation",
+        "bypass via AI_ALLOW_DESTRUCTIVE_KUBECTL=1"
+      ],
+      "authored_by": "convergent-systems-key",
+      "tags": [
+        "governance",
+        "kubectl",
+        "kubernetes",
+        "destructive",
+        "guard",
+        "claude-code"
+      ],
+      "lifecycle": "stable",
+      "platforms": [
+        "linux",
+        "macos",
+        "windows"
+      ],
+      "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run destructive-kubectl-guard' in settings.json — the ai binary discovers Python on each OS. kubectl available on all platforms. Python logic is cross-platform.",
+      "script": "#!/usr/bin/env python3\n\"\"\"hooks/destructive-kubectl-guard.py — gate destructive `kubectl`\noperations per Common.md §2.2. Opt-in via command-wrappers.toml.\n\nBlocks (without bypass env): `kubectl delete`, `kubectl drain`,\n`kubectl cordon`. Other subcommands pass through.\n\nThe bypass env is AI_ALLOW_DESTRUCTIVE_KUBECTL=1.\n\nSelf-check:\n  --self-check\n\"\"\"\nfrom __future__ import annotations\n\nimport argparse\nimport os\nimport sys\nfrom pathlib import Path\n\nsys.path.insert(0, str(Path(__file__).resolve().parent))\nimport _lib  # noqa: E402\n\n\nGUARDED = {\"delete\", \"drain\", \"cordon\"}\nBYPASS_ENV = \"AI_ALLOW_DESTRUCTIVE_KUBECTL\"\n\n\ndef check_invocation(argv: list[str]) -> int:\n    if not argv or argv[0] not in GUARDED:\n        return 0\n    if os.environ.get(BYPASS_ENV) == \"1\":\n        _lib.log(f\"`kubectl {argv[0]}` — bypass active ({BYPASS_ENV}=1). Logged.\")\n        return 0\n    _lib.log(f\"blocking — `kubectl {argv[0]}` mutates cluster state.\")\n    _lib.log(\"Per Common.md §2.2 + §2.4: state what will change, name reversibility, wait for an unambiguous yes.\")\n    _lib.log(f\"To bypass for one session only: {BYPASS_ENV}=1 kubectl {argv[0]} ...\")\n    return 1\n\n\ndef main(argv: list[str]) -> int:\n    parser = argparse.ArgumentParser(add_help=True)\n    parser.add_argument(\"--self-check\", action=\"store_true\")\n    parser.add_argument(\"rest\", nargs=argparse.REMAINDER)\n    args = parser.parse_args(argv)\n    if args.self_check:\n        return _lib.self_check_ok()\n    return check_invocation(args.rest)\n\n\nif __name__ == \"__main__\":\n    sys.exit(main(sys.argv[1:]))\n",
+      "depends_on": [
+        "hook/lib"
+      ]
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/hook-v1.json",
+      "type": "hook",
+      "id": "hook/destructive-terraform-guard",
+      "version": "1.0.0",
+      "name": "Destructive Terraform Guard",
+      "description": "Blocks terraform destroy and terraform apply per Common.md §2.2. Opt-in via command-wrappers.toml. Requires explicit bypass via AI_ALLOW_DESTRUCTIVE_TERRAFORM=1. Prevents accidental infrastructure destruction or unreviewed applies. Other tofu/terraform subcommands (plan, init, validate, output) pass through.",
+      "event": "PreToolUse",
+      "language": "python",
+      "trigger": {
+        "type": "tool-name",
+        "pattern": "Bash"
+      },
+      "blocking": true,
+      "side_effects": [
+        "blocks tool call with explanation",
+        "bypass via AI_ALLOW_DESTRUCTIVE_TERRAFORM=1"
+      ],
+      "authored_by": "convergent-systems-key",
+      "tags": [
+        "governance",
+        "terraform",
+        "tofu",
+        "infrastructure",
+        "destructive",
+        "guard",
+        "claude-code"
+      ],
+      "lifecycle": "stable",
+      "platforms": [
+        "linux",
+        "macos",
+        "windows"
+      ],
+      "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run destructive-terraform-guard' in settings.json — the ai binary discovers Python on each OS. tofu/terraform available on all platforms. Python logic is cross-platform.",
+      "script": "#!/usr/bin/env python3\n\"\"\"hooks/destructive-terraform-guard.py — gate `terraform {destroy,apply}`\nper Common.md §2.2. Opt-in via command-wrappers.toml.\n\nBlocks (without bypass env): `terraform destroy`, `terraform apply`.\nOther subcommands pass through.\n\nThe bypass env is AI_ALLOW_DESTRUCTIVE_TERRAFORM=1.\n\nSelf-check:\n  --self-check\n\"\"\"\nfrom __future__ import annotations\n\nimport argparse\nimport os\nimport sys\nfrom pathlib import Path\n\nsys.path.insert(0, str(Path(__file__).resolve().parent))\nimport _lib  # noqa: E402\n\n\nGUARDED = {\"destroy\", \"apply\"}\nBYPASS_ENV = \"AI_ALLOW_DESTRUCTIVE_TERRAFORM\"\n\n\ndef check_invocation(argv: list[str]) -> int:\n    if not argv or argv[0] not in GUARDED:\n        return 0\n    if os.environ.get(BYPASS_ENV) == \"1\":\n        _lib.log(f\"`terraform {argv[0]}` — bypass active ({BYPASS_ENV}=1). Logged.\")\n        return 0\n    _lib.log(f\"blocking — `terraform {argv[0]}` mutates real infrastructure.\")\n    _lib.log(\"Per Common.md §2.2 + §2.4: state what will change, name reversibility, wait for an unambiguous yes.\")\n    _lib.log(f\"To bypass for one session only: {BYPASS_ENV}=1 terraform {argv[0]} ...\")\n    return 1\n\n\ndef main(argv: list[str]) -> int:\n    parser = argparse.ArgumentParser(add_help=True)\n    parser.add_argument(\"--self-check\", action=\"store_true\")\n    parser.add_argument(\"rest\", nargs=argparse.REMAINDER)\n    args = parser.parse_args(argv)\n    if args.self_check:\n        return _lib.self_check_ok()\n    return check_invocation(args.rest)\n\n\nif __name__ == \"__main__\":\n    sys.exit(main(sys.argv[1:]))\n",
+      "depends_on": [
+        "hook/lib"
+      ]
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/hook-v1.json",
+      "type": "hook",
+      "id": "hook/lib",
+      "version": "1.0.0",
+      "name": "Hook Library",
+      "description": "Shared Python library required by most governance hooks. Provides redaction helpers, JSON I/O, audit logging, and pattern matching utilities.",
+      "event": "",
+      "language": "python",
+      "trigger": {
+        "type": "library"
+      },
+      "blocking": false,
+      "lifecycle": "stable",
+      "authored_by": "convergent-systems-key",
+      "tags": [
+        "lib",
+        "shared",
+        "governance"
+      ],
+      "script": "\"\"\"Shared helpers for the hooks at this directory.\n\nEvery hook is expected to:\n\n  - Be runnable on stdlib python3 only (no third-party deps).\n  - Honor --self-check, returning exit 0 on the canonical self-test\n    and exit 1 otherwise. The self-check verifies the hook can load\n    its dependencies, finds its config files, and compiles its\n    regexes. It does NOT exercise the hook's main behavior.\n  - Print structured `[ai/<hook-name>]` lines to stderr, never to\n    stdout (stdout is reserved for downstream tools).\n  - Redact secrets before logging — `_lib.redact()` does this.\n\nPer SPEC.md §3.10 and §10.\"\"\"\n\nfrom __future__ import annotations\n\nimport json\nimport os\nimport re\nimport sys\nfrom pathlib import Path\nfrom typing import Iterable\n\nHOOKS_DIR = Path(__file__).resolve().parent\n\n\ndef patterns_path() -> Path:\n    \"\"\"Return the path to hooks/patterns.json, honoring ${AI_ROOT}/hooks/\n    when invoked from a wrapper outside the repo tree.\"\"\"\n    candidates = [\n        HOOKS_DIR / \"patterns.json\",\n        Path(os.environ.get(\"AI_ROOT\", str(Path.home() / \".ai\"))) / \"hooks\" / \"patterns.json\",\n    ]\n    for p in candidates:\n        if p.is_file():\n            return p\n    return HOOKS_DIR / \"patterns.json\"\n\n\ndef patterns_local_path() -> Path:\n    \"\"\"Return the optional local-patterns path; may not exist.\"\"\"\n    return patterns_path().with_name(\"patterns.local.json\")\n\n\ndef load_patterns() -> list[dict]:\n    \"\"\"Load patterns.json plus optional patterns.local.json. Returns a\n    list of pattern dicts (the union of both). Local entries override\n    canonical entries with the same id.\"\"\"\n    base: list[dict] = []\n    p = patterns_path()\n    if p.is_file():\n        data = json.loads(p.read_text(encoding=\"utf-8\"))\n        base = data.get(\"patterns\", [])\n\n    local: list[dict] = []\n    lp = patterns_local_path()\n    if lp.is_file():\n        data = json.loads(lp.read_text(encoding=\"utf-8\"))\n        local = data.get(\"patterns\", [])\n\n    # local overrides by id\n    by_id = {p[\"id\"]: p for p in base}\n    for entry in local:\n        by_id[entry[\"id\"]] = entry\n    out = list(by_id.values())\n    # compile regexes once for the lifetime of the process\n    for entry in out:\n        entry[\"_compiled\"] = re.compile(entry[\"regex\"])\n    return out\n\n\ndef scan_lines(lines: Iterable[str], patterns: list[dict]) -> list[dict]:\n    \"\"\"Walk every line through every pattern; return a list of hits.\"\"\"\n    hits = []\n    for lineno, line in enumerate(lines, start=1):\n        for entry in patterns:\n            for m in entry[\"_compiled\"].finditer(line):\n                hits.append({\n                    \"pattern_id\": entry[\"id\"],\n                    \"severity\": entry.get(\"severity\", \"medium\"),\n                    \"redaction\": entry.get(\"redaction\", \"[REDACTED]\"),\n                    \"line\": lineno,\n                    \"col\": m.start() + 1,\n                    \"snippet\": redact_snippet(line, m.start(), m.end(), entry.get(\"redaction\", \"[REDACTED]\")),\n                })\n    return hits\n\n\ndef redact(input_str: str, patterns: list[dict] | None = None) -> str:\n    \"\"\"Apply every pattern's redaction to the input.\"\"\"\n    if patterns is None:\n        patterns = load_patterns()\n    out = input_str\n    for entry in patterns:\n        out = entry[\"_compiled\"].sub(entry.get(\"redaction\", \"[REDACTED]\"), out)\n    return out\n\n\ndef redact_snippet(line: str, start: int, end: int, redaction: str, ctx: int = 20) -> str:\n    a = max(0, start - ctx)\n    b = min(len(line), end + ctx)\n    return line[a:start] + redaction + line[end:b]\n\n\ndef hook_name() -> str:\n    \"\"\"Best-effort hook name derived from argv[0]. Used in log prefixes.\"\"\"\n    base = os.path.basename(sys.argv[0]) if sys.argv else \"hook\"\n    if base.endswith(\".py\"):\n        base = base[:-3]\n    return base\n\n\ndef log(*parts) -> None:\n    \"\"\"Structured stderr log line.\"\"\"\n    print(f\"[ai/{hook_name()}]\", *parts, file=sys.stderr, flush=True)\n\n\ndef self_check_ok() -> int:\n    \"\"\"The default --self-check pass. Hooks override or extend this.\"\"\"\n    try:\n        load_patterns()\n    except Exception as e:\n        log(\"self-check FAIL:\", e)\n        return 1\n    log(\"self-check OK\")\n    return 0\n"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/hook-v1.json",
+      "type": "hook",
+      "id": "hook/no-verify-strip",
+      "version": "1.0.0",
+      "name": "No-Verify Strip",
+      "description": "PreToolUse hook that strips --no-verify from git commit commands before they execute. Per Common.md §2.2 (no skipping hooks) and the governance SPEC §10.3. Default behavior: strip silently and log the bypass attempt to the audit pipeline. The bypass can be allowed per-project via allowNoVerifyBypass=true in settings, which removes this hook from the preHooks list.",
+      "event": "PreToolUse",
+      "language": "python",
+      "trigger": {
+        "type": "tool-name",
+        "pattern": "Bash"
+      },
+      "blocking": false,
+      "side_effects": [
+        "removes --no-verify flag from git commit argv",
+        "logs bypass attempt to audit pipeline"
+      ],
+      "authored_by": "convergent-systems-key",
+      "tags": [
+        "git",
+        "governance",
+        "hooks",
+        "audit",
+        "no-verify",
+        "claude-code"
+      ],
+      "lifecycle": "stable",
+      "platforms": [
+        "linux",
+        "macos",
+        "windows"
+      ],
+      "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run no-verify-strip' in settings.json — the ai binary discovers Python on each OS. Modifies git argv in-process — cross-platform. Invoked via 'ai hooks run'.",
+      "script": "#!/usr/bin/env python3\n\"\"\"hooks/no-verify-strip.py — wrapper preHook that strips --no-verify\nfrom `git commit`. Per SPEC.md §10.3 + §10.5.2.\n\nThe wrapper at ~/.ai/bin/git invokes this with the post-strip argv\nalready; the script's job is to detect whether the user requested a\nbypass and, depending on settings.secret_scanning.allowNoVerifyBypass,\neither strip silently, warn, or pass through.\n\nDefault (allowNoVerifyBypass=false): strip silently and log to the\naudit pipeline.\nOverride (allowNoVerifyBypass=true):  the wrapper config simply\nremoves this hook from preHooks (and the one-month nag fires from\nelsewhere).\n\nSelf-check:\n  --self-check\n\"\"\"\nfrom __future__ import annotations\n\nimport argparse\nimport sys\nfrom pathlib import Path\n\nsys.path.insert(0, str(Path(__file__).resolve().parent))\nimport _lib  # noqa: E402\n\n\ndef check_invocation(argv: list[str]) -> int:\n    \"\"\"argv is the args AFTER `git`. Returns 0 always (this is an\n    advisory; the actual stripping happens in the wrapper).\"\"\"\n    if not argv or argv[0] != \"commit\":\n        return 0\n    stripped = []\n    bypass_seen = False\n    for a in argv[1:]:\n        if a in (\"--no-verify\", \"-n\"):\n            bypass_seen = True\n            continue\n        stripped.append(a)\n    if bypass_seen:\n        _lib.log(\"`--no-verify` was present and is being stripped.\")\n        _lib.log(\"Per Common.md §3.6: the override format is non-negotiable; same principle here.\")\n        _lib.log(\"To allow bypass: set settings.secret_scanning.allowNoVerifyBypass=true (one-month nag fires).\")\n    return 0\n\n\ndef main(argv: list[str]) -> int:\n    parser = argparse.ArgumentParser(add_help=True)\n    parser.add_argument(\"--self-check\", action=\"store_true\")\n    parser.add_argument(\"rest\", nargs=argparse.REMAINDER)\n    args = parser.parse_args(argv)\n    if args.self_check:\n        return _lib.self_check_ok()\n    return check_invocation(args.rest)\n\n\nif __name__ == \"__main__\":\n    sys.exit(main(sys.argv[1:]))\n",
+      "depends_on": [
+        "hook/lib"
+      ]
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/hook-v1.json",
+      "type": "hook",
+      "id": "hook/op-redact",
+      "version": "1.0.0",
+      "name": "1Password & Secret Redactor",
+      "description": "PreToolUse hook that redacts 1Password references and secret-shaped values from Claude Code tool-use payloads before they execute. Unlike secret-block which denies, this hook redacts in-place and always exits 0 — it never blocks the tool call. Patterns: GitHub tokens (gho_/ghp_/ghu_/ghs_/ghr_), Bearer tokens, op:// references, OpenAI sk- keys, PEM blocks. Writes a violation record on detection. Implements Common.md §4 (non-overridable secret handling).",
+      "event": "PreToolUse",
+      "language": "python",
+      "trigger": {
+        "type": "always"
+      },
+      "blocking": false,
+      "side_effects": [
+        "redacts secrets in-place in tool payload",
+        "writes violation record to ~/.ai/audit/violations/<UTC>-secret-detected.md",
+        "outputs cleaned JSON to stdout"
+      ],
+      "authored_by": "convergent-systems-key",
+      "tags": [
+        "security",
+        "secrets",
+        "redaction",
+        "1password",
+        "governance",
+        "claude-code"
+      ],
+      "lifecycle": "stable",
+      "platforms": [
+        "linux",
+        "macos",
+        "windows"
+      ],
+      "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run op-redact' in settings.json — the ai binary discovers Python on each OS. Pure Python regex; no OS-specific calls. Works on all platforms.",
+      "script": "#!/usr/bin/env python3\n\"\"\"hooks/op-redact.py — PreToolUse hook that redacts 1Password and other\nsecret-shaped values from Claude Code tool-use payloads.\n\nUnlike secret-block.py (which DENIES the tool call), this hook:\n  - Redacts matching strings in-place across all string fields.\n  - Writes a violation record to $AI_ROOT/audit/violations/<UTC>-secret-detected.md.\n  - Outputs the cleaned JSON to stdout.\n  - ALWAYS exits 0 — it never blocks the tool call.\n\nPer Common.md §4 (non-overridable: secrets must not appear in artifacts)\nand SPEC.md §10.1.\n\nRedaction patterns (inline — no dependency on patterns.json):\n  gho_ / ghp_ / ghu_ / ghs_ / ghr_  + 36+ chars → [REDACTED:github-token]\n  github_pat_ + 60+ chars             → [REDACTED:github-token]\n  Bearer  + 20+ chars                 → [REDACTED:bearer-token]\n  op://                               → [REDACTED:op-ref]\n  sk- + 40+ chars                     → [REDACTED:openai-key]\n  -----BEGIN                          → [REDACTED:pem-block]\n\nInput contract (Claude Code PreToolUse event):\n  - Full tool-use payload arrives on stdin as JSON.\n  - Exit 0 always (redact + log, never block).\n  - stdout: cleaned JSON.\n  - stderr: human-readable diagnostic lines.\n\nSelf-check:\n  --self-check  Verifies regex compilation; exits 0 on success.\n\"\"\"\nfrom __future__ import annotations\n\nimport json\nimport os\nimport re\nimport sys\nfrom datetime import datetime, timezone\nfrom pathlib import Path\n\n# ---------------------------------------------------------------------------\n# Inline redaction patterns — no dependency on patterns.json.\n# Each tuple: (compiled_regex, replacement_string, kind_label)\n# ---------------------------------------------------------------------------\n\n_RAW_PATTERNS: list[tuple[str, str, str]] = [\n    # GitHub classic tokens\n    (r\"(ghp|gho|ghu|ghs|ghr)_[A-Za-z0-9]{36,}\", \"[REDACTED:github-token]\", \"github-token\"),\n    # GitHub fine-grained PAT\n    (r\"github_pat_[A-Za-z0-9_]{60,}\", \"[REDACTED:github-token]\", \"github-token\"),\n    # Bearer tokens (20+ chars after 'Bearer ')\n    (r\"Bearer [A-Za-z0-9._\\-]{20,}\", \"[REDACTED:bearer-token]\", \"bearer-token\"),\n    # op:// references — redact the entire op:// URI\n    (r\"op://[^\\s\\\"']+\", \"[REDACTED:op-ref]\", \"op-ref\"),\n    # OpenAI-style keys: sk- followed by 40+ chars (excludes sk-ant- Anthropic keys\n    # which have their own label, but this is belt-and-suspenders)\n    (r\"sk-[A-Za-z0-9_\\-]{40,}\", \"[REDACTED:openai-key]\", \"openai-key\"),\n    # PEM block headers\n    (r\"-----BEGIN[^\\n\\r]*\", \"[REDACTED:pem-block]\", \"pem-block\"),\n]\n\n_PATTERNS: list[tuple[re.Pattern, str, str]] = [\n    (re.compile(raw), repl, kind)\n    for raw, repl, kind in _RAW_PATTERNS\n]\n\n\ndef redact_string(value: str) -> tuple[str, list[str]]:\n    \"\"\"Apply all patterns to value. Returns (redacted_value, list_of_kind_hits).\"\"\"\n    hits: list[str] = []\n    out = value\n    for pattern, replacement, kind in _PATTERNS:\n        new, n = pattern.subn(replacement, out)\n        if n > 0:\n            hits.append(kind)\n            out = new\n    return out, hits\n\n\ndef redact_recursive(obj: object) -> tuple[object, list[str]]:\n    \"\"\"Walk obj depth-first and redact all string leaves.\n    Returns (cleaned_obj, all_hit_kinds).\"\"\"\n    all_hits: list[str] = []\n    if isinstance(obj, str):\n        cleaned, hits = redact_string(obj)\n        return cleaned, hits\n    if isinstance(obj, dict):\n        out = {}\n        for k, v in obj.items():\n            cleaned_v, hits = redact_recursive(v)\n            out[k] = cleaned_v\n            all_hits.extend(hits)\n        return out, all_hits\n    if isinstance(obj, list):\n        out_list = []\n        for item in obj:\n            cleaned_item, hits = redact_recursive(item)\n            out_list.append(cleaned_item)\n            all_hits.extend(hits)\n        return out_list, all_hits\n    # int, float, bool, None — pass through\n    return obj, []\n\n\ndef ai_root() -> Path:\n    \"\"\"Return the canonical ~/.ai/ root, honoring $AI_ROOT.\"\"\"\n    env = os.environ.get(\"AI_ROOT\", \"\")\n    if env:\n        return Path(env)\n    return Path.home() / \".ai\"\n\n\ndef write_violation(kinds: list[str], payload_summary: str) -> None:\n    \"\"\"Write a violation record to $AI_ROOT/audit/violations/<UTC>-secret-detected.md.\"\"\"\n    now = datetime.now(tz=timezone.utc)\n    ts = now.strftime(\"%Y-%m-%dT%H%M%SZ\")\n    violations_dir = ai_root() / \"audit\" / \"violations\"\n    try:\n        violations_dir.mkdir(parents=True, exist_ok=True)\n        path = violations_dir / f\"{ts}-secret-detected.md\"\n        unique_kinds = sorted(set(kinds))\n        body = f\"\"\"# Violation — {ts}\n\n- **File / Rule violated:** Common.md/§4 — No Secrets In Artifacts\n- **What happened:** op-redact.py PreToolUse hook detected {len(kinds)} secret-like match(es) in a Claude Code tool-use payload and redacted them before the payload was processed. Pattern kinds: {', '.join(unique_kinds)}.\n- **How noticed:** tool-flagged (op-redact.py)\n- **Remediation:** Values were replaced with [REDACTED:<kind>] in the cleaned payload written to stdout. The original payload was not passed downstream.\n- **Payload summary (redacted):** {payload_summary[:200]}\n\"\"\"\n        path.write_text(body, encoding=\"utf-8\")\n    except OSError as exc:\n        # Logging failures must not cause the hook to block.\n        print(f\"[ai/op-redact] WARNING: could not write violation file: {exc}\", file=sys.stderr)\n\n\ndef hook_name() -> str:\n    return \"op-redact\"\n\n\ndef log(*parts) -> None:\n    print(f\"[ai/{hook_name()}]\", *parts, file=sys.stderr, flush=True)\n\n\ndef self_check_ok() -> int:\n    \"\"\"Compile all patterns; exit 0 if OK.\"\"\"\n    try:\n        for raw, _, _ in _RAW_PATTERNS:\n            re.compile(raw)\n    except re.error as exc:\n        log(f\"self-check FAIL: regex compile error: {exc}\")\n        return 1\n    log(\"self-check OK\")\n    return 0\n\n\ndef main(argv: list[str]) -> int:\n    if \"--self-check\" in argv:\n        return self_check_ok()\n\n    raw = sys.stdin.read()\n    if not raw.strip():\n        # Empty payload — nothing to redact; pass through empty.\n        sys.stdout.write(\"\")\n        return 0\n\n    # Parse payload. Fall back to wrapping raw in a dict so we can still\n    # scan it for patterns.\n    try:\n        payload = json.loads(raw)\n        parse_ok = True\n    except json.JSONDecodeError:\n        payload = {\"_raw\": raw}\n        parse_ok = False\n\n    cleaned, hits = redact_recursive(payload)\n\n    if hits:\n        log(f\"{len(hits)} secret-like match(es) redacted: {sorted(set(hits))}\")\n        log(\"Per Common.md §1.P4 (no secrets in artifacts; non-overridable).\")\n        # Summarize the cleaned output (already redacted) for the violation record.\n        summary = json.dumps(cleaned)[:200]\n        write_violation(hits, summary)\n\n    # Always output the cleaned payload as JSON so the tool call proceeds.\n    if parse_ok:\n        sys.stdout.write(json.dumps(cleaned))\n    else:\n        # We were given unparseable JSON; output what we managed to clean.\n        sys.stdout.write(cleaned.get(\"_raw\", raw) if isinstance(cleaned, dict) else raw)\n    return 0\n\n\nif __name__ == \"__main__\":\n    sys.exit(main(sys.argv[1:]))\n"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/hook-v1.json",
+      "type": "hook",
+      "id": "hook/secret-block",
+      "version": "1.0.0",
+      "name": "Secret Block",
+      "description": "PreToolUse hook that denies Bash commands containing secret-shaped strings before they execute. Reads the canonical pattern set from hooks/patterns.json (plus patterns.local.json if present). Belt-and-suspenders alongside the secret-handling rules in Common.md §4. Emits a JSON permissionDecision deny on detection.",
+      "event": "PreToolUse",
+      "language": "python",
+      "trigger": {
+        "type": "tool-name",
+        "pattern": "Bash"
+      },
+      "blocking": true,
+      "side_effects": [
+        "denies tool call with explanation when secret pattern detected"
+      ],
+      "authored_by": "convergent-systems-key",
+      "tags": [
+        "security",
+        "secrets",
+        "governance",
+        "patterns",
+        "claude-code"
+      ],
+      "lifecycle": "stable",
+      "platforms": [
+        "linux",
+        "macos",
+        "windows"
+      ],
+      "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run secret-block' in settings.json — the ai binary discovers Python on each OS. Pure Python regex on stdin JSON. Works on all platforms.",
+      "script": "#!/usr/bin/env python3\n\"\"\"hooks/secret-block.py — PreToolUse hook that denies Bash commands\ncontaining secret-shaped strings before they execute.\n\nReads the canonical pattern set from hooks/patterns.json\n(+ patterns.local.json if present). Belt-and-suspenders alongside the\nsecret-handling rules in Common.md §4. Per SPEC.md §10.1.\n\nInput contract (Claude Code PreToolUse):\n  - The full tool-use payload arrives on stdin as JSON.\n  - On detection: emit JSON permissionDecision deny on stdout, exit 0.\n  - On clean: exit 0, no stdout.\n  - Stderr is shown to the user.\n\nOutput schema:\n  {\n    \"hookSpecificOutput\": {\n      \"hookEventName\": \"PreToolUse\",\n      \"permissionDecision\": \"deny\",\n      \"permissionDecisionReason\": \"<explanation>\"\n    }\n  }\n\nSelf-check:\n  --self-check  Loads patterns.json and compiles every regex.\n\"\"\"\nfrom __future__ import annotations\n\nimport json\nimport sys\nfrom pathlib import Path\n\n# Allow `import _lib` when the hooks dir is on PYTHONPATH OR when this\n# script is exec'd directly from ~/.ai/hooks/.\nsys.path.insert(0, str(Path(__file__).resolve().parent))\nimport _lib  # noqa: E402\n\n\ndef deny(reason: str) -> None:\n    \"\"\"Emit a permission-deny decision via JSON stdout and exit 0.\"\"\"\n    print(json.dumps({\n        \"hookSpecificOutput\": {\n            \"hookEventName\": \"PreToolUse\",\n            \"permissionDecision\": \"deny\",\n            \"permissionDecisionReason\": reason,\n        }\n    }))\n    sys.exit(0)\n\n\ndef extract_command(payload: dict) -> str:\n    \"\"\"Best-effort extraction of the command being run from the\n    Claude tool-use payload shape. Falls back to stringifying the\n    whole payload, which still matches patterns.\"\"\"\n    if not isinstance(payload, dict):\n        return json.dumps(payload)\n    # Common shapes across Claude Code event versions.\n    cmd = (\n        payload.get(\"command\")\n        or payload.get(\"input\", {}).get(\"command\")\n        or payload.get(\"params\", {}).get(\"command\")\n        or payload.get(\"tool_input\", {}).get(\"command\")\n    )\n    if cmd:\n        return cmd\n    return json.dumps(payload)\n\n\ndef main(argv: list) -> int:\n    if \"--self-check\" in argv:\n        return _lib.self_check_ok()\n\n    raw = sys.stdin.read()\n    if not raw.strip():\n        # No payload to inspect; allow by default.\n        return 0\n\n    try:\n        payload = json.loads(raw)\n    except json.JSONDecodeError:\n        # If we can't parse, still scan the raw text for patterns.\n        payload = {\"raw\": raw}\n\n    # Only guard PreToolUse events on Bash/shell tools.\n    if isinstance(payload, dict):\n        hook_event = (\n            payload.get(\"hookEventName\")\n            or payload.get(\"hook_event_name\")\n            or \"\"\n        )\n        if hook_event and hook_event != \"PreToolUse\":\n            return 0\n\n        tool_name = payload.get(\"tool_name\") or payload.get(\"toolName\") or \"\"\n        if tool_name and tool_name not in (\"Bash\", \"shell\", \"execute\"):\n            return 0\n\n        # Extract the command to scan.\n        tool_input = (\n            payload.get(\"tool_input\")\n            or payload.get(\"toolInput\")\n            or payload.get(\"toolArgs\")\n            or {}\n        )\n        if isinstance(tool_input, dict):\n            command = tool_input.get(\"command\") or tool_input.get(\"cmd\") or \"\"\n        else:\n            command = extract_command(payload)\n    else:\n        command = raw\n\n    if not command:\n        return 0\n\n    patterns = _lib.load_patterns()\n    hits = _lib.scan_lines(command.splitlines() or [command], patterns)\n    if not hits:\n        return 0\n\n    # Build a deny reason that does NOT echo the full secret value.\n    # Take the first hit and construct a truncated/redacted snippet.\n    hit = hits[0]\n    pattern_id = hit.get(\"pattern_id\", \"unknown\")\n    severity = hit.get(\"severity\", \"medium\")\n    snippet = hit.get(\"snippet\", \"[redacted]\")\n\n    extra = \"\"\n    if len(hits) > 1:\n        extra = f\" (and {len(hits) - 1} more match(es))\"\n\n    deny(\n        f\"Possible secret detected in Bash command: pattern={pattern_id} severity={severity}{extra}.\\n\"\n        f\"Snippet (redacted): {snippet}\\n\"\n        \"Per Common.md §1.P4 (no secrets in artifacts; non-overridable).\\n\"\n        \"Use OS clipboard transfer (Common.md §4.2) instead of embedding secrets in commands.\"\n    )\n    # deny() calls sys.exit(0); this return is unreachable but satisfies type checkers.\n    return 0\n\n\nif __name__ == \"__main__\":\n    sys.exit(main(sys.argv[1:]))\n",
+      "depends_on": [
+        "hook/lib"
+      ]
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/hook-v1.json",
+      "type": "hook",
+      "id": "hook/secret-precommit",
+      "version": "1.0.0",
+      "name": "Secret Pre-commit Scanner",
+      "description": "Git pre-commit hook and CI scanner that blocks commits containing secret-shaped strings. Two modes: (1) pre-commit — scans the staged diff (git diff --cached -U0) and aborts the commit on any match; (2) CI/range scan (--ci --base BASE --head HEAD) — scans the diff from BASE..HEAD for use in secret-scan.yml workflows. Reads canonical patterns from hooks/patterns.json.",
+      "event": "PreToolUse",
+      "language": "python",
+      "trigger": {
+        "type": "tool-name",
+        "pattern": "Bash"
+      },
+      "blocking": true,
+      "side_effects": [
+        "aborts git commit on secret detection",
+        "exits non-zero in CI scan mode on detection"
+      ],
+      "authored_by": "convergent-systems-key",
+      "tags": [
+        "security",
+        "secrets",
+        "git",
+        "pre-commit",
+        "ci",
+        "claude-code"
+      ],
+      "lifecycle": "stable",
+      "platforms": [
+        "linux",
+        "macos",
+        "windows"
+      ],
+      "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run secret-precommit' in settings.json — the ai binary discovers Python on each OS. Calls subprocess git diff — git is available cross-platform. Pre-commit mode uses 'exec python3' in the shim; Windows users should use 'ai hooks run' instead.",
+      "script": "#!/usr/bin/env python3\n\"\"\"hooks/secret-precommit.py — git pre-commit hook (and CI scanner).\n\nTwo modes:\n\n  1. Pre-commit (default):  scans the staged diff\n     (`git diff --cached -U0`). Aborts the commit on any match.\n\n  2. CI / range scan (`--ci --base BASE --head HEAD`):\n     scans the diff from BASE..HEAD. Same matcher; intended for\n     .github/workflows/secret-scan.yml.\n\nReads the canonical pattern set from hooks/patterns.json\n(+ patterns.local.json if present). Per SPEC.md §10.2 + §10.4.\n\nSelf-check:\n  --self-check    Loads patterns.json and compiles every regex.\n\"\"\"\nfrom __future__ import annotations\n\nimport argparse\nimport subprocess\nimport sys\nfrom pathlib import Path\n\nsys.path.insert(0, str(Path(__file__).resolve().parent))\nimport _lib  # noqa: E402\n\n\ndef staged_diff() -> str:\n    \"\"\"Return the staged diff with 0 lines of context.\"\"\"\n    result = subprocess.run(\n        [\"git\", \"diff\", \"--cached\", \"-U0\", \"--no-color\"],\n        capture_output=True, text=True, check=False,\n    )\n    if result.returncode != 0:\n        _lib.log(\"git diff --cached failed:\", result.stderr.strip())\n        return \"\"\n    return result.stdout\n\n\ndef range_diff(base: str, head: str) -> str:\n    \"\"\"Return the diff between two revs, 0 lines of context.\"\"\"\n    result = subprocess.run(\n        [\"git\", \"diff\", \"-U0\", \"--no-color\", f\"{base}...{head}\"],\n        capture_output=True, text=True, check=False,\n    )\n    if result.returncode != 0:\n        _lib.log(f\"git diff {base}...{head} failed:\", result.stderr.strip())\n        return \"\"\n    return result.stdout\n\n\ndef added_lines(diff: str):\n    \"\"\"Yield (file, lineno, content) for every '+'-prefixed line in a\n    unified diff (skipping the '+++ b/<file>' filename markers).\"\"\"\n    cur_file = None\n    cur_lineno = 0\n    for line in diff.splitlines():\n        if line.startswith(\"+++ \"):\n            cur_file = line[6:].strip() if line.startswith(\"+++ b/\") else line[4:].strip()\n            cur_lineno = 0\n            continue\n        if line.startswith(\"@@\"):\n            # Hunk header: \"@@ -a,b +c,d @@\"\n            try:\n                plus = line.split(\"+\", 1)[1].split(\" \", 1)[0]\n                cur_lineno = int(plus.split(\",\", 1)[0]) - 1\n            except (IndexError, ValueError):\n                cur_lineno = 0\n            continue\n        if line.startswith(\"+\") and not line.startswith(\"+++\"):\n            cur_lineno += 1\n            yield (cur_file, cur_lineno, line[1:])\n        elif not line.startswith(\"-\") and not line.startswith(\"\\\\\"):\n            cur_lineno += 1\n\n\ndef main(argv: list[str]) -> int:\n    parser = argparse.ArgumentParser(add_help=True)\n    parser.add_argument(\"--self-check\", action=\"store_true\")\n    parser.add_argument(\"--ci\", action=\"store_true\",\n                        help=\"CI mode: scan a diff range instead of staged diff\")\n    parser.add_argument(\"--base\", default=None,\n                        help=\"(CI) base ref\")\n    parser.add_argument(\"--head\", default=\"HEAD\",\n                        help=\"(CI) head ref\")\n    args = parser.parse_args(argv)\n\n    if args.self_check:\n        return _lib.self_check_ok()\n\n    if args.ci:\n        if not args.base:\n            _lib.log(\"--ci requires --base\")\n            return 2\n        diff = range_diff(args.base, args.head)\n    else:\n        diff = staged_diff()\n\n    if not diff.strip():\n        return 0\n\n    patterns = _lib.load_patterns()\n    findings = []\n    for file, lineno, content in added_lines(diff):\n        for entry in patterns:\n            for m in entry[\"_compiled\"].finditer(content):\n                findings.append({\n                    \"file\": file,\n                    \"line\": lineno,\n                    \"pattern\": entry[\"id\"],\n                    \"severity\": entry.get(\"severity\", \"medium\"),\n                    \"snippet\": _lib.redact_snippet(content, m.start(), m.end(),\n                                                  entry.get(\"redaction\", \"[REDACTED]\")),\n                })\n\n    if not findings:\n        return 0\n\n    _lib.log(f\"{len(findings)} secret-like match(es) in the diff. Aborting commit.\")\n    for f in findings[:25]:\n        _lib.log(\n            f\"  {f['file']}:{f['line']}  pattern={f['pattern']} severity={f['severity']}\"\n        )\n        _lib.log(f\"      {f['snippet']}\")\n    if len(findings) > 25:\n        _lib.log(f\"  ... and {len(findings) - 25} more\")\n    _lib.log(\"\")\n    _lib.log(\"Per Common.md §1.P4 (no secrets in artifacts; non-overridable).\")\n    _lib.log(\"To fix: remove the secret-shaped content, OR add an exception to\")\n    _lib.log(\"hooks/patterns.local.json if this is a false positive (and please\")\n    _lib.log(\"file a `finding` issue so the false-positive class can be tracked).\")\n    return 1\n\n\nif __name__ == \"__main__\":\n    sys.exit(main(sys.argv[1:]))\n",
+      "depends_on": [
+        "hook/lib"
+      ]
     },
     {
       "schema": "https://ai-atoms.com/schemas/hook-v1.json",
@@ -79,7 +461,13 @@
         "ci",
         "claude-code"
       ],
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "platforms": [
+        "linux",
+        "macos",
+        "windows"
+      ],
+      "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run security-reminder' in settings.json — the ai binary discovers Python on each OS. Pure Python; writes to stderr. Works on all platforms."
     },
     {
       "schema": "https://ai-atoms.com/schemas/hook-v1.json",
@@ -105,7 +493,188 @@
         "governance",
         "claude-code"
       ],
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "platforms": [
+        "linux",
+        "macos",
+        "windows"
+      ],
+      "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run worktree-guard' in settings.json — the ai binary discovers Python on each OS. Inspects git command strings via Python. Path separators handled by pathlib. Works on all platforms.",
+      "script": "#!/usr/bin/env python3\n\"\"\"hooks/worktree-guard.py — enforce canonical worktree placement.\n\nImplements ~/.ai/Common.md §U17 (Worktree placement). Two canonical\nlocations only:\n\n  <repo>/.worktrees/<name>/   (single-repo, dies with the repo)\n  ~/.ai/worktrees/<name>/     (cross-repo, persistent)\n\nAd-hoc placement (`../<branch>/`, `/tmp/worktree-X/`, sibling\ndirectories of the repo, etc.) is forbidden.\n\nTriggers on `git worktree add <path> ...`. Other `git worktree`\nsubcommands (list, remove, prune) are passed through.\n\nOutput schema: emit a JSON `permissionDecision: deny` on stdout on\nviolation, silent (exit 0, empty stdout) otherwise.\n\nWire into ~/.claude/settings.json under hooks.PreToolUse.\n\nSelf-check:\n  --self-check\n\"\"\"\nfrom __future__ import annotations\n\nimport json\nimport os\nimport shlex\nimport subprocess\nimport sys\nfrom pathlib import Path\nfrom typing import List, Optional\n\nsys.path.insert(0, str(Path(__file__).resolve().parent))\nimport _lib  # noqa: E402\n\n# Flags on `git worktree add` that consume the next token as a value.\n# Anything else starting with `-` is treated as value-less.\nVALUE_FLAGS = {\"-b\", \"-B\", \"--reason\"}\n\n\ndef deny(reason: str) -> None:\n    \"\"\"Emit a permission-deny decision via JSON stdout and exit 0.\"\"\"\n    print(json.dumps({\n        \"hookSpecificOutput\": {\n            \"hookEventName\": \"PreToolUse\",\n            \"permissionDecision\": \"deny\",\n            \"permissionDecisionReason\": reason,\n        }\n    }))\n    sys.exit(0)\n\n\ndef ai_worktrees_root() -> Path:\n    \"\"\"Return the cross-repo canonical worktree root.\"\"\"\n    ai_root = os.environ.get(\"AI_ROOT\", str(Path.home() / \".ai\"))\n    return Path(ai_root) / \"worktrees\"\n\n\ndef resolve_repo_root(cwd: str) -> Optional[Path]:\n    \"\"\"Return the repo root for the given working directory, or None.\"\"\"\n    try:\n        out = subprocess.run(\n            [\"git\", \"-C\", cwd, \"rev-parse\", \"--show-toplevel\"],\n            capture_output=True, text=True, timeout=5,\n        )\n        if out.returncode == 0 and out.stdout.strip():\n            return Path(out.stdout.strip()).resolve()\n    except Exception:\n        pass\n    return None\n\n\ndef find_worktree_add_path(tokens: List[str]) -> Optional[str]:\n    \"\"\"Return the target path for `git worktree add <path>`.\n\n    Returns None if this is not a `git worktree add` invocation or if\n    no positional path argument can be located.\n    \"\"\"\n    # Expect: git worktree add [flags] <path> [<commit-ish>]\n    if len(tokens) < 3:\n        return None\n    if tokens[0] != \"git\" or tokens[1] != \"worktree\" or tokens[2] != \"add\":\n        return None\n\n    i = 3\n    while i < len(tokens):\n        t = tokens[i]\n        if t == \"--\":\n            i += 1\n            break\n        if not t.startswith(\"-\"):\n            # First non-flag positional after `add` is the path.\n            return t\n        if t in VALUE_FLAGS and i + 1 < len(tokens):\n            i += 2\n            continue\n        # Value-less flag (e.g. --detach, --lock, --quiet)\n        i += 1\n\n    if i < len(tokens):\n        return tokens[i]\n    return None\n\n\ndef is_canonical(raw_path: str, cwd: str) -> bool:\n    \"\"\"Return True if raw_path resolves to a canonical worktree location.\"\"\"\n    target = Path(raw_path)\n    if not target.is_absolute():\n        target = Path(cwd) / target\n    try:\n        resolved = target.resolve()\n    except Exception:\n        resolved = Path(os.path.normpath(str(target)))\n\n    # Check: ~/.ai/worktrees/<name>/ (or $AI_ROOT/worktrees/)\n    ai_root = ai_worktrees_root()\n    try:\n        resolved.relative_to(ai_root.resolve())\n        return True\n    except (ValueError, FileNotFoundError):\n        pass\n\n    # Check: <repo>/.worktrees/<name>/\n    repo_root = resolve_repo_root(cwd)\n    if repo_root is not None:\n        try:\n            resolved.relative_to(repo_root / \".worktrees\")\n            return True\n        except ValueError:\n            pass\n\n    return False\n\n\ndef main() -> int:\n    # --self-check mode\n    if \"--self-check\" in sys.argv:\n        return _lib.self_check_ok()\n\n    raw_input = sys.stdin.read()\n    if not raw_input.strip():\n        return 0\n\n    try:\n        event = json.loads(raw_input)\n    except json.JSONDecodeError:\n        return 0\n\n    hook_event = event.get(\"hookEventName\") or event.get(\"hook_event_name\") or \"\"\n    if hook_event != \"PreToolUse\":\n        return 0\n\n    tool_name = event.get(\"tool_name\") or event.get(\"toolName\") or \"\"\n    if tool_name not in (\"Bash\", \"shell\", \"execute\"):\n        return 0\n\n    tool_input = event.get(\"tool_input\") or event.get(\"toolInput\") or {}\n    if not isinstance(tool_input, dict):\n        return 0\n\n    command = tool_input.get(\"command\") or \"\"\n    if not isinstance(command, str) or \"worktree\" not in command:\n        return 0\n\n    # Use event cwd for repo-root resolution; fall back to process cwd.\n    cwd = event.get(\"cwd\") or os.getcwd()\n\n    # Parse the command using shlex for correctness with quoted paths.\n    try:\n        tokens = shlex.split(command, comments=False, posix=True)\n    except ValueError:\n        return 0\n\n    target_path = find_worktree_add_path(tokens)\n    if target_path is None:\n        # Not a `git worktree add` invocation — pass through.\n        return 0\n\n    if not is_canonical(target_path, cwd):\n        # Compute the shown (resolved) target for the deny message.\n        p = Path(target_path)\n        if not p.is_absolute():\n            p = Path(cwd) / p\n        try:\n            shown = p.resolve()\n        except Exception:\n            shown = p\n\n        repo_root = resolve_repo_root(cwd)\n        ai_root = ai_worktrees_root()\n        canonical_hints = []\n        if repo_root:\n            canonical_hints.append(f\"  {repo_root}/.worktrees/<name>/  — single-repo\")\n        canonical_hints.append(f\"  {ai_root}/<name>/  — cross-repo or persistent\")\n\n        hints = \"\\n\".join(canonical_hints)\n        deny(\n            f\"Worktree placement violates Common.md §U17.\\n\"\n            f\"  Target: {shown}\\n\"\n            \"Canonical roots:\\n\"\n            f\"{hints}\\n\"\n            \"Choose by lifecycle (§U17.1) and re-run.\\n\"\n            \"Preferred surface: `ai worktree add <name>` (with `--global` for cross-repo).\"\n        )\n\n    return 0\n\n\nif __name__ == \"__main__\":\n    sys.exit(main())\n",
+      "depends_on": [
+        "hook/lib"
+      ]
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/amendment-author",
+      "version": "1.0.0",
+      "name": "Amendment Author",
+      "description": "Guided workflow for authoring and publishing governance amendments against the four canonical files (Constitution, Common, Code, Writing). Walks the full lifecycle: identify the violation or gap, draft the amendment stub, review it against the governance model, apply it to the governance file, and optionally publish it as a versioned amendment atom. Triggers on: /amendment-author, 'author an amendment', 'create an amendment', 'propose a governance change'.",
+      "system_prompt_fragment": "Guide the user through authoring a governance amendment. Step 1 IDENTIFY: ask 'What rule was violated or what gap needs addressing?' Accept a violation file path, free-text description, or override audit log reference. Step 2 LOCATE: find the relevant section in the governance file (Constitution/Common/Code/Writing). Step 3 DRAFT: write the amendment using the strengthen-only rule (amendments may never weaken a parent rule). Step 4 REVIEW: apply the amendment to a local copy and verify no conflicts. Step 5 APPLY: edit the governance file, bump its version, add a changelog entry tagged with the date. Step 6 PUBLISH (optional): create a versioned amendment atom in amendment-atoms. End each step with Did/Next/Blocked/Artifact.",
+      "applicable_domains": [
+        "governance",
+        "meta",
+        "atoms"
+      ],
+      "invocation_contract": {
+        "inputs": [
+          {
+            "name": "violation_or_gap",
+            "type": "string",
+            "description": "Violation file path, audit log reference, or free-text description of what needs addressing.",
+            "required": true
+          },
+          {
+            "name": "target_file",
+            "type": "string",
+            "description": "Which governance file to amend (Constitution/Common/Code/Writing). Inferred if not provided.",
+            "required": false
+          }
+        ],
+        "outputs": [
+          {
+            "name": "amendment_text",
+            "type": "string",
+            "description": "The drafted amendment text ready to apply."
+          },
+          {
+            "name": "amended_file",
+            "type": "string",
+            "description": "Path to the updated governance file."
+          }
+        ],
+        "side_effects": [
+          "edits governance file at ~/.ai/",
+          "optionally creates amendment atom in amendment-atoms catalog"
+        ]
+      },
+      "authored_by": "convergent-systems-key",
+      "tags": [
+        "governance",
+        "amendment",
+        "constitution",
+        "meta",
+        "lifecycle"
+      ],
+      "lifecycle": "stable",
+      "invocation": [
+        "/amendment-author"
+      ]
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/atom-publisher",
+      "version": "1.0.0",
+      "name": "Atom Publisher",
+      "description": "Guided 5-step workflow for drafting, canonicalizing, verifying, and publishing a new atom to the appropriate *-atoms catalog. Supports skill, hook, persona, profile, plugin, amendment, and action atom types. Routes to the correct catalog based on type. Triggers on: /atom-publisher, 'publish an atom', 'create an atom', 'contribute an atom'.",
+      "system_prompt_fragment": "Guide the user through publishing an atom. Step 1 IDENTIFY: ask what type of atom (skill/hook/persona/profile/amendment/plugin/action) and which catalog it belongs to. Step 2 DRAFT: produce the JSON payload conforming to the catalog's atom-v1.json schema. Required fields: schema, type, id, version, name, description. Step 3 CANONICALIZE: run the catalog's build-exports.py to validate the atom against its schema. Fix any errors. Step 4 VERIFY: confirm the atom is reachable at its canonical URL after building. Step 5 PR: open a PR against the catalog repo with the new atom file. End each step with Did/Next/Blocked/Artifact.",
+      "applicable_domains": [
+        "atoms",
+        "meta",
+        "publishing"
+      ],
+      "invocation_contract": {
+        "inputs": [
+          {
+            "name": "atom_type",
+            "type": "string",
+            "description": "The class of atom to publish (skill, hook, persona, profile, amendment, etc.).",
+            "required": true
+          },
+          {
+            "name": "atom_data",
+            "type": "object",
+            "description": "The atom payload fields. Can be partial — the skill will prompt for missing required fields.",
+            "required": false
+          }
+        ],
+        "outputs": [
+          {
+            "name": "atom_json",
+            "type": "string",
+            "description": "The validated atom JSON ready to commit."
+          },
+          {
+            "name": "pr_url",
+            "type": "string",
+            "description": "URL of the opened PR against the catalog repo."
+          }
+        ],
+        "side_effects": [
+          "creates atom JSON file in catalog repo",
+          "opens PR against the catalog's GitHub repo"
+        ]
+      },
+      "authored_by": "convergent-systems-key",
+      "tags": [
+        "atoms",
+        "publishing",
+        "meta",
+        "workflow",
+        "catalog"
+      ],
+      "lifecycle": "stable",
+      "invocation": [
+        "/atom-publisher",
+        "/atom-publisher skill",
+        "/atom-publisher hook",
+        "/atom-publisher persona"
+      ]
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/atom-state",
+      "version": "1.0.0",
+      "name": "Atom Fleet Status",
+      "description": "Full fleet snapshot of all *-atoms.com catalog sites — deploy health, DNS, HTTPS reachability, atom_types per catalog with item counts, schema compliance, /ai/index.json, Terraform backend, sidenav, brand asset uniformity, builder script, federation field, and registry presence. Use when the user asks about the state of the atoms fleet, wants to verify deployments, asks for a fleet snapshot or schema compliance report, or before starting any cross-fleet work.",
+      "system_prompt_fragment": "Run the atom fleet status check. For each *-atoms.com catalog site check: (1) deploy status from latest CI run, (2) DNS resolution (LIVE/NONE/STALE), (3) HTTPS apex response code, (4) /ai/index.json reachability, (5) schema spec_version compliance, (6) Terraform vs Wrangler backend, (7) deploy-after-merge gate, (8) open PR count, (9) Classes/Atoms counts. Report as a table grouped by catalog. Flag: Apex 000 but green deploy (DNS gap), /ai/ unreachable on live site, schema below v1.1.0, wrangler.toml present without Terraform, federation not convergent-systems.co.",
+      "applicable_domains": [
+        "atoms",
+        "devops",
+        "fleet"
+      ],
+      "invocation_contract": {
+        "inputs": [
+          {
+            "name": "catalog",
+            "type": "string",
+            "description": "Optional: check a single catalog by name (e.g. brand-atoms). Omit for full fleet.",
+            "required": false
+          }
+        ],
+        "outputs": [
+          {
+            "name": "fleet_table",
+            "type": "string",
+            "description": "ASCII table showing status of each catalog across all checks."
+          },
+          {
+            "name": "needs_attention",
+            "type": "array",
+            "description": "List of catalogs with actionable issues."
+          }
+        ],
+        "side_effects": []
+      },
+      "authored_by": "convergent-systems-key",
+      "tags": [
+        "atoms",
+        "fleet",
+        "status",
+        "deploy",
+        "dns",
+        "compliance"
+      ],
+      "lifecycle": "stable",
+      "invocation": [
+        "/atom-status",
+        "/atom-status tree",
+        "/atom-status tree <catalog-name>"
+      ]
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -149,7 +718,96 @@
         "continuity",
         "session"
       ],
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "invocation": [
+        "/checkpoint",
+        "/checkpoint auto",
+        "/checkpoint show",
+        "/checkpoint resume",
+        "/checkpoint resume <UTC>",
+        "/checkpoint list"
+      ]
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/debug",
+      "version": "1.0.0",
+      "name": "Debug",
+      "description": "Five-phase systematic debugging (reproduce → isolate → root cause → fix-with-regression-test → verify). Use when the user reports a bug, hits an error or failing test, or wants methodical investigation. Invocable as /debug, /debug \"<symptom>\", /debug --error <log>, /debug --test <test-name>.",
+      "system_prompt_fragment": "Debug using five phases — do not skip or reorder. Phase 1 REPRODUCE: if you cannot reproduce, the bug report is the deliverable; do not guess. Phase 2 ISOLATE: narrow to the smallest surface. Phase 3 ROOT CAUSE: name the root cause before proposing any fix. Phase 4 FIX + REGRESSION TEST: write a failing test first, then the minimal fix that makes it green. Phase 5 VERIFY: run the suite and cite the output. After fixing: 'Why was this not caught?' — name the gap. Apply the 3-cycle cap: after three failed attempts with the same approach, stop, name what is not working, propose an alternative, ask before continuing.",
+      "applicable_domains": [
+        "code",
+        "debug",
+        "testing"
+      ],
+      "invocation_contract": {
+        "inputs": [
+          {
+            "name": "symptom",
+            "type": "string",
+            "description": "Description of the bug, error message, or unexpected behavior.",
+            "required": true
+          },
+          {
+            "name": "error_log",
+            "type": "string",
+            "description": "Error log or stack trace (--error mode).",
+            "required": false
+          },
+          {
+            "name": "test_name",
+            "type": "string",
+            "description": "Name of the failing test (--test mode).",
+            "required": false
+          }
+        ],
+        "outputs": [
+          {
+            "name": "reproduction",
+            "type": "string",
+            "description": "Confirmed minimal reproduction case."
+          },
+          {
+            "name": "root_cause",
+            "type": "string",
+            "description": "Named root cause with evidence."
+          },
+          {
+            "name": "fix",
+            "type": "string",
+            "description": "Minimal fix addressing the root cause."
+          },
+          {
+            "name": "regression_test",
+            "type": "string",
+            "description": "Test that would have caught this bug."
+          },
+          {
+            "name": "gap_analysis",
+            "type": "string",
+            "description": "Why this was not caught and what closes the gap."
+          }
+        ],
+        "side_effects": [
+          "may write files (regression test and fix)"
+        ]
+      },
+      "authored_by": "convergent-systems-key",
+      "tags": [
+        "debug",
+        "tdd",
+        "root-cause",
+        "regression",
+        "five-phase"
+      ],
+      "lifecycle": "stable",
+      "invocation": [
+        "/debug",
+        "/debug \"<symptom>\"",
+        "/debug --error <log-or-file>",
+        "/debug --test <test-name>"
+      ]
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -172,6 +830,484 @@
         "dispatch"
       ],
       "lifecycle": "stable"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/hook-author",
+      "version": "1.0.0",
+      "name": "Hook Author",
+      "description": "Guided workflow for authoring and installing governance hooks to the ~/.ai/hooks/ enforcement plane. Covers the full lifecycle: describe the behavior → write the script → validate → install → test. Supported events: PreToolUse, PostToolUse, Stop, SubagentStop, PreCompact, UserPromptSubmit. Triggers on: /hook-author, 'author a hook', 'create a hook', 'write a governance hook'.",
+      "system_prompt_fragment": "Guide the user through authoring a governance hook. Step 1 DESCRIBE: ask what behavior the hook should enforce. Which event (PreToolUse/PostToolUse/Stop/etc.)? Blocking or non-blocking? What trigger pattern? Step 2 WRITE: implement the hook in Python following the _lib.py conventions in ~/.ai/hooks/. For blocking hooks: emit JSON {hookSpecificOutput: {permissionDecision: 'deny', permissionDecisionReason: '...'}}. For non-blocking: emit modified payload or nothing. Always exit 0. Step 3 VALIDATE: run --self-check to verify the hook loads without errors. Step 4 INSTALL: add to ~/.claude/settings.json hooks array. Step 5 TEST: trigger the hook manually and verify it behaves correctly. Also publish as a hook atom to ai-atoms. End each step with Did/Next/Blocked/Artifact.",
+      "applicable_domains": [
+        "governance",
+        "meta",
+        "hooks",
+        "claude-code"
+      ],
+      "invocation_contract": {
+        "inputs": [
+          {
+            "name": "behavior_description",
+            "type": "string",
+            "description": "What the hook should enforce or observe.",
+            "required": true
+          },
+          {
+            "name": "event",
+            "type": "string",
+            "description": "The Claude Code event to hook into (PreToolUse, PostToolUse, Stop, etc.).",
+            "required": false
+          },
+          {
+            "name": "blocking",
+            "type": "boolean",
+            "description": "Whether the hook should block execution on violation.",
+            "required": false
+          }
+        ],
+        "outputs": [
+          {
+            "name": "hook_script",
+            "type": "string",
+            "description": "The Python hook script ready to install at ~/.ai/hooks/."
+          },
+          {
+            "name": "settings_entry",
+            "type": "object",
+            "description": "The settings.json hooks entry to wire the hook."
+          }
+        ],
+        "side_effects": [
+          "writes Python script to ~/.ai/hooks/",
+          "edits ~/.claude/settings.json to wire the hook"
+        ]
+      },
+      "authored_by": "convergent-systems-key",
+      "tags": [
+        "governance",
+        "hooks",
+        "meta",
+        "lifecycle",
+        "claude-code"
+      ],
+      "lifecycle": "stable",
+      "invocation": [
+        "/hook-author"
+      ]
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/make-atoms",
+      "version": "1.0.0",
+      "name": "Make Atoms",
+      "description": "Discover, fetch, or scaffold skill atoms via the atoms-discover skill. Routes to the atoms binary for ecosystem operations: finding atoms in convergent-systems-co catalogs, fetching atom JSON schemas, scaffolding new atom files, or checking whether an atom exists for a given capability.",
+      "system_prompt_fragment": "Delegate to the atoms-discover skill for all atom ecosystem operations. For discovery: fetch the catalog from the relevant *-atoms.com/ai/index.json and search by type or name. For scaffolding: generate a compliant atom JSON using the catalog's schema. For checking: look up the atom at its canonical URL. Use the atoms binary (ai atoms ...) when available. Never confuse atom management with the ai CLI or ~/.ai/ directory.",
+      "invocation": [
+        "/make atoms",
+        "/make atoms discover",
+        "/make atoms fetch <slug>",
+        "/make atoms scaffold <type>"
+      ],
+      "applicable_domains": [
+        "atoms",
+        "meta"
+      ],
+      "invocation_contract": {
+        "inputs": [
+          {
+            "name": "subcommand",
+            "type": "string",
+            "description": "discover | fetch | scaffold",
+            "required": false
+          },
+          {
+            "name": "target",
+            "type": "string",
+            "description": "Atom slug or type for fetch/scaffold.",
+            "required": false
+          }
+        ],
+        "outputs": [
+          {
+            "name": "result",
+            "type": "string",
+            "description": "Atom data, catalog listing, or scaffolded JSON."
+          }
+        ],
+        "side_effects": [
+          "may write new atom JSON file when scaffolding"
+        ]
+      },
+      "tags": [
+        "atoms",
+        "meta",
+        "discovery",
+        "scaffolding"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/make-build",
+      "version": "1.0.0",
+      "name": "Make Build",
+      "description": "Commit staged changes, push the current branch, open a pull request, and merge after CI passes. Never pushes to main directly. Never squash-merges on non-release branches.",
+      "system_prompt_fragment": "Run the build pipeline: (1) Stage and commit any uncommitted changes using Conventional Commits. (2) Push the branch to origin. (3) Open a GitHub PR with body generated from the branch commit log including 'Closes #<n>' links for any issues referenced. (4) Wait for CI to pass. (5) Merge with a merge commit — no squash on non-release branches. Report: PR URL, CI status, merge SHA.",
+      "invocation": [
+        "/make build"
+      ],
+      "applicable_domains": [
+        "code",
+        "git",
+        "delivery"
+      ],
+      "invocation_contract": {
+        "inputs": [],
+        "outputs": [
+          {
+            "name": "pr_url",
+            "type": "string",
+            "description": "URL of the opened PR."
+          },
+          {
+            "name": "merge_sha",
+            "type": "string",
+            "description": "SHA of the merge commit after CI passes."
+          }
+        ],
+        "side_effects": [
+          "commits to current branch",
+          "pushes to origin",
+          "opens PR",
+          "merges PR after CI"
+        ]
+      },
+      "tags": [
+        "git",
+        "pr",
+        "ci",
+        "merge",
+        "delivery"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/make-doctor",
+      "version": "1.0.0",
+      "name": "Make Doctor",
+      "description": "Health check for the AI governance stack and per-repo CI. Runs 'ai doctor', checks hook permissions, verifies CLAUDE.md constitution includes, confirms ~/.ai/memory/ and audit/ exist, and reports CI status on open PRs. Read-only unless --fix is explicitly requested.",
+      "system_prompt_fragment": "Run the doctor pipeline: (1) Run 'ai doctor' and surface warnings or failures. (2) Verify hook files in ~/.ai/hooks/ are executable (0755). (3) Check ~/.claude/CLAUDE.md contains @~/.ai/Constitution.md (not stale four-file includes). (4) Verify ~/.ai/memory/ and ~/.ai/audit/ directories exist. (5) Check CI status on all open PRs in the current repo. Report each check as PASS/WARN/FAIL with remediation steps. Read-only except when --fix is explicitly requested.",
+      "invocation": [
+        "/make doctor",
+        "/make doctor --fix"
+      ],
+      "applicable_domains": [
+        "governance",
+        "code",
+        "devops"
+      ],
+      "invocation_contract": {
+        "inputs": [
+          {
+            "name": "fix",
+            "type": "boolean",
+            "description": "If true, auto-remediate WARN findings where safe to do so.",
+            "required": false
+          }
+        ],
+        "outputs": [
+          {
+            "name": "health_report",
+            "type": "string",
+            "description": "Per-check PASS/WARN/FAIL report with remediation steps."
+          }
+        ],
+        "side_effects": [
+          "may fix hook permissions and CLAUDE.md includes when --fix is passed"
+        ]
+      },
+      "tags": [
+        "governance",
+        "health",
+        "hooks",
+        "audit",
+        "ci"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/make-review",
+      "version": "1.0.0",
+      "name": "Make Review",
+      "description": "Adversarial code reviewer sweep on the current branch diff against main. Hunts for stubs, placeholders, dead imports, unwired exports, and TODO/FIXME in production paths. Returns HIGH/MEDIUM/LOW findings with file:line citations. HIGH blocks merge.",
+      "system_prompt_fragment": "Run the code reviewer sweep on the current branch diff (git diff main...HEAD --name-only). Hunt for: stubs (panic/not-implemented/empty bodies) — HIGH; placeholder values (REPLACE_ME, <YOUR_VALUE>) — HIGH; TODO/FIXME in non-test production files — MEDIUM; unwired exports (zero non-test callers) — MEDIUM; dead imports — LOW; commented-out code blocks — LOW. Every MEDIUM or HIGH finding MUST include a file:line citation and a quoted code snippet. Return verdict: PASS | WARN | BLOCK.",
+      "invocation": [
+        "/make review"
+      ],
+      "applicable_domains": [
+        "code",
+        "review"
+      ],
+      "invocation_contract": {
+        "inputs": [],
+        "outputs": [
+          {
+            "name": "findings",
+            "type": "array",
+            "description": "List of severity-tagged findings with file:line citations."
+          },
+          {
+            "name": "verdict",
+            "type": "string",
+            "description": "PASS | WARN | BLOCK"
+          }
+        ],
+        "side_effects": []
+      },
+      "tags": [
+        "review",
+        "code-quality",
+        "stubs",
+        "adversarial"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/make-status",
+      "version": "1.0.0",
+      "name": "Make Status",
+      "description": "Sprint status snapshot: open PRs and their CI state, stale branches, sync gap between local and origin, and any uncommitted work. Read-only — does not modify any files.",
+      "system_prompt_fragment": "Report sprint status across the repo set. (1) List all open PRs with CI status (green/red/pending) and draft state. (2) List local branches ahead of main with commit counts. (3) Show the sync gap — commits on origin/main not yet in local main. (4) Show uncommitted changes and stale worktrees. Format as a status board: Done / In-flight / Blocked / Next-up. Read-only.",
+      "invocation": [
+        "/make status"
+      ],
+      "applicable_domains": [
+        "code",
+        "git",
+        "project"
+      ],
+      "invocation_contract": {
+        "inputs": [],
+        "outputs": [
+          {
+            "name": "status_board",
+            "type": "string",
+            "description": "ASCII status board showing PRs, branches, and uncommitted work."
+          }
+        ],
+        "side_effects": []
+      },
+      "tags": [
+        "status",
+        "sprint",
+        "git",
+        "ci",
+        "read-only"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/make-sync",
+      "version": "1.0.0",
+      "name": "Make Sync",
+      "description": "Pull all repos in the workspace (primary + submodules) to their default branch heads. Fast-forward only — never rebases, never force-pulls, never touches non-default branches. Reports any repos where fast-forward failed due to divergence.",
+      "system_prompt_fragment": "Sync all repos to their remote default branch. (1) Discover primary repo and all git submodules. (2) For each repo: git fetch --prune, then pull the default branch (main/master) with --ff-only. (3) Report any repos where --ff-only failed (diverged) without force-pulling. (4) Update submodule pointers in the parent repo if any changed. Never rebase, never force-pull, never touch non-default branches.",
+      "invocation": [
+        "/make sync"
+      ],
+      "applicable_domains": [
+        "code",
+        "git"
+      ],
+      "invocation_contract": {
+        "inputs": [],
+        "outputs": [
+          {
+            "name": "sync_report",
+            "type": "string",
+            "description": "List of repos synced successfully and any that diverged."
+          }
+        ],
+        "side_effects": [
+          "pulls default branch on all repos",
+          "updates submodule pointers"
+        ]
+      },
+      "tags": [
+        "git",
+        "sync",
+        "submodules",
+        "pull"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/make",
+      "version": "1.0.0",
+      "name": "Make — Unified Dispatcher",
+      "description": "Dispatcher for the make skill suite. Reads the subcommand and invokes the matching skill immediately. Subcommands: work/sprint (PM + delivery team), clean (purge merged branches), build (commit+push+PR+merge), test (run test suite), status (sprint snapshot), sync (pull all repos), review (code reviewer sweep), doctor (governance health check), atoms (atom ecosystem ops).",
+      "system_prompt_fragment": "Read the first word after /make and dispatch to the matching skill immediately. Do not summarize, plan, or ask clarifying questions — just dispatch.\n\nDispatch table:\n  work / sprint → make-work\n  clean         → make-clean\n  build         → make-build\n  test          → make-test\n  status        → make-status\n  sync          → make-sync\n  review        → make-review\n  doctor        → make-doctor\n  atoms         → make-atoms\n\nIf the subcommand is unknown or missing, print the usage table and stop.",
+      "invocation": [
+        "/make work",
+        "/make sprint",
+        "/make clean",
+        "/make build",
+        "/make test",
+        "/make status",
+        "/make sync",
+        "/make review",
+        "/make doctor",
+        "/make atoms"
+      ],
+      "applicable_domains": [
+        "code",
+        "delivery",
+        "git",
+        "project"
+      ],
+      "tags": [
+        "make",
+        "dispatcher",
+        "delivery",
+        "workflow"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/memory-curator",
+      "version": "1.0.0",
+      "name": "Memory Curator",
+      "description": "Guided workflow for reviewing, curating, and archiving AI memory entries at ~/.ai/memory/. Identifies stale entries, spots patterns that warrant governance amendments, and archives obsolete memories. Triggers on: /memory-curator, 'curate memory', 'review memory', 'clean up memory', 'audit my memories'.",
+      "system_prompt_fragment": "Curate the memory store at ~/.ai/memory/. Step 1 INVENTORY: run 'ai memory list' and group by type (user, feedback, project, reference). Report total counts. Step 2 REVIEW: for each memory, check: is it still accurate? Is it still relevant? Is it duplicated? Does it contain secrets (violates Common.md §4)? Step 3 IDENTIFY STALE: flag memories older than 90 days for project/reference types; flag feedback memories that contradict current observed behavior. Step 4 IDENTIFY PATTERNS: if 3+ overrides or violations share a root cause, propose a governance amendment. Step 5 CURATE: archive stale entries (move to ~/.ai/memory/archive/), remove duplicates, add missing entries. End each step with Did/Next/Blocked/Artifact.",
+      "applicable_domains": [
+        "meta",
+        "governance",
+        "memory"
+      ],
+      "invocation_contract": {
+        "inputs": [
+          {
+            "name": "filter_type",
+            "type": "string",
+            "description": "Optional: filter to a specific memory type (user/feedback/project/reference).",
+            "required": false
+          }
+        ],
+        "outputs": [
+          {
+            "name": "inventory",
+            "type": "string",
+            "description": "Summary of memory entries by type with counts."
+          },
+          {
+            "name": "stale_list",
+            "type": "array",
+            "description": "Memory entries flagged for archiving."
+          },
+          {
+            "name": "amendment_proposals",
+            "type": "array",
+            "description": "Governance amendments warranted by patterns found."
+          }
+        ],
+        "side_effects": [
+          "may archive memory files to ~/.ai/memory/archive/",
+          "may remove duplicate memory files"
+        ]
+      },
+      "authored_by": "convergent-systems-key",
+      "tags": [
+        "memory",
+        "governance",
+        "meta",
+        "curation",
+        "maintenance"
+      ],
+      "lifecycle": "stable",
+      "invocation": [
+        "/memory-curator"
+      ]
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/review-panel",
+      "version": "1.0.0",
+      "name": "Review Panel",
+      "description": "Guided multi-panel review workflow. Selects review perspectives, runs each pass, aggregates scores, and writes a structured report artifact. Use when you need more than a single-pass review: governance files, PRs, prose drafts, or any artifact that benefits from multiple independent evaluation perspectives (architecture, correctness, documentation quality, adversarial edge cases, security).",
+      "system_prompt_fragment": "Run a multi-panel review. Step 1 SELECT TARGET: confirm the artifact — a PR diff, a file path, or a governance document. Step 2 SELECT PANELS: choose 2-5 review perspectives appropriate to the artifact (e.g. architecture, security, correctness, documentation, adversarial). Step 3 RUN PASSES: for each panel, run an independent review pass and collect findings. Each finding must cite file:line evidence. Step 4 AGGREGATE: compile findings across panels, remove duplicates, rank by severity (HIGH blocks, MEDIUM warns, LOW informs). Step 5 REPORT: write a structured report artifact with panel summaries, consolidated findings table, and verdict (PASS/WARN/BLOCK).",
+      "applicable_domains": [
+        "code",
+        "governance",
+        "review"
+      ],
+      "invocation_contract": {
+        "inputs": [
+          {
+            "name": "target",
+            "type": "string",
+            "description": "PR number, file path, or governance document to review.",
+            "required": true
+          },
+          {
+            "name": "panels",
+            "type": "array",
+            "description": "Optional list of review perspectives. Defaults to [architecture, correctness, security, documentation].",
+            "required": false
+          }
+        ],
+        "outputs": [
+          {
+            "name": "report",
+            "type": "string",
+            "description": "Structured review report with panel summaries and consolidated findings."
+          },
+          {
+            "name": "verdict",
+            "type": "string",
+            "description": "PASS | WARN | BLOCK"
+          }
+        ],
+        "side_effects": [
+          "writes review report artifact to .artifacts/reviews/"
+        ]
+      },
+      "authored_by": "convergent-systems-key",
+      "tags": [
+        "review",
+        "multi-panel",
+        "governance",
+        "quality",
+        "adversarial"
+      ],
+      "lifecycle": "stable",
+      "invocation": [
+        "/review-panel",
+        "/review-panel --pr=<number>",
+        "/review-panel <file-path>"
+      ]
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",

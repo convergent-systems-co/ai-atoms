@@ -1,0 +1,47 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/make-build",
+  "version": "1.0.0",
+  "name": "Make Build",
+  "description": "Commit staged changes, push the current branch, open a pull request, and merge after CI passes. Never pushes to main directly. Never squash-merges on non-release branches.",
+  "system_prompt_fragment": "Run the build pipeline: (1) Stage and commit any uncommitted changes using Conventional Commits. (2) Push the branch to origin. (3) Open a GitHub PR with body generated from the branch commit log including 'Closes #<n>' links for any issues referenced. (4) Wait for CI to pass. (5) Merge with a merge commit — no squash on non-release branches. Report: PR URL, CI status, merge SHA.",
+  "invocation": [
+    "/make build"
+  ],
+  "applicable_domains": [
+    "code",
+    "git",
+    "delivery"
+  ],
+  "invocation_contract": {
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "pr_url",
+        "type": "string",
+        "description": "URL of the opened PR."
+      },
+      {
+        "name": "merge_sha",
+        "type": "string",
+        "description": "SHA of the merge commit after CI passes."
+      }
+    ],
+    "side_effects": [
+      "commits to current branch",
+      "pushes to origin",
+      "opens PR",
+      "merges PR after CI"
+    ]
+  },
+  "tags": [
+    "git",
+    "pr",
+    "ci",
+    "merge",
+    "delivery"
+  ],
+  "authored_by": "convergent-systems-key",
+  "lifecycle": "stable"
+}
