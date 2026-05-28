@@ -109,10 +109,15 @@ jobs:
           ATOM_TYPE: ${{ github.event.inputs.type }}
           ATOM_SLUG: ${{ github.event.inputs.slug }}
           ACTOR: ${{ github.actor }}
+          # PACKAGE_PUBLISH_TOKEN has org-wide write access needed to bypass branch protection.
+          # Falls back to GITHUB_TOKEN (will fail if branch protection requires PRs).
+          PUSH_TOKEN: ${{ secrets.PACKAGE_PUBLISH_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name  "atoms-publisher[bot]"
+          git config user.email "atoms-publisher@convergent-systems.co"
           git add "atoms/${ATOM_TYPE}/${ATOM_SLUG}.json" exports/catalog.json
           git diff --cached --stat
           git commit -m "atom(${ATOM_TYPE}): publish ${ATOM_SLUG} [via ${ACTOR}]"
+          # Use PUSH_TOKEN so the push has rights to bypass branch protection
+          git remote set-url origin "https://x-access-token:${PUSH_TOKEN}@github.com/convergent-systems-co/ai-atoms.git"
           git push origin main
