@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-atoms.com/schemas/skill-v1.json",
+  "title": "ai-atoms skill v1",
+  "description": "A skill atom — a bounded, invocable unit of AI capability with a declared system-prompt fragment, inputs, outputs, and side effects.",
+  "type": "object",
+  "required": ["schema", "type", "id", "version", "name", "description", "system_prompt_fragment", "applicable_domains"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "https://ai-atoms.com/schemas/skill-v1.json"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["skill"]
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^skill/[a-z0-9][a-z0-9-]*$",
+      "description": "Namespaced identifier in the form skill/<slug>."
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[A-Za-z0-9.-]+)?$",
+      "description": "Semantic version of this skill atom."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80,
+      "description": "Human-readable display name."
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1000,
+      "description": "What this skill does, when to invoke it, and what it prevents."
+    },
+    "system_prompt_fragment": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The prompt fragment injected into an AI agent's system context when this skill is loaded. Must be self-contained and actionable."
+    },
+    "applicable_domains": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1,
+      "uniqueItems": true,
+      "description": "Domains where this skill applies (e.g. code, design, planning, debug, agents)."
+    },
+    "invocation_contract": {
+      "type": "object",
+      "description": "Declared inputs, outputs, and side effects for this skill.",
+      "additionalProperties": false,
+      "properties": {
+        "inputs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "type"],
+            "additionalProperties": false,
+            "properties": {
+              "name": { "type": "string" },
+              "type": { "type": "string" },
+              "required": { "type": "boolean" },
+              "description": { "type": "string" }
+            }
+          }
+        },
+        "outputs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "type"],
+            "additionalProperties": false,
+            "properties": {
+              "name": { "type": "string" },
+              "type": { "type": "string" },
+              "description": { "type": "string" }
+            }
+          }
+        },
+        "side_effects": {
+          "type": "array",
+          "items": { "type": "string" },
+          "uniqueItems": true
+        }
+      }
+    },
+    "authored_by": {
+      "type": "string",
+      "description": "Key atom ID or author identifier."
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1, "maxLength": 40 },
+      "uniqueItems": true
+    },
+    "lifecycle": {
+      "type": "string",
+      "enum": ["draft", "stable", "deprecated"],
+      "description": "Lifecycle stage of this skill atom."
+    }
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-atoms.com/schemas/hook-v1.json",
+  "title": "ai-atoms hook v1",
+  "description": "A hook atom — an event-driven runtime behavior wired into AI tool infrastructure (Claude Code, Copilot CLI, etc.).",
+  "type": "object",
+  "required": ["schema", "type", "id", "version", "name", "description", "event", "language", "trigger"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "https://ai-atoms.com/schemas/hook-v1.json"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["hook"]
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^hook/[a-z0-9][a-z0-9-]*$",
+      "description": "Namespaced identifier in the form hook/<slug>."
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[A-Za-z0-9.-]+)?$",
+      "description": "Semantic version of this hook atom."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80,
+      "description": "Human-readable display name."
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1000,
+      "description": "What this hook does, what event it responds to, and what it enforces or emits."
+    },
+    "event": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The AI tool event this hook responds to (e.g. PreToolUse, PostToolUse, SessionStart, Stop, UserPromptSubmit, SessionEnd, SubagentStop, PreCompact)."
+    },
+    "language": {
+      "type": "string",
+      "enum": ["python", "bash", "javascript", "typescript"],
+      "description": "Implementation language of the hook script."
+    },
+    "trigger": {
+      "type": "object",
+      "required": ["type"],
+      "additionalProperties": false,
+      "description": "Condition under which this hook fires.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["tool-name", "file-pattern", "always", "tool-category"],
+          "description": "How the hook matches: by tool name, file path pattern, always, or tool category."
+        },
+        "pattern": {
+          "type": "string",
+          "description": "Glob or regex pattern used with tool-name and file-pattern trigger types."
+        }
+      }
+    },
+    "script_path": {
+      "type": "string",
+      "description": "Relative path to the hook implementation script within this repository."
+    },
+    "blocking": {
+      "type": "boolean",
+      "description": "If true, the hook can abort the triggering operation. If false, it is advisory only."
+    },
+    "side_effects": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true,
+      "description": "Observable effects of this hook (e.g. writes to audit log, emits warning to stderr)."
+    },
+    "authored_by": {
+      "type": "string",
+      "description": "Key atom ID or author identifier."
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1, "maxLength": 40 },
+      "uniqueItems": true
+    },
+    "lifecycle": {
+      "type": "string",
+      "enum": ["draft", "stable", "deprecated"],
+      "description": "Lifecycle stage of this hook atom."
+    }
+  }
+}

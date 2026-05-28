@@ -1,0 +1,41 @@
+name: Add Pages Custom Domain
+
+on:
+  workflow_dispatch:
+
+jobs:
+  add-domain:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add custom domain to CF Pages
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          PROJECT="ai-atoms"
+          DOMAIN="ai-atoms.com"
+
+          echo "Adding $DOMAIN to $PROJECT..."
+
+          RESULT=$(curl -s -X POST \
+            "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/pages/projects/$PROJECT/domains" \
+            -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "{\"name\": \"$DOMAIN\"}")
+
+          echo "$RESULT" | python3 -c "
+          import json,sys
+          d=json.loads(sys.stdin.read())
+          if d.get('success'):
+              r=d['result']
+              print(f'Added: {r[\"name\"]} status={r[\"status\"]}')
+          else:
+              errs=d.get('errors',[{}])
+              code=errs[0].get('code','?')
+              msg=errs[0].get('message','?')
+              if code == 8000018:
+                  print(f'Already added (OK): {msg}')
+              else:
+                  print(f'Error {code}: {msg}')
+                  exit(1)
+          "

@@ -1,0 +1,21 @@
+{
+  "schema": "https://ai-atoms.com/schemas/hook-v1.json",
+  "type": "hook",
+  "id": "hook/security-reminder",
+  "version": "1.0.0",
+  "name": "GitHub Actions Security Reminder",
+  "description": "Fires when Claude Code edits a GitHub Actions workflow file. Non-blocking reminder about command injection risks, untrusted input in run: steps, and the SAFE pattern (env: with proper quoting vs direct ${{ expression }} interpolation).",
+  "event": "PreToolUse",
+  "language": "python",
+  "trigger": {
+    "type": "file-pattern",
+    "pattern": ".github/workflows/*.yml"
+  },
+  "blocking": false,
+  "side_effects": [
+    "emits security guidance to stderr"
+  ],
+  "authored_by": "convergent-systems-key",
+  "tags": ["security", "github-actions", "ci", "claude-code"],
+  "lifecycle": "stable"
+}

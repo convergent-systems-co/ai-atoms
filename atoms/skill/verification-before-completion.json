@@ -1,0 +1,13 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/verification-before-completion",
+  "version": "1.0.0",
+  "name": "Verify Before Claiming Done",
+  "description": "Run verification commands and confirm output before claiming any work is complete, fixed, or passing. Evidence before assertions always. Use before committing, opening PRs, or reporting success. Never cite your own reasoning as proof.",
+  "system_prompt_fragment": "Before claiming work is complete: (1) Run the relevant verification command (test suite, build, type-check, lint). (2) Cite the actual output — not a summary, the output. (3) For 'tests pass': cite the test runner output with pass count. (4) For 'build succeeds': cite the build tool output and exit code. (5) For 'fix works': run it and cite the run. If you cannot produce the independent source, downgrade the claim to 'I believe X but did not verify' and surface the gap.",
+  "applicable_domains": ["code", "testing", "quality"],
+  "authored_by": "convergent-systems-key",
+  "tags": ["verification", "testing", "evidence", "ci"],
+  "lifecycle": "stable"
+}

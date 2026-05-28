@@ -1,0 +1,22 @@
+{
+  "schema": "https://ai-atoms.com/schemas/hook-v1.json",
+  "type": "hook",
+  "id": "hook/branch-guard",
+  "version": "1.0.0",
+  "name": "Branch Guard",
+  "description": "Prevents direct mutations to protected branches (main, release/*). Intercepts git commit, merge, rebase, cherry-pick, revert, am, pull, and push operations when the current HEAD is a protected branch. Requires explicit approval per Common.md §2.2.",
+  "event": "PreToolUse",
+  "language": "python",
+  "trigger": {
+    "type": "tool-name",
+    "pattern": "Bash"
+  },
+  "blocking": true,
+  "side_effects": [
+    "blocks tool call with explanation",
+    "emits protected-branch warning"
+  ],
+  "authored_by": "convergent-systems-key",
+  "tags": ["git", "governance", "branch-protection", "claude-code"],
+  "lifecycle": "stable"
+}
