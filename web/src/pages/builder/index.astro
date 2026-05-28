@@ -1,11 +1,29 @@
 ---
+import catalog from "../../../public/exports/catalog.json";
+
+// Derive the distinct atom classes from the live catalog
+const allTypes: string[] = [];
+for (const atom of (catalog.atoms as any[])) {
+  if (atom.type && !allTypes.includes(atom.type)) allTypes.push(atom.type);
+}
+allTypes.sort();
+
+const classDescriptions: Record<string, string> = {
+  skill: "A bounded, invocable unit of AI capability — bundles a system prompt fragment, invocation commands, and an input/output contract.",
+  hook:  "An event-driven runtime behavior wired into Claude Code or another AI tool — responds to events like PreToolUse, Stop, or SessionStart.",
+};
+
+const classSchemas: Record<string, string> = {
+  skill: "https://ai-atoms.com/schemas/skill-v1.json",
+  hook:  "https://ai-atoms.com/schemas/hook-v1.json",
+};
 ---
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Build skill and hook atoms for ai-atoms.com — fill out the form and get valid JSON ready to submit." />
+    <meta name="description" content={`Build atoms for ai-atoms.com — select a class (${allTypes.join(', ')}) and fill out the form to generate valid JSON.`} />
     <title>Builder · ai-atoms</title>
     <link rel="icon" type="image/svg+xml" href="https://brand-atoms.com/dist/brands/atom-family/1.0.0/assets/favicon.svg" />
     <link rel="preconnect" href="https://brand-atoms.com" />
@@ -14,87 +32,181 @@
     <style>
       body { min-height: 100vh; }
       .sidenav-wordmark { width: 140px; object-fit: contain; display: block; }
+
+      .class-bar {
+        display: flex;
+        gap: 0;
+        margin-bottom: 0;
+        border-bottom: 2px solid #e2e8f0;
+        flex-wrap: wrap;
+      }
+      .class-btn {
+        padding: 0.5rem 1.25rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        border: none;
+        background: none;
+        cursor: pointer;
+        color: #64748b;
+        border-bottom: 3px solid transparent;
+        margin-bottom: -2px;
+        transition: color 0.15s, border-color 0.15s;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.1rem;
+      }
+      .class-btn .class-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: #94a3b8; font-weight: 500; }
+      .class-btn .class-name { font-size: 0.95rem; }
+      .class-btn.active { color: #4f46e5; border-bottom-color: #4f46e5; }
+      .class-btn.active .class-label { color: #a5b4fc; }
+      .class-btn:hover:not(.active) { color: #1e293b; }
+
+      .class-desc {
+        font-size: 0.85rem;
+        color: #64748b;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid #f1f5f9;
+        margin-bottom: 1rem;
+        line-height: 1.5;
+      }
+
       .builder-shell {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 1.5rem;
-        margin-top: 1.5rem;
       }
       @media (max-width: 900px) { .builder-shell { grid-template-columns: 1fr; } }
-      .tab-bar { display: flex; gap: 0; margin-bottom: 1.25rem; border-bottom: 2px solid #e2e8f0; }
-      .tab-btn {
-        padding: 0.5rem 1.25rem; font-size: 0.9rem; font-weight: 600;
-        border: none; background: none; cursor: pointer; color: #64748b;
-        border-bottom: 2px solid transparent; margin-bottom: -2px;
-        transition: color 0.15s, border-color 0.15s;
-      }
-      .tab-btn.active { color: #4f46e5; border-bottom-color: #4f46e5; }
-      .tab-btn:hover:not(.active) { color: #1e293b; }
-      .form-panel { display: none; flex-direction: column; gap: 1rem; }
+
+      .form-panel { display: none; flex-direction: column; gap: 0.875rem; }
       .form-panel.active { display: flex; }
+
       .field-group { display: flex; flex-direction: column; gap: 0.25rem; }
-      label {
-        font-size: 0.78rem; font-weight: 600; color: #334155;
-        text-transform: uppercase; letter-spacing: 0.04em;
+      .field-label {
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: #334155;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        display: flex;
+        align-items: center;
+        gap: 0.375rem;
       }
-      label .req { color: #dc2626; margin-left: 2px; }
-      label .opt { color: #94a3b8; font-weight: 400; text-transform: none; letter-spacing: 0; }
+      .req { color: #dc2626; font-size: 0.8rem; }
+      .opt { color: #94a3b8; font-weight: 400; font-size: 0.7rem; text-transform: none; letter-spacing: 0; }
       input[type="text"], textarea, select {
-        width: 100%; padding: 0.5rem 0.625rem;
-        border: 1px solid #cbd5e1; border-radius: 0.375rem;
-        font-size: 0.875rem; font-family: inherit;
-        color: #1e293b; background: #fff; box-sizing: border-box;
-        transition: border-color 0.15s;
+        width: 100%;
+        padding: 0.5rem 0.625rem;
+        border: 1px solid #cbd5e1;
+        border-radius: 0.375rem;
+        font-size: 0.875rem;
+        font-family: inherit;
+        color: #1e293b;
+        background: #fff;
+        box-sizing: border-box;
+        transition: border-color 0.15s, box-shadow 0.15s;
       }
-      input[type="text"]:focus, textarea:focus, select:focus {
-        outline: none; border-color: #4f46e5;
-        box-shadow: 0 0 0 2px rgba(79,70,229,0.12);
+      input:focus, textarea:focus, select:focus {
+        outline: none;
+        border-color: #4f46e5;
+        box-shadow: 0 0 0 3px rgba(79,70,229,0.1);
       }
-      textarea { resize: vertical; min-height: 5rem; }
-      .field-hint { font-size: 0.75rem; color: #64748b; line-height: 1.4; }
-      .invocation-list { display: flex; flex-direction: column; gap: 0.375rem; }
-      .invocation-row { display: flex; gap: 0.375rem; }
-      .invocation-row input { flex: 1; }
+      textarea { resize: vertical; min-height: 4.5rem; }
+      .field-hint { font-size: 0.72rem; color: #94a3b8; line-height: 1.45; }
+
+      .inv-list { display: flex; flex-direction: column; gap: 0.3rem; }
+      .inv-row { display: flex; gap: 0.3rem; }
+      .inv-row input { flex: 1; }
       .icon-btn {
-        padding: 0.4rem 0.6rem; border: 1px solid #cbd5e1;
-        border-radius: 0.375rem; background: #f8fafc;
-        color: #475569; cursor: pointer; font-size: 0.85rem; line-height: 1;
+        flex-shrink: 0;
+        padding: 0.45rem 0.7rem;
+        border: 1px solid #cbd5e1;
+        border-radius: 0.375rem;
+        background: #f8fafc;
+        color: #475569;
+        cursor: pointer;
+        font-size: 0.85rem;
+        line-height: 1;
+        font-weight: 600;
       }
-      .icon-btn:hover { background: #f1f5f9; color: #1e293b; }
-      .preview-panel {
-        display: flex; flex-direction: column; gap: 0.75rem;
-        position: sticky; top: 1.5rem; align-self: start;
-      }
-      .preview-header { display: flex; justify-content: space-between; align-items: center; }
-      .preview-header h3 { margin: 0; font-size: 0.9rem; color: #334155; }
-      .preview-actions { display: flex; gap: 0.5rem; align-items: center; }
-      .action-btn {
-        padding: 0.375rem 0.875rem; font-size: 0.8rem; font-weight: 600;
-        border-radius: 0.375rem; border: 1px solid #4f46e5;
-        background: #4f46e5; color: #fff; cursor: pointer; transition: background 0.15s;
-      }
-      .action-btn:hover { background: #4338ca; }
-      .action-btn.secondary { background: #fff; color: #4f46e5; }
-      .action-btn.secondary:hover { background: #eef2ff; }
-      pre#json-preview {
-        background: #0f172a; color: #e2e8f0; padding: 1rem;
-        border-radius: 0.5rem; font-size: 0.78rem; line-height: 1.6;
-        overflow-x: auto; white-space: pre; min-height: 12rem;
-        max-height: 60vh; overflow-y: auto; margin: 0;
-      }
-      .validation-msg {
-        font-size: 0.78rem; padding: 0.375rem 0.75rem;
-        border-radius: 0.375rem; display: none;
-      }
-      .validation-msg.error { background: #fef2f2; color: #dc2626; display: block; }
-      .validation-msg.ok { background: #f0fdf4; color: #16a34a; display: block; }
-      .copy-toast { font-size: 0.75rem; color: #16a34a; font-weight: 600; opacity: 0; transition: opacity 0.3s; }
-      .copy-toast.show { opacity: 1; }
-      .check-row { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 0.25rem; }
+      .icon-btn:hover { background: #e2e8f0; color: #1e293b; }
+
+      .check-row { display: flex; gap: 0.75rem; flex-wrap: wrap; padding-top: 0.25rem; }
       .check-label {
-        text-transform: none; letter-spacing: 0; font-weight: 400;
-        font-size: 0.875rem; display: flex; align-items: center; gap: 0.35rem;
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+        font-size: 0.875rem;
+        color: #334155;
+        font-weight: 400;
+        cursor: pointer;
       }
+
+      /* Preview panel */
+      .preview-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        position: sticky;
+        top: 1.5rem;
+        align-self: start;
+      }
+      .preview-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .preview-title { margin: 0; font-size: 0.85rem; font-weight: 600; color: #334155; }
+      .preview-actions { display: flex; gap: 0.5rem; align-items: center; }
+      .btn {
+        padding: 0.375rem 0.9rem;
+        font-size: 0.8rem;
+        font-weight: 600;
+        border-radius: 0.375rem;
+        cursor: pointer;
+        transition: background 0.15s;
+        border: 1px solid #4f46e5;
+      }
+      .btn-primary { background: #4f46e5; color: #fff; }
+      .btn-primary:hover { background: #4338ca; }
+      .btn-ghost { background: #fff; color: #4f46e5; }
+      .btn-ghost:hover { background: #eef2ff; }
+      pre#json-out {
+        background: #0f172a;
+        color: #e2e8f0;
+        padding: 1.125rem;
+        border-radius: 0.5rem;
+        font-size: 0.75rem;
+        line-height: 1.65;
+        overflow: auto;
+        white-space: pre;
+        min-height: 14rem;
+        max-height: 62vh;
+        margin: 0;
+      }
+      .val-badge {
+        font-size: 0.75rem;
+        padding: 0.35rem 0.75rem;
+        border-radius: 0.375rem;
+        display: none;
+      }
+      .val-badge.ok { background: #f0fdf4; color: #16a34a; display: block; }
+      .val-badge.err { background: #fef2f2; color: #dc2626; display: block; }
+      .copy-flash {
+        font-size: 0.72rem;
+        color: #16a34a;
+        font-weight: 700;
+        opacity: 0;
+        transition: opacity 0.25s;
+      }
+      .copy-flash.show { opacity: 1; }
+
+      .schema-ref {
+        font-size: 0.72rem;
+        color: #94a3b8;
+        margin-top: 0.25rem;
+      }
+      .schema-ref a { color: #818cf8; }
     </style>
   </head>
   <body>
@@ -102,59 +214,75 @@
       <main class="content">
         <p style="margin-bottom: 0.5rem;"><a href="/">← ai-atoms</a></p>
         <h1>Builder</h1>
-        <p style="color: #64748b; max-width: 44rem; font-size: 1rem; line-height: 1.6;">
-          Fill out the form to generate a valid skill or hook atom JSON file.
-          Download the output, add it to <code>atoms/skill/</code> or <code>atoms/hook/</code>,
-          then open a PR against
-          <a href="https://github.com/convergent-systems-co/ai-atoms">convergent-systems-co/ai-atoms</a>.
+        <p style="color: #64748b; max-width: 44rem; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.5rem;">
+          Select a class, fill out the form, and download valid JSON ready to PR into
+          <a href="https://github.com/convergent-systems-co/ai-atoms">ai-atoms</a>.
+          New classes appear here automatically as the catalog grows.
         </p>
 
-        <div class="tab-bar">
-          <button class="tab-btn active" data-tab="skill">Skill</button>
-          <button class="tab-btn" data-tab="hook">Hook</button>
+        <!-- Class selector -->
+        <nav class="class-bar" aria-label="Atom class">
+          {allTypes.map((t, i) => (
+            <button class={`class-btn ${i === 0 ? 'active' : ''}`} data-class={t}>
+              <span class="class-label">class</span>
+              <span class="class-name">{t}</span>
+            </button>
+          ))}
+        </nav>
+
+        <!-- Class description -->
+        <div class="class-desc" id="class-desc">
+          {classDescriptions[allTypes[0]] ?? `Atoms of class "${allTypes[0]}".`}
+        </div>
+        <div class="schema-ref" id="schema-ref">
+          {classSchemas[allTypes[0]] && (
+            <>Schema: <a href={classSchemas[allTypes[0]]} target="_blank">{classSchemas[allTypes[0]]}</a></>
+          )}
         </div>
 
-        <div class="builder-shell">
+        <div class="builder-shell" style="margin-top: 1.25rem;">
           <!-- Form column -->
-          <div>
-            <!-- SKILL FORM -->
-            <div class="form-panel active" id="panel-skill">
+          <div id="forms">
+
+            <!-- SKILL form -->
+            <div class="form-panel active" id="form-skill">
               <div class="field-group">
-                <label>Slug <span class="req">*</span> <span class="opt">kebab-case, e.g. my-skill</span></label>
+                <div class="field-label">Slug <span class="req">*</span> <span class="opt">kebab-case, becomes the file name</span></div>
                 <input type="text" id="s-slug" placeholder="my-skill" oninput="rebuildSkill()" />
               </div>
               <div class="field-group">
-                <label>Name <span class="req">*</span></label>
+                <div class="field-label">Name <span class="req">*</span></div>
                 <input type="text" id="s-name" placeholder="My Skill" oninput="rebuildSkill()" />
               </div>
               <div class="field-group">
-                <label>Description <span class="req">*</span></label>
-                <textarea id="s-description" rows="3" placeholder="What this skill does and when to invoke it." oninput="rebuildSkill()"></textarea>
+                <div class="field-label">Description <span class="req">*</span> <span class="opt">what it does and when to invoke it</span></div>
+                <textarea id="s-desc" rows="3" placeholder="Describe what this skill does and when to use it." oninput="rebuildSkill()"></textarea>
               </div>
               <div class="field-group">
-                <label>System prompt fragment <span class="req">*</span></label>
-                <textarea id="s-prompt" rows="5" placeholder="Write the instruction text injected into the agent when this skill loads. Use second-person imperative." oninput="rebuildSkill()"></textarea>
+                <div class="field-label">System prompt fragment <span class="req">*</span></div>
+                <textarea id="s-prompt" rows="5" placeholder="The instruction text injected into the agent when this skill loads. Use second-person imperative." oninput="rebuildSkill()"></textarea>
+                <span class="field-hint">Must be self-contained — the agent may load this skill without any other context.</span>
               </div>
               <div class="field-group">
-                <label>Applicable domains <span class="req">*</span> <span class="opt">comma-separated</span></label>
+                <div class="field-label">Applicable domains <span class="req">*</span> <span class="opt">comma-separated</span></div>
                 <input type="text" id="s-domains" placeholder="code, debug, testing" oninput="rebuildSkill()" />
               </div>
               <div class="field-group">
-                <label>Invocation commands <span class="opt">slash commands, one per row</span></label>
-                <div class="invocation-list" id="s-invocations">
-                  <div class="invocation-row">
+                <div class="field-label">Invocation commands <span class="opt">slash commands that trigger this skill</span></div>
+                <div class="inv-list" id="s-inv">
+                  <div class="inv-row">
                     <input type="text" placeholder="/my-skill" oninput="rebuildSkill()" />
-                    <button class="icon-btn" id="s-add-inv" title="Add command">+</button>
+                    <button class="icon-btn" id="s-add-inv">+ Add</button>
                   </div>
                 </div>
-                <span class="field-hint">First entry is primary. Additional entries are subcommands/variants shown indented.</span>
+                <span class="field-hint">First entry is the primary command. Additional entries are subcommands shown indented below it.</span>
               </div>
               <div class="field-group">
-                <label>Tags <span class="opt">comma-separated</span></label>
+                <div class="field-label">Tags <span class="opt">comma-separated</span></div>
                 <input type="text" id="s-tags" placeholder="code, review, quality" oninput="rebuildSkill()" />
               </div>
               <div class="field-group">
-                <label>Lifecycle</label>
+                <div class="field-label">Lifecycle</div>
                 <select id="s-lifecycle" onchange="rebuildSkill()">
                   <option value="stable">stable</option>
                   <option value="draft">draft</option>
@@ -163,26 +291,26 @@
               </div>
             </div>
 
-            <!-- HOOK FORM -->
-            <div class="form-panel" id="panel-hook">
+            <!-- HOOK form -->
+            <div class="form-panel" id="form-hook">
               <div class="field-group">
-                <label>Slug <span class="req">*</span> <span class="opt">kebab-case, e.g. my-guard</span></label>
+                <div class="field-label">Slug <span class="req">*</span> <span class="opt">kebab-case</span></div>
                 <input type="text" id="h-slug" placeholder="my-guard" oninput="rebuildHook()" />
               </div>
               <div class="field-group">
-                <label>Name <span class="req">*</span></label>
+                <div class="field-label">Name <span class="req">*</span></div>
                 <input type="text" id="h-name" placeholder="My Guard" oninput="rebuildHook()" />
               </div>
               <div class="field-group">
-                <label>Description <span class="req">*</span></label>
-                <textarea id="h-description" rows="3" placeholder="What this hook enforces or observes." oninput="rebuildHook()"></textarea>
+                <div class="field-label">Description <span class="req">*</span></div>
+                <textarea id="h-desc" rows="3" placeholder="What this hook enforces or observes." oninput="rebuildHook()"></textarea>
               </div>
               <div class="field-group">
-                <label>Event <span class="req">*</span></label>
+                <div class="field-label">Event <span class="req">*</span></div>
                 <select id="h-event" onchange="rebuildHook()">
                   <option value="PreToolUse">PreToolUse — before any tool call</option>
                   <option value="PostToolUse">PostToolUse — after a tool call returns</option>
-                  <option value="Stop">Stop — when agent finishes a turn</option>
+                  <option value="Stop">Stop — when the agent finishes a turn</option>
                   <option value="SessionStart">SessionStart — session begins</option>
                   <option value="SessionEnd">SessionEnd — session ends</option>
                   <option value="UserPromptSubmit">UserPromptSubmit — on user prompt</option>
@@ -191,53 +319,53 @@
                 </select>
               </div>
               <div class="field-group">
-                <label>Trigger type <span class="req">*</span></label>
-                <select id="h-trigger-type" onchange="handleTriggerTypeChange()">
+                <div class="field-label">Trigger type <span class="req">*</span></div>
+                <select id="h-trigger-type" onchange="onTriggerTypeChange()">
                   <option value="always">always — every event instance</option>
                   <option value="tool-name">tool-name — specific tool (e.g. Bash)</option>
                   <option value="file-pattern">file-pattern — matched file path</option>
                   <option value="tool-category">tool-category — tool category</option>
                 </select>
               </div>
-              <div class="field-group" id="h-pattern-group" style="display:none">
-                <label>Trigger pattern <span class="req">*</span></label>
-                <input type="text" id="h-trigger-pattern" placeholder="Bash" oninput="rebuildHook()" />
-                <span class="field-hint">tool-name: exact name (Bash, Edit, Write). file-pattern: glob (.github/workflows/*.yml).</span>
+              <div class="field-group" id="h-pattern-row" style="display:none">
+                <div class="field-label">Trigger pattern <span class="req">*</span></div>
+                <input type="text" id="h-pattern" placeholder="Bash" oninput="rebuildHook()" />
+                <span class="field-hint">tool-name: exact tool name (Bash, Edit, Write). file-pattern: glob (.github/workflows/*.yml).</span>
               </div>
               <div class="field-group">
-                <label>Language <span class="req">*</span></label>
-                <select id="h-language" onchange="rebuildHook()">
-                  <option value="python">python (recommended — cross-platform)</option>
-                  <option value="bash">bash (Unix/macOS only)</option>
+                <div class="field-label">Language <span class="req">*</span></div>
+                <select id="h-lang" onchange="rebuildHook()">
+                  <option value="python">python — recommended, cross-platform via ai hooks run</option>
+                  <option value="bash">bash — Unix/macOS only</option>
                   <option value="javascript">javascript</option>
                   <option value="typescript">typescript</option>
                 </select>
               </div>
               <div class="field-group">
-                <label>Blocking behavior</label>
+                <div class="field-label">Blocking behavior</div>
                 <select id="h-blocking" onchange="rebuildHook()">
-                  <option value="false">non-blocking — observe only</option>
+                  <option value="false">non-blocking — observe only, cannot abort</option>
                   <option value="true">blocking — can deny the tool call</option>
                 </select>
               </div>
               <div class="field-group">
-                <label>Side effects <span class="opt">comma-separated</span></label>
-                <input type="text" id="h-side-effects" placeholder="writes to ~/.ai/audit/, emits warning to stderr" oninput="rebuildHook()" />
+                <div class="field-label">Side effects <span class="opt">comma-separated</span></div>
+                <input type="text" id="h-fx" placeholder="writes to ~/.ai/audit/, emits warning to stderr" oninput="rebuildHook()" />
               </div>
               <div class="field-group">
-                <label>Supported platforms <span class="opt">uncheck if not verified</span></label>
+                <div class="field-label">Supported platforms <span class="opt">uncheck if not verified</span></div>
                 <div class="check-row">
-                  <label class="check-label"><input type="checkbox" id="h-plat-linux" onchange="rebuildHook()" checked /> linux</label>
-                  <label class="check-label"><input type="checkbox" id="h-plat-macos" onchange="rebuildHook()" checked /> macos</label>
-                  <label class="check-label"><input type="checkbox" id="h-plat-windows" onchange="rebuildHook()" checked /> windows</label>
+                  <label class="check-label"><input type="checkbox" id="h-linux" onchange="rebuildHook()" checked /> linux</label>
+                  <label class="check-label"><input type="checkbox" id="h-macos" onchange="rebuildHook()" checked /> macos</label>
+                  <label class="check-label"><input type="checkbox" id="h-windows" onchange="rebuildHook()" checked /> windows</label>
                 </div>
               </div>
               <div class="field-group">
-                <label>Tags <span class="opt">comma-separated</span></label>
+                <div class="field-label">Tags <span class="opt">comma-separated</span></div>
                 <input type="text" id="h-tags" placeholder="governance, git, claude-code" oninput="rebuildHook()" />
               </div>
               <div class="field-group">
-                <label>Lifecycle</label>
+                <div class="field-label">Lifecycle</div>
                 <select id="h-lifecycle" onchange="rebuildHook()">
                   <option value="stable">stable</option>
                   <option value="draft">draft</option>
@@ -245,20 +373,26 @@
                 </select>
               </div>
             </div>
+
           </div>
 
           <!-- Preview column -->
           <div class="preview-panel">
             <div class="preview-header">
-              <h3>Generated JSON</h3>
+              <h3 class="preview-title">Generated JSON</h3>
               <div class="preview-actions">
-                <span class="copy-toast" id="copy-toast">Copied!</span>
-                <button class="action-btn secondary" id="btn-copy">Copy</button>
-                <button class="action-btn" id="btn-download">Download</button>
+                <span class="copy-flash" id="copy-flash">Copied!</span>
+                <button class="btn btn-ghost" id="btn-copy">Copy</button>
+                <button class="btn btn-primary" id="btn-dl">Download</button>
               </div>
             </div>
-            <div class="validation-msg" id="validation-msg"></div>
-            <pre id="json-preview">{}</pre>
+            <div class="val-badge" id="val-badge"></div>
+            <pre id="json-out">{}</pre>
+            <p style="font-size: 0.72rem; color: #94a3b8; margin: 0;">
+              Save as <code id="filename-hint">atom.json</code> in
+              <code id="dir-hint">atoms/skill/</code> and open a PR →
+              <a href="https://github.com/convergent-systems-co/ai-atoms" style="color: #818cf8;">convergent-systems-co/ai-atoms</a>
+            </p>
           </div>
         </div>
       </main>
@@ -281,167 +415,179 @@
       </nav>
     </div>
 
-    <script is:inline>
-      let currentTab = 'skill';
+    <script is:inline define:vars={{ allTypes, classDescriptions, classSchemas }}>
+      // ── State ──
+      let currentClass = allTypes[0] || 'skill';
       let currentAtom = {};
 
-      // Tab switching
-      document.querySelectorAll('.tab-btn').forEach(function(btn) {
+      // ── Class bar ──
+      document.querySelectorAll('.class-btn').forEach(function(btn) {
         btn.addEventListener('click', function() {
-          currentTab = btn.dataset.tab;
-          document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+          currentClass = btn.dataset.class;
+          document.querySelectorAll('.class-btn').forEach(function(b) { b.classList.remove('active'); });
           btn.classList.add('active');
           document.querySelectorAll('.form-panel').forEach(function(p) { p.classList.remove('active'); });
-          document.getElementById('panel-' + currentTab).classList.add('active');
-          if (currentTab === 'skill') rebuildSkill(); else rebuildHook();
+          var panel = document.getElementById('form-' + currentClass);
+          if (panel) panel.classList.add('active');
+          document.getElementById('class-desc').textContent =
+            classDescriptions[currentClass] || ('Atoms of class "' + currentClass + '".');
+          var schemaEl = document.getElementById('schema-ref');
+          var schema = classSchemas[currentClass];
+          schemaEl.textContent = '';
+          if (schema) {
+            schemaEl.textContent = 'Schema: ';
+            var a = document.createElement('a');
+            a.href = schema;
+            a.target = '_blank';
+            a.textContent = schema;
+            a.style.color = '#818cf8';
+            schemaEl.appendChild(a);
+          }
+          document.getElementById('dir-hint').textContent = 'atoms/' + currentClass + '/';
+          if (currentClass === 'skill') rebuildSkill();
+          else if (currentClass === 'hook') rebuildHook();
+          else rebuildGeneric(currentClass);
         });
       });
 
-      // Add invocation row
-      document.getElementById('s-add-inv').addEventListener('click', function() {
-        var list = document.getElementById('s-invocations');
-        var row = document.createElement('div');
-        row.className = 'invocation-row';
-        var input = document.createElement('input');
-        input.type = 'text';
-        input.placeholder = '/my-skill --flag';
-        input.addEventListener('input', rebuildSkill);
-        var removeBtn = document.createElement('button');
-        removeBtn.className = 'icon-btn';
-        removeBtn.title = 'Remove';
-        removeBtn.textContent = '×';
-        removeBtn.addEventListener('click', function() { row.remove(); rebuildSkill(); });
-        row.appendChild(input);
-        row.appendChild(removeBtn);
-        list.appendChild(row);
-      });
-
-      // Trigger type change
-      function handleTriggerTypeChange() {
-        var t = document.getElementById('h-trigger-type').value;
-        var needs = t === 'tool-name' || t === 'file-pattern';
-        document.getElementById('h-pattern-group').style.display = needs ? 'flex' : 'none';
-        rebuildHook();
-      }
-
-      // Helpers
+      // ── Helpers ──
       function csv(id) {
-        return document.getElementById(id).value.split(',').map(function(s) { return s.trim(); }).filter(Boolean);
+        var el = document.getElementById(id);
+        if (!el) return [];
+        return el.value.split(',').map(function(s) { return s.trim(); }).filter(Boolean);
       }
-      function val(id) { return document.getElementById(id).value.trim(); }
-
+      function val(id) {
+        var el = document.getElementById(id);
+        return el ? el.value.trim() : '';
+      }
+      function checked(id) {
+        var el = document.getElementById(id);
+        return el ? el.checked : false;
+      }
+      function slugify(s) { return s.replace(/[^a-z0-9-]/gi, '-').toLowerCase().replace(/-+/g,'-').replace(/^-|-$/g,''); }
       function validate(atom, required) {
         return required.filter(function(k) {
           var v = atom[k];
           if (v === undefined || v === null) return true;
-          if (typeof v === 'string') return v.length === 0;
-          if (Array.isArray(v)) return v.length === 0;
+          if (typeof v === 'string') return !v;
+          if (Array.isArray(v)) return !v.length;
           return false;
         });
       }
-
       function showValidation(missing) {
-        var el = document.getElementById('validation-msg');
-        if (missing.length === 0) {
-          el.textContent = '✓ Valid atom — ready to submit';
-          el.className = 'validation-msg ok';
-        } else {
-          el.textContent = 'Missing required fields: ' + missing.join(', ');
-          el.className = 'validation-msg error';
-        }
+        var el = document.getElementById('val-badge');
+        if (!missing.length) { el.textContent = '✓ Valid — ready to submit'; el.className = 'val-badge ok'; }
+        else { el.textContent = 'Missing: ' + missing.join(', '); el.className = 'val-badge err'; }
       }
-
-      function renderPreview(atom) {
-        document.getElementById('json-preview').textContent = JSON.stringify(atom, null, 2);
+      function renderJSON(atom) {
+        document.getElementById('json-out').textContent = JSON.stringify(atom, null, 2);
         currentAtom = atom;
+        var slug = (atom.id || 'atom').split('/').pop();
+        document.getElementById('filename-hint').textContent = slug + '.json';
       }
 
-      // Skill builder
+      // ── Skill builder ──
+      document.getElementById('s-add-inv').addEventListener('click', function() {
+        var list = document.getElementById('s-inv');
+        var row = document.createElement('div');
+        row.className = 'inv-row';
+        var input = document.createElement('input');
+        input.type = 'text';
+        input.placeholder = '/my-skill --flag';
+        input.addEventListener('input', rebuildSkill);
+        var rm = document.createElement('button');
+        rm.className = 'icon-btn';
+        rm.textContent = '× Remove';
+        rm.addEventListener('click', function() { row.remove(); rebuildSkill(); });
+        row.appendChild(input);
+        row.appendChild(rm);
+        list.appendChild(row);
+      });
+
       function rebuildSkill() {
-        var slug = val('s-slug').replace(/[^a-z0-9-]/gi, '-').toLowerCase();
+        var slug = slugify(val('s-slug'));
         var domains = csv('s-domains');
         var tags = csv('s-tags');
-        var invRows = Array.from(document.querySelectorAll('#s-invocations input'))
+        var invs = Array.from(document.querySelectorAll('#s-inv input'))
           .map(function(i) { return i.value.trim(); }).filter(Boolean);
-
         var atom = {
           schema: 'https://ai-atoms.com/schemas/skill-v1.json',
           type: 'skill',
           id: slug ? 'skill/' + slug : '',
           version: '1.0.0',
           name: val('s-name'),
-          description: val('s-description'),
+          description: val('s-desc'),
           system_prompt_fragment: val('s-prompt'),
         };
         if (domains.length) atom.applicable_domains = domains;
-        if (invRows.length) atom.invocation = invRows;
+        if (invs.length) atom.invocation = invs;
         if (tags.length) atom.tags = tags;
         atom.authored_by = 'convergent-systems-key';
         atom.lifecycle = val('s-lifecycle') || 'stable';
-
-        var missing = validate(atom, ['id', 'name', 'description', 'system_prompt_fragment', 'applicable_domains']);
-        showValidation(missing);
-        renderPreview(atom);
+        showValidation(validate(atom, ['id','name','description','system_prompt_fragment','applicable_domains']));
+        renderJSON(atom);
       }
 
-      // Hook builder
+      // ── Hook builder ──
+      function onTriggerTypeChange() {
+        var t = document.getElementById('h-trigger-type').value;
+        var show = t === 'tool-name' || t === 'file-pattern';
+        document.getElementById('h-pattern-row').style.display = show ? 'flex' : 'none';
+        rebuildHook();
+      }
+
       function rebuildHook() {
-        var slug = val('h-slug').replace(/[^a-z0-9-]/gi, '-').toLowerCase();
-        var triggerType = document.getElementById('h-trigger-type').value;
-        var triggerPattern = val('h-trigger-pattern');
+        var slug = slugify(val('h-slug'));
+        var ttype = document.getElementById('h-trigger-type').value;
+        var tpat = val('h-pattern');
         var blocking = document.getElementById('h-blocking').value === 'true';
-        var sideEffects = csv('h-side-effects');
+        var fx = csv('h-fx');
         var tags = csv('h-tags');
-
-        var platforms = ['linux', 'macos', 'windows'].filter(function(p) {
-          return document.getElementById('h-plat-' + p).checked;
-        });
-
-        var trigger = { type: triggerType };
-        if ((triggerType === 'tool-name' || triggerType === 'file-pattern') && triggerPattern) {
-          trigger.pattern = triggerPattern;
-        }
-
+        var plats = ['linux','macos','windows'].filter(function(p) { return checked('h-'+p); });
+        var trigger = { type: ttype };
+        if ((ttype === 'tool-name' || ttype === 'file-pattern') && tpat) trigger.pattern = tpat;
         var atom = {
           schema: 'https://ai-atoms.com/schemas/hook-v1.json',
           type: 'hook',
           id: slug ? 'hook/' + slug : '',
           version: '1.0.0',
           name: val('h-name'),
-          description: val('h-description'),
+          description: val('h-desc'),
           event: document.getElementById('h-event').value,
-          language: document.getElementById('h-language').value,
+          language: document.getElementById('h-lang').value,
           trigger: trigger,
           blocking: blocking,
         };
-        if (sideEffects.length) atom.side_effects = sideEffects;
-        if (platforms.length < 3 && platforms.length > 0) atom.platforms = platforms;
+        if (fx.length) atom.side_effects = fx;
+        if (plats.length < 3 && plats.length) atom.platforms = plats;
         if (tags.length) atom.tags = tags;
         atom.authored_by = 'convergent-systems-key';
         atom.lifecycle = val('h-lifecycle') || 'stable';
-
-        var required = ['id', 'name', 'description', 'event', 'language'];
-        if ((triggerType === 'tool-name' || triggerType === 'file-pattern') && !triggerPattern) {
-          required.push('trigger.pattern');
-        }
-        var missing = validate(atom, required);
-        showValidation(missing);
-        renderPreview(atom);
+        var req = ['id','name','description','event','language'];
+        if ((ttype === 'tool-name' || ttype === 'file-pattern') && !tpat) req.push('trigger.pattern');
+        showValidation(validate(atom, req));
+        renderJSON(atom);
       }
 
-      // Actions
+      // ── Generic builder (for future classes) ──
+      function rebuildGeneric(cls) {
+        var atom = { schema: 'https://ai-atoms.com/schemas/' + cls + '-v1.json', type: cls, id: cls + '/', version: '1.0.0' };
+        showValidation(['id','name','description']);
+        renderJSON(atom);
+      }
+
+      // ── Actions ──
       document.getElementById('btn-copy').addEventListener('click', function() {
         navigator.clipboard.writeText(JSON.stringify(currentAtom, null, 2)).then(function() {
-          var toast = document.getElementById('copy-toast');
-          toast.classList.add('show');
-          setTimeout(function() { toast.classList.remove('show'); }, 1800);
+          var f = document.getElementById('copy-flash');
+          f.classList.add('show');
+          setTimeout(function() { f.classList.remove('show'); }, 1600);
         });
       });
 
-      document.getElementById('btn-download').addEventListener('click', function() {
-        var slug = currentAtom.id ? currentAtom.id.split('/').pop() : 'atom';
-        var json = JSON.stringify(currentAtom, null, 2);
-        var blob = new Blob([json], { type: 'application/json' });
+      document.getElementById('btn-dl').addEventListener('click', function() {
+        var slug = (currentAtom.id || 'atom').split('/').pop() || 'atom';
+        var blob = new Blob([JSON.stringify(currentAtom, null, 2)], { type: 'application/json' });
         var url = URL.createObjectURL(blob);
         var a = document.createElement('a');
         a.href = url;
@@ -452,8 +598,8 @@
         URL.revokeObjectURL(url);
       });
 
-      // Init
-      handleTriggerTypeChange();
+      // ── Init ──
+      onTriggerTypeChange();
       rebuildSkill();
     </script>
   </body>
