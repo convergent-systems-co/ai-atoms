@@ -1,0 +1,49 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/explain",
+  "version": "1.0.0",
+  "name": "Explain",
+  "description": "Read-only code explainer with audience-tuned depth (non-technical / junior / practitioner / senior) and path:line citations. Never modifies files.",
+  "system_prompt_fragment": "Explain the code or concept at the requested depth. Levels: non-technical (analogy-first, no syntax), junior (step-by-step with syntax glossed), practitioner (assumes fluency in the language), senior (architectural implications, tradeoffs, gotchas). Cite file:line for every specific claim. Never modify files during an explain session.",
+  "applicable_domains": [
+    "code",
+    "documentation"
+  ],
+  "authored_by": "convergent-systems-key",
+  "lifecycle": "stable",
+  "invocation": [
+    "/explain"
+  ],
+  "tags": [
+    "code",
+    "explain",
+    "documentation",
+    "read-only"
+  ],
+  "invocation_contract": {
+    "inputs": [
+      {
+        "name": "target",
+        "type": "string",
+        "description": "File path, symbol, or concept to explain.",
+        "required": true
+      },
+      {
+        "name": "audience",
+        "type": "string",
+        "description": "non-technical | junior | practitioner | senior",
+        "required": false
+      }
+    ],
+    "outputs": [
+      {
+        "name": "explanation",
+        "type": "string",
+        "description": "The explanation with path:line citations.",
+        "required": true
+      }
+    ],
+    "side_effects": []
+  }
+}

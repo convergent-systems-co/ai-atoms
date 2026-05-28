@@ -1,0 +1,41 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/make-clean",
+  "version": "1.0.0",
+  "name": "Make Clean",
+  "description": "Two-command git workspace lifecycle manager: purge merged branches/worktrees/stashes, aggregate remaining in-flight work into one branch, then hand off to make build.",
+  "system_prompt_fragment": "Run the full make clean pipeline: (1) inventory all branches, worktrees, stashes; (2) delete merged branches and their worktrees (no prompt); (3) drop merged stashes; (4) aggregate in-flight branches into aggregate/<date>; (5) prune worktrees; (6) hand off to make build if aggregate branch exists. Never delete main, HEAD, or branches with uncommitted changes.",
+  "applicable_domains": [
+    "git",
+    "workflow"
+  ],
+  "authored_by": "convergent-systems-key",
+  "lifecycle": "stable",
+  "invocation": [
+    "/make-clean"
+  ],
+  "tags": [
+    "git",
+    "cleanup",
+    "branches",
+    "worktrees"
+  ],
+  "invocation_contract": {
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "cleanup_summary",
+        "type": "string",
+        "description": "Branches deleted, stashes dropped, aggregate branch created.",
+        "required": true
+      }
+    ],
+    "side_effects": [
+      "deletes git branches",
+      "removes worktrees",
+      "drops stashes",
+      "creates aggregate branch"
+    ]
+  }
+}

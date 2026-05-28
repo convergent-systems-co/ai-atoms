@@ -1,0 +1,45 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/update-config",
+  "version": "1.0.0",
+  "name": "Update Config",
+  "description": "Configure the Claude Code harness via settings.json. Handles: automated behaviors (hooks), permissions, env vars, hook troubleshooting, and changes to settings.json/settings.local.json files.",
+  "system_prompt_fragment": "Configure Claude Code settings.json. Automated behaviors require hooks \u2014 the harness executes them, not Claude. For permissions: add to allowedTools or use permissionPromptTool. For env vars: add to env block. For hooks: wire to the correct event (UserPromptSubmit/PreToolUse/PostToolUse/Stop/etc.) in the hooks block. Show the diff of settings.json changes before applying. Never edit settings.json directly \u2014 use the appropriate settings API or targeted edits.",
+  "applicable_domains": [
+    "configuration",
+    "tooling"
+  ],
+  "authored_by": "convergent-systems-key",
+  "lifecycle": "stable",
+  "invocation": [
+    "/update-config"
+  ],
+  "tags": [
+    "configuration",
+    "settings",
+    "hooks",
+    "permissions"
+  ],
+  "invocation_contract": {
+    "inputs": [
+      {
+        "name": "change_request",
+        "type": "string",
+        "description": "What the user wants to configure.",
+        "required": true
+      }
+    ],
+    "outputs": [
+      {
+        "name": "settings_diff",
+        "type": "string",
+        "description": "The diff applied to settings.json.",
+        "required": true
+      }
+    ],
+    "side_effects": [
+      "modifies .claude/settings.json or ~/.claude/settings.json"
+    ]
+  }
+}

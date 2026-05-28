@@ -1,0 +1,44 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/project",
+  "version": "2.0.0",
+  "name": "Project",
+  "description": "Set up AI workspace config for this project. Installs project-claude (Claude Code) and project-copilot (GitHub Copilot) together.",
+  "system_prompt_fragment": "Dispatch to the appropriate tool-specific project skill. For Claude Code setup use /project-claude. For GitHub Copilot setup use /project-copilot. When both tools are in use, both skills apply.",
+  "applicable_domains": [
+    "configuration",
+    "tooling"
+  ],
+  "authored_by": "convergent-systems-key",
+  "lifecycle": "stable",
+  "invocation": [
+    "/project"
+  ],
+  "tags": [
+    "configuration",
+    "project-yaml",
+    "dispatcher"
+  ],
+  "invocation_contract": {
+    "inputs": [
+      {
+        "name": "tool",
+        "type": "string",
+        "description": "claude | copilot | both (default: both)",
+        "required": false
+      }
+    ],
+    "outputs": [
+      {
+        "name": "result",
+        "type": "string",
+        "description": "Summary of configuration changes.",
+        "required": true
+      }
+    ],
+    "side_effects": [
+      "delegates to project-claude and/or project-copilot"
+    ]
+  }
+}

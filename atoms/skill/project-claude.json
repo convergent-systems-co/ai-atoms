@@ -1,0 +1,44 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/project-claude",
+  "version": "1.0.0",
+  "name": "Project (Claude)",
+  "description": "Set up and maintain AI workspace configuration for Claude Code: project.yaml, .claude/settings.json, and CLAUDE.md. Use when initialising a project for Claude or editing its Claude-specific config.",
+  "system_prompt_fragment": "Manage Claude Code project configuration. Create or update:\n- project.yaml: tooling, test commands, build commands\n- .claude/settings.json: permissions, hooks, allowed tools\n- CLAUDE.md: project-specific instructions for Claude\n\nVerbs: setup (create all three if missing), show (display current config), set <key>=<value> (update a setting), validate (check schema). Never overwrite user-customized values without confirmation. For Copilot configuration use /project-copilot instead.",
+  "applicable_domains": [
+    "configuration",
+    "tooling"
+  ],
+  "authored_by": "convergent-systems-key",
+  "lifecycle": "stable",
+  "invocation": [
+    "/project-claude"
+  ],
+  "tags": [
+    "configuration",
+    "claude",
+    "project-yaml"
+  ],
+  "invocation_contract": {
+    "inputs": [
+      {
+        "name": "action",
+        "type": "string",
+        "description": "setup | show | set | validate",
+        "required": false
+      }
+    ],
+    "outputs": [
+      {
+        "name": "result",
+        "type": "string",
+        "description": "Summary of configuration changes.",
+        "required": true
+      }
+    ],
+    "side_effects": [
+      "may write project.yaml, .claude/settings.json, CLAUDE.md"
+    ]
+  }
+}

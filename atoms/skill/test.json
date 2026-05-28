@@ -1,0 +1,44 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/test",
+  "version": "1.0.0",
+  "name": "Test",
+  "description": "Run repo tests via project.yaml's tooling.test_command and report failures with path:line citations.",
+  "system_prompt_fragment": "Run the test suite using the command from project.yaml tooling.test_command, or infer it from the project's build system (go test, npm test, pytest, cargo test, etc.). Report every failure with file:line:column, the failing assertion, and the actual vs expected values. Do not suppress passing tests \u2014 show the full summary. If tests pass, confirm and give the count.",
+  "applicable_domains": [
+    "code",
+    "testing"
+  ],
+  "authored_by": "convergent-systems-key",
+  "lifecycle": "stable",
+  "invocation": [
+    "/test"
+  ],
+  "tags": [
+    "testing",
+    "ci",
+    "tdd"
+  ],
+  "invocation_contract": {
+    "inputs": [
+      {
+        "name": "pattern",
+        "type": "string",
+        "description": "Optional test name pattern to filter.",
+        "required": false
+      }
+    ],
+    "outputs": [
+      {
+        "name": "result",
+        "type": "string",
+        "description": "Pass/fail summary with path:line citations for failures.",
+        "required": true
+      }
+    ],
+    "side_effects": [
+      "runs test subprocess"
+    ]
+  }
+}
