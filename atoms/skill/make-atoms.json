@@ -1,0 +1,53 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/make-atoms",
+  "version": "1.0.0",
+  "name": "Make Atoms",
+  "description": "Discover, fetch, or scaffold skill atoms via the atoms-discover skill. Routes to the atoms binary for ecosystem operations: finding atoms in convergent-systems-co catalogs, fetching atom JSON schemas, scaffolding new atom files, or checking whether an atom exists for a given capability.",
+  "system_prompt_fragment": "Delegate to the atoms-discover skill for all atom ecosystem operations. For discovery: fetch the catalog from the relevant *-atoms.com/ai/index.json and search by type or name. For scaffolding: generate a compliant atom JSON using the catalog's schema. For checking: look up the atom at its canonical URL. Use the atoms binary (ai atoms ...) when available. Never confuse atom management with the ai CLI or ~/.ai/ directory.",
+  "invocation": [
+    "/make atoms",
+    "/make atoms discover",
+    "/make atoms fetch <slug>",
+    "/make atoms scaffold <type>"
+  ],
+  "applicable_domains": [
+    "atoms",
+    "meta"
+  ],
+  "invocation_contract": {
+    "inputs": [
+      {
+        "name": "subcommand",
+        "type": "string",
+        "description": "discover | fetch | scaffold",
+        "required": false
+      },
+      {
+        "name": "target",
+        "type": "string",
+        "description": "Atom slug or type for fetch/scaffold.",
+        "required": false
+      }
+    ],
+    "outputs": [
+      {
+        "name": "result",
+        "type": "string",
+        "description": "Atom data, catalog listing, or scaffolded JSON."
+      }
+    ],
+    "side_effects": [
+      "may write new atom JSON file when scaffolding"
+    ]
+  },
+  "tags": [
+    "atoms",
+    "meta",
+    "discovery",
+    "scaffolding"
+  ],
+  "authored_by": "convergent-systems-key",
+  "lifecycle": "stable"
+}
