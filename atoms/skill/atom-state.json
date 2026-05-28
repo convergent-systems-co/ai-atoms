@@ -1,0 +1,52 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/atom-state",
+  "version": "1.0.0",
+  "name": "Atom Fleet Status",
+  "description": "Full fleet snapshot of all *-atoms.com catalog sites — deploy health, DNS, HTTPS reachability, atom_types per catalog with item counts, schema compliance, /ai/index.json, Terraform backend, sidenav, brand asset uniformity, builder script, federation field, and registry presence. Use when the user asks about the state of the atoms fleet, wants to verify deployments, asks for a fleet snapshot or schema compliance report, or before starting any cross-fleet work.",
+  "system_prompt_fragment": "Run the atom fleet status check. For each *-atoms.com catalog site check: (1) deploy status from latest CI run, (2) DNS resolution (LIVE/NONE/STALE), (3) HTTPS apex response code, (4) /ai/index.json reachability, (5) schema spec_version compliance, (6) Terraform vs Wrangler backend, (7) deploy-after-merge gate, (8) open PR count, (9) Classes/Atoms counts. Report as a table grouped by catalog. Flag: Apex 000 but green deploy (DNS gap), /ai/ unreachable on live site, schema below v1.1.0, wrangler.toml present without Terraform, federation not convergent-systems.co.",
+  "applicable_domains": [
+    "atoms",
+    "devops",
+    "fleet"
+  ],
+  "invocation_contract": {
+    "inputs": [
+      {
+        "name": "catalog",
+        "type": "string",
+        "description": "Optional: check a single catalog by name (e.g. brand-atoms). Omit for full fleet.",
+        "required": false
+      }
+    ],
+    "outputs": [
+      {
+        "name": "fleet_table",
+        "type": "string",
+        "description": "ASCII table showing status of each catalog across all checks."
+      },
+      {
+        "name": "needs_attention",
+        "type": "array",
+        "description": "List of catalogs with actionable issues."
+      }
+    ],
+    "side_effects": []
+  },
+  "authored_by": "convergent-systems-key",
+  "tags": [
+    "atoms",
+    "fleet",
+    "status",
+    "deploy",
+    "dns",
+    "compliance"
+  ],
+  "lifecycle": "stable",
+  "invocation": [
+    "/atom-status",
+    "/atom-status tree",
+    "/atom-status tree <catalog-name>"
+  ]
+}

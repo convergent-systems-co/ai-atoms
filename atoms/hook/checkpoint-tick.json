@@ -1,0 +1,16 @@
+{
+  "schema": "https://ai-atoms.com/schemas/hook-v1.json",
+  "type": "hook",
+  "id": "hook/checkpoint-tick",
+  "version": "1.0.0",
+  "name": "Checkpoint Tick",
+  "description": "30-minute background tick that writes a HANDOFF.md so context-window resets don't lose state. Implements Common.md §U10 (handoff + checkpoint) and §U13 (context-window discipline). If more than 30 minutes have elapsed since the last tick, invokes the /checkpoint skill or emits a minimal HANDOFF.md template at cwd. Updates the timestamp on every run.",
+  "event": "Stop",
+  "language": "python",
+  "trigger": {"type": "always"},
+  "blocking": false,
+  "side_effects": ["writes HANDOFF.md at cwd", "updates ~/.config/aiConstitution/checkpoints/<project>/.last-tick"],
+  "authored_by": "convergent-systems-key",
+  "tags": ["checkpoint", "handoff", "context-window", "continuity", "claude-code"],
+  "lifecycle": "stable"
+}
