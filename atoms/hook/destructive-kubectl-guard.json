@@ -1,0 +1,16 @@
+{
+  "schema": "https://ai-atoms.com/schemas/hook-v1.json",
+  "type": "hook",
+  "id": "hook/destructive-kubectl-guard",
+  "version": "1.0.0",
+  "name": "Destructive kubectl Guard",
+  "description": "Blocks destructive kubectl operations per Common.md §2.2. Opt-in via command-wrappers.toml. Denies kubectl delete, kubectl drain, and kubectl cordon without the bypass env AI_ALLOW_DESTRUCTIVE_KUBECTL=1. All other kubectl subcommands pass through.",
+  "event": "PreToolUse",
+  "language": "python",
+  "trigger": {"type": "tool-name", "pattern": "Bash"},
+  "blocking": true,
+  "side_effects": ["blocks tool call with explanation", "bypass via AI_ALLOW_DESTRUCTIVE_KUBECTL=1"],
+  "authored_by": "convergent-systems-key",
+  "tags": ["governance", "kubectl", "kubernetes", "destructive", "guard", "claude-code"],
+  "lifecycle": "stable"
+}

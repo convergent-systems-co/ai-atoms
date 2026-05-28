@@ -88,6 +88,12 @@
         }
       }
     },
+    "invocation": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "description": "Slash-command invocation forms, e.g. [\"/debug\", \"/debug \\\"<symptom>\\\"\", \"/debug --error <log>\"]. Omit for skills with no slash-command entry point.",
+      "uniqueItems": true
+    },
     "authored_by": {
       "type": "string",
       "description": "Key atom ID or author identifier."

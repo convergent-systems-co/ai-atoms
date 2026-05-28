@@ -1,0 +1,16 @@
+{
+  "schema": "https://ai-atoms.com/schemas/hook-v1.json",
+  "type": "hook",
+  "id": "hook/destructive-gh-guard",
+  "version": "1.0.0",
+  "name": "Destructive GitHub CLI Guard",
+  "description": "Blocks high-blast-radius, irreversible gh CLI operations per Common.md §2.2. Denies without explicit --force-i-mean-it confirmation: gh repo delete, gh release delete, gh secret delete, and gh auth logout. All other gh subcommands pass through.",
+  "event": "PreToolUse",
+  "language": "python",
+  "trigger": {"type": "tool-name", "pattern": "Bash"},
+  "blocking": true,
+  "side_effects": ["blocks tool call with explanation and bypass instructions"],
+  "authored_by": "convergent-systems-key",
+  "tags": ["governance", "gh-cli", "destructive", "guard", "claude-code"],
+  "lifecycle": "stable"
+}

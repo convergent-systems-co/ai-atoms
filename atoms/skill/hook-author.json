@@ -1,0 +1,65 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/hook-author",
+  "version": "1.0.0",
+  "name": "Hook Author",
+  "description": "Guided workflow for authoring and installing governance hooks to the ~/.ai/hooks/ enforcement plane. Covers the full lifecycle: describe the behavior → write the script → validate → install → test. Supported events: PreToolUse, PostToolUse, Stop, SubagentStop, PreCompact, UserPromptSubmit. Triggers on: /hook-author, 'author a hook', 'create a hook', 'write a governance hook'.",
+  "system_prompt_fragment": "Guide the user through authoring a governance hook. Step 1 DESCRIBE: ask what behavior the hook should enforce. Which event (PreToolUse/PostToolUse/Stop/etc.)? Blocking or non-blocking? What trigger pattern? Step 2 WRITE: implement the hook in Python following the _lib.py conventions in ~/.ai/hooks/. For blocking hooks: emit JSON {hookSpecificOutput: {permissionDecision: 'deny', permissionDecisionReason: '...'}}. For non-blocking: emit modified payload or nothing. Always exit 0. Step 3 VALIDATE: run --self-check to verify the hook loads without errors. Step 4 INSTALL: add to ~/.claude/settings.json hooks array. Step 5 TEST: trigger the hook manually and verify it behaves correctly. Also publish as a hook atom to ai-atoms. End each step with Did/Next/Blocked/Artifact.",
+  "applicable_domains": [
+    "governance",
+    "meta",
+    "hooks",
+    "claude-code"
+  ],
+  "invocation_contract": {
+    "inputs": [
+      {
+        "name": "behavior_description",
+        "type": "string",
+        "description": "What the hook should enforce or observe.",
+        "required": true
+      },
+      {
+        "name": "event",
+        "type": "string",
+        "description": "The Claude Code event to hook into (PreToolUse, PostToolUse, Stop, etc.).",
+        "required": false
+      },
+      {
+        "name": "blocking",
+        "type": "boolean",
+        "description": "Whether the hook should block execution on violation.",
+        "required": false
+      }
+    ],
+    "outputs": [
+      {
+        "name": "hook_script",
+        "type": "string",
+        "description": "The Python hook script ready to install at ~/.ai/hooks/."
+      },
+      {
+        "name": "settings_entry",
+        "type": "object",
+        "description": "The settings.json hooks entry to wire the hook."
+      }
+    ],
+    "side_effects": [
+      "writes Python script to ~/.ai/hooks/",
+      "edits ~/.claude/settings.json to wire the hook"
+    ]
+  },
+  "authored_by": "convergent-systems-key",
+  "tags": [
+    "governance",
+    "hooks",
+    "meta",
+    "lifecycle",
+    "claude-code"
+  ],
+  "lifecycle": "stable",
+  "invocation": [
+    "/hook-author"
+  ]
+}

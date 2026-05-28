@@ -26,6 +26,7 @@ const hooks = (catalog.atoms as any[])
         gap: 1rem;
         margin-top: 1.5rem;
       }
+      /* Cards always render light regardless of the dark shell */
       .atom-card {
         color-scheme: light;
         border: 1px solid #e2e8f0;
@@ -36,6 +37,14 @@ const hooks = (catalog.atoms as any[])
         display: flex;
         flex-direction: column;
         gap: 0.625rem;
+      }
+      /* Override atoms-catalog.css dark-mode code styling inside cards */
+      .atom-card code {
+        background: #e8edf5 !important;
+        color: #1e3a5f !important;
+        padding: 0.1rem 0.35rem;
+        border-radius: 0.25rem;
+        font-size: 0.85em;
       }
       .atom-card-header {
         display: flex;
@@ -124,7 +133,7 @@ const hooks = (catalog.atoms as any[])
       .trigger-pattern {
         font-family: monospace;
         font-size: 0.8rem;
-        background: #f8fafc;
+        background: #f1f5f9;
         color: #334155;
         padding: 0.1rem 0.35rem;
         border-radius: 0.2rem;
@@ -135,8 +144,8 @@ const hooks = (catalog.atoms as any[])
     <div class="shell">
       <main class="content">
         <p style="margin-bottom: 0.5rem;"><a href="/">← ai-atoms</a></p>
-        <h1>Hooks <span style="font-weight: 400; color: var(--muted); font-size: 1.25rem;">({hooks.length})</span></h1>
-        <p style="color: var(--muted); max-width: 44rem; font-size: 1rem; line-height: 1.6;">
+        <h1>Hooks <span style="font-weight: 400; color: #64748b; font-size: 1.25rem;">({hooks.length})</span></h1>
+        <p style="color: #64748b; max-width: 44rem; font-size: 1rem; line-height: 1.6;">
           Event-driven behaviors wired into AI tool infrastructure. Each hook declares the event it
           responds to (e.g. <code>PreToolUse</code>, <code>SessionStart</code>), its trigger pattern,
           the script language, and whether it blocks execution.
