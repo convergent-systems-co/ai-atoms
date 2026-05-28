@@ -153,7 +153,11 @@ const hooks = (catalog.atoms as any[])
           {hooks.map((hook: any) => (
             <div class="atom-card">
               <div class="atom-card-header">
-                <h2 class="atom-name">{hook.name}</h2>
+                <h2 class="atom-name">
+                  <a href={`/atoms/hook/${hook.id.replace('hook/','')}/`} style="color:inherit;text-decoration:none;">
+                    {hook.name}
+                  </a>
+                </h2>
                 <div style="display: flex; align-items: center; gap: 0.5rem;">
                   {hook.blocking !== undefined && (
                     <span class={`blocking-badge ${hook.blocking ? 'blocking-yes' : 'blocking-no'}`}>
