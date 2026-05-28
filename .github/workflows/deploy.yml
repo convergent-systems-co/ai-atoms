@@ -41,3 +41,24 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy web/dist --project-name=ai-atoms
+
+      - name: Trigger downstream rebuilds
+        # POST to Cloudflare Pages deploy hooks for sites that pull from ai-atoms.
+        # Each hook URL is stored as an org-level secret: CF_DEPLOY_HOOK_<PROJECT>.
+        # Adding a new downstream site: add a CF_DEPLOY_HOOK_<NAME> secret pointing
+        # to the site's Cloudflare Pages deploy hook URL, then add a curl line below.
+        # Non-fatal: continue-on-error so a missing hook doesn't block ai-atoms deploy.
+        continue-on-error: true
+        env:
+          HOOK_ATOMS_UMBRELLA: ${{ secrets.CF_DEPLOY_HOOK_ATOMS_UMBRELLA }}
+        run: |
+          fire() {
+            local name="$1" url="$2"
+            if [ -n "$url" ]; then
+              echo "→ triggering rebuild: $name"
+              curl -s -X POST "$url" | python3 -c "import sys,json; d=json.load(sys.stdin); print('  ok' if d.get('success') else f'  warn: {d}')" 2>/dev/null || true
+            else
+              echo "→ skip $name (no deploy hook configured)"
+            fi
+          }
+          fire "atoms-umbrella" "$HOOK_ATOMS_UMBRELLA"
