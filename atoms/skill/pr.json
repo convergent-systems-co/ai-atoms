@@ -33,8 +33,7 @@
       {
         "name": "pr_url",
         "type": "string",
-        "description": "URL of the created or existing PR.",
-        "required": true
+        "description": "URL of the created or existing PR."
       }
     ],
     "side_effects": [

@@ -40,8 +40,7 @@
       {
         "name": "diagram",
         "type": "string",
-        "description": "Mermaid or ASCII diagram source.",
-        "required": true
+        "description": "Mermaid or ASCII diagram source."
       }
     ],
     "side_effects": []

@@ -33,8 +33,7 @@
       {
         "name": "result",
         "type": "string",
-        "description": "Pass/fail summary with path:line citations for failures.",
-        "required": true
+        "description": "Pass/fail summary with path:line citations for failures."
       }
     ],
     "side_effects": [

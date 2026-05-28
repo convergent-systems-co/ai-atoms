@@ -27,8 +27,7 @@
       {
         "name": "cleanup_summary",
         "type": "string",
-        "description": "Branches deleted, stashes dropped, aggregate branch created.",
-        "required": true
+        "description": "Branches deleted, stashes dropped, aggregate branch created."
       }
     ],
     "side_effects": [

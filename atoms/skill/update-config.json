@@ -34,8 +34,7 @@
       {
         "name": "settings_diff",
         "type": "string",
-        "description": "The diff applied to settings.json.",
-        "required": true
+        "description": "The diff applied to settings.json."
       }
     ],
     "side_effects": [

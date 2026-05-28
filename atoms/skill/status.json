@@ -26,8 +26,7 @@
       {
         "name": "status",
         "type": "string",
-        "description": "Current status: ready or waiting-on list.",
-        "required": true
+        "description": "Current status: ready or waiting-on list."
       }
     ],
     "side_effects": []

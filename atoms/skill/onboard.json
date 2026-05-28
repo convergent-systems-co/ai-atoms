@@ -26,8 +26,7 @@
       {
         "name": "onboarding_doc",
         "type": "string",
-        "description": "The generated ONBOARDING.md content.",
-        "required": true
+        "description": "The generated ONBOARDING.md content."
       }
     ],
     "side_effects": [

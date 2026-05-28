@@ -40,8 +40,7 @@
       {
         "name": "explanation",
         "type": "string",
-        "description": "The explanation with path:line citations.",
-        "required": true
+        "description": "The explanation with path:line citations."
       }
     ],
     "side_effects": []

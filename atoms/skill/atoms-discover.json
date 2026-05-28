@@ -41,8 +41,7 @@
       {
         "name": "result",
         "type": "string",
-        "description": "Atom fetched and applied, or scaffold initiated with guidance.",
-        "required": true
+        "description": "Atom fetched and applied, or scaffold initiated with guidance."
       }
     ],
     "side_effects": [

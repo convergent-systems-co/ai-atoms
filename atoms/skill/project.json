@@ -33,8 +33,7 @@
       {
         "name": "result",
         "type": "string",
-        "description": "Summary of configuration changes.",
-        "required": true
+        "description": "Summary of configuration changes."
       }
     ],
     "side_effects": [

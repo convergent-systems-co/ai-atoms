@@ -33,8 +33,7 @@
       {
         "name": "commit_message",
         "type": "string",
-        "description": "The conventional commit message used.",
-        "required": true
+        "description": "The conventional commit message used."
       }
     ],
     "side_effects": [

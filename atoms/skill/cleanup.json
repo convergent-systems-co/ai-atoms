@@ -33,8 +33,7 @@
       {
         "name": "changes",
         "type": "string",
-        "description": "Summary of what was removed.",
-        "required": true
+        "description": "Summary of what was removed."
       }
     ],
     "side_effects": [

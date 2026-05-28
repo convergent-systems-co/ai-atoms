@@ -28,8 +28,7 @@
       {
         "name": "sprint_summary",
         "type": "string",
-        "description": "What was delivered, what is in-flight, what is blocked.",
-        "required": true
+        "description": "What was delivered, what is in-flight, what is blocked."
       }
     ],
     "side_effects": [

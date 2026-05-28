@@ -40,8 +40,7 @@
       {
         "name": "result",
         "type": "string",
-        "description": "Summary of structural changes.",
-        "required": true
+        "description": "Summary of structural changes."
       }
     ],
     "side_effects": [

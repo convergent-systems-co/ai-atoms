@@ -33,8 +33,7 @@
       {
         "name": "test_results",
         "type": "string",
-        "description": "Pass/fail summary with file:line citations for failures.",
-        "required": true
+        "description": "Pass/fail summary with file:line citations for failures."
       }
     ],
     "side_effects": [
