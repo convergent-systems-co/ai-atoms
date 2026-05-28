@@ -1,0 +1,222 @@
+{
+  "catalog": "ai-atoms",
+  "version": "0.1.0",
+  "built_at": "2026-05-28T12:50:11+00:00",
+  "atoms": [
+    {
+      "schema": "https://ai-atoms.com/schemas/hook-v1.json",
+      "type": "hook",
+      "id": "hook/audit-logger",
+      "version": "1.0.0",
+      "name": "Interaction Audit Logger",
+      "description": "Appends a JSONL record to ~/.ai/audit/interactions/<YYYY-MM>.jsonl for every Claude Code hook event: SessionStart, UserPromptSubmit, PreToolUse, PostToolUse, Stop, SessionEnd, SubagentStop, PreCompact. Non-blocking. Implements Common.md §5.2.",
+      "event": "PreToolUse",
+      "language": "python",
+      "trigger": {
+        "type": "always"
+      },
+      "blocking": false,
+      "side_effects": [
+        "writes to ~/.ai/audit/interactions/<YYYY-MM>.jsonl"
+      ],
+      "authored_by": "convergent-systems-key",
+      "tags": [
+        "audit",
+        "logging",
+        "governance",
+        "claude-code"
+      ],
+      "lifecycle": "stable"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/hook-v1.json",
+      "type": "hook",
+      "id": "hook/branch-guard",
+      "version": "1.0.0",
+      "name": "Branch Guard",
+      "description": "Prevents direct mutations to protected branches (main, release/*). Intercepts git commit, merge, rebase, cherry-pick, revert, am, pull, and push operations when the current HEAD is a protected branch. Requires explicit approval per Common.md §2.2.",
+      "event": "PreToolUse",
+      "language": "python",
+      "trigger": {
+        "type": "tool-name",
+        "pattern": "Bash"
+      },
+      "blocking": true,
+      "side_effects": [
+        "blocks tool call with explanation",
+        "emits protected-branch warning"
+      ],
+      "authored_by": "convergent-systems-key",
+      "tags": [
+        "git",
+        "governance",
+        "branch-protection",
+        "claude-code"
+      ],
+      "lifecycle": "stable"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/hook-v1.json",
+      "type": "hook",
+      "id": "hook/security-reminder",
+      "version": "1.0.0",
+      "name": "GitHub Actions Security Reminder",
+      "description": "Fires when Claude Code edits a GitHub Actions workflow file. Non-blocking reminder about command injection risks, untrusted input in run: steps, and the SAFE pattern (env: with proper quoting vs direct ${{ expression }} interpolation).",
+      "event": "PreToolUse",
+      "language": "python",
+      "trigger": {
+        "type": "file-pattern",
+        "pattern": ".github/workflows/*.yml"
+      },
+      "blocking": false,
+      "side_effects": [
+        "emits security guidance to stderr"
+      ],
+      "authored_by": "convergent-systems-key",
+      "tags": [
+        "security",
+        "github-actions",
+        "ci",
+        "claude-code"
+      ],
+      "lifecycle": "stable"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/hook-v1.json",
+      "type": "hook",
+      "id": "hook/worktree-guard",
+      "version": "1.0.0",
+      "name": "Worktree Placement Guard",
+      "description": "Enforces canonical git worktree placement per Common.md §U17. Denies 'git worktree add' commands that target ad-hoc paths (../branch/, /tmp/, sibling dirs). Canonical paths: <repo>/.worktrees/<name>/ for single-repo work, ~/.ai/worktrees/<name>/ for cross-repo or persistent worktrees.",
+      "event": "PreToolUse",
+      "language": "python",
+      "trigger": {
+        "type": "tool-name",
+        "pattern": "Bash"
+      },
+      "blocking": true,
+      "side_effects": [
+        "blocks non-canonical worktree creation with path guidance"
+      ],
+      "authored_by": "convergent-systems-key",
+      "tags": [
+        "git",
+        "worktree",
+        "governance",
+        "claude-code"
+      ],
+      "lifecycle": "stable"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/brainstorming",
+      "version": "1.0.0",
+      "name": "Brainstorm Before Building",
+      "description": "Explore user intent, requirements, and design space before writing any code. Surfaces constraints, alternatives, and tradeoffs. Must run before any creative work — features, components, new functionality, or behavior modifications. Prevents building the wrong thing.",
+      "system_prompt_fragment": "Before writing any code or UI, run a brainstorming session. Ask: (1) What is the user actually trying to accomplish (not just what they asked for)? (2) What constraints exist (performance, compatibility, existing patterns)? (3) What are 2-3 distinct approaches? For each: pros, cons, implementation complexity, reversibility. (4) What could go wrong? (5) What's out of scope? Surface answers before proposing an approach. Let the user redirect before any implementation begins.",
+      "applicable_domains": [
+        "code",
+        "design",
+        "planning"
+      ],
+      "authored_by": "convergent-systems-key",
+      "tags": [
+        "brainstorm",
+        "design",
+        "planning",
+        "requirements"
+      ],
+      "lifecycle": "stable"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/checkpoint",
+      "version": "1.0.0",
+      "name": "Session Checkpoint",
+      "description": "Capture a complete, resumable snapshot of in-flight work to ~/.ai/checkpoints/<owner>__<repo>/CHECKPOINT.md. Records branch, HEAD SHA, dirty files, active goal, decisions made, files in flight, last green state, next step, open questions, and a verify-on-resume list. Use before /clear, at context limits, or at phase boundaries.",
+      "system_prompt_fragment": "Save a session checkpoint to ~/.ai/checkpoints/<owner>__<repo>/CHECKPOINT.md. Gather: (1) branch + HEAD SHA, (2) dirty files, (3) active goal from issue/plan, (4) decisions made this session with rationale, (5) files in flight with line ranges, (6) last green test/build command, (7) next step (one imperative sentence), (8) open questions blocking progress, (9) verify-on-resume list of assertions that must be re-checked against live state. MUST NOT contain secrets. Write timestamp file and update CHECKPOINT.md pointer.",
+      "applicable_domains": [
+        "code",
+        "session",
+        "continuity"
+      ],
+      "authored_by": "convergent-systems-key",
+      "tags": [
+        "checkpoint",
+        "handoff",
+        "continuity",
+        "session"
+      ],
+      "lifecycle": "stable"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/dispatching-parallel-agents",
+      "version": "1.0.0",
+      "name": "Dispatch Parallel Agents",
+      "description": "Decompose a multi-task problem into independent units and dispatch subagents in parallel. Use when facing 2+ independent tasks with no shared state or sequential dependencies. Each agent gets a self-contained prompt with full context.",
+      "system_prompt_fragment": "Decompose the work into independent tasks. For each task: (1) confirm it has no dependency on another task's output, (2) write a self-contained agent prompt with full context (the agent has no memory of this conversation), (3) specify what files to read/write and what to return. Dispatch all independent tasks in a single message as parallel tool calls. Wait for all to complete. Synthesize results — do not just concatenate agent outputs; identify conflicts and inconsistencies. Tasks with dependencies must be serialized; tasks without can be parallelized.",
+      "applicable_domains": [
+        "code",
+        "agents",
+        "parallelism"
+      ],
+      "authored_by": "convergent-systems-key",
+      "tags": [
+        "agents",
+        "parallel",
+        "subagent",
+        "dispatch"
+      ],
+      "lifecycle": "stable"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/systematic-debugging",
+      "version": "1.0.0",
+      "name": "Systematic Debugging",
+      "description": "Five-phase debugging protocol: reproduce → isolate → root cause → fix with regression test → verify. Use when encountering any bug, test failure, or unexpected behavior. Never proposes a fix before root cause is confirmed. Enforces the 3-cycle local cap and 5-cycle total cap to prevent thrashing.",
+      "system_prompt_fragment": "Debug using five phases in order — no skipping. Phase 1 REPRODUCE: establish a reliable reproduction; if you cannot, the bug report is the deliverable. Phase 2 ISOLATE: narrow to the smallest surface. Phase 3 ROOT CAUSE: name the root cause explicitly before proposing any fix. Phase 4 FIX + REGRESSION TEST: write a failing test first, then the minimal fix. Phase 5 VERIFY: run the suite and cite the output. After fixing: 'Why was this not caught?' — name the gap. Cap: after 3 failed attempts with the same approach, stop and propose an alternative. After 5 total attempts, escalate.",
+      "applicable_domains": [
+        "code",
+        "debug"
+      ],
+      "authored_by": "convergent-systems-key",
+      "tags": [
+        "debug",
+        "root-cause",
+        "tdd",
+        "regression"
+      ],
+      "lifecycle": "stable"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/verification-before-completion",
+      "version": "1.0.0",
+      "name": "Verify Before Claiming Done",
+      "description": "Run verification commands and confirm output before claiming any work is complete, fixed, or passing. Evidence before assertions always. Use before committing, opening PRs, or reporting success. Never cite your own reasoning as proof.",
+      "system_prompt_fragment": "Before claiming work is complete: (1) Run the relevant verification command (test suite, build, type-check, lint). (2) Cite the actual output — not a summary, the output. (3) For 'tests pass': cite the test runner output with pass count. (4) For 'build succeeds': cite the build tool output and exit code. (5) For 'fix works': run it and cite the run. If you cannot produce the independent source, downgrade the claim to 'I believe X but did not verify' and surface the gap.",
+      "applicable_domains": [
+        "code",
+        "testing",
+        "quality"
+      ],
+      "authored_by": "convergent-systems-key",
+      "tags": [
+        "verification",
+        "testing",
+        "evidence",
+        "ci"
+      ],
+      "lifecycle": "stable"
+    }
+  ],
+  "compositions": [],
+  "rules": []
+}

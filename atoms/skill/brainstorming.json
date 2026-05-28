@@ -1,0 +1,13 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/brainstorming",
+  "version": "1.0.0",
+  "name": "Brainstorm Before Building",
+  "description": "Explore user intent, requirements, and design space before writing any code. Surfaces constraints, alternatives, and tradeoffs. Must run before any creative work — features, components, new functionality, or behavior modifications. Prevents building the wrong thing.",
+  "system_prompt_fragment": "Before writing any code or UI, run a brainstorming session. Ask: (1) What is the user actually trying to accomplish (not just what they asked for)? (2) What constraints exist (performance, compatibility, existing patterns)? (3) What are 2-3 distinct approaches? For each: pros, cons, implementation complexity, reversibility. (4) What could go wrong? (5) What's out of scope? Surface answers before proposing an approach. Let the user redirect before any implementation begins.",
+  "applicable_domains": ["code", "design", "planning"],
+  "authored_by": "convergent-systems-key",
+  "tags": ["brainstorm", "design", "planning", "requirements"],
+  "lifecycle": "stable"
+}

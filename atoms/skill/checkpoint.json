@@ -1,0 +1,13 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/checkpoint",
+  "version": "1.0.0",
+  "name": "Session Checkpoint",
+  "description": "Capture a complete, resumable snapshot of in-flight work to ~/.ai/checkpoints/<owner>__<repo>/CHECKPOINT.md. Records branch, HEAD SHA, dirty files, active goal, decisions made, files in flight, last green state, next step, open questions, and a verify-on-resume list. Use before /clear, at context limits, or at phase boundaries.",
+  "system_prompt_fragment": "Save a session checkpoint to ~/.ai/checkpoints/<owner>__<repo>/CHECKPOINT.md. Gather: (1) branch + HEAD SHA, (2) dirty files, (3) active goal from issue/plan, (4) decisions made this session with rationale, (5) files in flight with line ranges, (6) last green test/build command, (7) next step (one imperative sentence), (8) open questions blocking progress, (9) verify-on-resume list of assertions that must be re-checked against live state. MUST NOT contain secrets. Write timestamp file and update CHECKPOINT.md pointer.",
+  "applicable_domains": ["code", "session", "continuity"],
+  "authored_by": "convergent-systems-key",
+  "tags": ["checkpoint", "handoff", "continuity", "session"],
+  "lifecycle": "stable"
+}

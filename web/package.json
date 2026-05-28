@@ -1,0 +1,17 @@
+{
+  "name": "@atoms/ai-atoms-web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "prebuild": "mkdir -p public/exports && cp ../exports/catalog.json public/exports/catalog.json",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^6.3.7"
+  }
+}

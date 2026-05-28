@@ -1,0 +1,111 @@
+---
+import catalog from "../../public/exports/catalog.json";
+const title = "ai-atoms";
+const tagline = "AI runtime primitives — hooks and skills for AI agents and agentic pipelines.";
+const skills = (catalog.atoms as Array<{type: string; id: string}>).filter(a => a.type === "skill");
+const hooks = (catalog.atoms as Array<{type: string; id: string}>).filter(a => a.type === "hook");
+const counts = {
+  atoms: catalog.atoms.length,
+  skills: skills.length,
+  hooks: hooks.length,
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={tagline} />
+    <title>{title}</title>
+    <link rel="icon" type="image/svg+xml" href="https://brand-atoms.com/dist/brands/atom-family/1.0.0/assets/favicon.svg" />
+    <link rel="preconnect" href="https://brand-atoms.com" />
+    <link rel="stylesheet" href="https://brand-atoms.com/dist/brands/atom-family/1.0.0/css/tokens.css" />
+    <link rel="stylesheet" href="https://brand-atoms.com/dist/brands/atom-family/1.0.0/ui/atoms-catalog.css" />
+    <style>
+      body { min-height: 100vh; }
+      .hero-mark { width: 160px; height: 160px; margin-bottom: 20px; object-fit: contain; }
+      .sidenav-wordmark { width: 140px; object-fit: contain; display: block; }
+      .stat-bar { display: flex; gap: 2rem; margin: 1.5rem 0; flex-wrap: wrap; }
+      .stat { display: flex; flex-direction: column; }
+      .stat-value { font-size: 2rem; font-weight: 700; color: var(--accent, #4f46e5); line-height: 1; }
+      .stat-label { font-size: 0.875rem; color: var(--muted); margin-top: 0.25rem; }
+      .links-row { display: flex; gap: 1.5rem; flex-wrap: wrap; margin: 1rem 0; }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <main class="content">
+        <section class="hero">
+          <img src="https://brand-atoms.com/dist/brands/atom-family/1.0.0/assets/atom-family-icon.png" alt="atom-family" class="hero-mark" />
+          <h1>{title}</h1>
+          <p class="lede">{tagline}</p>
+        </section>
+
+        <div class="stat-bar">
+          <div class="stat">
+            <span class="stat-value">{counts.atoms}</span>
+            <span class="stat-label">atoms</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value">{counts.skills}</span>
+            <span class="stat-label">skills</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value">{counts.hooks}</span>
+            <span class="stat-label">hooks</span>
+          </div>
+        </div>
+
+        <p style="font-size: 1.125rem; color: var(--muted); max-width: 40rem;">
+          Two classes of AI runtime primitive — skills (bounded, invocable units of AI capability
+          with declared system-prompt fragments) and hooks (event-driven behaviors wired into
+          AI tool infrastructure). Portable, typed, and catalog-addressable.
+        </p>
+
+        <h2>Atom types</h2>
+        <ul>
+          <li><strong>skill</strong> — {counts.skills} atoms — bounded AI behavior protocols with invocation contracts</li>
+          <li><strong>hook</strong> — {counts.hooks} atoms — event-driven runtime hooks for Claude Code, Copilot CLI, and agentic pipelines</li>
+        </ul>
+
+        <h2>Catalog at v{catalog.version}</h2>
+        <div class="links-row">
+          <a href="/ai/index.json">/ai/index.json</a>
+          <a href="/exports/catalog.json">/exports/catalog.json</a>
+          <a href="https://github.com/convergent-systems-co/ai-atoms">GitHub ↗</a>
+        </div>
+
+        <h2>Civilization-grade properties</h2>
+        <ul>
+          <li><strong>Typed</strong> — every atom validates against a JSON Schema (skill-v1.json or hook-v1.json).</li>
+          <li><strong>Versioned</strong> — every atom has a semver <code>version</code> field.</li>
+          <li><strong>Machine-readable</strong> — <a href="/exports/catalog.json">/exports/catalog.json</a> is the canonical manifest.</li>
+          <li><strong>Event-driven</strong> — hooks declare their trigger event, language, and blocking behavior.</li>
+          <li><strong>Open</strong> — Apache-2.0 code license, CC-BY-4.0 data license.</li>
+          <li><strong>Durable</strong> — no external dependencies in the hot path.</li>
+        </ul>
+
+        <footer>
+          Apache-2.0 &middot; CC-BY-4.0 data &middot; <a href="https://convergent-systems.co">convergent-systems.co</a>
+        </footer>
+      </main>
+      <nav class="sidenav">
+        <a class="brand" href="/">
+          <img src="https://brand-atoms.com/dist/brands/atom-family/1.0.0/assets/atom-family-wordmark.png" alt="ATOMS" class="sidenav-wordmark" />
+        </a>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/atoms/skill/">Skills</a></li>
+          <li><a href="/atoms/hook/">Hooks</a></li>
+          <li><a href="/ai/index.json">AI</a></li>
+          <li><a href="https://schema-atoms.com">Builder ↗</a></li>
+          <li><a href="https://github.com/convergent-systems-co/ai-atoms">GitHub ↗</a></li>
+        </ul>
+        <div class="aside-meta">
+          <a class="meta-link" href="https://github.com/convergent-systems-co/ai-atoms">github ↗</a>
+        </div>
+      </nav>
+    </div>
+  </body>
+</html>

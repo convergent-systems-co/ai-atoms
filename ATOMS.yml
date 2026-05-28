@@ -1,0 +1,31 @@
+# ATOMS.yml — catalog manifest for ai-atoms
+#
+# Conforms to: https://schema-atoms.com/
+# spec_version: atoms-spec/v1.1.0
+
+spec_version: atoms-spec/v1.1.0
+name: ai-atoms
+version: 0.1.0
+canonical_domain: ai-atoms.com
+federation: convergent-systems.co
+description: |
+  AI runtime primitives — hooks and skills for AI agents, Claude Code, and agentic pipelines.
+  Skills are bounded, invocable units of AI capability with declared inputs, outputs, and
+  system-prompt fragments. Hooks are event-driven runtime behaviors wired into AI tool
+  infrastructure (Claude Code PreToolUse/PostToolUse, Copilot CLI, etc.).
+atom_types:
+  - skill
+  - hook
+composition_type: workflows
+composition_dir: workflows
+runtime_consumers:
+  - claude-code
+  - olympus
+  - aish
+lifecycle:
+  current: draft
+licensing:
+  code: Apache-2.0
+  data: CC-BY-4.0
+steward: convergent-systems-co
+infrastructure_operator: convergent-systems-co
