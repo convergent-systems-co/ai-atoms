@@ -1,7 +1,7 @@
 {
   "catalog": "ai-atoms",
   "version": "0.1.0",
-  "built_at": "2026-05-28T15:02:46+00:00",
+  "built_at": "2026-05-28T15:19:22+00:00",
   "atoms": [
     {
       "schema": "https://ai-atoms.com/schemas/hook-v1.json",
@@ -828,6 +828,303 @@
       "invocation": [
         "/hook-author"
       ]
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/make-atoms",
+      "version": "1.0.0",
+      "name": "Make Atoms",
+      "description": "Discover, fetch, or scaffold skill atoms via the atoms-discover skill. Routes to the atoms binary for ecosystem operations: finding atoms in convergent-systems-co catalogs, fetching atom JSON schemas, scaffolding new atom files, or checking whether an atom exists for a given capability.",
+      "system_prompt_fragment": "Delegate to the atoms-discover skill for all atom ecosystem operations. For discovery: fetch the catalog from the relevant *-atoms.com/ai/index.json and search by type or name. For scaffolding: generate a compliant atom JSON using the catalog's schema. For checking: look up the atom at its canonical URL. Use the atoms binary (ai atoms ...) when available. Never confuse atom management with the ai CLI or ~/.ai/ directory.",
+      "invocation": [
+        "/make atoms",
+        "/make atoms discover",
+        "/make atoms fetch <slug>",
+        "/make atoms scaffold <type>"
+      ],
+      "applicable_domains": [
+        "atoms",
+        "meta"
+      ],
+      "invocation_contract": {
+        "inputs": [
+          {
+            "name": "subcommand",
+            "type": "string",
+            "description": "discover | fetch | scaffold",
+            "required": false
+          },
+          {
+            "name": "target",
+            "type": "string",
+            "description": "Atom slug or type for fetch/scaffold.",
+            "required": false
+          }
+        ],
+        "outputs": [
+          {
+            "name": "result",
+            "type": "string",
+            "description": "Atom data, catalog listing, or scaffolded JSON."
+          }
+        ],
+        "side_effects": [
+          "may write new atom JSON file when scaffolding"
+        ]
+      },
+      "tags": [
+        "atoms",
+        "meta",
+        "discovery",
+        "scaffolding"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/make-build",
+      "version": "1.0.0",
+      "name": "Make Build",
+      "description": "Commit staged changes, push the current branch, open a pull request, and merge after CI passes. Never pushes to main directly. Never squash-merges on non-release branches.",
+      "system_prompt_fragment": "Run the build pipeline: (1) Stage and commit any uncommitted changes using Conventional Commits. (2) Push the branch to origin. (3) Open a GitHub PR with body generated from the branch commit log including 'Closes #<n>' links for any issues referenced. (4) Wait for CI to pass. (5) Merge with a merge commit — no squash on non-release branches. Report: PR URL, CI status, merge SHA.",
+      "invocation": [
+        "/make build"
+      ],
+      "applicable_domains": [
+        "code",
+        "git",
+        "delivery"
+      ],
+      "invocation_contract": {
+        "inputs": [],
+        "outputs": [
+          {
+            "name": "pr_url",
+            "type": "string",
+            "description": "URL of the opened PR."
+          },
+          {
+            "name": "merge_sha",
+            "type": "string",
+            "description": "SHA of the merge commit after CI passes."
+          }
+        ],
+        "side_effects": [
+          "commits to current branch",
+          "pushes to origin",
+          "opens PR",
+          "merges PR after CI"
+        ]
+      },
+      "tags": [
+        "git",
+        "pr",
+        "ci",
+        "merge",
+        "delivery"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/make-doctor",
+      "version": "1.0.0",
+      "name": "Make Doctor",
+      "description": "Health check for the AI governance stack and per-repo CI. Runs 'ai doctor', checks hook permissions, verifies CLAUDE.md constitution includes, confirms ~/.ai/memory/ and audit/ exist, and reports CI status on open PRs. Read-only unless --fix is explicitly requested.",
+      "system_prompt_fragment": "Run the doctor pipeline: (1) Run 'ai doctor' and surface warnings or failures. (2) Verify hook files in ~/.ai/hooks/ are executable (0755). (3) Check ~/.claude/CLAUDE.md contains @~/.ai/Constitution.md (not stale four-file includes). (4) Verify ~/.ai/memory/ and ~/.ai/audit/ directories exist. (5) Check CI status on all open PRs in the current repo. Report each check as PASS/WARN/FAIL with remediation steps. Read-only except when --fix is explicitly requested.",
+      "invocation": [
+        "/make doctor",
+        "/make doctor --fix"
+      ],
+      "applicable_domains": [
+        "governance",
+        "code",
+        "devops"
+      ],
+      "invocation_contract": {
+        "inputs": [
+          {
+            "name": "fix",
+            "type": "boolean",
+            "description": "If true, auto-remediate WARN findings where safe to do so.",
+            "required": false
+          }
+        ],
+        "outputs": [
+          {
+            "name": "health_report",
+            "type": "string",
+            "description": "Per-check PASS/WARN/FAIL report with remediation steps."
+          }
+        ],
+        "side_effects": [
+          "may fix hook permissions and CLAUDE.md includes when --fix is passed"
+        ]
+      },
+      "tags": [
+        "governance",
+        "health",
+        "hooks",
+        "audit",
+        "ci"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/make-review",
+      "version": "1.0.0",
+      "name": "Make Review",
+      "description": "Adversarial code reviewer sweep on the current branch diff against main. Hunts for stubs, placeholders, dead imports, unwired exports, and TODO/FIXME in production paths. Returns HIGH/MEDIUM/LOW findings with file:line citations. HIGH blocks merge.",
+      "system_prompt_fragment": "Run the code reviewer sweep on the current branch diff (git diff main...HEAD --name-only). Hunt for: stubs (panic/not-implemented/empty bodies) — HIGH; placeholder values (REPLACE_ME, <YOUR_VALUE>) — HIGH; TODO/FIXME in non-test production files — MEDIUM; unwired exports (zero non-test callers) — MEDIUM; dead imports — LOW; commented-out code blocks — LOW. Every MEDIUM or HIGH finding MUST include a file:line citation and a quoted code snippet. Return verdict: PASS | WARN | BLOCK.",
+      "invocation": [
+        "/make review"
+      ],
+      "applicable_domains": [
+        "code",
+        "review"
+      ],
+      "invocation_contract": {
+        "inputs": [],
+        "outputs": [
+          {
+            "name": "findings",
+            "type": "array",
+            "description": "List of severity-tagged findings with file:line citations."
+          },
+          {
+            "name": "verdict",
+            "type": "string",
+            "description": "PASS | WARN | BLOCK"
+          }
+        ],
+        "side_effects": []
+      },
+      "tags": [
+        "review",
+        "code-quality",
+        "stubs",
+        "adversarial"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/make-status",
+      "version": "1.0.0",
+      "name": "Make Status",
+      "description": "Sprint status snapshot: open PRs and their CI state, stale branches, sync gap between local and origin, and any uncommitted work. Read-only — does not modify any files.",
+      "system_prompt_fragment": "Report sprint status across the repo set. (1) List all open PRs with CI status (green/red/pending) and draft state. (2) List local branches ahead of main with commit counts. (3) Show the sync gap — commits on origin/main not yet in local main. (4) Show uncommitted changes and stale worktrees. Format as a status board: Done / In-flight / Blocked / Next-up. Read-only.",
+      "invocation": [
+        "/make status"
+      ],
+      "applicable_domains": [
+        "code",
+        "git",
+        "project"
+      ],
+      "invocation_contract": {
+        "inputs": [],
+        "outputs": [
+          {
+            "name": "status_board",
+            "type": "string",
+            "description": "ASCII status board showing PRs, branches, and uncommitted work."
+          }
+        ],
+        "side_effects": []
+      },
+      "tags": [
+        "status",
+        "sprint",
+        "git",
+        "ci",
+        "read-only"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/make-sync",
+      "version": "1.0.0",
+      "name": "Make Sync",
+      "description": "Pull all repos in the workspace (primary + submodules) to their default branch heads. Fast-forward only — never rebases, never force-pulls, never touches non-default branches. Reports any repos where fast-forward failed due to divergence.",
+      "system_prompt_fragment": "Sync all repos to their remote default branch. (1) Discover primary repo and all git submodules. (2) For each repo: git fetch --prune, then pull the default branch (main/master) with --ff-only. (3) Report any repos where --ff-only failed (diverged) without force-pulling. (4) Update submodule pointers in the parent repo if any changed. Never rebase, never force-pull, never touch non-default branches.",
+      "invocation": [
+        "/make sync"
+      ],
+      "applicable_domains": [
+        "code",
+        "git"
+      ],
+      "invocation_contract": {
+        "inputs": [],
+        "outputs": [
+          {
+            "name": "sync_report",
+            "type": "string",
+            "description": "List of repos synced successfully and any that diverged."
+          }
+        ],
+        "side_effects": [
+          "pulls default branch on all repos",
+          "updates submodule pointers"
+        ]
+      },
+      "tags": [
+        "git",
+        "sync",
+        "submodules",
+        "pull"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/make",
+      "version": "1.0.0",
+      "name": "Make — Unified Dispatcher",
+      "description": "Dispatcher for the make skill suite. Reads the subcommand and invokes the matching skill immediately. Subcommands: work/sprint (PM + delivery team), clean (purge merged branches), build (commit+push+PR+merge), test (run test suite), status (sprint snapshot), sync (pull all repos), review (code reviewer sweep), doctor (governance health check), atoms (atom ecosystem ops).",
+      "system_prompt_fragment": "Read the first word after /make and dispatch to the matching skill immediately. Do not summarize, plan, or ask clarifying questions — just dispatch.\n\nDispatch table:\n  work / sprint → make-work\n  clean         → make-clean\n  build         → make-build\n  test          → make-test\n  status        → make-status\n  sync          → make-sync\n  review        → make-review\n  doctor        → make-doctor\n  atoms         → make-atoms\n\nIf the subcommand is unknown or missing, print the usage table and stop.",
+      "invocation": [
+        "/make work",
+        "/make sprint",
+        "/make clean",
+        "/make build",
+        "/make test",
+        "/make status",
+        "/make sync",
+        "/make review",
+        "/make doctor",
+        "/make atoms"
+      ],
+      "applicable_domains": [
+        "code",
+        "delivery",
+        "git",
+        "project"
+      ],
+      "tags": [
+        "make",
+        "dispatcher",
+        "delivery",
+        "workflow"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
