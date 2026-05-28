@@ -7,10 +7,29 @@
   "description": "Blocks destructive kubectl operations per Common.md §2.2. Opt-in via command-wrappers.toml. Denies kubectl delete, kubectl drain, and kubectl cordon without the bypass env AI_ALLOW_DESTRUCTIVE_KUBECTL=1. All other kubectl subcommands pass through.",
   "event": "PreToolUse",
   "language": "python",
-  "trigger": {"type": "tool-name", "pattern": "Bash"},
+  "trigger": {
+    "type": "tool-name",
+    "pattern": "Bash"
+  },
   "blocking": true,
-  "side_effects": ["blocks tool call with explanation", "bypass via AI_ALLOW_DESTRUCTIVE_KUBECTL=1"],
+  "side_effects": [
+    "blocks tool call with explanation",
+    "bypass via AI_ALLOW_DESTRUCTIVE_KUBECTL=1"
+  ],
   "authored_by": "convergent-systems-key",
-  "tags": ["governance", "kubectl", "kubernetes", "destructive", "guard", "claude-code"],
-  "lifecycle": "stable"
+  "tags": [
+    "governance",
+    "kubectl",
+    "kubernetes",
+    "destructive",
+    "guard",
+    "claude-code"
+  ],
+  "lifecycle": "stable",
+  "platforms": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run destructive-kubectl-guard' in settings.json — the ai binary discovers Python on each OS. kubectl available on all platforms. Python logic is cross-platform."
 }

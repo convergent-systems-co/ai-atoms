@@ -7,10 +7,27 @@
   "description": "30-minute background tick that writes a HANDOFF.md so context-window resets don't lose state. Implements Common.md §U10 (handoff + checkpoint) and §U13 (context-window discipline). If more than 30 minutes have elapsed since the last tick, invokes the /checkpoint skill or emits a minimal HANDOFF.md template at cwd. Updates the timestamp on every run.",
   "event": "Stop",
   "language": "python",
-  "trigger": {"type": "always"},
+  "trigger": {
+    "type": "always"
+  },
   "blocking": false,
-  "side_effects": ["writes HANDOFF.md at cwd", "updates ~/.config/aiConstitution/checkpoints/<project>/.last-tick"],
+  "side_effects": [
+    "writes HANDOFF.md at cwd",
+    "updates ~/.config/aiConstitution/checkpoints/<project>/.last-tick"
+  ],
   "authored_by": "convergent-systems-key",
-  "tags": ["checkpoint", "handoff", "context-window", "continuity", "claude-code"],
-  "lifecycle": "stable"
+  "tags": [
+    "checkpoint",
+    "handoff",
+    "context-window",
+    "continuity",
+    "claude-code"
+  ],
+  "lifecycle": "stable",
+  "platforms": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run checkpoint-tick' in settings.json — the ai binary discovers Python on each OS. Already contains sys.platform == 'win32' logic for config dir (%APPDATA%\\aiConstitution on Windows)."
 }

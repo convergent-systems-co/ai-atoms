@@ -78,6 +78,16 @@
       "uniqueItems": true,
       "description": "Observable effects of this hook (e.g. writes to audit log, emits warning to stderr)."
     },
+    "platforms": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["linux", "macos", "windows"] },
+      "uniqueItems": true,
+      "description": "Platforms on which this hook's logic is verified. Omit to mean all platforms. Wiring is always cross-platform via 'ai hooks run <slug>'."
+    },
+    "platform_notes": {
+      "type": "string",
+      "description": "Notes about platform-specific behavior, prerequisites, or known gaps."
+    },
     "authored_by": {
       "type": "string",
       "description": "Key atom ID or author identifier."

@@ -7,10 +7,26 @@
   "description": "PostToolUse hook that records every wrapped command invocation (git, gh, etc.) to the audit log. Makes the appearance side of the audit trail reliable — absence of an audit line for an expected command is itself visible during forensic review. Records WRAPPED_CMD, WRAPPED_ARGV, WRAPPED_EXIT, and WRAPPED_DURATION.",
   "event": "PostToolUse",
   "language": "python",
-  "trigger": {"type": "always"},
+  "trigger": {
+    "type": "always"
+  },
   "blocking": false,
-  "side_effects": ["appends invocation record to ~/.ai/audit/interactions/<YYYY-MM>.jsonl"],
+  "side_effects": [
+    "appends invocation record to ~/.ai/audit/interactions/<YYYY-MM>.jsonl"
+  ],
   "authored_by": "convergent-systems-key",
-  "tags": ["audit", "logging", "governance", "commands", "claude-code"],
-  "lifecycle": "stable"
+  "tags": [
+    "audit",
+    "logging",
+    "governance",
+    "commands",
+    "claude-code"
+  ],
+  "lifecycle": "stable",
+  "platforms": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run audit-command' in settings.json — the ai binary discovers Python on each OS. Reads env vars WRAPPED_CMD etc. — set by the ai command wrappers on all platforms."
 }

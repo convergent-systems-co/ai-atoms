@@ -1,7 +1,7 @@
 {
   "catalog": "ai-atoms",
   "version": "0.1.0",
-  "built_at": "2026-05-28T13:47:06+00:00",
+  "built_at": "2026-05-28T15:02:46+00:00",
   "atoms": [
     {
       "schema": "https://ai-atoms.com/schemas/hook-v1.json",
@@ -27,7 +27,13 @@
         "commands",
         "claude-code"
       ],
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "platforms": [
+        "linux",
+        "macos",
+        "windows"
+      ],
+      "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run audit-command' in settings.json — the ai binary discovers Python on each OS. Reads env vars WRAPPED_CMD etc. — set by the ai command wrappers on all platforms."
     },
     {
       "schema": "https://ai-atoms.com/schemas/hook-v1.json",
@@ -52,7 +58,13 @@
         "governance",
         "claude-code"
       ],
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "platforms": [
+        "linux",
+        "macos",
+        "windows"
+      ],
+      "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run audit-logger' in settings.json — the ai binary discovers Python on each OS. Writes to ~/.ai/audit/ — path resolves correctly cross-platform via Python pathlib."
     },
     {
       "schema": "https://ai-atoms.com/schemas/hook-v1.json",
@@ -79,7 +91,13 @@
         "branch-protection",
         "claude-code"
       ],
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "platforms": [
+        "linux",
+        "macos",
+        "windows"
+      ],
+      "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run branch-guard' in settings.json — the ai binary discovers Python on each OS. Inspects git command strings — git works cross-platform. Python shebang ignored on Windows; invoked via 'ai hooks run'."
     },
     {
       "schema": "https://ai-atoms.com/schemas/hook-v1.json",
@@ -106,7 +124,13 @@
         "continuity",
         "claude-code"
       ],
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "platforms": [
+        "linux",
+        "macos",
+        "windows"
+      ],
+      "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run checkpoint-tick' in settings.json — the ai binary discovers Python on each OS. Already contains sys.platform == 'win32' logic for config dir (%APPDATA%\\aiConstitution on Windows)."
     },
     {
       "schema": "https://ai-atoms.com/schemas/hook-v1.json",
@@ -133,7 +157,13 @@
         "guard",
         "claude-code"
       ],
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "platforms": [
+        "linux",
+        "macos",
+        "windows"
+      ],
+      "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run destructive-gh-guard' in settings.json — the ai binary discovers Python on each OS. gh CLI available on all platforms. Python logic is cross-platform."
     },
     {
       "schema": "https://ai-atoms.com/schemas/hook-v1.json",
@@ -162,7 +192,13 @@
         "guard",
         "claude-code"
       ],
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "platforms": [
+        "linux",
+        "macos",
+        "windows"
+      ],
+      "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run destructive-kubectl-guard' in settings.json — the ai binary discovers Python on each OS. kubectl available on all platforms. Python logic is cross-platform."
     },
     {
       "schema": "https://ai-atoms.com/schemas/hook-v1.json",
@@ -192,7 +228,13 @@
         "guard",
         "claude-code"
       ],
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "platforms": [
+        "linux",
+        "macos",
+        "windows"
+      ],
+      "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run destructive-terraform-guard' in settings.json — the ai binary discovers Python on each OS. tofu/terraform available on all platforms. Python logic is cross-platform."
     },
     {
       "schema": "https://ai-atoms.com/schemas/hook-v1.json",
@@ -221,7 +263,13 @@
         "no-verify",
         "claude-code"
       ],
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "platforms": [
+        "linux",
+        "macos",
+        "windows"
+      ],
+      "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run no-verify-strip' in settings.json — the ai binary discovers Python on each OS. Modifies git argv in-process — cross-platform. Invoked via 'ai hooks run'."
     },
     {
       "schema": "https://ai-atoms.com/schemas/hook-v1.json",
@@ -250,7 +298,13 @@
         "governance",
         "claude-code"
       ],
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "platforms": [
+        "linux",
+        "macos",
+        "windows"
+      ],
+      "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run op-redact' in settings.json — the ai binary discovers Python on each OS. Pure Python regex; no OS-specific calls. Works on all platforms."
     },
     {
       "schema": "https://ai-atoms.com/schemas/hook-v1.json",
@@ -277,7 +331,13 @@
         "patterns",
         "claude-code"
       ],
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "platforms": [
+        "linux",
+        "macos",
+        "windows"
+      ],
+      "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run secret-block' in settings.json — the ai binary discovers Python on each OS. Pure Python regex on stdin JSON. Works on all platforms."
     },
     {
       "schema": "https://ai-atoms.com/schemas/hook-v1.json",
@@ -306,7 +366,13 @@
         "ci",
         "claude-code"
       ],
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "platforms": [
+        "linux",
+        "macos",
+        "windows"
+      ],
+      "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run secret-precommit' in settings.json — the ai binary discovers Python on each OS. Calls subprocess git diff — git is available cross-platform. Pre-commit mode uses 'exec python3' in the shim; Windows users should use 'ai hooks run' instead."
     },
     {
       "schema": "https://ai-atoms.com/schemas/hook-v1.json",
@@ -332,7 +398,13 @@
         "ci",
         "claude-code"
       ],
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "platforms": [
+        "linux",
+        "macos",
+        "windows"
+      ],
+      "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run security-reminder' in settings.json — the ai binary discovers Python on each OS. Pure Python; writes to stderr. Works on all platforms."
     },
     {
       "schema": "https://ai-atoms.com/schemas/hook-v1.json",
@@ -358,7 +430,13 @@
         "governance",
         "claude-code"
       ],
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "platforms": [
+        "linux",
+        "macos",
+        "windows"
+      ],
+      "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run worktree-guard' in settings.json — the ai binary discovers Python on each OS. Inspects git command strings via Python. Path separators handled by pathlib. Works on all platforms."
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",

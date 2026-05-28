@@ -16,6 +16,17 @@
     "blocks non-canonical worktree creation with path guidance"
   ],
   "authored_by": "convergent-systems-key",
-  "tags": ["git", "worktree", "governance", "claude-code"],
-  "lifecycle": "stable"
+  "tags": [
+    "git",
+    "worktree",
+    "governance",
+    "claude-code"
+  ],
+  "lifecycle": "stable",
+  "platforms": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run worktree-guard' in settings.json — the ai binary discovers Python on each OS. Inspects git command strings via Python. Path separators handled by pathlib. Works on all platforms."
 }

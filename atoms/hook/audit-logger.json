@@ -15,6 +15,17 @@
     "writes to ~/.ai/audit/interactions/<YYYY-MM>.jsonl"
   ],
   "authored_by": "convergent-systems-key",
-  "tags": ["audit", "logging", "governance", "claude-code"],
-  "lifecycle": "stable"
+  "tags": [
+    "audit",
+    "logging",
+    "governance",
+    "claude-code"
+  ],
+  "lifecycle": "stable",
+  "platforms": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run audit-logger' in settings.json — the ai binary discovers Python on each OS. Writes to ~/.ai/audit/ — path resolves correctly cross-platform via Python pathlib."
 }

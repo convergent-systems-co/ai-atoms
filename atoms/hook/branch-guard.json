@@ -17,6 +17,17 @@
     "emits protected-branch warning"
   ],
   "authored_by": "convergent-systems-key",
-  "tags": ["git", "governance", "branch-protection", "claude-code"],
-  "lifecycle": "stable"
+  "tags": [
+    "git",
+    "governance",
+    "branch-protection",
+    "claude-code"
+  ],
+  "lifecycle": "stable",
+  "platforms": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run branch-guard' in settings.json — the ai binary discovers Python on each OS. Inspects git command strings — git works cross-platform. Python shebang ignored on Windows; invoked via 'ai hooks run'."
 }
