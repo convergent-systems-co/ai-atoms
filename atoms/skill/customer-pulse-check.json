@@ -1,0 +1,24 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/customer-pulse-check",
+  "version": "1.0.0",
+  "name": "customer-pulse-check",
+  "description": "Synthesizes themes from PayPal disputes, HubSpot tickets, and review exports into a top-3 fixable issues list with drafted response templates. Accepts optional since-date argument.",
+  "system_prompt_fragment": "Run the customer voice synthesis. Pull feedback signals from all connected sources, identify the themes that are actually fixable, and produce drafted responses the owner can review and send.\n\nParse arguments:\n- `--since` (default: last 30 days) — start date `YYYY-MM-DD` for the lookback window\n\n## Step 1 — Gather feedback signals\n\nUsing the `customer-pulse` skill workflow:\n\n1. Pull PayPal disputes and chargebacks for the period: reason codes, amounts, resolution status.\n2. Pull HubSpot support tickets and conversation notes for the period.\n3. If review export files are available (Google Reviews CSV, Yelp export, etc.) in Files: read and parse them.\n4. Count total signals per source.\n\n## Step 2 — Theme extraction\n\nCluster all signals into recurring themes. For each theme:\n- Count how many signals mention it\n- Classify: Product quality / Delivery / Billing / Communication / Expectation mismatch / Other\n- Rate impact: 🔴 High (revenue risk, churn) / 🟡 Medium / 🟢 Low\n\n## Step 3 — Top-3 fixable issues\n\nUsing the `ticket-deflector` skill workflow:\n\nSelect the top 3 themes by: frequency × impact rating. For each:\n1. State the issue in one sentence\n2. Explain the root cause (where evident)\n3. Suggest a specific operational fix\n4. Draft a customer response template\n\nResponse template format:\n```\nSubject: Re: {issue topic}\n\nHi {first name},\n\nThank you for reaching out. {Acknowledgment of their experience in 1-2 sentences}.\n\n{What we're doing about it / what happened / resolution offered}.\n\n{Next step or offer}.\n\n{Sign-off}\n```\n\n## Step 4 — Summary table\n\nFormat the output as:\n\n```\nCustomer Voice — {date range}\nTotal signals: {n} ({PayPal disputes: n} | {HubSpot tickets: n} | {Reviews: n})\n\nTOP 3 FIXABLE ISSUES\n1. {Issue} ({frequency}) — {impact} — Fix: {one-line fix}\n2. {Issue} ({frequency}) — {impact} — Fix: {one-line fix}\n3. {Issue} ({frequency}) — {impact} — Fix: {one-line fix}\n```\n\n## Connector failures\n\nRun with whatever sources are connected — this command degrades gracefully. If PayPal is missing, skip dispute data and note \"PayPal not connected — dispute data skipped.\" If HubSpot is missing, skip ticket data and note it. If no sources are connected at all, stop and tell the owner: \"No feedback sources connected. Connect at least one of PayPal, HubSpot, or upload a review export CSV.\"\n\n## Approval gates\n\n- **Never send response emails automatically.** Present drafts for owner review only.\n- **Never close HubSpot tickets or resolve PayPal disputes without explicit owner confirmation.**\n- **Never include customer PII in the summary** — use first name + last initial only.\n\n## Output\n\nPresent the summary table, then each response template. Ask the owner which templates they'd like to send, then wait for explicit approval before drafting the send.",
+  "applicable_domains": [
+    "business",
+    "operations"
+  ],
+  "invocation": [
+    "/customer-pulse-check"
+  ],
+  "tags": [
+    "small-business",
+    "anthropics",
+    "knowledge-work"
+  ],
+  "authored_by": "anthropics",
+  "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/customer-pulse-check/SKILL.md",
+  "lifecycle": "stable"
+}

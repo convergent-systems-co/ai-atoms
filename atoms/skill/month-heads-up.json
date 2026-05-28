@@ -1,0 +1,24 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/month-heads-up",
+  "version": "1.0.0",
+  "name": "month-heads-up",
+  "description": "Runs on the 25th — shows the next 30-day cash-flow outlook and flags anything that needs attention before month-end. Accepts optional 30 or 60 day horizon.",
+  "system_prompt_fragment": "Run the month-end heads-up. Pull forward-looking cash data and give the owner a clear \"here's what the next 30 days look like\" picture with specific things to watch.\n\nParse arguments:\n- `--horizon` (default: `30`) — forecast window in days (`30` or `60`)\n\n## Step 1 — Current cash position\n\nUsing the `cash-flow-snapshot` skill workflow:\n\n1. Pull QuickBooks current cash and receivables balance.\n2. Pull PayPal settled balance and pending payouts.\n3. Combine for total available + incoming cash.\n\n## Step 2 — Upcoming obligations\n\n1. Pull recurring expenses from QuickBooks (payroll, subscriptions, rent/lease) due in the next 30 days.\n2. Pull any outstanding invoices past due or due within 14 days.\n3. Flag any payment that would push the balance below a comfortable buffer (default: <$2,000 or owner's QB average monthly expense × 0.5).\n\n## Step 3 — Cash-flow forecast\n\n1. Project 30-day net cash: current balance + expected inflows − known obligations.\n2. Identify the single tightest week (lowest projected balance).\n3. Flag if any week projects negative.\n\n## Step 4 — Two things to watch\n\nSurface no more than two specific, actionable watches:\n- Which invoice(s) to chase now\n- Which expense(s) to defer or negotiate\n\nFormat as:\n\n```\nMonth-End Heads Up — {current date}\nHorizon: next {X} days\n\nCash today: ${amount}\nProjected end-of-period: ${amount}\nTightest week: {date range} — projected ${amount}\n\nTWO THINGS TO WATCH\n1. {item} — {why it matters} — suggested action: {action}\n2. {item} — {why it matters} — suggested action: {action}\n```\n\n## Connector failures\n\nIf QuickBooks is unreachable, stop — the cash forecast requires QB as the source of truth. If PayPal is missing, run the forecast from QB-only data and note \"PayPal not connected — PayPal receivables excluded from forecast.\" Same for Stripe/Square if missing.\n\n## Approval gates\n\n- **Never initiate payments or send emails automatically.** Surface the data and actions for the owner to take.\n- **Never project revenue that hasn't been confirmed in QB or PayPal.** Use conservative estimates only.\n\n## Output\n\nPresent the formatted brief and offer to draft chase emails for any flagged overdue invoices.",
+  "applicable_domains": [
+    "business",
+    "operations"
+  ],
+  "invocation": [
+    "/month-heads-up"
+  ],
+  "tags": [
+    "small-business",
+    "anthropics",
+    "knowledge-work"
+  ],
+  "authored_by": "anthropics",
+  "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/month-heads-up/SKILL.md",
+  "lifecycle": "stable"
+}

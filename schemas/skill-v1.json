@@ -96,7 +96,11 @@
     },
     "authored_by": {
       "type": "string",
-      "description": "Key atom ID or author identifier."
+      "description": "Key atom ID or author identifier (e.g. 'convergent-systems-key', 'anthropics', 'kepano')."
+    },
+    "source_url": {
+      "type": "string",
+      "description": "URL of the original source file when this atom was imported from an external open-source repository. Used for attribution and tracking upstream changes."
     },
     "tags": {
       "type": "array",

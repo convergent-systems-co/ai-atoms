@@ -1,0 +1,24 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/customer-pulse",
+  "version": "1.0.0",
+  "name": "customer-pulse",
+  "description": ">",
+  "system_prompt_fragment": "# Customer Pulse\n\n## Quick start\n\nAsk: *\"How are customers feeling this month?\"*\n\nClaude pulls disputes, tickets, email threads, and Intercom conversations for the last 30 days, groups them into 3–5 themes with verbatim evidence, and delivers a \"do these 3 things this week\" action list.\n\nTo include Google/Yelp reviews, paste them after triggering — or say \"I have some reviews to add.\"\n\n## Workflow\n\n1. **Set the date window.** Default: last 30 days. If the user specifies a range, use it.\n\n2. **Pull PayPal disputes.** Fetch disputes opened in the window. If the PayPal API returns a rate-limit error, skip and add `PayPal: rate-limited — not included` to the Sources section. Do not retry; do not error. See [reference/gotchas.md](reference/gotchas.md) for the rate-limit pattern.\n\n3. **Pull HubSpot tickets and feedback.** Fetch open and recently closed tickets. If 0 tickets exist, record `HubSpot tickets: 0` and continue — do not surface a warning.\n\n4. **Pull Gmail threads.** Search for threads in the window containing: `refund cancel unhappy issue problem disappointed frustrated broken late slow wrong missing`. Extract subject lines and 1–2 sentence excerpts per thread.\n\n5. **Pull Intercom conversations.** Call `search_conversations` to fetch open and recently closed conversations. Then call `get_conversation` for each conversation ID returned to access the full `conversation_parts`. Extract parts where `author.type === 'user'` — these are customer messages. Exclude parts where `author.type` is `admin` or `bot`.\n\n6. **Accept pasted reviews (optional).** If the user pastes Google or Yelp review text, include it in the source pool tagged as `[Review]`. No connector required.\n\n7. **Extract themes.** Group all evidence into 3–5 recurring themes. Each theme must include:\n   - A one-sentence label (e.g., \"Shipping delays causing repeat complaints\")\n   - 2–3 verbatim quotes with source tags: `[PayPal]`, `[HubSpot]`, `[Gmail]`, `[Intercom]`, or `[Review]`\n   - A signal count (how many items touch this theme)\n\n   Verbatim quotes are non-negotiable — never paraphrase. See [reference/gotchas.md](reference/gotchas.md) for the verbatim anti-pattern.\n\n8. **Generate the \"do these 3 things\" list.** Rank themes by signal count. Pick the top 3 and write one concrete, owner-actionable step per theme. Format as a numbered checklist.\n\n9. **Deliver the report.** Structure the output with these sections in order:\n   - **Header** — H2 with \"Customer Pulse\" and the date range.\n   - **Sources pulled** — Bullet list with signal counts per source (PayPal\n     disputes, HubSpot tickets, Gmail threads, Intercom conversations, pasted\n     reviews). Note any source that was rate-limited and skipped.\n   - **Themes** — For each theme, show a bold numbered theme label with the\n     signal count, followed by two verbatim quotes as blockquotes, each\n     attributed to its source.\n   - **Do these 3 things this week** — Numbered list of three concrete,\n     owner-actionable steps, each tied to one of the top themes.\n\n   For a complete worked example, see [reference/examples/example-report.md](reference/examples/example-report.md).\n\n## Approval gates\n\nThis skill is **read-only** — it does not post, send, reply, or modify any records. No approval gate is required.\n\n## Reference\n\n- [reference/gotchas.md](reference/gotchas.md) — PayPal rate limits, HubSpot empty state, verbatim quote requirement, Gmail keyword drift\n- [reference/examples/example-report.md](reference/examples/example-report.md) — full worked example output",
+  "applicable_domains": [
+    "business",
+    "operations"
+  ],
+  "invocation": [
+    "/customer-pulse"
+  ],
+  "tags": [
+    "small-business",
+    "anthropics",
+    "knowledge-work"
+  ],
+  "authored_by": "anthropics",
+  "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/customer-pulse/SKILL.md",
+  "lifecycle": "stable"
+}

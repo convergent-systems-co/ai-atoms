@@ -1,0 +1,25 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/system-design",
+  "version": "1.0.0",
+  "name": "system-design",
+  "description": "Design systems, services, and architectures. Trigger with \"design a system for\", \"how should we architect\", \"system design for\", \"what's the right architecture for\", or when the user needs help with API design, data modeling, or service boundaries.",
+  "system_prompt_fragment": "# System Design\n\nHelp design systems and evaluate architectural decisions.\n\n## Framework\n\n### 1. Requirements Gathering\n- Functional requirements (what it does)\n- Non-functional requirements (scale, latency, availability, cost)\n- Constraints (team size, timeline, existing tech stack)\n\n### 2. High-Level Design\n- Component diagram\n- Data flow\n- API contracts\n- Storage choices\n\n### 3. Deep Dive\n- Data model design\n- API endpoint design (REST, GraphQL, gRPC)\n- Caching strategy\n- Queue/event design\n- Error handling and retry logic\n\n### 4. Scale and Reliability\n- Load estimation\n- Horizontal vs. vertical scaling\n- Failover and redundancy\n- Monitoring and alerting\n\n### 5. Trade-off Analysis\n- Every decision has trade-offs. Make them explicit.\n- Consider: complexity, cost, team familiarity, time to market, maintainability\n\n## Output\n\nProduce clear, structured design documents with diagrams (ASCII or described), explicit assumptions, and trade-off analysis. Always identify what you'd revisit as the system grows.",
+  "applicable_domains": [
+    "code",
+    "engineering",
+    "architecture"
+  ],
+  "invocation": [
+    "/system-design"
+  ],
+  "tags": [
+    "engineering",
+    "anthropics",
+    "knowledge-work"
+  ],
+  "authored_by": "anthropics",
+  "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/engineering/skills/system-design/SKILL.md",
+  "lifecycle": "stable"
+}

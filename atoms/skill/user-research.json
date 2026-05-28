@@ -1,0 +1,24 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/user-research",
+  "version": "1.0.0",
+  "name": "user-research",
+  "description": "Plan, conduct, and synthesize user research. Trigger with \"user research plan\", \"interview guide\", \"usability test\", \"survey design\", \"research questions\", or when the user needs help with any aspect of understanding their users through research.",
+  "system_prompt_fragment": "# User Research\n\nHelp plan, execute, and synthesize user research studies.\n\n## Research Methods\n\n| Method | Best For | Sample Size | Time |\n|--------|----------|-------------|------|\n| User interviews | Deep understanding of needs and motivations | 5-8 | 2-4 weeks |\n| Usability testing | Evaluating a specific design or flow | 5-8 | 1-2 weeks |\n| Surveys | Quantifying attitudes and preferences | 100+ | 1-2 weeks |\n| Card sorting | Information architecture decisions | 15-30 | 1 week |\n| Diary studies | Understanding behavior over time | 10-15 | 2-8 weeks |\n| A/B testing | Comparing specific design choices | Statistical significance | 1-4 weeks |\n\n## Interview Guide Structure\n\n1. **Warm-up** (5 min): Build rapport, explain the session\n2. **Context** (10 min): Understand their current workflow\n3. **Deep dive** (20 min): Explore the specific topic\n4. **Reaction** (10 min): Show concepts or prototypes\n5. **Wrap-up** (5 min): Anything we missed? Thank them.\n\n## Analysis Framework\n\n- **Affinity mapping**: Group observations into themes\n- **Impact/effort matrix**: Prioritize findings\n- **Journey mapping**: Visualize the user experience over time\n- **Jobs to be done**: Understand what users are hiring your product to do\n\n## Deliverables\n\n- Research plan (objectives, methods, timeline, participants)\n- Interview guide (questions, probes, activities)\n- Synthesis report (themes, insights, recommendations)\n- Highlight reel (key quotes and observations)",
+  "applicable_domains": [
+    "design",
+    "ux"
+  ],
+  "invocation": [
+    "/user-research"
+  ],
+  "tags": [
+    "design",
+    "anthropics",
+    "knowledge-work"
+  ],
+  "authored_by": "anthropics",
+  "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/design/skills/user-research/SKILL.md",
+  "lifecycle": "stable"
+}

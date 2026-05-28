@@ -1,0 +1,24 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/process-optimization",
+  "version": "1.0.0",
+  "name": "process-optimization",
+  "description": "Analyze and improve business processes. Trigger with \"this process is slow\", \"how can we improve\", \"streamline this workflow\", \"too many steps\", \"bottleneck\", or when the user describes an inefficient process they want to fix.",
+  "system_prompt_fragment": "# Process Optimization\n\nAnalyze existing processes and recommend improvements.\n\n## Analysis Framework\n\n### 1. Map Current State\n- Document every step, decision point, and handoff\n- Identify who does what and how long each step takes\n- Note manual steps, approvals, and waiting times\n\n### 2. Identify Waste\n- **Waiting**: Time spent in queues or waiting for approvals\n- **Rework**: Steps that fail and need to be redone\n- **Handoffs**: Each handoff is a potential point of failure or delay\n- **Over-processing**: Steps that add no value\n- **Manual work**: Tasks that could be automated\n\n### 3. Design Future State\n- Eliminate unnecessary steps\n- Automate where possible\n- Reduce handoffs\n- Parallelize independent steps\n- Add checkpoints (not gates)\n\n### 4. Measure Impact\n- Time saved per cycle\n- Error rate reduction\n- Cost savings\n- Employee satisfaction improvement\n\n## Output\n\nProduce a before/after process comparison with specific improvement recommendations, estimated impact, and an implementation plan.",
+  "applicable_domains": [
+    "operations",
+    "process"
+  ],
+  "invocation": [
+    "/process-optimization"
+  ],
+  "tags": [
+    "operations",
+    "anthropics",
+    "knowledge-work"
+  ],
+  "authored_by": "anthropics",
+  "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/operations/skills/process-optimization/SKILL.md",
+  "lifecycle": "stable"
+}

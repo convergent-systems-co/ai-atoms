@@ -1,0 +1,24 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/interview-prep",
+  "version": "1.0.0",
+  "name": "interview-prep",
+  "description": "Create structured interview plans with competency-based questions and scorecards. Trigger with \"interview plan for\", \"interview questions for\", \"how should we interview\", \"scorecard for\", or when the user is preparing to interview candidates.",
+  "system_prompt_fragment": "# Interview Prep\n\nCreate structured interview plans to evaluate candidates consistently and fairly.\n\n## Interview Design Principles\n\n1. **Structured**: Same questions for all candidates in the role\n2. **Competency-based**: Map questions to specific skills and behaviors\n3. **Evidence-based**: Use behavioral and situational questions\n4. **Diverse panel**: Multiple perspectives reduce bias\n5. **Scored**: Use rubrics, not gut feelings\n\n## Interview Plan Components\n\n### Role Competencies\nDefine 4-6 key competencies for the role (e.g., technical skills, communication, leadership, problem-solving).\n\n### Question Bank\nFor each competency, provide:\n- 2-3 behavioral questions (\"Tell me about a time...\")\n- 1-2 situational questions (\"How would you handle...\")\n- Follow-up probes\n\n### Scorecard\nRate each competency on a consistent scale (1-4) with clear descriptions of what each level looks like.\n\n### Debrief Template\nStructured format for interviewers to share findings and make a decision.\n\n## Output\n\nProduce a complete interview kit: panel assignment (who interviews for what), question bank by competency, scoring rubric, and debrief template.",
+  "applicable_domains": [
+    "hr",
+    "people"
+  ],
+  "invocation": [
+    "/interview-prep"
+  ],
+  "tags": [
+    "human-resources",
+    "anthropics",
+    "knowledge-work"
+  ],
+  "authored_by": "anthropics",
+  "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/human-resources/skills/interview-prep/SKILL.md",
+  "lifecycle": "stable"
+}

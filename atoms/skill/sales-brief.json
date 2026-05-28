@@ -1,0 +1,24 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/sales-brief",
+  "version": "1.0.0",
+  "name": "sales-brief",
+  "description": "Surfaces top and bottom sellers, identifies seasonality patterns, and produces a 2-week content brief to push winners and clear slow movers. Accepts optional lookback window of 30, 60, or 90 days.",
+  "system_prompt_fragment": "Run the sales analysis and content brief. Pull what sold (and what didn't), explain why, and produce a ready-to-use content plan that acts on the data.\n\nParse arguments:\n- `--lookback` (default: `30d`) — `30d`, `60d`, or `90d` lookback window\n\n## Step 1 — Sales breakdown\n\nUsing the `content-strategy` skill workflow for sales analysis:\n\n1. Pull PayPal transactions for the lookback period grouped by item/service/SKU.\n2. Pull QuickBooks revenue by product/service category.\n3. Rank products by: total revenue, unit volume, and margin (if available in QB).\n4. Calculate each product's share of total revenue vs. prior equivalent period.\n\nTop sellers: products that grew share or maintained top-3 rank.\nBottom sellers: products with declining volume or below 5% of revenue.\n\n## Step 2 — Seasonality check\n\n1. Compare current period to same period in prior year (if QB history available).\n2. Flag any items with a seasonal pattern (e.g., spikes in Q4, slow summers).\n3. Note any new products with insufficient history to detect seasonality.\n\n## Step 3 — Why analysis\n\nFor each top and bottom seller, explain the likely driver:\n- Price change, promo, new channel, seasonal demand, competitor move\n- Cross-reference with HubSpot campaign activity for the period\n- Note where attribution is inferred vs. confirmed\n\n## Step 4 — 2-week content brief\n\nProduce a ready-to-use content brief:\n\n```\n2-Week Content Brief — {date range}\n\nPUSH THESE (winners)\n• {product}: {suggested angle} — {channel: email|social|both}\n• {product}: {suggested angle} — {channel}\n\nCLEAR THESE (slow movers)\n• {product}: {promo angle or bundle suggestion} — {channel}\n\nCONTENT CALENDAR\nWeek 1:\n  Mon: {post/email concept}\n  Wed: {post/email concept}\n  Fri: {post/email concept}\nWeek 2:\n  Mon: {post/email concept}\n  Wed: {post/email concept}\n  Fri: {post/email concept}\n```\n\n## Connector failures\n\nIf both QuickBooks and PayPal are unreachable, stop — sales analysis requires at least one revenue source. If only one is connected, run from that source and note \"QuickBooks not connected — revenue data from PayPal only\" (or vice versa). If HubSpot is missing, skip campaign cross-reference in the \"why analysis\" and note it.\n\n## Approval gates\n\n- **Never auto-schedule or publish content.** The brief is for owner review only.\n- **Never create Canva assets automatically** — offer to generate them after owner approves the brief.\n\n## Output\n\nPresent the sales analysis, then the content brief. Ask the owner if they'd like to generate Canva assets for any of the planned posts.",
+  "applicable_domains": [
+    "business",
+    "operations"
+  ],
+  "invocation": [
+    "/sales-brief"
+  ],
+  "tags": [
+    "small-business",
+    "anthropics",
+    "knowledge-work"
+  ],
+  "authored_by": "anthropics",
+  "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/sales-brief/SKILL.md",
+  "lifecycle": "stable"
+}

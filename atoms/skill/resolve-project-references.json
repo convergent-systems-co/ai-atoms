@@ -1,0 +1,26 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/resolve-project-references",
+  "version": "1.0.0",
+  "name": "resolve-project-references",
+  "description": "Guide for interpreting ResolveProjectReferences time in MSBuild performance summaries. Only activate in MSBuild/.NET build context. Activate when ResolveProjectReferences appears as the most expensive target and developers are trying to optimize it directly. Explains that the reported time includes wait time for dependent project builds and is misleading. Guides users to focus on task self-time instead. Do not activate for general build performance -- use build-perf-diagnostics instead.",
+  "system_prompt_fragment": "# Misleading ResolveProjectReferences Time\n\nPrevent misguided optimization of `ResolveProjectReferences` by explaining that its reported time is wall-clock wait time, not CPU work.\n\n## When to Use\n\n- `ResolveProjectReferences` appears as the most expensive target in the Target Performance Summary\n- A developer is trying to optimize `ResolveProjectReferences` directly\n- Build performance analysis shows a single target consuming 50-80% of total build time\n\n## When Not to Use\n\n- General build performance optimization (use `build-perf-diagnostics` instead)\n- The bottleneck is clearly a different target (e.g., `Csc`, `ResolveAssemblyReference`)\n- The user has not yet captured a binlog or performance summary\n\n## Inputs\n\n| Input | Required | Description |\n|-------|----------|-------------|\n| Build log or binlog | Yes | A diagnostic build log or binlog containing the Target Performance Summary |\n\n## Workflow\n\n### Step 1: Confirm the misleading symptom\n\nVerify that `ResolveProjectReferences` appears as the top target in the **Target** Performance Summary. This is the misleading metric.\n\n### Step 2: Explain why it is misleading\n\nThe reported time includes **waiting for dependent projects to build** while the MSBuild node is yielded (see dotnet/msbuild#3135). During this wait, the node may be doing useful work on other projects. The target itself does very little work.\n\n### Step 3: Redirect to task self-time\n\nUse the **Task** Performance Summary to identify the real bottleneck.\n\n#### Primary: binlog MCP (preferred)\n\nUse the **binlog MCP server** expensive_tasks tool to get task self-time rankings directly from the binlog.\n\n#### Fallback: text-log replay (when MCP is unavailable)\n\n```bash\ndotnet msbuild build.binlog -noconlog -fl \"-flp:v=diag;logfile=full.log;performancesummary\"\ngrep \"Task Performance Summary\" -A 50 full.log\n```\n\nFocus on self-time of actual tasks:\n\n- **Csc**: see `build-perf-diagnostics` skill (Section 2: Roslyn Analyzers)\n- **ResolveAssemblyReference**: see `build-perf-diagnostics` skill (Section 1: RAR)\n- **Copy**: see `build-perf-diagnostics` skill (Section 4: File I/O)\n- **Serialization bottlenecks**: see `build-parallelism` skill\n\n## Validation\n\n- [ ] Task Performance Summary was used instead of Target Performance Summary\n- [ ] `ResolveProjectReferences` was not set as the optimization target\n- [ ] A concrete task (e.g., `Csc`, `Copy`, `ResolveAssemblyReference`) was identified as the true bottleneck",
+  "applicable_domains": [
+    "code",
+    "dotnet",
+    "engineering"
+  ],
+  "invocation": [
+    "/resolve-project-references"
+  ],
+  "tags": [
+    "dotnet-msbuild",
+    "dotnet",
+    "csharp",
+    "microsoft"
+  ],
+  "authored_by": "anthropics",
+  "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-msbuild/skills/resolve-project-references/SKILL.md",
+  "lifecycle": "stable"
+}

@@ -1,0 +1,24 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/quarterly-review",
+  "version": "1.0.0",
+  "name": "quarterly-review",
+  "description": "Generates a full QBR narrative — revenue trend, margin trend, customer health, top opportunities and risks — as a presentation-ready PDF or deck. Accepts optional quarter and save-to arguments.",
+  "system_prompt_fragment": "Run the quarterly business review. Pull financial, sales, and customer data for the quarter, synthesize it into a narrative, and produce a presentation-ready document.\n\nParse arguments:\n- `--quarter` (default: previous calendar quarter) — format `YYYY-QN` (e.g., `2026-Q1`)\n- `--save-to` (default: `files`) — `files` (Google Drive / OneDrive), `desktop`, or `both`\n\n## Step 1 — Financial performance\n\nUsing the `business-pulse` skill in deep mode:\n\n1. Pull QuickBooks P&L for the quarter: revenue, COGS, gross margin, operating expenses, net margin.\n2. Compare to prior quarter and same quarter last year (if available).\n3. Pull PayPal settlements for the same period to validate QB revenue.\n4. Calculate: revenue growth %, margin change in points, top 3 revenue categories.\n\n## Step 2 — Customer health\n\n1. Pull HubSpot deal data: new customers won, churned, average deal size, pipeline entering next quarter.\n2. Calculate customer acquisition cost (if data available) and revenue per customer.\n3. Flag any customers representing >20% of revenue (concentration risk).\n\n## Step 3 — Top opportunities\n\nIdentify 3 specific opportunities for next quarter based on the data:\n- Revenue upside (category, customer segment, or channel to double down on)\n- Margin upside (cost to cut or price to raise)\n- Customer upside (segment to target or churn to reduce)\n\n## Step 4 — Top risks\n\nIdentify 3 specific risks for next quarter:\n- Revenue risk (concentration, trend, seasonality)\n- Margin risk (rising cost, pricing pressure)\n- Operational risk (pipeline gap, vendor dependency)\n\n## Step 5 — QBR narrative\n\nWrite a 500–800 word narrative in plain business English with this structure:\n1. Quarter headline (one sentence)\n2. Revenue story (trend + why)\n3. Margin story (trend + why)\n4. Customer story (health + pipeline)\n5. Three opportunities\n6. Three risks\n7. One-paragraph call to action for next quarter\n\n## Step 6 — Export\n\nGenerate:\n1. **`qbr-{YYYY-QN}.pdf`** — formatted narrative + key charts (as ASCII tables if no chart tool available)\n2. Save to `--save-to` location\n\n## Connector failures\n\nIf QuickBooks is unreachable, stop — the QBR requires QB financial data as the foundation. If PayPal is missing, skip cross-validation and note \"PayPal not connected — revenue validated from QB only.\" If HubSpot is missing, skip customer health (Step 2) and note \"HubSpot not connected — customer health section skipped.\"\n\n## Approval gates\n\n- **Never publish or email the QBR automatically.** Always display for owner review first.\n- **Flag if any data source returns incomplete data** — note gaps in the narrative.\n\n## Output\n\nPresent the narrative in-line, then confirm export. End with a one-paragraph \"what to focus on next quarter\" summary.",
+  "applicable_domains": [
+    "business",
+    "operations"
+  ],
+  "invocation": [
+    "/quarterly-review"
+  ],
+  "tags": [
+    "small-business",
+    "anthropics",
+    "knowledge-work"
+  ],
+  "authored_by": "anthropics",
+  "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/quarterly-review/SKILL.md",
+  "lifecycle": "stable"
+}

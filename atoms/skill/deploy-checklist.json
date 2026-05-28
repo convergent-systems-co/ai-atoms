@@ -1,0 +1,26 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/deploy-checklist",
+  "version": "1.0.0",
+  "name": "deploy-checklist",
+  "description": "Pre-deployment verification checklist. Use when about to ship a release, deploying a change with database migrations or feature flags, verifying CI status and approvals before going to production, or documenting rollback triggers ahead of time.",
+  "system_prompt_fragment": "# /deploy-checklist\n\n> If you see unfamiliar placeholders or need to check which tools are connected, see [CONNECTORS.md](../../CONNECTORS.md).\n\nGenerate a pre-deployment checklist to verify readiness before shipping.\n\n## Usage\n\n```\n/deploy-checklist $ARGUMENTS\n```\n\n## Output\n\n```markdown\n## Deploy Checklist: [Service/Release]\n**Date:** [Date] | **Deployer:** [Name]\n\n### Pre-Deploy\n- [ ] All tests passing in CI\n- [ ] Code reviewed and approved\n- [ ] No known critical bugs in release\n- [ ] Database migrations tested (if applicable)\n- [ ] Feature flags configured (if applicable)\n- [ ] Rollback plan documented\n- [ ] On-call team notified\n\n### Deploy\n- [ ] Deploy to staging and verify\n- [ ] Run smoke tests\n- [ ] Deploy to production (canary if available)\n- [ ] Monitor error rates and latency for 15 min\n- [ ] Verify key user flows\n\n### Post-Deploy\n- [ ] Confirm metrics are nominal\n- [ ] Update release notes / changelog\n- [ ] Notify stakeholders\n- [ ] Close related tickets\n\n### Rollback Triggers\n- Error rate exceeds [X]%\n- P50 latency exceeds [X]ms\n- [Critical user flow] fails\n```\n\n## Customization\n\nTell me about your deploy and I'll customize the checklist:\n- \"We use feature flags\" → adds flag verification steps\n- \"This includes a database migration\" → adds migration-specific checks\n- \"This is a breaking API change\" → adds consumer notification steps\n\n## If Connectors Available\n\nIf **~~source control** is connected:\n- Pull the release diff and list of changes\n- Verify all PRs are approved and merged\n\nIf **~~CI/CD** is connected:\n- Check build and test status automatically\n- Verify pipeline is green before deploy\n\nIf **~~monitoring** is connected:\n- Pre-fill rollback trigger thresholds from current baselines\n- Set up post-deploy metric watch\n\n## Tips\n\n1. **Run before every deploy** — Even routine ones. Checklists prevent \"I forgot to...\"\n2. **Customize once, reuse** — Tell me your stack and I'll remember your deploy process.\n3. **Include rollback criteria** — Decide when to roll back before you deploy, not during.",
+  "applicable_domains": [
+    "code",
+    "engineering",
+    "architecture"
+  ],
+  "invocation": [
+    "/deploy-checklist",
+    "/deploy-checklist [service or release name]"
+  ],
+  "tags": [
+    "engineering",
+    "anthropics",
+    "knowledge-work"
+  ],
+  "authored_by": "anthropics",
+  "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/engineering/skills/deploy-checklist/SKILL.md",
+  "lifecycle": "stable"
+}

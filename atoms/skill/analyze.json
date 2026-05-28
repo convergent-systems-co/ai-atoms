@@ -1,0 +1,25 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/analyze",
+  "version": "1.0.0",
+  "name": "analyze",
+  "description": "Answer data questions -- from quick lookups to full analyses. Use when looking up a single metric, investigating what's driving a trend or drop, comparing segments over time, or preparing a formal data report for stakeholders.",
+  "system_prompt_fragment": "# /analyze - Answer Data Questions\n\n> If you see unfamiliar placeholders or need to check which tools are connected, see [CONNECTORS.md](../../CONNECTORS.md).\n\nAnswer a data question, from a quick lookup to a full analysis to a formal report.\n\n## Usage\n\n```\n/analyze <natural language question>\n```\n\n## Workflow\n\n### 1. Understand the Question\n\nParse the user's question and determine:\n\n- **Complexity level**:\n  - **Quick answer**: Single metric, simple filter, factual lookup (e.g., \"How many users signed up last week?\")\n  - **Full analysis**: Multi-dimensional exploration, trend analysis, comparison (e.g., \"What's driving the drop in conversion rate?\")\n  - **Formal report**: Comprehensive investigation with methodology, caveats, and recommendations (e.g., \"Prepare a quarterly business review of our subscription metrics\")\n- **Data requirements**: Which tables, metrics, dimensions, and time ranges are needed\n- **Output format**: Number, table, chart, narrative, or combination\n\n### 2. Gather Data\n\n**If a data warehouse MCP server is connected:**\n\n1. Explore the schema to find relevant tables and columns\n2. Write SQL query(ies) to extract the needed data\n3. Execute the query and retrieve results\n4. If the query fails, debug and retry (check column names, table references, syntax for the specific dialect)\n5. If results look unexpected, run sanity checks before proceeding\n\n**If no data warehouse is connected:**\n\n1. Ask the user to provide data in one of these ways:\n   - Paste query results directly\n   - Upload a CSV or Excel file\n   - Describe the schema so you can write queries for them to run\n2. If writing queries for manual execution, use the `sql-queries` skill for dialect-specific best practices\n3. Once data is provided, proceed with analysis\n\n### 3. Analyze\n\n- Calculate relevant metrics, aggregations, and comparisons\n- Identify patterns, trends, outliers, and anomalies\n- Compare across dimensions (time periods, segments, categories)\n- For complex analyses, break the problem into sub-questions and address each\n\n### 4. Validate Before Presenting\n\nBefore sharing results, run through validation checks:\n\n- **Row count sanity**: Does the number of records make sense?\n- **Null check**: Are there unexpected nulls that could skew results?\n- **Magnitude check**: Are the numbers in a reasonable range?\n- **Trend continuity**: Do time series have unexpected gaps?\n- **Aggregation logic**: Do subtotals sum to totals correctly?\n\nIf any check raises concerns, investigate and note caveats.\n\n### 5. Present Findings\n\n**For quick answers:**\n- State the answer directly with relevant context\n- Include the query used (collapsed or in a code block) for reproducibility\n\n**For full analyses:**\n- Lead with the key finding or insight\n- Support with data tables and/or visualizations\n- Note methodology and any caveats\n- Suggest follow-up questions\n\n**For formal reports:**\n- Executive summary with key takeaways\n- Methodology section explaining approach and data sources\n- Detailed findings with supporting evidence\n- Caveats, limitations, and data quality notes\n- Recommendations and suggested next steps\n\n### 6. Visualize Where Helpful\n\nWhen a chart would communicate results more effectively than a table:\n\n- Use the `data-visualization` skill to select the right chart type\n- Generate a Python visualization or build it into an HTML dashboard\n- Follow visualization best practices for clarity and accuracy\n\n## Examples\n\n**Quick answer:**\n```\n/analyze How many new users signed up in December?\n```\n\n**Full analysis:**\n```\n/analyze What's causing the increase in support ticket volume over the past 3 months? Break down by category and priority.\n```\n\n**Formal report:**\n```\n/analyze Prepare a data quality assessment of our customer table -- completeness, consistency, and any issues we should address.\n```\n\n## Tips\n\n- Be specific about time ranges, segments, or metrics when possible\n- If you know the table names, mention them to speed up the process\n- For complex questions, Claude may break them into multiple queries\n- Results are always validated before presentation -- if something looks off, Claude will flag it",
+  "applicable_domains": [
+    "data",
+    "analytics"
+  ],
+  "invocation": [
+    "/analyze",
+    "/analyze <question>"
+  ],
+  "tags": [
+    "data",
+    "anthropics",
+    "knowledge-work"
+  ],
+  "authored_by": "anthropics",
+  "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/data/skills/analyze/SKILL.md",
+  "lifecycle": "stable"
+}

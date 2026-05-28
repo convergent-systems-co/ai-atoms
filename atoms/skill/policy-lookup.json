@@ -1,0 +1,25 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/policy-lookup",
+  "version": "1.0.0",
+  "name": "policy-lookup",
+  "description": "Find and explain company policies in plain language. Trigger with \"what's our PTO policy\", \"can I work remotely from another country\", \"how do expenses work\", or any plain-language question about benefits, travel, leave, or handbook rules.",
+  "system_prompt_fragment": "# /policy-lookup\n\n> If you see unfamiliar placeholders or need to check which tools are connected, see [CONNECTORS.md](../../CONNECTORS.md).\n\nLook up and explain company policies in plain language. Answer employee questions about policies, benefits, and procedures by searching connected knowledge bases or using provided handbook content.\n\n## Usage\n\n```\n/policy-lookup $ARGUMENTS\n```\n\nSearch for policies matching: $ARGUMENTS\n\n## How It Works\n\n```\n┌─────────────────────────────────────────────────────────────────┐\n│                    POLICY LOOKUP                                   │\n├─────────────────────────────────────────────────────────────────┤\n│  STANDALONE (always works)                                       │\n│  ✓ Ask any policy question in plain language                    │\n│  ✓ Paste your employee handbook and I'll search it              │\n│  ✓ Get clear, jargon-free answers                               │\n├─────────────────────────────────────────────────────────────────┤\n│  SUPERCHARGED (when you connect your tools)                      │\n│  + Knowledge base: Search handbook and policy docs automatically │\n│  + HRIS: Pull employee-specific details (PTO balance, benefits) │\n└─────────────────────────────────────────────────────────────────┘\n```\n\n## Common Policy Topics\n\n- **PTO and Leave**: Vacation, sick leave, parental leave, bereavement, sabbatical\n- **Benefits**: Health insurance, dental, vision, 401k, HSA/FSA, wellness\n- **Compensation**: Pay schedule, bonus timing, equity vesting, expense reimbursement\n- **Remote Work**: WFH policy, remote locations, equipment stipend, coworking\n- **Travel**: Booking policy, per diem, expense reporting, approval process\n- **Conduct**: Code of conduct, harassment policy, conflicts of interest\n- **Growth**: Professional development budget, conference policy, tuition reimbursement\n\n## How to Answer\n\n1. Search ~~knowledge base for the relevant policy document\n2. Provide a clear, plain-language answer\n3. Quote the specific policy language\n4. Note any exceptions or special cases\n5. Point to who to contact for edge cases\n\n**Important guardrails:**\n- Always cite the source document and section\n- If no policy is found, say so clearly rather than guessing\n- For legal or compliance questions, recommend consulting HR or legal directly\n\n## Output\n\n```markdown\n## Policy: [Topic]\n\n### Quick Answer\n[1-2 sentence direct answer to their question]\n\n### Details\n[Relevant policy details, explained in plain language]\n\n### Exceptions / Special Cases\n[Any relevant exceptions or edge cases]\n\n### Who to Contact\n[Person or team for questions beyond what's documented]\n\n### Source\n[Where this information came from — document name, page, or section]\n```\n\n## If Connectors Available\n\nIf **~~knowledge base** is connected:\n- Search employee handbook and policy documents automatically\n- Cite the specific document, section, and page number\n\nIf **~~HRIS** is connected:\n- Pull employee-specific details like PTO balance, benefits elections, and enrollment status\n\n## Tips\n\n1. **Ask in plain language** — \"Can I work from Europe for a month?\" is better than \"international remote work policy.\"\n2. **Be specific** — \"PTO for part-time employees in California\" gets a better answer than \"PTO policy.\"",
+  "applicable_domains": [
+    "hr",
+    "people"
+  ],
+  "invocation": [
+    "/policy-lookup",
+    "/policy-lookup <policy topic — PTO, benefits, travel, expenses, etc.>"
+  ],
+  "tags": [
+    "human-resources",
+    "anthropics",
+    "knowledge-work"
+  ],
+  "authored_by": "anthropics",
+  "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/human-resources/skills/policy-lookup/SKILL.md",
+  "lifecycle": "stable"
+}

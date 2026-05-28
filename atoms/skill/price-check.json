@@ -1,0 +1,24 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/price-check",
+  "version": "1.0.0",
+  "name": "price-check",
+  "description": "Produces a margin-by-product table and three pricing-scenario data views so the owner can see the full financial picture before making a pricing decision. Accepts optional product name argument.",
+  "system_prompt_fragment": "Run the pricing analysis. Pull cost and revenue data, build the margin table, and model three pricing scenarios — so the owner can see the numbers clearly before deciding what to charge.\n\nParse arguments:\n- `PRODUCT_NAME` (optional) — specific product or service to analyze; if omitted, analyze all active products\n\n## Step 1 — Current margin baseline\n\nUsing the `margin-analyzer` skill workflow:\n\n1. Pull QuickBooks revenue by product/service for the last 90 days.\n2. Pull COGS or direct costs per product from QuickBooks (if categorized).\n3. Pull PayPal gross sales for the same products to cross-validate.\n4. Calculate current gross margin per product: (revenue − COGS) ÷ revenue.\n\nBuild the margin table:\n\n```\nProduct          | Revenue  | COGS     | Gross Margin | Margin %\n{product}        | ${amt}   | ${amt}   | ${amt}       | {X}%\n```\n\nFlag any product with margin below 20% as a risk.\n\n## Step 2 — Three pricing scenarios\n\nFor each product (or the specified product), model three scenarios. Do NOT recommend a price — present data only.\n\n**Scenario A — Hold current price**\n- Project revenue at current price × current volume\n- Project margin at current COGS\n\n**Scenario B — Price increase (+10% to +20%, owner to specify)**\n- Project revenue assuming 0%, 5%, and 10% volume loss at new price\n- Show the break-even volume needed to maintain current profit\n\n**Scenario C — Price decrease (−10%, to drive volume)**\n- Project revenue assuming 10%, 20%, and 30% volume increase\n- Show the volume needed to match current profit\n\nPresent each scenario as a data table, not a recommendation.\n\n## Step 3 — Customer messaging brief\n\nProduce a plain-language brief (for price increase scenarios) the owner can use to communicate a change to customers:\n- One paragraph explaining the change\n- Three key message options (direct, value-focused, empathetic)\n- Suggested timing and channel (email, invoice note, in-person)\n\n## Connector failures\n\nIf QuickBooks is unreachable, stop — margin analysis requires QB revenue and cost data. If PayPal is missing, run from QB-only and note \"PayPal not connected — cross-validation against PayPal sales skipped.\"\n\n## Approval gates\n\n- **Never recommend a specific price.** Provide data views only — pricing decisions belong to the owner.\n- **Flag if COGS data is incomplete** (many QB setups don't track per-product COGS) and note the gap.\n- **Never update any prices in QB, PayPal, or any connected system.**\n\n## Output\n\nPresent the margin table, then the three scenario tables side-by-side. If a price increase scenario is being considered, append the customer messaging brief. End with: \"Which scenario would you like to explore further?\"",
+  "applicable_domains": [
+    "business",
+    "operations"
+  ],
+  "invocation": [
+    "/price-check"
+  ],
+  "tags": [
+    "small-business",
+    "anthropics",
+    "knowledge-work"
+  ],
+  "authored_by": "anthropics",
+  "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/price-check/SKILL.md",
+  "lifecycle": "stable"
+}

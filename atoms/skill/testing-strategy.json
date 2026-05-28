@@ -1,0 +1,25 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/testing-strategy",
+  "version": "1.0.0",
+  "name": "testing-strategy",
+  "description": "Design test strategies and test plans. Trigger with \"how should we test\", \"test strategy for\", \"write tests for\", \"test plan\", \"what tests do we need\", or when the user needs help with testing approaches, coverage, or test architecture.",
+  "system_prompt_fragment": "# Testing Strategy\n\nDesign effective testing strategies balancing coverage, speed, and maintenance.\n\n## Testing Pyramid\n\n```\n        /  E2E  \\         Few, slow, high confidence\n       / Integration \\     Some, medium speed\n      /    Unit Tests  \\   Many, fast, focused\n```\n\n## Strategy by Component Type\n\n- **API endpoints**: Unit tests for business logic, integration tests for HTTP layer, contract tests for consumers\n- **Data pipelines**: Input validation, transformation correctness, idempotency tests\n- **Frontend**: Component tests, interaction tests, visual regression, accessibility\n- **Infrastructure**: Smoke tests, chaos engineering, load tests\n\n## What to Cover\n\nFocus on: business-critical paths, error handling, edge cases, security boundaries, data integrity.\n\nSkip: trivial getters/setters, framework code, one-off scripts.\n\n## Output\n\nProduce a test plan with: what to test, test type for each area, coverage targets, and example test cases. Identify gaps in existing coverage.",
+  "applicable_domains": [
+    "code",
+    "engineering",
+    "architecture"
+  ],
+  "invocation": [
+    "/testing-strategy"
+  ],
+  "tags": [
+    "engineering",
+    "anthropics",
+    "knowledge-work"
+  ],
+  "authored_by": "anthropics",
+  "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/engineering/skills/testing-strategy/SKILL.md",
+  "lifecycle": "stable"
+}

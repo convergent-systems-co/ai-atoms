@@ -1,0 +1,26 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/msbuild-server",
+  "version": "1.0.0",
+  "name": "msbuild-server",
+  "description": "Guide for using MSBuild Server to improve CLI build performance. Only activate in MSBuild/.NET build context. Activate when developers report slow incremental builds from the command line, or when CLI builds are noticeably slower than IDE builds. Covers MSBUILDUSESERVER=1 environment variable for persistent server-based caching. Do not activate for IDE-based builds (Visual Studio already uses a long-lived process).",
+  "system_prompt_fragment": "# MSBuild Server for CLI Caching\n\nUse the MSBuild Server to cache evaluation results across CLI builds, matching the performance advantage Visual Studio gets from its long-lived MSBuild process.\n\n## When to Use\n\n- Small incremental builds from CLI (`dotnet build`) are slower than expected\n- Developers notice that VS builds are faster than CLI builds for the same project\n- CI agents run many sequential builds of the same repo\n\n## When Not to Use\n\n- IDE-based builds (Visual Studio already uses a long-lived MSBuild process)\n- One-off builds where cold-start overhead is acceptable\n- Build correctness issues are suspected (disable the server to isolate the problem)\n\n## Inputs\n\n| Input | Required | Description |\n|-------|----------|-------------|\n| Shell context | No | The shell where the environment variable will be set (bash, PowerShell, or Windows persistent) |\n\n## Workflow\n\n### Step 1: Confirm CLI context\n\nVerify the developer is building from the command line (`dotnet build`), not from Visual Studio or another IDE. The MSBuild Server provides no benefit inside an IDE.\n\n### Step 2: Set the environment variable\n\n```bash\n# Bash / CI\nexport MSBUILDUSESERVER=1\n\n# PowerShell\n$env:MSBUILDUSESERVER = \"1\"\n\n# Windows (persistent)\nsetx MSBUILDUSESERVER 1\n```\n\n### Step 3: Validate improvement\n\nRun two sequential builds of the same project and compare times:\n\n1. First build (cold): `dotnet build` -- server starts, no cache benefit\n2. Second build (warm): `dotnet build` -- should be noticeably faster\n\nThe most noticeable improvement is in repos with many projects or complex `Directory.Build.props` chains.\n\n## Validation\n\n- [ ] `MSBUILDUSESERVER=1` is set in the shell\n- [ ] Second sequential build is faster than the first\n- [ ] `dotnet build-server shutdown` followed by a rebuild confirms the server restarts cleanly\n\n## Common Pitfalls\n\n| Pitfall | Solution |\n|---------|----------|\n| Expecting improvement in Visual Studio | VS already uses long-lived MSBuild nodes; the server adds no benefit |\n| Build correctness issues after enabling | Run `dotnet build-server shutdown` to reset; if issues persist, disable the server |\n| Server process using unexpected memory | The server persists in background; shut down with `dotnet build-server shutdown` when idle |",
+  "applicable_domains": [
+    "code",
+    "dotnet",
+    "engineering"
+  ],
+  "invocation": [
+    "/msbuild-server"
+  ],
+  "tags": [
+    "dotnet-msbuild",
+    "dotnet",
+    "csharp",
+    "microsoft"
+  ],
+  "authored_by": "anthropics",
+  "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-msbuild/skills/msbuild-server/SKILL.md",
+  "lifecycle": "stable"
+}

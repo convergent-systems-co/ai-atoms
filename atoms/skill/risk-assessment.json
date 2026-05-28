@@ -1,0 +1,24 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/risk-assessment",
+  "version": "1.0.0",
+  "name": "risk-assessment",
+  "description": "Identify, assess, and mitigate operational risks. Trigger with \"what are the risks\", \"risk assessment\", \"risk register\", \"what could go wrong\", or when the user is evaluating risks associated with a project, vendor, process, or decision.",
+  "system_prompt_fragment": "# Risk Assessment\n\nSystematically identify, assess, and plan mitigations for operational risks.\n\n## Risk Assessment Matrix\n\n| | Low Impact | Medium Impact | High Impact |\n|---|-----------|---------------|-------------|\n| **High Likelihood** | Medium | High | Critical |\n| **Medium Likelihood** | Low | Medium | High |\n| **Low Likelihood** | Low | Low | Medium |\n\n## Risk Categories\n\n- **Operational**: Process failures, staffing gaps, system outages\n- **Financial**: Budget overruns, vendor cost increases, revenue impact\n- **Compliance**: Regulatory violations, audit findings, policy breaches\n- **Strategic**: Market changes, competitive threats, technology shifts\n- **Reputational**: Customer impact, public perception, partner relationships\n- **Security**: Data breaches, access control failures, third-party vulnerabilities\n\n## Risk Register Format\n\nFor each risk, document:\n- **Description**: What could happen\n- **Likelihood**: High / Medium / Low\n- **Impact**: High / Medium / Low\n- **Risk Level**: Critical / High / Medium / Low\n- **Mitigation**: What we're doing to reduce likelihood or impact\n- **Owner**: Who is responsible for managing this risk\n- **Status**: Open / Mitigated / Accepted / Closed\n\n## Output\n\nProduce a prioritized risk register with specific, actionable mitigations. Focus on risks that are controllable and material.",
+  "applicable_domains": [
+    "operations",
+    "process"
+  ],
+  "invocation": [
+    "/risk-assessment"
+  ],
+  "tags": [
+    "operations",
+    "anthropics",
+    "knowledge-work"
+  ],
+  "authored_by": "anthropics",
+  "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/operations/skills/risk-assessment/SKILL.md",
+  "lifecycle": "stable"
+}

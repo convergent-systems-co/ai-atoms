@@ -1,0 +1,24 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/run-campaign",
+  "version": "1.0.0",
+  "name": "run-campaign",
+  "description": "Runs an end-to-end marketing campaign — sales analysis, content brief, Canva assets, HubSpot send. Accepts optional lookback and channel arguments.",
+  "system_prompt_fragment": "Run the full campaign pipeline by chaining three skills in order. The owner approves at each handoff — never roll past a gate without explicit confirmation.\n\nParse arguments:\n- `--lookback` (default `90d`) — how far back to look for the revenue dip\n- `--channel` (default `both`) — `email`, `social`, or `both`\n\n## Step 1 — Sales analysis + content brief (content-strategy)\n\nTrigger the `content-strategy` skill workflow:\n1. Pull sales data from QuickBooks and PayPal for the lookback window.\n2. Identify the revenue dip — which product/service, which time period, magnitude.\n3. Produce a 30-day prioritized content brief: what to push, what offer to run, what to hold.\n4. Present the brief to the owner. Wait for explicit \"approved, build the assets\" before continuing.\n\nIf the owner edits the brief, incorporate edits and re-present.\n\n## Step 2 — Asset generation + send staging (canva-creator)\n\nAfter Step 1 approval, trigger the `canva-creator` skill workflow:\n1. Take the approved brief from Step 1 as input.\n2. Build the posting calendar matched to the brief's priorities.\n3. Generate on-brand Canva assets for each post (apply each on screen for owner approval before moving on).\n4. Draft caption copy for each post.\n5. Stage the scheduled send in HubSpot (do NOT send — staging only).\n6. Present the staged campaign to the owner. Wait for explicit \"approved, send to segment X\" before Step 3.\n\n## Step 3 — Audience segmentation (lead-triage)\n\nAfter Step 2 approval, trigger the `lead-triage` skill workflow:\n1. Pull HubSpot contacts that match the campaign's target segment (from the approved brief).\n2. Score by engagement, company fit, urgency markers.\n3. Produce two deliverables:\n   - **Bulk send list** — the segment receiving the staged campaign from Step 2\n   - **High-priority call list** — top 5 leads the owner should call personally with talking points\n4. Block calendar time for the call list.\n5. Present both lists. Wait for explicit \"send\" before pushing the HubSpot campaign live.\n\n## Approval gates (must hold)\n\n- Never auto-progress between steps. Each handoff requires explicit owner approval.\n- Never send the HubSpot campaign without the owner's \"send\" command in Step 3.\n- If any connector is unreachable (QuickBooks, PayPal, Canva, HubSpot), stop, report which connector failed, and ask whether to retry or abort.\n\n## Output\n\nEnd the run with a one-paragraph recap: revenue dip identified, posts generated, segment size, calls booked. Link to the HubSpot campaign URL once sent.",
+  "applicable_domains": [
+    "business",
+    "operations"
+  ],
+  "invocation": [
+    "/run-campaign"
+  ],
+  "tags": [
+    "small-business",
+    "anthropics",
+    "knowledge-work"
+  ],
+  "authored_by": "anthropics",
+  "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/run-campaign/SKILL.md",
+  "lifecycle": "stable"
+}

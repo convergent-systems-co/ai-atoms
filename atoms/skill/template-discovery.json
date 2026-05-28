@@ -1,0 +1,26 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/template-discovery",
+  "version": "1.0.0",
+  "name": "template-discovery",
+  "description": ">",
+  "system_prompt_fragment": "# Template Discovery\n\nThis skill helps an agent find, inspect, and select the right `dotnet new` template for a given task using `dotnet new` CLI commands for search, listing, and parameter inspection.\n\n## When to Use\n\n- User asks \"What templates are available for X?\"\n- User describes a project in natural language (\"I need a web API with authentication\")\n- User wants to compare templates or understand parameters before creating a project\n- User needs to know what a template produces (files, structure) before committing\n\n## When Not to Use\n\n- User wants to create a project — route to `template-instantiation` skill\n- User wants to author or validate a custom template — route to `template-authoring` skill\n- User is troubleshooting build issues — route to `dotnet-msbuild` plugin\n\n## Inputs\n\n| Input | Required | Description |\n|-------|----------|-------------|\n| User intent or keywords | Yes | Natural-language description or keywords (e.g., \"web API\", \"console app\", \"MAUI\") |\n| Language preference | No | C#, F#, or VB — defaults to C# |\n| Framework preference | No | Target framework (e.g., net10.0, net9.0) |\n\n## Workflow\n\n### Step 1: Resolve intent to template candidates\n\nMap the user's natural-language description to template short names using these common keyword mappings:\n\n| User Intent | Template | Suggested Parameters |\n|-------------|----------|---------------------|\n| web API, REST API | `webapi` | `--auth Individual --use-controllers` if auth requested |\n| web app, website | `webapp` | |\n| Blazor, interactive web | `blazor` | |\n| console app, CLI tool | `console` | |\n| class library, shared code | `classlib` | |\n| worker service, background job | `worker` | |\n| gRPC service | `grpc` | |\n| MAUI app, mobile app | `maui` | |\n| test project, unit tests | `xunit`, `mstest`, or `nunit` | |\n\n### Step 2: Search for templates\n\nUse `dotnet new search` to find templates by keyword across both locally installed templates and NuGet.org:\n\n```bash\ndotnet new search blazor\n```\n\nUse `dotnet new list` to show only installed templates, with optional filters:\n\n```bash\ndotnet new list --language C# --type project\ndotnet new list web\n```\n\n### Step 3: Inspect template details\n\nUse `dotnet new <template> --help` to get full parameter details for a specific template — parameter names, types, defaults, and allowed values:\n\n```bash\ndotnet new webapi --help\n```\n\n### Step 4: Preview output\n\nUse `dotnet new <template> --dry-run` to show what files and directories a template would create without writing anything to disk:\n\n```bash\ndotnet new webapi --name MyApi --auth Individual --dry-run\n```\n\n### Step 5: Present findings\n\nSummarize the best template match with:\n- Template name and short description\n- Key parameters and recommended values\n- What the user should expect (files created, project structure)\n- Any constraints or prerequisites\n\n## Validation\n\n- [ ] At least one template match was found for the user's intent\n- [ ] Template parameters are explained with types and defaults\n- [ ] User understands what the template produces before proceeding to creation\n\n## Common Pitfalls\n\n| Pitfall | Solution |\n|---------|----------|\n| Not searching NuGet for templates | If `dotnet new list` shows no matches, use `dotnet new search <keyword>` to find installable templates on NuGet.org. |\n| Not checking template constraints | Some templates require specific SDKs or workloads. Use `dotnet new <template> --help` to surface constraints before recommending. |\n| Recommending a template without previewing output | Always use `dotnet new <template> --dry-run` to confirm the template produces what the user expects. |\n\n## More Info\n\n- [dotnet new templates](https://learn.microsoft.com/dotnet/core/tools/dotnet-new-sdk-templates) — built-in template reference\n- [Template Engine Wiki](https://github.com/dotnet/templating/wiki) — template engine internals",
+  "applicable_domains": [
+    "code",
+    "dotnet",
+    "engineering"
+  ],
+  "invocation": [
+    "/template-discovery"
+  ],
+  "tags": [
+    "dotnet-template-engine",
+    "dotnet",
+    "csharp",
+    "microsoft"
+  ],
+  "authored_by": "anthropics",
+  "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-template-engine/skills/template-discovery/SKILL.md",
+  "lifecycle": "stable"
+}

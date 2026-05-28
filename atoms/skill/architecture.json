@@ -1,0 +1,26 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/architecture",
+  "version": "1.0.0",
+  "name": "architecture",
+  "description": "Create or evaluate an architecture decision record (ADR). Use when choosing between technologies (e.g., Kafka vs SQS), documenting a design decision with trade-offs and consequences, reviewing a system design proposal, or designing a new component from requirements and constraints.",
+  "system_prompt_fragment": "# /architecture\n\n> If you see unfamiliar placeholders or need to check which tools are connected, see [CONNECTORS.md](../../CONNECTORS.md).\n\nCreate an Architecture Decision Record (ADR) or evaluate a system design.\n\n## Usage\n\n```\n/architecture $ARGUMENTS\n```\n\n## Modes\n\n**Create an ADR**: \"Should we use Kafka or SQS for our event bus?\"\n**Evaluate a design**: \"Review this microservices proposal\"\n**System design**: \"Design the notification system for our app\"\n\nSee the **system-design** skill for detailed frameworks on requirements gathering, scalability analysis, and trade-off evaluation.\n\n## Output — ADR Format\n\n```markdown\n# ADR-[number]: [Title]\n\n**Status:** Proposed | Accepted | Deprecated | Superseded\n**Date:** [Date]\n**Deciders:** [Who needs to sign off]\n\n## Context\n[What is the situation? What forces are at play?]\n\n## Decision\n[What is the change we're proposing?]\n\n## Options Considered\n\n### Option A: [Name]\n| Dimension | Assessment |\n|-----------|------------|\n| Complexity | [Low/Med/High] |\n| Cost | [Assessment] |\n| Scalability | [Assessment] |\n| Team familiarity | [Assessment] |\n\n**Pros:** [List]\n**Cons:** [List]\n\n### Option B: [Name]\n[Same format]\n\n## Trade-off Analysis\n[Key trade-offs between options with clear reasoning]\n\n## Consequences\n- [What becomes easier]\n- [What becomes harder]\n- [What we'll need to revisit]\n\n## Action Items\n1. [ ] [Implementation step]\n2. [ ] [Follow-up]\n```\n\n## If Connectors Available\n\nIf **~~knowledge base** is connected:\n- Search for prior ADRs and design docs\n- Find relevant technical context\n\nIf **~~project tracker** is connected:\n- Link to related epics and tickets\n- Create implementation tasks\n\n## Tips\n\n1. **State constraints upfront** — \"We need to ship in 2 weeks\" or \"Must handle 10K rps\" shapes the answer.\n2. **Name your options** — Even if you're leaning one way, I'll give a more balanced analysis with explicit alternatives.\n3. **Include non-functional requirements** — Latency, cost, team expertise, and maintenance burden matter as much as features.",
+  "applicable_domains": [
+    "code",
+    "engineering",
+    "architecture"
+  ],
+  "invocation": [
+    "/architecture",
+    "/architecture <decision or system to design>"
+  ],
+  "tags": [
+    "engineering",
+    "anthropics",
+    "knowledge-work"
+  ],
+  "authored_by": "anthropics",
+  "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/engineering/skills/architecture/SKILL.md",
+  "lifecycle": "stable"
+}

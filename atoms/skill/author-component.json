@@ -1,0 +1,26 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/author-component",
+  "version": "1.0.0",
+  "name": "author-component",
+  "description": ">",
+  "system_prompt_fragment": "# Author Blazor Component\n\n## Core Rules\n\n- Data flows **down** via `[Parameter]`. Events flow **up** via `EventCallback<T>` (never `Action`/`Func`).\n- Never mutate `[Parameter]` properties. Copy to a private field in `OnParametersSet`.\n- Use `[Parameter] public T Prop { get; set; }` — never `required` or `init` (causes BL0007).\n- Use `[EditorRequired]` for required parameters.\n- Handle all states: loading, empty, loaded, error — each with `@if`/`@else`.\n- Use `@key` on repeated elements in loops for efficient diffing.\n- Use `IReadOnlyList<T>` (not `IEnumerable<T>`) for collection parameters.\n\n## RenderFragment & Generics\n\n```csharp\n[Parameter] public RenderFragment? ChildContent { get; set; }\n[Parameter] public RenderFragment<TItem>? RowTemplate { get; set; }  // generic template\n```\n\nUse `@typeparam TItem` for generic components.\n\n## File Patterns\n\n- **Single-file:** `.razor` with `@code` block when logic < ~50 lines.\n- **Code-behind:** `.razor` + `.razor.cs` with `partial class` when logic > ~50 lines.\n\n## Disposal\n\nImplement `IAsyncDisposable` (not `IDisposable`) when the component owns subscriptions, timers, or CTS.\nIn `DisposeAsync`: unsubscribe (`-=`), cancel CTS, dispose resources. Never call `StateHasChanged`.\n\n## Async Patterns\n\n- `await` every async operation. Never use `.Result`, `.Wait()`, `Task.Run`, `ContinueWith`, `Thread.Start`.\n- **Debounce:** `Task.Delay` + `CancellationTokenSource`. Cancel old CTS, create new, await delay, do work. Never use `System.Threading.Timer` or `System.Timers.Timer`.\n- **Polling:** Loop in `OnInitializedAsync` with `await Task.Delay(interval, token)` — stays on sync context.\n- **External events** (`Action<T>`): Use `async void` handler + `await InvokeAsync(() => { state++; StateHasChanged(); })` + `catch` → `DispatchExceptionAsync`. Never `_ = InvokeAsync(...)`.\n- Cancel CTS in `DisposeAsync`. Don't catch `ObjectDisposedException` — use CTS cancellation.\n\n## Don'ts\n\n- `required`/`init` on `[Parameter]` — runtime failure\n- Mutate `[Parameter]` — copy to private field in `OnParametersSet`\n- `Action`/`Func` for events — use `EventCallback<T>`\n- `Task.Run`/`.Result`/`.Wait()`/Timer for debounce — deadlock or thread-pool escape\n- Inline `style` attributes — use CSS classes or `data-*` attributes\n- `catch { throw; }` — use `when` guard or let exceptions propagate\n- Gold-plating: ARIA, wrapper divs, accessibility features not requested\n- `_ = InvokeAsync(...)` — swallows exceptions; use `async void` + `DispatchExceptionAsync`",
+  "applicable_domains": [
+    "code",
+    "dotnet",
+    "engineering"
+  ],
+  "invocation": [
+    "/author-component"
+  ],
+  "tags": [
+    "dotnet-blazor",
+    "dotnet",
+    "csharp",
+    "microsoft"
+  ],
+  "authored_by": "anthropics",
+  "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-blazor/skills/author-component/SKILL.md",
+  "lifecycle": "stable"
+}
