@@ -27,10 +27,12 @@ const skills = (catalog.atoms as any[])
         margin-top: 1.5rem;
       }
       .atom-card {
-        border: 1px solid var(--border, #e2e8f0);
+        color-scheme: light;
+        border: 1px solid #e2e8f0;
         border-radius: 0.5rem;
         padding: 1.25rem;
-        background: var(--card, #fff);
+        background: #ffffff;
+        color: #1e293b;
         display: flex;
         flex-direction: column;
         gap: 0.625rem;
@@ -45,28 +47,29 @@ const skills = (catalog.atoms as any[])
         font-size: 1rem;
         font-weight: 600;
         margin: 0;
+        color: #0f172a;
       }
       .atom-lifecycle {
         font-size: 0.7rem;
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        color: var(--live, #16a34a);
+        color: #16a34a;
         white-space: nowrap;
       }
       .atom-description {
-        color: var(--muted);
+        color: #475569;
         font-size: 0.875rem;
         line-height: 1.5;
         margin: 0;
       }
       .atom-prompt {
-        background: var(--surface-2, #f8fafc);
-        border-left: 3px solid var(--accent, #4f46e5);
+        background: #f8fafc;
+        border-left: 3px solid #4f46e5;
         padding: 0.625rem 0.875rem;
         font-size: 0.8rem;
         line-height: 1.55;
-        color: var(--fg, #1e293b);
+        color: #1e293b;
         border-radius: 0 0.25rem 0.25rem 0;
         white-space: pre-wrap;
         word-break: break-word;
@@ -79,14 +82,14 @@ const skills = (catalog.atoms as any[])
       }
       .tag {
         font-size: 0.7rem;
-        background: var(--surface-2, #f1f5f9);
-        color: var(--muted);
+        background: #f1f5f9;
+        color: #64748b;
         padding: 0.15rem 0.5rem;
         border-radius: 9999px;
       }
       .atom-id {
         font-size: 0.75rem;
-        color: var(--muted);
+        color: #94a3b8;
         font-family: monospace;
       }
       .contract-section {
@@ -96,7 +99,7 @@ const skills = (catalog.atoms as any[])
         font-size: 0.75rem;
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        color: var(--muted);
+        color: #64748b;
         margin: 0 0 0.25rem;
       }
       .contract-row {
@@ -109,9 +112,10 @@ const skills = (catalog.atoms as any[])
         font-weight: 600;
         min-width: 5rem;
         font-size: 0.75rem;
+        color: #334155;
       }
       .contract-desc {
-        color: var(--muted);
+        color: #64748b;
         font-size: 0.75rem;
       }
     </style>
