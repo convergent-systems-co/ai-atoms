@@ -1,7 +1,7 @@
 {
   "catalog": "ai-atoms",
   "version": "0.1.0",
-  "built_at": "2026-05-28T19:44:30+00:00",
+  "built_at": "2026-05-28T20:44:05+00:00",
   "atoms": [
     {
       "schema": "https://ai-atoms.com/schemas/hook-v1.json",
@@ -907,6 +907,59 @@
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
       "type": "skill",
+      "id": "skill/atoms-discover",
+      "version": "1.0.0",
+      "name": "Atoms Discover",
+      "description": "Navigate the convergent-systems atom ecosystem to find, fetch, or scaffold atoms. Routes 'apply brand X' to brand-atoms, 'use persona Y' to persona-atoms, 'load skill Z' to skill-atoms, etc. Covers discovery, cross-atom reference resolution, and new-atom scaffolding.",
+      "system_prompt_fragment": "You know the full convergent-systems atom ecosystem topology. When the user references any atom by name or type:\n1. IDENTIFY: determine which catalog holds this atom type (brand-atoms, persona-atoms, skill-atoms, prompt-atoms, schema-atoms, plugin-atoms, action-atoms, workflow-atoms).\n2. CHECK: query the catalog's GitHub repo for the atom slug.\n3. FOUND → run `ai atoms fetch <catalog>/<type>/<slug>` and apply/activate it.\n4. NOT FOUND → run `ai atoms fork <catalog>/<type>/<closest-template> <new-slug>` and guide the user to fill in the template, then offer to publish.\nFor personas: always resolve the full reference tree (role-definition, voice-profile, tone-parameter, behavioural-constraints, knowledge-boundaries). For brands: apply brand tokens to settings.toml.",
+      "applicable_domains": [
+        "atoms",
+        "discovery",
+        "configuration",
+        "personas",
+        "brands",
+        "skills"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable",
+      "invocation": [
+        "/atoms-discover"
+      ],
+      "tags": [
+        "atoms",
+        "discovery",
+        "brand",
+        "persona",
+        "skill",
+        "scaffold",
+        "cross-catalog"
+      ],
+      "invocation_contract": {
+        "inputs": [
+          {
+            "name": "query",
+            "type": "string",
+            "description": "Natural language request referencing an atom: 'apply brand X', 'use persona Y', 'load skill Z', etc.",
+            "required": true
+          }
+        ],
+        "outputs": [
+          {
+            "name": "result",
+            "type": "string",
+            "description": "Atom fetched and applied, or scaffold initiated with guidance."
+          }
+        ],
+        "side_effects": [
+          "may run ai atoms fetch",
+          "may run ai atoms fork",
+          "may write to ~/.ai/atoms/cache/"
+        ]
+      }
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
       "id": "skill/audit-support",
       "version": "1.0.0",
       "name": "audit-support",
@@ -1532,6 +1585,50 @@
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
       "type": "skill",
+      "id": "skill/cleanup",
+      "version": "1.0.0",
+      "name": "Cleanup",
+      "description": "Remove dead code, unused imports, commented-out blocks, and resolved TODOs. Behavior-preserving: no logic changes, only deletion of unreachable or inert code.",
+      "system_prompt_fragment": "Clean up the file or directory: delete dead code (unreachable branches, unused functions), remove unused imports, strip commented-out code blocks, remove resolved TODO/FIXME comments. Do NOT change any logic. Do NOT refactor. Do NOT rename. One commit per file cleaned. If a TODO is unresolved, leave it. Verify tests still pass after cleanup.",
+      "applicable_domains": [
+        "code"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable",
+      "invocation": [
+        "/cleanup"
+      ],
+      "tags": [
+        "code",
+        "cleanup",
+        "dead-code",
+        "refactor"
+      ],
+      "invocation_contract": {
+        "inputs": [
+          {
+            "name": "target",
+            "type": "string",
+            "description": "File path or directory to clean up.",
+            "required": true
+          }
+        ],
+        "outputs": [
+          {
+            "name": "changes",
+            "type": "string",
+            "description": "Summary of what was removed."
+          }
+        ],
+        "side_effects": [
+          "modifies source files",
+          "may create git commits"
+        ]
+      }
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
       "id": "skill/close-management",
       "version": "1.0.0",
       "name": "close-management",
@@ -1706,6 +1803,49 @@
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-blazor/skills/collect-user-input/SKILL.md",
       "lifecycle": "stable"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/commit",
+      "version": "1.0.0",
+      "name": "Commit",
+      "description": "Generate a conventional-commit message from the staged diff and commit. Reads the diff, analyzes the change, picks the right Conventional Commits prefix (feat/fix/refactor/chore/docs/test/ci), and commits with a descriptive message.",
+      "system_prompt_fragment": "Generate a conventional-commit message. Rules: prefix must be one of feat/fix/refactor/perf/docs/test/build/ci/chore. Subject line ≤72 chars, imperative mood, no trailing period. Body explains WHY, not what. Wrap at 72. Stage and commit. Do not amend unless explicitly asked.",
+      "applicable_domains": [
+        "code",
+        "git"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable",
+      "invocation": [
+        "/commit"
+      ],
+      "tags": [
+        "git",
+        "commit",
+        "conventional-commits"
+      ],
+      "invocation_contract": {
+        "inputs": [
+          {
+            "name": "staged_diff",
+            "type": "string",
+            "description": "The output of git diff --staged.",
+            "required": true
+          }
+        ],
+        "outputs": [
+          {
+            "name": "commit_message",
+            "type": "string",
+            "description": "The conventional commit message used."
+          }
+        ],
+        "side_effects": [
+          "creates a git commit in the working tree"
+        ]
+      }
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2639,6 +2779,54 @@
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
       "type": "skill",
+      "id": "skill/diagram",
+      "version": "1.0.0",
+      "name": "Diagram",
+      "description": "Generate Mermaid diagrams (flowchart / sequence / state / class / ER / gantt) from code or systems.",
+      "system_prompt_fragment": "Generate a Mermaid diagram of the requested type. Choose the type that best communicates the relationship: flowchart for control flow, sequence for message passing, state for state machines, class for OOP relationships, ER for data models, gantt for timelines. Render in Markdown for .md files. Use ASCII art for terminal output. Never describe a diagram in prose — always render it.",
+      "applicable_domains": [
+        "documentation",
+        "architecture"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable",
+      "invocation": [
+        "/diagram"
+      ],
+      "tags": [
+        "diagram",
+        "mermaid",
+        "architecture",
+        "documentation"
+      ],
+      "invocation_contract": {
+        "inputs": [
+          {
+            "name": "subject",
+            "type": "string",
+            "description": "Code, system, or concept to diagram.",
+            "required": true
+          },
+          {
+            "name": "diagram_type",
+            "type": "string",
+            "description": "flowchart | sequence | state | class | ER | gantt",
+            "required": false
+          }
+        ],
+        "outputs": [
+          {
+            "name": "diagram",
+            "type": "string",
+            "description": "Mermaid or ASCII diagram source."
+          }
+        ],
+        "side_effects": []
+      }
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
       "id": "skill/digest",
       "version": "1.0.0",
       "name": "digest",
@@ -3166,6 +3354,54 @@
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-experimental/skills/exp-test-maintainability/SKILL.md",
       "lifecycle": "stable"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/explain",
+      "version": "1.0.0",
+      "name": "Explain",
+      "description": "Read-only code explainer with audience-tuned depth (non-technical / junior / practitioner / senior) and path:line citations. Never modifies files.",
+      "system_prompt_fragment": "Explain the code or concept at the requested depth. Levels: non-technical (analogy-first, no syntax), junior (step-by-step with syntax glossed), practitioner (assumes fluency in the language), senior (architectural implications, tradeoffs, gotchas). Cite file:line for every specific claim. Never modify files during an explain session.",
+      "applicable_domains": [
+        "code",
+        "documentation"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable",
+      "invocation": [
+        "/explain"
+      ],
+      "tags": [
+        "code",
+        "explain",
+        "documentation",
+        "read-only"
+      ],
+      "invocation_contract": {
+        "inputs": [
+          {
+            "name": "target",
+            "type": "string",
+            "description": "File path, symbol, or concept to explain.",
+            "required": true
+          },
+          {
+            "name": "audience",
+            "type": "string",
+            "description": "non-technical | junior | practitioner | senior",
+            "required": false
+          }
+        ],
+        "outputs": [
+          {
+            "name": "explanation",
+            "type": "string",
+            "description": "The explanation with path:line citations."
+          }
+        ],
+        "side_effects": []
+      }
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4007,6 +4243,46 @@
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
       "type": "skill",
+      "id": "skill/make-clean",
+      "version": "1.0.0",
+      "name": "Make Clean",
+      "description": "Two-command git workspace lifecycle manager: purge merged branches/worktrees/stashes, aggregate remaining in-flight work into one branch, then hand off to make build.",
+      "system_prompt_fragment": "Run the full make clean pipeline: (1) inventory all branches, worktrees, stashes; (2) delete merged branches and their worktrees (no prompt); (3) drop merged stashes; (4) aggregate in-flight branches into aggregate/<date>; (5) prune worktrees; (6) hand off to make build if aggregate branch exists. Never delete main, HEAD, or branches with uncommitted changes.",
+      "applicable_domains": [
+        "git",
+        "workflow"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable",
+      "invocation": [
+        "/make-clean"
+      ],
+      "tags": [
+        "git",
+        "cleanup",
+        "branches",
+        "worktrees"
+      ],
+      "invocation_contract": {
+        "inputs": [],
+        "outputs": [
+          {
+            "name": "cleanup_summary",
+            "type": "string",
+            "description": "Branches deleted, stashes dropped, aggregate branch created."
+          }
+        ],
+        "side_effects": [
+          "deletes git branches",
+          "removes worktrees",
+          "drops stashes",
+          "creates aggregate branch"
+        ]
+      }
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
       "id": "skill/make-doctor",
       "version": "1.0.0",
       "name": "Make Doctor",
@@ -4165,6 +4441,91 @@
       ],
       "authored_by": "convergent-systems-key",
       "lifecycle": "stable"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/make-test",
+      "version": "1.0.0",
+      "name": "Make Test",
+      "description": "Discover and run the project test suite across all workspace modules, report failures with file:line citations, and optionally fix them.",
+      "system_prompt_fragment": "Discover the test command from project.yaml or infer it from the build system. Run tests across all workspace modules (go.work, package.json workspaces, etc.). Report: total run, passed, failed. For each failure: file:line, test name, failure message, actual vs expected. Ask whether to fix failures. If fixing: create a failing test first (TDD) if one doesn't exist, then fix. One commit per fix.",
+      "applicable_domains": [
+        "testing",
+        "ci"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable",
+      "invocation": [
+        "/make-test"
+      ],
+      "tags": [
+        "testing",
+        "ci",
+        "workspace"
+      ],
+      "invocation_contract": {
+        "inputs": [
+          {
+            "name": "pattern",
+            "type": "string",
+            "description": "Optional test name filter.",
+            "required": false
+          }
+        ],
+        "outputs": [
+          {
+            "name": "test_results",
+            "type": "string",
+            "description": "Pass/fail summary with file:line citations for failures."
+          }
+        ],
+        "side_effects": [
+          "runs test subprocess",
+          "may create commits if fixing"
+        ]
+      }
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/make-work",
+      "version": "1.0.0",
+      "name": "Make Work",
+      "description": "Activate PM discipline and run the multi-agent delivery team in one shot. Recovers from checkpoints, ingests the issue queue, partitions tasks, spawns Tech Lead agents per domain, runs TDD pipelines, code reviews, and builds.",
+      "system_prompt_fragment": "Execute the full PM delivery loop: (0) check for checkpoint — resume or cold start; (1) pre-flight; (2) build repo set; (3) ingest issue queue; (4) partition into domain batches, spawn Tech Lead agents per batch running Worktree→Plan→TDD→Coder→Adversarial→PR→Merge pipeline; (5) code reviewer sweep after queue empties; (6) /make build. Never skip a pipeline step. Tech Leads must never commit directly to main.",
+      "applicable_domains": [
+        "workflow",
+        "project-management",
+        "multi-agent"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable",
+      "invocation": [
+        "/make-work"
+      ],
+      "tags": [
+        "workflow",
+        "pm-mode",
+        "sprint",
+        "multi-agent"
+      ],
+      "invocation_contract": {
+        "inputs": [],
+        "outputs": [
+          {
+            "name": "sprint_summary",
+            "type": "string",
+            "description": "What was delivered, what is in-flight, what is blocked."
+          }
+        ],
+        "side_effects": [
+          "creates branches",
+          "opens PRs",
+          "merges PRs",
+          "creates GitHub issues"
+        ]
+      }
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5257,6 +5618,42 @@
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
       "type": "skill",
+      "id": "skill/onboard",
+      "version": "1.0.0",
+      "name": "Onboard",
+      "description": "Generate an ONBOARDING.md for the current repo covering: stack, prerequisites, setup, run, test, structure, and common commands. Targeted at a new contributor picking up the repo cold.",
+      "system_prompt_fragment": "Generate ONBOARDING.md for this repository. Include: What is this? (1 paragraph), Who is it for?, Prerequisites (tools + versions), Setup (step-by-step), Run locally, Run tests, Project structure (top-level dirs with purpose), Common commands (cheatsheet). Read README, package.json/go.mod/Cargo.toml/etc. to derive accurate commands. Do not invent commands — only include ones you can verify from config files.",
+      "applicable_domains": [
+        "documentation",
+        "onboarding"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable",
+      "invocation": [
+        "/onboard"
+      ],
+      "tags": [
+        "documentation",
+        "onboarding",
+        "getting-started"
+      ],
+      "invocation_contract": {
+        "inputs": [],
+        "outputs": [
+          {
+            "name": "onboarding_doc",
+            "type": "string",
+            "description": "The generated ONBOARDING.md content."
+          }
+        ],
+        "side_effects": [
+          "writes ONBOARDING.md to repo root"
+        ]
+      }
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
       "id": "skill/onboarding",
       "version": "1.0.0",
       "name": "onboarding",
@@ -5533,6 +5930,49 @@
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
       "type": "skill",
+      "id": "skill/pr",
+      "version": "1.0.0",
+      "name": "Pull Request",
+      "description": "Open a GitHub pull request with a body generated from the branch's commits. Derives title and summary from commit history.",
+      "system_prompt_fragment": "Open a pull request for the current branch. Derive: title from the most significant commit subject (≤70 chars), body from git log --oneline <base>..HEAD summarized into bullet points under ## Changes, and a ## Test plan checklist. Use gh pr create. If a PR already exists, show its URL instead. Do not push unless asked.",
+      "applicable_domains": [
+        "git",
+        "code-review"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable",
+      "invocation": [
+        "/pr"
+      ],
+      "tags": [
+        "git",
+        "pull-request",
+        "github"
+      ],
+      "invocation_contract": {
+        "inputs": [
+          {
+            "name": "base_branch",
+            "type": "string",
+            "description": "Target branch (default: main).",
+            "required": false
+          }
+        ],
+        "outputs": [
+          {
+            "name": "pr_url",
+            "type": "string",
+            "description": "URL of the created or existing PR."
+          }
+        ],
+        "side_effects": [
+          "creates a GitHub pull request via gh CLI"
+        ]
+      }
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
       "id": "skill/price-check",
       "version": "1.0.0",
       "name": "price-check",
@@ -5626,6 +6066,135 @@
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/product-management/skills/product-brainstorming/SKILL.md",
       "lifecycle": "stable"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/project-claude",
+      "version": "1.0.0",
+      "name": "Project (Claude)",
+      "description": "Set up and maintain AI workspace configuration for Claude Code: project.yaml, .claude/settings.json, and CLAUDE.md. Use when initialising a project for Claude or editing its Claude-specific config.",
+      "system_prompt_fragment": "Manage Claude Code project configuration. Create or update:\n- project.yaml: tooling, test commands, build commands\n- .claude/settings.json: permissions, hooks, allowed tools\n- CLAUDE.md: project-specific instructions for Claude\n\nVerbs: setup (create all three if missing), show (display current config), set <key>=<value> (update a setting), validate (check schema). Never overwrite user-customized values without confirmation. For Copilot configuration use /project-copilot instead.",
+      "applicable_domains": [
+        "configuration",
+        "tooling"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable",
+      "invocation": [
+        "/project-claude"
+      ],
+      "tags": [
+        "configuration",
+        "claude",
+        "project-yaml"
+      ],
+      "invocation_contract": {
+        "inputs": [
+          {
+            "name": "action",
+            "type": "string",
+            "description": "setup | show | set | validate",
+            "required": false
+          }
+        ],
+        "outputs": [
+          {
+            "name": "result",
+            "type": "string",
+            "description": "Summary of configuration changes."
+          }
+        ],
+        "side_effects": [
+          "may write project.yaml, .claude/settings.json, CLAUDE.md"
+        ]
+      }
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/project-copilot",
+      "version": "1.0.0",
+      "name": "Project (Copilot)",
+      "description": "Set up and maintain AI workspace configuration for GitHub Copilot CLI: project.yaml and .github/copilot-instructions.md. Use when initialising a project for Copilot or editing its Copilot-specific config.",
+      "system_prompt_fragment": "Manage GitHub Copilot project configuration. Create or update:\n- project.yaml: tooling, test commands, build commands\n- .github/copilot-instructions.md: project-specific instructions for Copilot\n\nVerbs: setup (create both if missing), show (display current config), set <key>=<value> (update a setting), validate (check schema). Never overwrite user-customized values without confirmation. For Claude configuration use /project-claude instead.",
+      "applicable_domains": [
+        "configuration",
+        "tooling"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable",
+      "invocation": [
+        "/project-copilot"
+      ],
+      "tags": [
+        "configuration",
+        "copilot",
+        "project-yaml"
+      ],
+      "invocation_contract": {
+        "inputs": [
+          {
+            "name": "action",
+            "type": "string",
+            "description": "setup | show | set | validate",
+            "required": false
+          }
+        ],
+        "outputs": [
+          {
+            "name": "result",
+            "type": "string",
+            "description": "Summary of configuration changes."
+          }
+        ],
+        "side_effects": [
+          "may write project.yaml, .github/copilot-instructions.md"
+        ]
+      }
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/project",
+      "version": "2.0.0",
+      "name": "Project",
+      "description": "Set up AI workspace config for this project. Installs project-claude (Claude Code) and project-copilot (GitHub Copilot) together.",
+      "system_prompt_fragment": "Dispatch to the appropriate tool-specific project skill. For Claude Code setup use /project-claude. For GitHub Copilot setup use /project-copilot. When both tools are in use, both skills apply.",
+      "applicable_domains": [
+        "configuration",
+        "tooling"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable",
+      "invocation": [
+        "/project"
+      ],
+      "tags": [
+        "configuration",
+        "project-yaml",
+        "dispatcher"
+      ],
+      "invocation_contract": {
+        "inputs": [
+          {
+            "name": "tool",
+            "type": "string",
+            "description": "claude | copilot | both (default: both)",
+            "required": false
+          }
+        ],
+        "outputs": [
+          {
+            "name": "result",
+            "type": "string",
+            "description": "Summary of configuration changes."
+          }
+        ],
+        "side_effects": [
+          "delegates to project-claude and/or project-copilot"
+        ]
+      }
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5725,6 +6294,107 @@
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/human-resources/skills/recruiting-pipeline/SKILL.md",
       "lifecycle": "stable"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/refactor",
+      "version": "1.0.0",
+      "name": "Refactor",
+      "description": "Behavior-preserving refactor with test gates and the bug-report-separately rule. Tests must be green before and after. Bugs found during refactor are reported separately, not fixed inline.",
+      "system_prompt_fragment": "Refactor the target preserving all observable behavior. Rules: (1) Tests must be green before you start. (2) Tests must be green after you finish — with no test assertion changes other than import renames. (3) If you find a bug during refactor, STOP — file it as a separate issue, finish the refactor with the bug preserved, then fix it in a follow-up. (4) Use the refactor: commit prefix. (5) One logical change per commit.",
+      "applicable_domains": [
+        "code"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable",
+      "invocation": [
+        "/refactor"
+      ],
+      "tags": [
+        "code",
+        "refactor",
+        "behavior-preserving",
+        "tdd"
+      ],
+      "invocation_contract": {
+        "inputs": [
+          {
+            "name": "target",
+            "type": "string",
+            "description": "File or module to refactor.",
+            "required": true
+          },
+          {
+            "name": "goal",
+            "type": "string",
+            "description": "What the refactor should achieve (rename, extract, inline, split, etc.)",
+            "required": true
+          }
+        ],
+        "outputs": [
+          {
+            "name": "changes",
+            "type": "string",
+            "description": "Summary of structural changes made."
+          }
+        ],
+        "side_effects": [
+          "modifies source files",
+          "creates git commits"
+        ]
+      }
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/repo",
+      "version": "1.0.0",
+      "name": "Repo",
+      "description": "Repository structure tool — monorepo or polyrepo migration in either direction, preserving git history.",
+      "system_prompt_fragment": "Manage repository structure: convert to monorepo (merge repos with history), split a repo (extract subdirectory with history using git filter-repo), or standardize layout. Always use git filter-repo or git subtree — never rewrite history with manual copies. Preserve all commit history. Create a plan first, wait for approval, then execute.",
+      "applicable_domains": [
+        "git",
+        "architecture"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable",
+      "invocation": [
+        "/repo"
+      ],
+      "tags": [
+        "git",
+        "monorepo",
+        "polyrepo",
+        "structure"
+      ],
+      "invocation_contract": {
+        "inputs": [
+          {
+            "name": "operation",
+            "type": "string",
+            "description": "monorepo | split | extract | merge | standardize",
+            "required": true
+          },
+          {
+            "name": "target",
+            "type": "string",
+            "description": "Repository or subdirectory path.",
+            "required": true
+          }
+        ],
+        "outputs": [
+          {
+            "name": "result",
+            "type": "string",
+            "description": "Summary of structural changes."
+          }
+        ],
+        "side_effects": [
+          "may rewrite git history",
+          "creates or modifies repositories"
+        ]
+      }
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6501,6 +7171,40 @@
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
       "type": "skill",
+      "id": "skill/status",
+      "version": "1.0.0",
+      "name": "Status",
+      "description": "Mid-session blocked-state report. Reports ready state or lists active waits (biometric, pr-merge, scope-decision, out-of-band, background) using the Common.md §U7 typed wait-reason format.",
+      "system_prompt_fragment": "Report current session status. If nothing is pending: 'Status: ready — no pending actions.' If blocked: list each wait with its typed reason (biometric / pr-merge / scope-decision / out-of-band / background) and a description. Check TaskList for in-progress tasks. Limit output to ≤10 lines.",
+      "applicable_domains": [
+        "session-management"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable",
+      "invocation": [
+        "/status"
+      ],
+      "tags": [
+        "session",
+        "status",
+        "blocked",
+        "waiting"
+      ],
+      "invocation_contract": {
+        "inputs": [],
+        "outputs": [
+          {
+            "name": "status",
+            "type": "string",
+            "description": "Current status: ready or waiting-on list."
+          }
+        ],
+        "side_effects": []
+      }
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
       "id": "skill/support-prerendering",
       "version": "1.0.0",
       "name": "support-prerendering",
@@ -6929,6 +7633,28 @@
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
       "type": "skill",
+      "id": "skill/test-publish",
+      "version": "1.0.0",
+      "name": "Test Publish",
+      "description": "A test skill to verify the auto-publish workflow end-to-end.",
+      "system_prompt_fragment": "This is a test skill. Return a confirmation that the auto-publish workflow succeeded.",
+      "applicable_domains": [
+        "meta",
+        "testing"
+      ],
+      "invocation": [
+        "/test-publish"
+      ],
+      "tags": [
+        "test",
+        "meta"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "draft"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
       "id": "skill/test-smell-detection",
       "version": "1.0.0",
       "name": "test-smell-detection",
@@ -6977,6 +7703,49 @@
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/test-tagging/SKILL.md",
       "lifecycle": "stable"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/test",
+      "version": "1.0.0",
+      "name": "Test",
+      "description": "Run repo tests via project.yaml's tooling.test_command and report failures with path:line citations.",
+      "system_prompt_fragment": "Run the test suite using the command from project.yaml tooling.test_command, or infer it from the project's build system (go test, npm test, pytest, cargo test, etc.). Report every failure with file:line:column, the failing assertion, and the actual vs expected values. Do not suppress passing tests — show the full summary. If tests pass, confirm and give the count.",
+      "applicable_domains": [
+        "code",
+        "testing"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable",
+      "invocation": [
+        "/test"
+      ],
+      "tags": [
+        "testing",
+        "ci",
+        "tdd"
+      ],
+      "invocation_contract": {
+        "inputs": [
+          {
+            "name": "pattern",
+            "type": "string",
+            "description": "Optional test name pattern to filter.",
+            "required": false
+          }
+        ],
+        "outputs": [
+          {
+            "name": "result",
+            "type": "string",
+            "description": "Pass/fail summary with path:line citations for failures."
+          }
+        ],
+        "side_effects": [
+          "runs test subprocess"
+        ]
+      }
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7126,6 +7895,50 @@
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/legal/skills/triage-nda/SKILL.md",
       "lifecycle": "stable"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/update-config",
+      "version": "1.0.0",
+      "name": "Update Config",
+      "description": "Configure the Claude Code harness via settings.json. Handles: automated behaviors (hooks), permissions, env vars, hook troubleshooting, and changes to settings.json/settings.local.json files.",
+      "system_prompt_fragment": "Configure Claude Code settings.json. Automated behaviors require hooks — the harness executes them, not Claude. For permissions: add to allowedTools or use permissionPromptTool. For env vars: add to env block. For hooks: wire to the correct event (UserPromptSubmit/PreToolUse/PostToolUse/Stop/etc.) in the hooks block. Show the diff of settings.json changes before applying. Never edit settings.json directly — use the appropriate settings API or targeted edits.",
+      "applicable_domains": [
+        "configuration",
+        "tooling"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable",
+      "invocation": [
+        "/update-config"
+      ],
+      "tags": [
+        "configuration",
+        "settings",
+        "hooks",
+        "permissions"
+      ],
+      "invocation_contract": {
+        "inputs": [
+          {
+            "name": "change_request",
+            "type": "string",
+            "description": "What the user wants to configure.",
+            "required": true
+          }
+        ],
+        "outputs": [
+          {
+            "name": "settings_diff",
+            "type": "string",
+            "description": "The diff applied to settings.json."
+          }
+        ],
+        "side_effects": [
+          "modifies .claude/settings.json or ~/.claude/settings.json"
+        ]
+      }
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
