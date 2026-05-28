@@ -104,20 +104,38 @@ jobs:
       - name: Rebuild catalog
         run: python3 scripts/build-exports.py
 
-      - name: Commit and push
+      - name: Commit, PR, and merge
         env:
           ATOM_TYPE: ${{ github.event.inputs.type }}
           ATOM_SLUG: ${{ github.event.inputs.slug }}
           ACTOR: ${{ github.actor }}
-          # PACKAGE_PUBLISH_TOKEN has org-wide write access needed to bypass branch protection.
-          # Falls back to GITHUB_TOKEN (will fail if branch protection requires PRs).
-          PUSH_TOKEN: ${{ secrets.PACKAGE_PUBLISH_TOKEN || secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
         run: |
-          git config user.name  "atoms-publisher[bot]"
-          git config user.email "atoms-publisher@convergent-systems.co"
+          # The org ruleset requires changes via PR (0 reviews needed, no CI gate).
+          # Strategy: create a short-lived branch, push atom, open PR, immediately merge.
+          # The GITHUB_TOKEN has write access and can merge when required_review_count=0.
+
+          BRANCH="atom-publish/$(date +%Y%m%d%H%M%S)-${ATOM_TYPE}-${ATOM_SLUG}"
+
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
           git add "atoms/${ATOM_TYPE}/${ATOM_SLUG}.json" exports/catalog.json
           git diff --cached --stat
           git commit -m "atom(${ATOM_TYPE}): publish ${ATOM_SLUG} [via ${ACTOR}]"
-          # Use PUSH_TOKEN so the push has rights to bypass branch protection
-          git remote set-url origin "https://x-access-token:${PUSH_TOKEN}@github.com/convergent-systems-co/ai-atoms.git"
-          git push origin main
+          git push origin "$BRANCH"
+
+          # Open PR and merge immediately (0 required reviews, no required checks)
+          PR_URL=$(gh pr create \
+            --title "atom(${ATOM_TYPE}): publish ${ATOM_SLUG}" \
+            --body "Auto-published via workflow_dispatch by @${ACTOR}." \
+            --base main \
+            --head "$BRANCH")
+          echo "PR: $PR_URL"
+
+          gh pr merge "$PR_URL" \
+            --merge \
+            --delete-branch \
+            --subject "atom(${ATOM_TYPE}): publish ${ATOM_SLUG} [via ${ACTOR}]"
+
+          echo "✓ Atom published and merged"
