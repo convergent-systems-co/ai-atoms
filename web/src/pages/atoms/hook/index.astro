@@ -106,6 +106,29 @@ const hooks = (catalog.atoms as any[])
         background: #f0fdf4;
         color: #16a34a;
       }
+      .platform-row {
+        display: flex;
+        gap: 0.375rem;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .platform-badge {
+        font-size: 0.68rem;
+        font-weight: 600;
+        padding: 0.1rem 0.45rem;
+        border-radius: 0.25rem;
+        text-transform: lowercase;
+        letter-spacing: 0.02em;
+      }
+      .platform-linux   { background: #fef9c3; color: #854d0e; }
+      .platform-macos   { background: #e0f2fe; color: #0369a1; }
+      .platform-windows { background: #ede9fe; color: #6d28d9; }
+      .platform-note {
+        font-size: 0.75rem;
+        color: #64748b;
+        font-style: italic;
+        line-height: 1.4;
+      }
       .side-effects-list {
         margin: 0;
         padding-left: 1.25rem;
@@ -204,6 +227,20 @@ const hooks = (catalog.atoms as any[])
                   </>
                 )}
               </div>
+
+              {hook.platforms?.length > 0 && (
+                <div>
+                  <div class="platform-row">
+                    {hook.platforms.map((p: string) => (
+                      <span class={`platform-badge platform-${p}`}>{p}</span>
+                    ))}
+                    <span style="font-size: 0.7rem; color: #94a3b8;">invoke via <code>ai hooks run {hook.id.replace('hook/', '')}</code></span>
+                  </div>
+                  {hook.platform_notes && (
+                    <p class="platform-note" style="margin: 0.375rem 0 0;">{hook.platform_notes}</p>
+                  )}
+                </div>
+              )}
 
               {hook.tags?.length > 0 && (
                 <div class="atom-meta">

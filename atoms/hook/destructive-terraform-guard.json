@@ -7,10 +7,30 @@
   "description": "Blocks terraform destroy and terraform apply per Common.md §2.2. Opt-in via command-wrappers.toml. Requires explicit bypass via AI_ALLOW_DESTRUCTIVE_TERRAFORM=1. Prevents accidental infrastructure destruction or unreviewed applies. Other tofu/terraform subcommands (plan, init, validate, output) pass through.",
   "event": "PreToolUse",
   "language": "python",
-  "trigger": {"type": "tool-name", "pattern": "Bash"},
+  "trigger": {
+    "type": "tool-name",
+    "pattern": "Bash"
+  },
   "blocking": true,
-  "side_effects": ["blocks tool call with explanation", "bypass via AI_ALLOW_DESTRUCTIVE_TERRAFORM=1"],
+  "side_effects": [
+    "blocks tool call with explanation",
+    "bypass via AI_ALLOW_DESTRUCTIVE_TERRAFORM=1"
+  ],
   "authored_by": "convergent-systems-key",
-  "tags": ["governance", "terraform", "tofu", "infrastructure", "destructive", "guard", "claude-code"],
-  "lifecycle": "stable"
+  "tags": [
+    "governance",
+    "terraform",
+    "tofu",
+    "infrastructure",
+    "destructive",
+    "guard",
+    "claude-code"
+  ],
+  "lifecycle": "stable",
+  "platforms": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run destructive-terraform-guard' in settings.json — the ai binary discovers Python on each OS. tofu/terraform available on all platforms. Python logic is cross-platform."
 }

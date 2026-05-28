@@ -7,10 +7,29 @@
   "description": "PreToolUse hook that redacts 1Password references and secret-shaped values from Claude Code tool-use payloads before they execute. Unlike secret-block which denies, this hook redacts in-place and always exits 0 — it never blocks the tool call. Patterns: GitHub tokens (gho_/ghp_/ghu_/ghs_/ghr_), Bearer tokens, op:// references, OpenAI sk- keys, PEM blocks. Writes a violation record on detection. Implements Common.md §4 (non-overridable secret handling).",
   "event": "PreToolUse",
   "language": "python",
-  "trigger": {"type": "always"},
+  "trigger": {
+    "type": "always"
+  },
   "blocking": false,
-  "side_effects": ["redacts secrets in-place in tool payload", "writes violation record to ~/.ai/audit/violations/<UTC>-secret-detected.md", "outputs cleaned JSON to stdout"],
+  "side_effects": [
+    "redacts secrets in-place in tool payload",
+    "writes violation record to ~/.ai/audit/violations/<UTC>-secret-detected.md",
+    "outputs cleaned JSON to stdout"
+  ],
   "authored_by": "convergent-systems-key",
-  "tags": ["security", "secrets", "redaction", "1password", "governance", "claude-code"],
-  "lifecycle": "stable"
+  "tags": [
+    "security",
+    "secrets",
+    "redaction",
+    "1password",
+    "governance",
+    "claude-code"
+  ],
+  "lifecycle": "stable",
+  "platforms": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run op-redact' in settings.json — the ai binary discovers Python on each OS. Pure Python regex; no OS-specific calls. Works on all platforms."
 }

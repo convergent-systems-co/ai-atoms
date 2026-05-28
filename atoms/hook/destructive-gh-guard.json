@@ -7,10 +7,27 @@
   "description": "Blocks high-blast-radius, irreversible gh CLI operations per Common.md §2.2. Denies without explicit --force-i-mean-it confirmation: gh repo delete, gh release delete, gh secret delete, and gh auth logout. All other gh subcommands pass through.",
   "event": "PreToolUse",
   "language": "python",
-  "trigger": {"type": "tool-name", "pattern": "Bash"},
+  "trigger": {
+    "type": "tool-name",
+    "pattern": "Bash"
+  },
   "blocking": true,
-  "side_effects": ["blocks tool call with explanation and bypass instructions"],
+  "side_effects": [
+    "blocks tool call with explanation and bypass instructions"
+  ],
   "authored_by": "convergent-systems-key",
-  "tags": ["governance", "gh-cli", "destructive", "guard", "claude-code"],
-  "lifecycle": "stable"
+  "tags": [
+    "governance",
+    "gh-cli",
+    "destructive",
+    "guard",
+    "claude-code"
+  ],
+  "lifecycle": "stable",
+  "platforms": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run destructive-gh-guard' in settings.json — the ai binary discovers Python on each OS. gh CLI available on all platforms. Python logic is cross-platform."
 }

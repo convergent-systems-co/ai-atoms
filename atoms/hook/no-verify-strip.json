@@ -7,10 +7,29 @@
   "description": "PreToolUse hook that strips --no-verify from git commit commands before they execute. Per Common.md §2.2 (no skipping hooks) and the governance SPEC §10.3. Default behavior: strip silently and log the bypass attempt to the audit pipeline. The bypass can be allowed per-project via allowNoVerifyBypass=true in settings, which removes this hook from the preHooks list.",
   "event": "PreToolUse",
   "language": "python",
-  "trigger": {"type": "tool-name", "pattern": "Bash"},
+  "trigger": {
+    "type": "tool-name",
+    "pattern": "Bash"
+  },
   "blocking": false,
-  "side_effects": ["removes --no-verify flag from git commit argv", "logs bypass attempt to audit pipeline"],
+  "side_effects": [
+    "removes --no-verify flag from git commit argv",
+    "logs bypass attempt to audit pipeline"
+  ],
   "authored_by": "convergent-systems-key",
-  "tags": ["git", "governance", "hooks", "audit", "no-verify", "claude-code"],
-  "lifecycle": "stable"
+  "tags": [
+    "git",
+    "governance",
+    "hooks",
+    "audit",
+    "no-verify",
+    "claude-code"
+  ],
+  "lifecycle": "stable",
+  "platforms": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run no-verify-strip' in settings.json — the ai binary discovers Python on each OS. Modifies git argv in-process — cross-platform. Invoked via 'ai hooks run'."
 }
