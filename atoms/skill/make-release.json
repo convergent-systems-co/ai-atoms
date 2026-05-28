@@ -1,0 +1,46 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/make-release",
+  "version": "1.0.0",
+  "name": "Make Release",
+  "description": "Full release pipeline: ensure all PRs are closed or merged, propose a semantic version (Major.Minor.Patch) based on commits since last tag, get user approval, then trigger the release workflow (goreleaser.yml or release.yml). Follows Conventional Commits to determine version bump type.",
+  "system_prompt_fragment": "Run the release pipeline for the current repo.\n\nStep 1 — AUDIT OPEN PRs:\nRun: gh pr list --state open --json number,title,headRefName\nIf any open PRs exist, present them to the user and ask: merge, close, or pause release?\nDo not proceed until all PRs are either merged or closed.\n\nStep 2 — DETERMINE VERSION:\nGet the last tag: git describe --tags --abbrev=0 2>/dev/null || echo 'v0.0.0'\nGet commits since last tag: git log <last_tag>..HEAD --oneline\nAnalyze commit prefixes (Conventional Commits):\n  feat!: or BREAKING CHANGE: → MAJOR bump\n  feat:                       → MINOR bump\n  fix:, perf:, refactor:      → PATCH bump\nPropose the new version. Present to user:\n  'Last release: <tag>. Proposed: <new_version> (<bump_type> — reason). Approve? (approve / pick different version)'\nWait for literal word 'approve' or a custom version string.\n\nStep 3 — TAG AND RELEASE:\nOnce approved:\n  git tag -a <new_version> -m 'Release <new_version>'\n  git push origin <new_version>\nThen trigger the release workflow:\n  If .github/workflows/goreleaser.yml exists: gh workflow run goreleaser.yml --ref <new_version>\n  Elif .github/workflows/release.yml exists: gh workflow run release.yml --ref <new_version>\n  Else: report no release workflow found and ask user how to proceed.\nMonitor the workflow run and report pass/fail.",
+  "applicable_domains": [
+    "code",
+    "delivery",
+    "git"
+  ],
+  "invocation": [
+    "/make release"
+  ],
+  "invocation_contract": {
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "version",
+        "type": "string",
+        "description": "The released version tag (e.g. v1.2.3)."
+      },
+      {
+        "name": "workflow_run",
+        "type": "string",
+        "description": "URL of the triggered release workflow run."
+      }
+    ],
+    "side_effects": [
+      "creates and pushes a git tag",
+      "triggers goreleaser.yml or release.yml workflow",
+      "may merge or close open PRs if user approves"
+    ]
+  },
+  "tags": [
+    "make",
+    "release",
+    "semver",
+    "goreleaser",
+    "delivery"
+  ],
+  "authored_by": "convergent-systems-key",
+  "lifecycle": "stable"
+}
