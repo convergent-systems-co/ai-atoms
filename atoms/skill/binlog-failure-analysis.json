@@ -1,0 +1,26 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/binlog-failure-analysis",
+  "version": "1.0.0",
+  "name": "binlog-failure-analysis",
+  "description": "Analyze MSBuild binary logs to diagnose build failures. Only activate in MSBuild/.NET build context. USE FOR: build errors that are unclear from console output, diagnosing cascading failures across multi-project builds, tracing MSBuild target execution order, and generally any MSBuild build issues. Requires an existing .binlog file. DO NOT USE FOR: generating binlogs (use binlog-generation), non-MSBuild build systems. INVOKES: binlog MCP server tools (overview, errors, search, items, properties); falls back to dotnet msbuild binlog replay + grep/cat when the MCP is unavailable.",
+  "system_prompt_fragment": "# Analyzing MSBuild Failures with Binary Logs\n\nThis skill diagnoses MSBuild build failures from a `.binlog` file. The preferred\npath uses the **binlog MCP server** (`Microsoft.AITools.BinlogMcp`, exposed under the\n`binlog` MCP namespace) which is bundled with this plugin. If the MCP server is\nnot available, fall back to the **binlog replay** workflow at the bottom.\n\n## Primary workflow — binlog MCP\n\nThe MCP server exposes structured tools for inspecting a `.binlog` without\nparsing text logs. Call them directly instead of replaying the binlog to a text\nfile. Call `tools/list` for the MCP first if you are unsure which tools are available.\n\n**Important constraints:**\n- The `.binlog` file is a **binary format** — do NOT try to `cat`, `head`, `strings`, or read it directly. Use only the MCP tools to query it.\n- The **original source/project files might or might NOT be available on disk**. Project files (.csproj, .props, .targets, App.config, etc.) - if you cannot locate them on disk, they can only be read from within the binlog via MCP tools (e.g., embedded/source file retrieval).\n- **Synthesize findings as you go.** Do not spend all available time investigating — once you have enough evidence, present your conclusions. A partial answer with clear reasoning is better than timing out mid-investigation.\n\nUse the available MCP server tools to query the binary log for:\n- Build errors and warnings\n- MSBuild properties and their values\n- MSBuild items (PackageReference, ProjectReference, etc.)\n- Project evaluation data\n- Target execution details\n- File contents embedded in the binlog\n\n## Fallback workflow — text-log replay (when MCP is unavailable)\n\nUse this only when the MCP server cannot be started (for example, on an older\nSDK or in an offline environment without access to the `dotnet-tools` NuGet feed).\n\n### Replay the binlog to text logs\n\n```bash\ndotnet msbuild build.binlog -noconlog \\\n  -fl  -flp:v=diag;logfile=full.log;performancesummary \\\n  -fl1 -flp1:errorsonly;logfile=errors.log \\\n  -fl2 -flp2:warningsonly;logfile=warnings.log\n```\n\n> **PowerShell note:** Use `-flp:\"v=diag;logfile=full.log;performancesummary\"`\n> (quoted semicolons).\n\n### Search the text logs\n\n```bash\ncat errors.log\ngrep -n -B2 -A2 \"CS0246\" full.log\ngrep -i \"CoreCompile.*FAILED\\|Build FAILED\\|error MSB\" full.log\ngrep 'Target \"CoreCompile\"' full.log | grep -oP 'project \"[^\"]*\"'\n```\n\n## Generating a binlog (only if none exists)\n\n```bash\ndotnet build /bl:build.binlog\n```",
+  "applicable_domains": [
+    "code",
+    "dotnet",
+    "engineering"
+  ],
+  "invocation": [
+    "/binlog-failure-analysis"
+  ],
+  "tags": [
+    "dotnet-msbuild",
+    "dotnet",
+    "csharp",
+    "microsoft"
+  ],
+  "authored_by": "anthropics",
+  "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-msbuild/skills/binlog-failure-analysis/SKILL.md",
+  "lifecycle": "stable"
+}

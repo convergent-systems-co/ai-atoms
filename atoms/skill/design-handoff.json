@@ -1,0 +1,25 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/design-handoff",
+  "version": "1.0.0",
+  "name": "design-handoff",
+  "description": "Generate developer handoff specs from a design. Use when a design is ready for engineering and needs a spec sheet covering layout, design tokens, component props, interaction states, responsive breakpoints, edge cases, and animation details.",
+  "system_prompt_fragment": "# /design-handoff\n\n> If you see unfamiliar placeholders or need to check which tools are connected, see [CONNECTORS.md](../../CONNECTORS.md).\n\nGenerate comprehensive developer handoff documentation from a design.\n\n## Usage\n\n```\n/design-handoff $ARGUMENTS\n```\n\nGenerate handoff specs for: @$1\n\nIf a Figma URL is provided, pull the design from Figma. Otherwise, work from the provided description or screenshot.\n\n## What to Include\n\n### Visual Specifications\n- Exact measurements (padding, margins, widths)\n- Design token references (colors, typography, spacing)\n- Responsive breakpoints and behavior\n- Component variants and states\n\n### Interaction Specifications\n- Click/tap behavior\n- Hover states\n- Transitions and animations (duration, easing)\n- Gesture support (swipe, pinch, long-press)\n\n### Content Specifications\n- Character limits\n- Truncation behavior\n- Empty states\n- Loading states\n- Error states\n\n### Edge Cases\n- Minimum/maximum content\n- International text (longer strings)\n- Slow connections\n- Missing data\n\n### Accessibility\n- Focus order\n- ARIA labels and roles\n- Keyboard interactions\n- Screen reader announcements\n\n## Principles\n\n1. **Don't assume** — If it's not specified, the developer will guess. Specify everything.\n2. **Use tokens, not values** — Reference `spacing-md` not `16px`.\n3. **Show all states** — Default, hover, active, disabled, loading, error, empty.\n4. **Describe the why** — \"This collapses on mobile because users primarily use one-handed\" helps developers make good judgment calls.\n\n## Output\n\n```markdown\n## Handoff Spec: [Feature/Screen Name]\n\n### Overview\n[What this screen/feature does, user context]\n\n### Layout\n[Grid system, breakpoints, responsive behavior]\n\n### Design Tokens Used\n| Token | Value | Usage |\n|-------|-------|-------|\n| `color-primary` | #[hex] | CTA buttons, links |\n| `spacing-md` | [X]px | Between sections |\n| `font-heading-lg` | [size/weight/family] | Page title |\n\n### Components\n| Component | Variant | Props | Notes |\n|-----------|---------|-------|-------|\n| [Component] | [Variant] | [Props] | [Special behavior] |\n\n### States and Interactions\n| Element | State | Behavior |\n|---------|-------|----------|\n| [CTA Button] | Hover | [Background darken 10%] |\n| [CTA Button] | Loading | [Spinner, disabled] |\n| [Form] | Error | [Red border, error message below] |\n\n### Responsive Behavior\n| Breakpoint | Changes |\n|------------|---------|\n| Desktop (>1024px) | [Default layout] |\n| Tablet (768-1024px) | [What changes] |\n| Mobile (<768px) | [What changes] |\n\n### Edge Cases\n- **Empty state**: [What to show when no data]\n- **Long text**: [Truncation rules]\n- **Loading**: [Skeleton or spinner]\n- **Error**: [Error state appearance]\n\n### Animation / Motion\n| Element | Trigger | Animation | Duration | Easing |\n|---------|---------|-----------|----------|--------|\n| [Element] | [Trigger] | [Description] | [ms] | [easing] |\n\n### Accessibility Notes\n- [Focus order]\n- [ARIA labels needed]\n- [Keyboard interactions]\n```\n\n## If Connectors Available\n\nIf **~~design tool** is connected:\n- Pull exact measurements, tokens, and component specs from Figma\n- Export assets and generate a complete spec sheet\n\nIf **~~project tracker** is connected:\n- Link the handoff to the implementation ticket\n- Create sub-tasks for each section of the spec\n\n## Tips\n\n1. **Share the Figma link** — I can pull exact measurements, tokens, and component info.\n2. **Mention edge cases** — \"What happens with 100 items?\" helps me spec boundary conditions.\n3. **Specify the tech stack** — \"We use React + Tailwind\" helps me give relevant implementation notes.",
+  "applicable_domains": [
+    "design",
+    "ux"
+  ],
+  "invocation": [
+    "/design-handoff",
+    "/design-handoff <Figma URL or design description>"
+  ],
+  "tags": [
+    "design",
+    "anthropics",
+    "knowledge-work"
+  ],
+  "authored_by": "anthropics",
+  "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/design/skills/design-handoff/SKILL.md",
+  "lifecycle": "stable"
+}

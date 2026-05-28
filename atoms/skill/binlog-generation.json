@@ -1,0 +1,26 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/binlog-generation",
+  "version": "1.0.0",
+  "name": "binlog-generation",
+  "description": "Generate MSBuild binary logs (binlogs) for build diagnostics and analysis. Only activate in MSBuild/.NET build context. USE FOR: adding /bl:{} to any dotnet build, test, pack, publish, or restore command to capture a full build execution trace, prerequisite for binlog-failure-analysis and build-perf-diagnostics skills, enabling post-build investigation of errors or performance. Requires MSBuild 17.8+ / .NET 8 SDK+ for {} placeholder; PowerShell needs -bl:{{}}. DO NOT USE FOR: non-MSBuild build systems (npm, Maven, CMake), analyzing an existing binlog (use binlog-failure-analysis instead). INVOKES: shell commands (dotnet build /bl:{}).",
+  "system_prompt_fragment": "# Generate Binary Logs\n\n**Pass the `/bl` switch when running any MSBuild-based command.** This is a non-negotiable requirement for all .NET builds.\n\n## Commands That Require /bl\n\nYou MUST add the `/bl:{}` flag to:\n- `dotnet build`\n- `dotnet test`\n- `dotnet pack`\n- `dotnet publish`\n- `dotnet restore`\n- `msbuild` or `msbuild.exe`\n- Any other command that invokes MSBuild\n\n## Preferred: Use `{}` for Automatic Unique Names\n\n> **Note:** The `{}` placeholder requires MSBuild 17.8+ / .NET 8 SDK or later.\n\nThe `{}` placeholder in the binlog filename is replaced by MSBuild with a unique identifier, guaranteeing no two builds ever overwrite each other — without needing to track or check existing files.\n\n```bash\n# Every invocation produces a distinct file automatically\ndotnet build /bl:{}\ndotnet test /bl:{}\ndotnet build --configuration Release /bl:{}\n```\n\n**PowerShell requires escaping the braces:**\n\n```powershell\n# PowerShell: escape { } as {{ }}\ndotnet build -bl:{{}}\ndotnet test -bl:{{}}\n```\n\n## Why This Matters\n\n1. **Unique names prevent overwrites** - You can always go back and analyze previous builds\n2. **Failure analysis** - When a build fails, the binlog is already there for immediate analysis\n3. **Comparison** - You can compare builds before and after changes\n4. **No re-running builds** - You never need to re-run a failed build just to generate a binlog\n\n## Examples\n\n```bash\n# ✅ CORRECT - {} generates a unique name automatically (bash/cmd)\ndotnet build /bl:{}\ndotnet test /bl:{}\n\n# ✅ CORRECT - PowerShell escaping\ndotnet build -bl:{{}}\ndotnet test -bl:{{}}\n\n# ❌ WRONG - Missing /bl flag entirely\ndotnet build\ndotnet test\n\n# ❌ WRONG - No filename (overwrites the same msbuild.binlog every time)\ndotnet build /bl\ndotnet build /bl\n```\n\n## When a Specific Filename Is Required\n\nIf the binlog filename needs to be known upfront (e.g., for CI artifact upload), or if `{}` is not available in the installed MSBuild version, pick a name that won't collide with existing files:\n\n1. Check for existing `*.binlog` files in the directory\n2. Choose a name not already taken (e.g., by incrementing a counter from the highest existing number)\n\n```bash\n# Example: directory contains 3.binlog — use 4.binlog\ndotnet build /bl:4.binlog\n```\n\n## Cleaning the Repository\n\nWhen cleaning the repository with `git clean`, **always exclude binlog files** to preserve your build history:\n\n```bash\n# ✅ CORRECT - Exclude binlog files from cleaning\ngit clean -fdx -e \"*.binlog\"\n\n# ❌ WRONG - This deletes binlog files (they're usually in .gitignore)\ngit clean -fdx\n```\n\nThis is especially important when iterating on build fixes - you need the binlogs to analyze what changed between builds.",
+  "applicable_domains": [
+    "code",
+    "dotnet",
+    "engineering"
+  ],
+  "invocation": [
+    "/binlog-generation"
+  ],
+  "tags": [
+    "dotnet-msbuild",
+    "dotnet",
+    "csharp",
+    "microsoft"
+  ],
+  "authored_by": "anthropics",
+  "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-msbuild/skills/binlog-generation/SKILL.md",
+  "lifecycle": "stable"
+}

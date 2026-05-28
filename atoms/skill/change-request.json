@@ -1,0 +1,25 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/change-request",
+  "version": "1.0.0",
+  "name": "change-request",
+  "description": "Create a change management request with impact analysis and rollback plan. Use when proposing a system or process change that needs approval, preparing a change record for CAB review, documenting risk and rollback steps before a deployment, or planning stakeholder communications for a rollout.",
+  "system_prompt_fragment": "# /change-request\n\n> If you see unfamiliar placeholders or need to check which tools are connected, see [CONNECTORS.md](../../CONNECTORS.md).\n\nCreate a structured change request with impact analysis, risk assessment, and rollback plan.\n\n## Usage\n\n```\n/change-request $ARGUMENTS\n```\n\n## Change Management Framework\n\nApply the assess-plan-execute-sustain framework when building the request:\n\n### 1. Assess\n- What is changing?\n- Who is affected?\n- How significant is the change? (Low / Medium / High)\n- What resistance should we expect?\n\n### 2. Plan\n- Communication plan (who, what, when, how)\n- Training plan (what skills are needed, how to deliver)\n- Support plan (help desk, champions, FAQs)\n- Timeline with milestones\n\n### 3. Execute\n- Announce and explain the \"why\"\n- Train and support\n- Monitor adoption\n- Address resistance\n\n### 4. Sustain\n- Measure adoption and effectiveness\n- Reinforce new behaviors\n- Address lingering issues\n- Document lessons learned\n\n## Communication Principles\n\n- Explain the **why** before the **what**\n- Communicate early and often\n- Use multiple channels\n- Acknowledge what's being lost, not just what's being gained\n- Provide a clear path for questions and concerns\n\n## Output\n\n```markdown\n## Change Request: [Title]\n**Requester:** [Name] | **Date:** [Date] | **Priority:** [Critical/High/Medium/Low]\n**Status:** Draft | Pending Approval | Approved | In Progress | Complete\n\n### Description\n[What is changing and why]\n\n### Business Justification\n[Why this change is needed — cost savings, compliance, efficiency, risk reduction]\n\n### Impact Analysis\n| Area | Impact | Details |\n|------|--------|---------|\n| Users | [High/Med/Low/None] | [Who is affected and how] |\n| Systems | [High/Med/Low/None] | [What systems are affected] |\n| Processes | [High/Med/Low/None] | [What workflows change] |\n| Cost | [High/Med/Low/None] | [Budget impact] |\n\n### Risk Assessment\n| Risk | Likelihood | Impact | Mitigation |\n|------|-----------|--------|------------|\n| [Risk] | [H/M/L] | [H/M/L] | [How to mitigate] |\n\n### Implementation Plan\n| Step | Owner | Timeline | Dependencies |\n|------|-------|----------|--------------|\n| [Step] | [Person] | [Date] | [What it depends on] |\n\n### Communication Plan\n| Audience | Message | Channel | Timing |\n|----------|---------|---------|--------|\n| [Who] | [What to tell them] | [How] | [When] |\n\n### Rollback Plan\n[Step-by-step plan to reverse the change if needed]\n- Trigger: [When to roll back]\n- Steps: [How to roll back]\n- Verification: [How to confirm rollback worked]\n\n### Approvals Required\n| Approver | Role | Status |\n|----------|------|--------|\n| [Name] | [Role] | Pending |\n```\n\n## If Connectors Available\n\nIf **~~ITSM** is connected:\n- Create the change request ticket automatically\n- Pull change advisory board schedule and approval workflows\n\nIf **~~project tracker** is connected:\n- Link to related implementation tasks and dependencies\n- Track change progress against milestones\n\nIf **~~chat** is connected:\n- Draft stakeholder notifications for the communication plan\n- Post change updates to the relevant team channels\n\n## Tips\n\n1. **Be specific about impact** — \"Everyone\" is not an impact assessment. \"200 users in the billing team\" is.\n2. **Always have a rollback plan** — Even if you're confident, plan for failure.\n3. **Communicate early** — Surprises create resistance. Previews create buy-in.",
+  "applicable_domains": [
+    "operations",
+    "process"
+  ],
+  "invocation": [
+    "/change-request",
+    "/change-request <change description>"
+  ],
+  "tags": [
+    "operations",
+    "anthropics",
+    "knowledge-work"
+  ],
+  "authored_by": "anthropics",
+  "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/operations/skills/change-request/SKILL.md",
+  "lifecycle": "stable"
+}

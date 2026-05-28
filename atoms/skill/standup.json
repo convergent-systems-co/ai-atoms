@@ -1,0 +1,26 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/standup",
+  "version": "1.0.0",
+  "name": "standup",
+  "description": "Generate a standup update from recent activity. Use when preparing for daily standup, summarizing yesterday's commits and PRs and ticket moves, formatting work into yesterday/today/blockers, or structuring a few rough notes into a shareable update.",
+  "system_prompt_fragment": "# /standup\n\n> If you see unfamiliar placeholders or need to check which tools are connected, see [CONNECTORS.md](../../CONNECTORS.md).\n\nGenerate a standup update by pulling together recent activity across your tools.\n\n## How It Works\n\n```\n┌─────────────────────────────────────────────────────────────────┐\n│                        STANDUP                                    │\n├─────────────────────────────────────────────────────────────────┤\n│  STANDALONE (always works)                                       │\n│  ✓ Tell me what you worked on and I'll structure it             │\n│  ✓ Format for daily standup (yesterday / today / blockers)      │\n│  ✓ Keep it concise and action-oriented                          │\n├─────────────────────────────────────────────────────────────────┤\n│  SUPERCHARGED (when you connect your tools)                      │\n│  + Source control: Recent commits and PRs                        │\n│  + Project tracker: Ticket status changes                        │\n│  + Chat: Relevant discussions and decisions                      │\n│  + CI/CD: Build and deploy status                                │\n└─────────────────────────────────────────────────────────────────┘\n```\n\n## What I Need From You\n\n**Option A: Let me pull it**\nIf your tools are connected, just say `/standup` and I'll gather everything automatically.\n\n**Option B: Tell me what you did**\n\"Worked on the auth migration, reviewed 3 PRs, got blocked on the API rate limiting issue.\"\n\n## Output\n\n```markdown\n## Standup — [Date]\n\n### Yesterday\n- [Completed item with ticket reference if available]\n- [Completed item]\n\n### Today\n- [Planned item with ticket reference]\n- [Planned item]\n\n### Blockers\n- [Blocker with context and who can help]\n```\n\n## If Connectors Available\n\nIf **~~source control** is connected:\n- Pull recent commits and PRs (opened, reviewed, merged)\n- Summarize code changes at a high level\n\nIf **~~project tracker** is connected:\n- Pull tickets moved to \"in progress\" or \"done\"\n- Show upcoming sprint items\n\nIf **~~chat** is connected:\n- Scan for relevant discussions and decisions\n- Flag threads needing your response\n\n## Tips\n\n1. **Run it every morning** — Build a habit and never scramble for standup notes.\n2. **Add context** — After I generate, add any nuance about blockers or priorities.\n3. **Share format** — Ask me to format for Slack, email, or your team's standup tool.",
+  "applicable_domains": [
+    "code",
+    "engineering",
+    "architecture"
+  ],
+  "invocation": [
+    "/standup",
+    "/standup [yesterday | today | blockers]"
+  ],
+  "tags": [
+    "engineering",
+    "anthropics",
+    "knowledge-work"
+  ],
+  "authored_by": "anthropics",
+  "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/engineering/skills/standup/SKILL.md",
+  "lifecycle": "stable"
+}

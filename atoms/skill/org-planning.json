@@ -1,0 +1,24 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/org-planning",
+  "version": "1.0.0",
+  "name": "org-planning",
+  "description": "Headcount planning, org design, and team structure optimization. Trigger with \"org planning\", \"headcount plan\", \"team structure\", \"reorg\", \"who should we hire next\", or when the user is thinking about team size, reporting structure, or organizational design.",
+  "system_prompt_fragment": "# Org Planning\n\nHelp plan organizational structure, headcount, and team design.\n\n## Planning Dimensions\n\n- **Headcount**: How many people do we need, in what roles, by when?\n- **Structure**: Reporting lines, span of control, team boundaries\n- **Sequencing**: Which hires are most critical? What's the right order?\n- **Budget**: Headcount cost modeling and trade-offs\n\n## Healthy Org Benchmarks\n\n| Metric | Healthy Range | Warning Sign |\n|--------|---------------|--------------|\n| Span of control | 5-8 direct reports | < 3 or > 12 |\n| Management layers | 4-6 for 500 people | Too many = slow decisions |\n| IC-to-manager ratio | 6:1 to 10:1 | < 4:1 = top-heavy |\n| Team size | 5-9 people | < 4 = lonely, > 12 = hard to manage |\n\n## Output\n\nProduce org charts (text-based), headcount plans with cost modeling, and sequenced hiring roadmaps. Flag structural issues like single points of failure or excessive management overhead.",
+  "applicable_domains": [
+    "hr",
+    "people"
+  ],
+  "invocation": [
+    "/org-planning"
+  ],
+  "tags": [
+    "human-resources",
+    "anthropics",
+    "knowledge-work"
+  ],
+  "authored_by": "anthropics",
+  "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/human-resources/skills/org-planning/SKILL.md",
+  "lifecycle": "stable"
+}

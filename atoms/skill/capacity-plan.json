@@ -1,0 +1,25 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/capacity-plan",
+  "version": "1.0.0",
+  "name": "capacity-plan",
+  "description": "Plan resource capacity — workload analysis and utilization forecasting. Use when heading into quarterly planning, the team feels overallocated and you need the numbers, deciding whether to hire or deprioritize, or stress-testing whether upcoming projects fit the people you have.",
+  "system_prompt_fragment": "# /capacity-plan\n\n> If you see unfamiliar placeholders or need to check which tools are connected, see [CONNECTORS.md](../../CONNECTORS.md).\n\nAnalyze team capacity and plan resource allocation.\n\n## Usage\n\n```\n/capacity-plan $ARGUMENTS\n```\n\n## What I Need From You\n\n- **Team size and roles**: Who do you have?\n- **Current workload**: What are they working on? (Upload from project tracker or describe)\n- **Upcoming work**: What's coming next quarter?\n- **Constraints**: Budget, hiring timeline, skill requirements\n\n## Planning Dimensions\n\n### People\n- Available headcount and skills\n- Current allocation and utilization\n- Planned hires and timeline\n- Contractor and vendor capacity\n\n### Budget\n- Operating budget by category\n- Project-specific budgets\n- Variance tracking\n- Forecast vs. actual\n\n### Time\n- Project timelines and dependencies\n- Critical path analysis\n- Buffer and contingency planning\n- Deadline management\n\n## Utilization Targets\n\n| Role Type | Target Utilization | Notes |\n|-----------|-------------------|-------|\n| IC / Specialist | 75-80% | Leave room for reactive work and growth |\n| Manager | 60-70% | Management overhead, meetings, 1:1s |\n| On-call / Support | 50-60% | Interrupt-driven work is unpredictable |\n\n## Common Pitfalls\n\n- Planning to 100% utilization (no buffer for surprises)\n- Ignoring meeting load and context-switching costs\n- Not accounting for vacation, holidays, and sick time\n- Treating all hours as equal (creative work ≠ admin work)\n\n## Output\n\n```markdown\n## Capacity Plan: [Team/Project]\n**Period:** [Date range] | **Team Size:** [X]\n\n### Current Utilization\n| Person/Role | Capacity | Allocated | Available | Utilization |\n|-------------|----------|-----------|-----------|-------------|\n| [Name/Role] | [hrs/wk] | [hrs/wk] | [hrs/wk] | [X]% |\n\n### Capacity Summary\n- **Total capacity**: [X] hours/week\n- **Currently allocated**: [X] hours/week ([X]%)\n- **Available**: [X] hours/week ([X]%)\n- **Overallocated**: [X people above 100%]\n\n### Upcoming Demand\n| Project/Initiative | Start | End | Resources Needed | Gap |\n|--------------------|-------|-----|-----------------|-----|\n| [Project] | [Date] | [Date] | [X FTEs] | [Covered/Gap] |\n\n### Bottlenecks\n- [Skill or role that's oversubscribed]\n- [Time period with a crunch]\n\n### Recommendations\n1. [Hire / Contract / Reprioritize / Delay]\n2. [Specific action]\n\n### Scenarios\n| Scenario | Outcome |\n|----------|---------|\n| Do nothing | [What happens] |\n| Hire [X] | [What changes] |\n| Deprioritize [Y] | [What frees up] |\n```\n\n## If Connectors Available\n\nIf **~~project tracker** is connected:\n- Pull current workload and ticket assignments automatically\n- Show upcoming sprint or quarter commitments per person\n\nIf **~~calendar** is connected:\n- Factor in PTO, holidays, and recurring meeting load\n- Calculate actual available hours per person\n\n## Tips\n\n1. **Include all work** — BAU, projects, support, meetings. People aren't 100% available for project work.\n2. **Plan for buffer** — Target 80% utilization. 100% means no room for surprises.\n3. **Update regularly** — Capacity plans go stale fast. Review monthly.",
+  "applicable_domains": [
+    "operations",
+    "process"
+  ],
+  "invocation": [
+    "/capacity-plan",
+    "/capacity-plan <team or project scope>"
+  ],
+  "tags": [
+    "operations",
+    "anthropics",
+    "knowledge-work"
+  ],
+  "authored_by": "anthropics",
+  "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/operations/skills/capacity-plan/SKILL.md",
+  "lifecycle": "stable"
+}

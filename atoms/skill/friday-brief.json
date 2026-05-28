@@ -1,0 +1,24 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/friday-brief",
+  "version": "1.0.0",
+  "name": "friday-brief",
+  "description": "Delivers the Friday end-of-week pulse — revenue vs prior week, top sellers, wins and watches. Accepts optional lookback window of 7 or 14 days.",
+  "system_prompt_fragment": "Run the Friday wins-and-watches briefing. Pull the numbers, surface what matters, and give the owner a clean end-of-week picture.\n\nParse arguments:\n- `--lookback` (default: `7d`) — `7d` for one week or `14d` for a two-week rolling comparison\n\n## Step 1 — Revenue pulse\n\nUsing the `business-pulse` skill workflow:\n\n1. Pull PayPal transactions for the lookback period.\n2. Pull any HubSpot deal closes for the same window.\n3. Calculate week-over-week revenue delta.\n4. Surface top 3 revenue sources (product / customer / channel) ranked by contribution.\n\n## Step 2 — Sales breakdown\n\n1. List the top 5 selling products/services by volume and revenue.\n2. List the bottom 3 (anything that moved less than expected vs. prior period).\n3. Flag any items with a sudden spike or drop (>20% change).\n\n## Step 3 — Wins and watches summary\n\nFormat the output as:\n\n```\nFriday Brief — {date}\n\nWINS\n• {win 1}\n• {win 2}\n• {win 3}\n\nWATCHES\n• {watch 1} — {recommended action}\n• {watch 2} — {recommended action}\n\nRevenue this week: ${amount} ({+/-}X% vs last week)\n```\n\n## Connector failures\n\nRun with whatever is connected — this command degrades gracefully. If PayPal is missing, skip transaction data and note \"PayPal not connected — revenue data from HubSpot deals only.\" If HubSpot is missing, skip deal closes and note it. If neither is connected, stop and tell the owner: \"No revenue sources connected. Connect PayPal or HubSpot to run the Friday brief.\"\n\n## Approval gates\n\n- **Never send or post this brief automatically.** Always display it for the owner to review first.\n- **Never auto-cancel or modify anything.** Surface the data and recommendations only.\n\n## Output\n\nEnd with the formatted brief and ask the owner: \"Want me to post this to Slack, email it to yourself, or save it?\"",
+  "applicable_domains": [
+    "business",
+    "operations"
+  ],
+  "invocation": [
+    "/friday-brief"
+  ],
+  "tags": [
+    "small-business",
+    "anthropics",
+    "knowledge-work"
+  ],
+  "authored_by": "anthropics",
+  "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/friday-brief/SKILL.md",
+  "lifecycle": "stable"
+}

@@ -1,0 +1,25 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/sprint-planning",
+  "version": "1.0.0",
+  "name": "sprint-planning",
+  "description": "Plan a sprint — scope work, estimate capacity, set goals, and draft a sprint plan. Use when kicking off a new sprint, sizing a backlog against team availability (accounting for PTO and meetings), deciding what's P0 vs. stretch, or handling carryover from the last sprint.",
+  "system_prompt_fragment": "# /sprint-planning\n\n> If you see unfamiliar placeholders or need to check which tools are connected, see [CONNECTORS.md](../../CONNECTORS.md).\n\nPlan a sprint by scoping work, estimating capacity, and setting clear goals.\n\n## Usage\n\n```\n/sprint-planning $ARGUMENTS\n```\n\n## How It Works\n\n```\n┌─────────────────────────────────────────────────────────────────┐\n│                    SPRINT PLANNING                                 │\n├─────────────────────────────────────────────────────────────────┤\n│  STANDALONE (always works)                                       │\n│  ✓ Define sprint goals and success criteria                     │\n│  ✓ Estimate team capacity (accounting for PTO, meetings)        │\n│  ✓ Scope and prioritize backlog items                           │\n│  ✓ Identify dependencies and risks                              │\n│  ✓ Generate sprint plan document                                │\n├─────────────────────────────────────────────────────────────────┤\n│  SUPERCHARGED (when you connect your tools)                      │\n│  + Project tracker: Pull backlog, create sprint, assign items   │\n│  + Calendar: Account for PTO and meetings in capacity           │\n│  + Chat: Share sprint plan with the team                        │\n└─────────────────────────────────────────────────────────────────┘\n```\n\n## What I Need From You\n\n- **Team**: Who's on the team and their availability this sprint?\n- **Sprint length**: How many days/weeks?\n- **Backlog**: What's prioritized? (Pull from tracker, paste, or describe)\n- **Carryover**: Anything unfinished from last sprint?\n- **Dependencies**: Anything blocked on other teams?\n\n## Output\n\n```markdown\n## Sprint Plan: [Sprint Name]\n**Dates:** [Start] — [End] | **Team:** [X] engineers\n**Sprint Goal:** [One clear sentence about what success looks like]\n\n### Capacity\n| Person | Available Days | Allocation | Notes |\n|--------|---------------|------------|-------|\n| [Name] | [X] of [Y] | [X] points/hours | [PTO, on-call, etc.] |\n| **Total** | **[X]** | **[X] points** | |\n\n### Sprint Backlog\n| Priority | Item | Estimate | Owner | Dependencies |\n|----------|------|----------|-------|--------------|\n| P0 | [Must ship] | [X] pts | [Person] | [None / Blocked by X] |\n| P1 | [Should ship] | [X] pts | [Person] | [None] |\n| P2 | [Stretch] | [X] pts | [Person] | [None] |\n\n### Planned Capacity: [X] points | Sprint Load: [X] points ([X]% of capacity)\n\n### Risks\n| Risk | Impact | Mitigation |\n|------|--------|------------|\n| [Risk] | [What happens] | [What to do] |\n\n### Definition of Done\n- [ ] Code reviewed and merged\n- [ ] Tests passing\n- [ ] Documentation updated (if applicable)\n- [ ] Product sign-off\n\n### Key Dates\n| Date | Event |\n|------|-------|\n| [Date] | Sprint start |\n| [Date] | Mid-sprint check-in |\n| [Date] | Sprint end / Demo |\n| [Date] | Retro |\n```\n\n## Tips\n\n1. **Leave buffer** — Plan to 70-80% capacity. You will get interrupts.\n2. **One clear sprint goal** — If you can't state it in one sentence, the sprint is unfocused.\n3. **Identify stretch items** — Know what to cut if things take longer than expected.\n4. **Carry over honestly** — If something didn't ship, understand why before re-committing.",
+  "applicable_domains": [
+    "product",
+    "planning"
+  ],
+  "invocation": [
+    "/sprint-planning",
+    "/sprint-planning [sprint name or date range]"
+  ],
+  "tags": [
+    "product-management",
+    "anthropics",
+    "knowledge-work"
+  ],
+  "authored_by": "anthropics",
+  "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/product-management/skills/sprint-planning/SKILL.md",
+  "lifecycle": "stable"
+}

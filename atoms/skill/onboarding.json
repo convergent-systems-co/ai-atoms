@@ -1,0 +1,25 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/onboarding",
+  "version": "1.0.0",
+  "name": "onboarding",
+  "description": "Generate an onboarding checklist and first-week plan for a new hire. Use when someone has a start date coming up, building the pre-start task list (accounts, equipment, buddy), scheduling Day 1 and Week 1, or setting 30/60/90-day goals for a new team member.",
+  "system_prompt_fragment": "# /onboarding\n\n> If you see unfamiliar placeholders or need to check which tools are connected, see [CONNECTORS.md](../../CONNECTORS.md).\n\nGenerate a comprehensive onboarding plan for a new team member.\n\n## Usage\n\n```\n/onboarding $ARGUMENTS\n```\n\n## What I Need From You\n\n- **New hire name**: Who's starting?\n- **Role**: What position?\n- **Team**: Which team are they joining?\n- **Start date**: When do they start?\n- **Manager**: Who's their manager?\n\n## Output\n\n```markdown\n## Onboarding Plan: [Name] — [Role]\n**Start Date:** [Date] | **Team:** [Team] | **Manager:** [Manager]\n\n### Pre-Start (Before Day 1)\n- [ ] Send welcome email with start date, time, and logistics\n- [ ] Set up accounts: email, Slack, [tools for role]\n- [ ] Order equipment (laptop, monitor, peripherals)\n- [ ] Add to team calendar and recurring meetings\n- [ ] Assign onboarding buddy: [Suggested person]\n- [ ] Prepare desk / remote setup instructions\n\n### Day 1\n| Time | Activity | With |\n|------|----------|------|\n| 9:00 | Welcome and orientation | Manager |\n| 10:00 | IT setup and tool walkthrough | IT / Buddy |\n| 11:00 | Team introductions | Team |\n| 12:00 | Welcome lunch | Manager + Team |\n| 1:30 | Company overview and values | Manager |\n| 3:00 | Role expectations and 30/60/90 plan | Manager |\n| 4:00 | Free time to explore tools and docs | Self |\n\n### Week 1\n- [ ] Complete required compliance training\n- [ ] Read key documentation: [list for role]\n- [ ] 1:1 with each team member\n- [ ] Shadow key meetings\n- [ ] First small task or project assigned\n- [ ] End-of-week check-in with manager\n\n### 30-Day Goals\n1. [Goal aligned to role]\n2. [Goal aligned to role]\n3. [Goal aligned to role]\n\n### 60-Day Goals\n1. [Goal]\n2. [Goal]\n\n### 90-Day Goals\n1. [Goal]\n2. [Goal]\n\n### Key Contacts\n| Person | Role | For What |\n|--------|------|----------|\n| [Manager] | Manager | Day-to-day guidance |\n| [Buddy] | Onboarding Buddy | Questions, culture, navigation |\n| [IT Contact] | IT | Tool access, equipment |\n| [HR Contact] | HR | Benefits, policies |\n\n### Tools Access Needed\n| Tool | Access Level | Requested |\n|------|-------------|-----------|\n| [Tool] | [Level] | [ ] |\n```\n\n## If Connectors Available\n\nIf **~~HRIS** is connected:\n- Pull new hire details and team org chart\n- Auto-populate tools access list based on role\n\nIf **~~knowledge base** is connected:\n- Link to relevant onboarding docs, team wikis, and runbooks\n- Pull the team's existing onboarding checklist to customize\n\nIf **~~calendar** is connected:\n- Create Day 1 calendar events and Week 1 meeting invites automatically\n\n## Tips\n\n1. **Customize for the role** — An engineer's onboarding looks different from a designer's.\n2. **Don't overload Day 1** — Focus on setup and relationships. Deep work starts Week 2.\n3. **Assign a buddy** — Having a go-to person who isn't their manager makes a huge difference.",
+  "applicable_domains": [
+    "hr",
+    "people"
+  ],
+  "invocation": [
+    "/onboarding",
+    "/onboarding <new hire name and role>"
+  ],
+  "tags": [
+    "human-resources",
+    "anthropics",
+    "knowledge-work"
+  ],
+  "authored_by": "anthropics",
+  "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/human-resources/skills/onboarding/SKILL.md",
+  "lifecycle": "stable"
+}

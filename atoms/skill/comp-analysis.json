@@ -1,0 +1,25 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/comp-analysis",
+  "version": "1.0.0",
+  "name": "comp-analysis",
+  "description": "Analyze compensation — benchmarking, band placement, and equity modeling. Trigger with \"what should we pay a [role]\", \"is this offer competitive\", \"model this equity grant\", or when uploading comp data to find outliers and retention risks.",
+  "system_prompt_fragment": "# /comp-analysis\n\n> If you see unfamiliar placeholders or need to check which tools are connected, see [CONNECTORS.md](../../CONNECTORS.md).\n\nAnalyze compensation data for benchmarking, band placement, and planning. Helps benchmark compensation against market data for hiring, retention, and equity planning.\n\n## Usage\n\n```\n/comp-analysis $ARGUMENTS\n```\n\n## What I Need From You\n\n**Option A: Single role analysis**\n\"What should we pay a Senior Software Engineer in SF?\"\n\n**Option B: Upload comp data**\nUpload a CSV or paste your comp bands. I'll analyze placement, identify outliers, and compare to market.\n\n**Option C: Equity modeling**\n\"Model a refresh grant of 10K shares over 4 years at a $50 stock price.\"\n\n## Compensation Framework\n\n### Components of Total Compensation\n- **Base salary**: Cash compensation\n- **Equity**: RSUs, stock options, or other equity\n- **Bonus**: Annual target bonus, signing bonus\n- **Benefits**: Health, retirement, perks (harder to quantify)\n\n### Key Variables\n- **Role**: Function and specialization\n- **Level**: IC levels, management levels\n- **Location**: Geographic pay adjustments\n- **Company stage**: Startup vs. growth vs. public\n- **Industry**: Tech vs. finance vs. healthcare\n\n### Data Sources\n- **With ~~compensation data**: Pull verified benchmarks\n- **Without**: Use web research, public salary data, and user-provided context\n- Always note data freshness and source limitations\n\n## Output\n\nProvide percentile bands (25th, 50th, 75th, 90th) for base, equity, and total comp. Include location adjustments and company-stage context.\n\n```markdown\n## Compensation Analysis: [Role/Scope]\n\n### Market Benchmarks\n| Percentile | Base | Equity | Total Comp |\n|------------|------|--------|------------|\n| 25th | $[X] | $[X] | $[X] |\n| 50th | $[X] | $[X] | $[X] |\n| 75th | $[X] | $[X] | $[X] |\n| 90th | $[X] | $[X] | $[X] |\n\n**Sources:** [Web research, compensation data tools, or user-provided data]\n\n### Band Analysis (if data provided)\n| Employee | Current Base | Band Min | Band Mid | Band Max | Position |\n|----------|-------------|----------|----------|----------|----------|\n| [Name] | $[X] | $[X] | $[X] | $[X] | [Below/At/Above] |\n\n### Recommendations\n- [Specific compensation recommendations]\n- [Equity considerations]\n- [Retention risks if applicable]\n```\n\n## If Connectors Available\n\nIf **~~compensation data** is connected:\n- Pull verified market benchmarks by role, level, and location\n- Compare your bands against real-time market data\n\nIf **~~HRIS** is connected:\n- Pull current employee comp data for band analysis\n- Identify outliers and retention risks automatically\n\n## Tips\n\n1. **Location matters** — Always specify location for benchmarking. SF vs. Austin vs. London are very different.\n2. **Total comp, not just base** — Include equity, bonus, and benefits for a complete picture.\n3. **Keep data confidential** — Comp data is sensitive. Results stay in your conversation.",
+  "applicable_domains": [
+    "hr",
+    "people"
+  ],
+  "invocation": [
+    "/comp-analysis",
+    "/comp-analysis <role, level, or dataset>"
+  ],
+  "tags": [
+    "human-resources",
+    "anthropics",
+    "knowledge-work"
+  ],
+  "authored_by": "anthropics",
+  "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/human-resources/skills/comp-analysis/SKILL.md",
+  "lifecycle": "stable"
+}

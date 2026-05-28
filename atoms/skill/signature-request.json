@@ -1,0 +1,25 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/signature-request",
+  "version": "1.0.0",
+  "name": "signature-request",
+  "description": "Prepare and route a document for e-signature — run a pre-signature checklist, configure signing order, and send for execution. Use when a contract is finalized and ready to sign, when verifying entity names, exhibits, and signature blocks before sending, or when setting up an envelope with sequential or parallel signers.",
+  "system_prompt_fragment": "# /signature-request -- E-Signature Routing\n\n> If you see unfamiliar placeholders or need to check which tools are connected, see [CONNECTORS.md](../../CONNECTORS.md).\n\nPrepare a document for electronic signature — verify completeness, set signing order, and route for execution.\n\n**Important**: This command assists with legal workflows but does not provide legal advice. Verify documents are in final form before sending for signature.\n\n## Usage\n\n```\n/signature-request $ARGUMENTS\n```\n\nPrepare for signature: @$1\n\n## Workflow\n\n### Step 1: Accept the Document\n\nAccept the document in any format:\n- **File upload**: PDF, DOCX\n- **URL**: Link to a document in ~~cloud storage or ~~CLM\n- **Reference**: \"The Acme Corp MSA we finalized yesterday\"\n\n### Step 2: Pre-Signature Checklist\n\nBefore routing for signature, verify:\n\n```markdown\n## Pre-Signature Checklist\n\n- [ ] Document is in final, agreed form (no open redlines)\n- [ ] All exhibits and schedules are attached\n- [ ] Correct legal entity names on signature blocks\n- [ ] Dates are correct or left blank for execution date\n- [ ] Signature blocks match the authorized signers\n- [ ] Any required internal approvals have been obtained\n- [ ] Document has been reviewed by appropriate counsel\n```\n\n### Step 3: Configure Signing\n\nGather signing details:\n- **Signers**: Who needs to sign? (names, emails, titles)\n- **Signing order**: Sequential or parallel?\n- **Internal approval**: Does anyone need to approve before the counterparty signs?\n- **CC recipients**: Who should receive a copy of the executed document?\n\n### Step 4: Route for Signature\n\n**If ~~e-signature is connected:**\n- Create the signature envelope/request\n- Set signing fields and order\n- Add any required initials or date fields\n- Send for signature\n\n**If not connected:**\n- Generate a signing instruction document\n- Provide the document formatted for wet signature or manual e-sign\n- List all signers with contact information\n\n## Output\n\n```markdown\n## Signature Request: [Document Title]\n\n### Document Details\n- **Type**: [MSA / NDA / SOW / Amendment / etc.]\n- **Parties**: [Party A] and [Party B]\n- **Pages**: [X]\n\n### Pre-Signature Check: [PASS / ISSUES FOUND]\n[List any issues that need attention before sending]\n\n### Signing Configuration\n| Order | Signer | Email | Role |\n|-------|--------|-------|------|\n| 1 | [Name] | [email] | [Party A Authorized Signatory] |\n| 2 | [Name] | [email] | [Party B Authorized Signatory] |\n\n### CC Recipients\n- [Name] — [email]\n\n### Status\n[Sent for signature / Ready to send / Issues to resolve first]\n\n### Next Steps\n- [What to expect after sending]\n- [Expected turnaround time]\n- [Follow-up if not signed within X days]\n```\n\n## Tips\n\n1. **Check entity names carefully** — The most common signing error is incorrect legal entity names.\n2. **Verify authority** — Make sure each signer is authorized to bind their organization.\n3. **Keep a copy** — Executed copies should be filed in ~~cloud storage or ~~CLM immediately after execution.",
+  "applicable_domains": [
+    "legal",
+    "compliance"
+  ],
+  "invocation": [
+    "/signature-request",
+    "/signature-request <document or contract to send>"
+  ],
+  "tags": [
+    "legal",
+    "anthropics",
+    "knowledge-work"
+  ],
+  "authored_by": "anthropics",
+  "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/legal/skills/signature-request/SKILL.md",
+  "lifecycle": "stable"
+}

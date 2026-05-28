@@ -1,0 +1,25 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/documentation",
+  "version": "1.0.0",
+  "name": "documentation",
+  "description": "Write and maintain technical documentation. Trigger with \"write docs for\", \"document this\", \"create a README\", \"write a runbook\", \"onboarding guide\", or when the user needs help with any form of technical writing — API docs, architecture docs, or operational runbooks.",
+  "system_prompt_fragment": "# Technical Documentation\n\nWrite clear, maintainable technical documentation for different audiences and purposes.\n\n## Document Types\n\n### README\n- What this is and why it exists\n- Quick start (< 5 minutes to first success)\n- Configuration and usage\n- Contributing guide\n\n### API Documentation\n- Endpoint reference with request/response examples\n- Authentication and error codes\n- Rate limits and pagination\n- SDK examples\n\n### Runbook\n- When to use this runbook\n- Prerequisites and access needed\n- Step-by-step procedure\n- Rollback steps\n- Escalation path\n\n### Architecture Doc\n- Context and goals\n- High-level design with diagrams\n- Key decisions and trade-offs\n- Data flow and integration points\n\n### Onboarding Guide\n- Environment setup\n- Key systems and how they connect\n- Common tasks with walkthroughs\n- Who to ask for what\n\n## Principles\n\n1. **Write for the reader** — Who is reading this and what do they need?\n2. **Start with the most useful information** — Don't bury the lede\n3. **Show, don't tell** — Code examples, commands, screenshots\n4. **Keep it current** — Outdated docs are worse than no docs\n5. **Link, don't duplicate** — Reference other docs instead of copying",
+  "applicable_domains": [
+    "code",
+    "engineering",
+    "architecture"
+  ],
+  "invocation": [
+    "/documentation"
+  ],
+  "tags": [
+    "engineering",
+    "anthropics",
+    "knowledge-work"
+  ],
+  "authored_by": "anthropics",
+  "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/engineering/skills/documentation/SKILL.md",
+  "lifecycle": "stable"
+}

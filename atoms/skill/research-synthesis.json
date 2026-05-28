@@ -1,0 +1,25 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/research-synthesis",
+  "version": "1.0.0",
+  "name": "research-synthesis",
+  "description": "Synthesize user research into themes, insights, and recommendations. Use when you have interview transcripts, survey results, usability test notes, support tickets, or NPS responses that need to be distilled into patterns, user segments, and prioritized next steps.",
+  "system_prompt_fragment": "# /research-synthesis\n\n> If you see unfamiliar placeholders or need to check which tools are connected, see [CONNECTORS.md](../../CONNECTORS.md).\n\nSynthesize user research data into actionable insights. See the **user-research** skill for research methods, interview guides, and analysis frameworks.\n\n## Usage\n\n```\n/research-synthesis $ARGUMENTS\n```\n\n## What I Accept\n\n- Interview transcripts or notes\n- Survey results (CSV, pasted data)\n- Usability test recordings or notes\n- Support tickets or feedback\n- NPS/CSAT responses\n- App store reviews\n\n## Output\n\n```markdown\n## Research Synthesis: [Study Name]\n**Method:** [Interviews / Survey / Usability Test] | **Participants:** [X]\n**Date:** [Date range] | **Researcher:** [Name]\n\n### Executive Summary\n[3-4 sentence overview of key findings]\n\n### Key Themes\n\n#### Theme 1: [Name]\n**Prevalence:** [X of Y participants]\n**Summary:** [What this theme is about]\n**Supporting Evidence:**\n- \"[Quote]\" — P[X]\n- \"[Quote]\" — P[X]\n**Implication:** [What this means for the product]\n\n#### Theme 2: [Name]\n[Same format]\n\n### Insights → Opportunities\n\n| Insight | Opportunity | Impact | Effort |\n|---------|-------------|--------|--------|\n| [What we learned] | [What we could do] | High/Med/Low | High/Med/Low |\n\n### User Segments Identified\n| Segment | Characteristics | Needs | Size |\n|---------|----------------|-------|------|\n| [Name] | [Description] | [Key needs] | [Rough %] |\n\n### Recommendations\n1. **[High priority]** — [Why, based on which findings]\n2. **[Medium priority]** — [Why]\n3. **[Lower priority]** — [Why]\n\n### Questions for Further Research\n- [What we still don't know]\n\n### Methodology Notes\n[How the research was conducted, any limitations or biases to note]\n```\n\n## If Connectors Available\n\nIf **~~user feedback** is connected:\n- Pull support tickets, feature requests, and NPS responses to supplement research data\n- Cross-reference themes with real user complaints and requests\n\nIf **~~product analytics** is connected:\n- Validate qualitative findings with usage data and behavioral metrics\n- Quantify the impact of identified pain points\n\nIf **~~knowledge base** is connected:\n- Search for prior research studies and findings to compare against\n- Publish the synthesis to your research repository\n\n## Tips\n\n1. **Include raw quotes** — Direct participant quotes make insights credible and memorable.\n2. **Separate observations from interpretations** — \"5 of 8 users clicked the wrong button\" is an observation. \"The button placement is confusing\" is an interpretation.\n3. **Quantify where possible** — \"Most users\" is vague. \"7 of 10 users\" is specific.",
+  "applicable_domains": [
+    "design",
+    "ux"
+  ],
+  "invocation": [
+    "/research-synthesis",
+    "/research-synthesis <research data, transcripts, or survey results>"
+  ],
+  "tags": [
+    "design",
+    "anthropics",
+    "knowledge-work"
+  ],
+  "authored_by": "anthropics",
+  "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/design/skills/research-synthesis/SKILL.md",
+  "lifecycle": "stable"
+}

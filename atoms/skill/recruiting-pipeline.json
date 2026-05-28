@@ -1,0 +1,24 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/recruiting-pipeline",
+  "version": "1.0.0",
+  "name": "recruiting-pipeline",
+  "description": "Track and manage recruiting pipeline stages. Trigger with \"recruiting update\", \"candidate pipeline\", \"how many candidates\", \"hiring status\", or when the user discusses sourcing, screening, interviewing, or extending offers.",
+  "system_prompt_fragment": "# Recruiting Pipeline\n\nHelp manage the recruiting pipeline from sourcing through offer acceptance.\n\n## Pipeline Stages\n\n| Stage | Description | Key Actions |\n|-------|-------------|-------------|\n| Sourced | Identified and reached out | Personalized outreach |\n| Screen | Phone/video screen | Evaluate basic fit |\n| Interview | On-site or panel interviews | Structured evaluation |\n| Debrief | Team decision | Calibrate feedback |\n| Offer | Extending offer | Comp package, negotiation |\n| Accepted | Offer accepted | Transition to onboarding |\n\n## Metrics to Track\n\n- **Pipeline velocity**: Days per stage\n- **Conversion rates**: Stage-to-stage drop-off\n- **Source effectiveness**: Which channels produce hires\n- **Offer acceptance rate**: Offers extended vs. accepted\n- **Time to fill**: Days from req open to offer accepted\n\n## If ATS Connected\n\nPull candidate data automatically, update statuses, and track pipeline metrics in real time.",
+  "applicable_domains": [
+    "hr",
+    "people"
+  ],
+  "invocation": [
+    "/recruiting-pipeline"
+  ],
+  "tags": [
+    "human-resources",
+    "anthropics",
+    "knowledge-work"
+  ],
+  "authored_by": "anthropics",
+  "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/human-resources/skills/recruiting-pipeline/SKILL.md",
+  "lifecycle": "stable"
+}

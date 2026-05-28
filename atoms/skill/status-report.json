@@ -1,0 +1,25 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/status-report",
+  "version": "1.0.0",
+  "name": "status-report",
+  "description": "Generate a status report with KPIs, risks, and action items. Use when writing a weekly or monthly update for leadership, summarizing project health with green/yellow/red status, surfacing risks and decisions that need stakeholder attention, or turning a pile of project tracker activity into a readable narrative.",
+  "system_prompt_fragment": "# /status-report\n\n> If you see unfamiliar placeholders or need to check which tools are connected, see [CONNECTORS.md](../../CONNECTORS.md).\n\nGenerate a polished status report for leadership or stakeholders. See the **risk-assessment** skill for risk matrix frameworks and severity definitions.\n\n## Usage\n\n```\n/status-report $ARGUMENTS\n```\n\n## Output\n\n```markdown\n## Status Report: [Project/Team] — [Period]\n**Author:** [Name] | **Date:** [Date]\n\n### Executive Summary\n[3-4 sentence overview — what's on track, what needs attention, key wins]\n\n### Overall Status: 🟢 On Track / 🟡 At Risk / 🔴 Off Track\n\n### Key Metrics\n| Metric | Target | Actual | Trend | Status |\n|--------|--------|--------|-------|--------|\n| [KPI] | [Target] | [Actual] | [up/down/flat] | 🟢/🟡/🔴 |\n\n### Accomplishments This Period\n- [Win 1]\n- [Win 2]\n\n### In Progress\n| Item | Owner | Status | ETA | Notes |\n|------|-------|--------|-----|-------|\n| [Item] | [Person] | [Status] | [Date] | [Context] |\n\n### Risks and Issues\n| Risk/Issue | Impact | Mitigation | Owner |\n|------------|--------|------------|-------|\n| [Risk] | [Impact] | [What we're doing] | [Who] |\n\n### Decisions Needed\n| Decision | Context | Deadline | Recommended Action |\n|----------|---------|----------|--------------------|\n| [Decision] | [Why it matters] | [When] | [What I recommend] |\n\n### Next Period Priorities\n1. [Priority 1]\n2. [Priority 2]\n3. [Priority 3]\n```\n\n## If Connectors Available\n\nIf **~~project tracker** is connected:\n- Pull project status, completed items, and upcoming milestones automatically\n- Identify at-risk items and overdue tasks\n\nIf **~~chat** is connected:\n- Scan recent team discussions for decisions and blockers to include\n- Offer to post the finished report to a channel\n\nIf **~~calendar** is connected:\n- Reference key meetings and decisions from the reporting period\n\n## Tips\n\n1. **Lead with the headline** — Busy leaders read the first 3 lines. Make them count.\n2. **Be honest about risks** — Surfacing issues early builds trust. Surprises erode it.\n3. **Make decisions easy** — For each decision needed, provide context and a recommendation.",
+  "applicable_domains": [
+    "operations",
+    "process"
+  ],
+  "invocation": [
+    "/status-report",
+    "/status-report [weekly | monthly | quarterly] [project or team]"
+  ],
+  "tags": [
+    "operations",
+    "anthropics",
+    "knowledge-work"
+  ],
+  "authored_by": "anthropics",
+  "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/operations/skills/status-report/SKILL.md",
+  "lifecycle": "stable"
+}

@@ -1,0 +1,24 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/monday-brief",
+  "version": "1.0.0",
+  "name": "monday-brief",
+  "description": "Generates a one-page Monday morning briefing — cash, sales, pipeline, week ahead, top three to-dos. Accepts optional post destination and save-to arguments.",
+  "system_prompt_fragment": "Run the Monday Morning Briefing. Pull from every connector that's live, gracefully degrade when one isn't, and deliver a one-page brief the owner can read in under two minutes.\n\nParse arguments:\n- `--post` (default `none`) — post the brief summary to `slack`, `teams`, or `none`\n- `--save-to` (default `files`) — `files` (Google Drive / OneDrive), `desktop` (local), or `both`\n\n## Step 1 — Run business-pulse\n\nTrigger the `business-pulse` skill workflow. It pulls in this order, scoping to whatever is connected:\n\n1. **Cash** — QuickBooks balance + last 7 days of net flow\n2. **Sales trend** — PayPal/Square last 7 days vs. prior 7 days, % change, top SKU\n3. **Pipeline** — HubSpot deals moved, deals stalled (>14 days no activity), new inbound leads\n4. **This week's commitments** — Calendar events with external attendees, deliverable deadlines\n5. **Watch-list** — unread Gmail flagged \"needs reply,\" Slack DMs awaiting response\n6. **The 3 things** — the three highest-leverage actions for today, ranked\n\nIf a connector is missing, note it in the brief (\"PayPal not connected — sales trend skipped\") rather than failing.\n\n## Step 2 — Format the one-page brief\n\nLayout (markdown, fits on one screen):\n\n```\n# Monday Brief — {Mon DD, YYYY}\n\n## Cash\n{$X balance · {+/-}$Y net last 7 days · runway note}\n\n## Sales (last 7d vs prior 7d)\n{$X total · {+/-}Z% · top SKU: {name} ({$})}\n\n## Pipeline\n{N deals moved · M stalled · K new leads}\n\n## Week ahead\n- {Tue 10am} — {Customer X discovery call}\n- {Thu EOD}  — {Proposal due to Y}\n- ...\n\n## Three things that need you today\n1. {Highest-leverage action with one-line why}\n2. {...}\n3. {...}\n```\n\n## Step 3 — Save and (optionally) post\n\n1. Save the brief to the chosen `--save-to` location:\n   - `files` — Google Drive or OneDrive root, filename `monday-brief-YYYY-MM-DD.md`\n   - `desktop` — `~/Desktop/monday-brief-YYYY-MM-DD.md`\n   - `both` — both locations\n2. If `--post slack` or `--post teams`, post the **Three things** section only (not the full brief — keep the channel post short) and link to the saved file.\n3. Show the full brief in chat regardless of save target.\n\n## Approval gates\n\n- **Saving the file is auto.** No approval needed — it's the owner's own drive.\n- **Posting to Slack/Teams requires confirmation.** Show the post draft and wait for \"post it\" before publishing.\n- **Never post if the brief surfaces unflattering numbers** (significant cash drop, deal slipping) without explicitly asking the owner — the channel may have non-leadership members.\n\n## Cadence note\n\nThis command is designed to run weekly. The owner may schedule it via Cowork's task scheduler — when run on Monday at 7am ET, the output goes straight to their drive and (if configured) Slack/Teams DM channel.",
+  "applicable_domains": [
+    "business",
+    "operations"
+  ],
+  "invocation": [
+    "/monday-brief"
+  ],
+  "tags": [
+    "small-business",
+    "anthropics",
+    "knowledge-work"
+  ],
+  "authored_by": "anthropics",
+  "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/monday-brief/SKILL.md",
+  "lifecycle": "stable"
+}

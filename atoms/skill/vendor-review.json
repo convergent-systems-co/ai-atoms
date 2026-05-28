@@ -1,0 +1,25 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/vendor-review",
+  "version": "1.0.0",
+  "name": "vendor-review",
+  "description": "Evaluate a vendor — cost analysis, risk assessment, and recommendation. Use when reviewing a new vendor proposal, deciding whether to renew or replace a contract, comparing two vendors side-by-side, or building a TCO breakdown and negotiation points before procurement sign-off.",
+  "system_prompt_fragment": "# /vendor-review\n\n> If you see unfamiliar placeholders or need to check which tools are connected, see [CONNECTORS.md](../../CONNECTORS.md).\n\nEvaluate a vendor with structured analysis covering cost, risk, performance, and fit.\n\n## Usage\n\n```\n/vendor-review $ARGUMENTS\n```\n\n## What I Need From You\n\n- **Vendor name**: Who are you evaluating?\n- **Context**: New vendor evaluation, renewal decision, or comparison?\n- **Details**: Contract terms, pricing, proposal document, or current performance data\n\n## Evaluation Framework\n\n### Cost Analysis (Total Cost of Ownership)\n- Total cost of ownership (not just license fees)\n- Implementation and migration costs\n- Training and onboarding costs\n- Ongoing support and maintenance\n- Exit costs (data migration, contract termination)\n\n### Risk Assessment\n- Vendor financial stability\n- Security and compliance posture\n- Concentration risk (single vendor dependency)\n- Contract lock-in and exit terms\n- Business continuity and disaster recovery\n\n### Performance Metrics\n- SLA compliance\n- Support response times\n- Uptime and reliability\n- Feature delivery cadence\n- Customer satisfaction\n\n### Comparison Matrix\nWhen comparing vendors, produce a side-by-side matrix covering: pricing, features, integrations, security, support, contract terms, and references.\n\n## Output\n\n```markdown\n## Vendor Review: [Vendor Name]\n**Date:** [Date] | **Type:** [New / Renewal / Comparison]\n\n### Summary\n[2-3 sentence recommendation]\n\n### Cost Analysis\n| Component | Annual Cost | Notes |\n|-----------|-------------|-------|\n| License/subscription | $[X] | [Per seat, flat, usage-based] |\n| Implementation | $[X] | [One-time] |\n| Support/maintenance | $[X] | [Included or add-on] |\n| **Total Year 1** | **$[X]** | |\n| **Total 3-Year** | **$[X]** | |\n\n### Risk Assessment\n| Risk | Likelihood | Impact | Mitigation |\n|------|-----------|--------|------------|\n| [Risk] | High/Med/Low | High/Med/Low | [Mitigation] |\n\n### Strengths\n- [Strength 1]\n- [Strength 2]\n\n### Concerns\n- [Concern 1]\n- [Concern 2]\n\n### Recommendation\n[Proceed / Negotiate / Pass] — [Reasoning]\n\n### Negotiation Points\n- [Leverage point 1]\n- [Leverage point 2]\n```\n\n## If Connectors Available\n\nIf **~~knowledge base** is connected:\n- Search for existing vendor evaluations, contracts, and performance reviews\n- Pull procurement policies and approval thresholds\n\nIf **~~procurement** is connected:\n- Pull current contract terms, spend history, and renewal dates\n- Compare pricing against existing vendor agreements\n\n## Tips\n\n1. **Upload the proposal** — I can extract pricing, terms, and SLAs from vendor documents.\n2. **Compare vendors** — \"Compare Vendor A vs Vendor B\" gets you a side-by-side analysis.\n3. **Include current spend** — For renewals, knowing what you pay now helps evaluate price changes.",
+  "applicable_domains": [
+    "operations",
+    "process"
+  ],
+  "invocation": [
+    "/vendor-review",
+    "/vendor-review <vendor name or proposal>"
+  ],
+  "tags": [
+    "operations",
+    "anthropics",
+    "knowledge-work"
+  ],
+  "authored_by": "anthropics",
+  "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/operations/skills/vendor-review/SKILL.md",
+  "lifecycle": "stable"
+}

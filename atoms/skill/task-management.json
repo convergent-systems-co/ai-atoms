@@ -1,0 +1,24 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/task-management",
+  "version": "1.0.0",
+  "name": "task-management",
+  "description": "Simple task management using a shared TASKS.md file. Reference this when the user asks about their tasks, wants to add/complete tasks, or needs help tracking commitments.",
+  "system_prompt_fragment": "# Task Management\n\nTasks are tracked in a simple `TASKS.md` file that both you and the user can edit.\n\n## File Location\n\n**Always use `TASKS.md` in the current working directory.**\n\n- If it exists, read/write to it\n- If it doesn't exist, create it with the template below\n\n## Dashboard Setup (First Run)\n\nA visual dashboard is available for managing tasks and memory. **On first interaction with tasks:**\n\n1. Check if `dashboard.html` exists in the current working directory\n2. If not, copy it from `${CLAUDE_PLUGIN_ROOT}/skills/dashboard.html` to the current working directory\n3. Inform the user: \"I've added the dashboard. Run `/productivity:start` to set up the full system.\"\n\nThe task board:\n- Reads and writes to the same `TASKS.md` file\n- Auto-saves changes\n- Watches for external changes (syncs when you edit via CLI)\n- Supports drag-and-drop reordering of tasks and sections\n\n## Format & Template\n\nWhen creating a new TASKS.md, use this exact template (without example tasks):\n\n```markdown\n# Tasks\n\n## Active\n\n## Waiting On\n\n## Someday\n\n## Done\n```\n\nTask format:\n- `- [ ] **Task title** - context, for whom, due date`\n- Sub-bullets for additional details\n- Completed: `- [x] ~~Task~~ (date)`\n\n## How to Interact\n\n**When user asks \"what's on my plate\" / \"my tasks\":**\n- Read TASKS.md\n- Summarize Active and Waiting On sections\n- Highlight anything overdue or urgent\n\n**When user says \"add a task\" / \"remind me to\":**\n- Add to Active section with `- [ ] **Task**` format\n- Include context if provided (who it's for, due date)\n\n**When user says \"done with X\" / \"finished X\":**\n- Find the task\n- Change `[ ]` to `[x]`\n- Add strikethrough: `~~task~~`\n- Add completion date\n- Move to Done section\n\n**When user asks \"what am I waiting on\":**\n- Read the Waiting On section\n- Note how long each item has been waiting\n\n## Conventions\n\n- **Bold** the task title for scannability\n- Include \"for [person]\" when it's a commitment to someone\n- Include \"due [date]\" for deadlines\n- Include \"since [date]\" for waiting items\n- Sub-bullets for additional context\n- Keep Done section for ~1 week, then clear old items\n\n## Extracting Tasks\n\nWhen summarizing meetings or conversations, offer to add extracted tasks:\n- Commitments the user made (\"I'll send that over\")\n- Action items assigned to them\n- Follow-ups mentioned\n\nAsk before adding - don't auto-add without confirmation.",
+  "applicable_domains": [
+    "productivity",
+    "planning"
+  ],
+  "invocation": [
+    "/task-management"
+  ],
+  "tags": [
+    "productivity",
+    "anthropics",
+    "knowledge-work"
+  ],
+  "authored_by": "anthropics",
+  "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/productivity/skills/task-management/SKILL.md",
+  "lifecycle": "stable"
+}
