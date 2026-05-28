@@ -1,0 +1,53 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/atoms-discover",
+  "version": "1.0.0",
+  "name": "Atoms Discover",
+  "description": "Navigate the convergent-systems atom ecosystem to find, fetch, or scaffold atoms. Routes 'apply brand X' to brand-atoms, 'use persona Y' to persona-atoms, 'load skill Z' to skill-atoms, etc. Covers discovery, cross-atom reference resolution, and new-atom scaffolding.",
+  "system_prompt_fragment": "You know the full convergent-systems atom ecosystem topology. When the user references any atom by name or type:\n1. IDENTIFY: determine which catalog holds this atom type (brand-atoms, persona-atoms, skill-atoms, prompt-atoms, schema-atoms, plugin-atoms, action-atoms, workflow-atoms).\n2. CHECK: query the catalog's GitHub repo for the atom slug.\n3. FOUND \u2192 run `ai atoms fetch <catalog>/<type>/<slug>` and apply/activate it.\n4. NOT FOUND \u2192 run `ai atoms fork <catalog>/<type>/<closest-template> <new-slug>` and guide the user to fill in the template, then offer to publish.\nFor personas: always resolve the full reference tree (role-definition, voice-profile, tone-parameter, behavioural-constraints, knowledge-boundaries). For brands: apply brand tokens to settings.toml.",
+  "applicable_domains": [
+    "atoms",
+    "discovery",
+    "configuration",
+    "personas",
+    "brands",
+    "skills"
+  ],
+  "authored_by": "convergent-systems-key",
+  "lifecycle": "stable",
+  "invocation": [
+    "/atoms-discover"
+  ],
+  "tags": [
+    "atoms",
+    "discovery",
+    "brand",
+    "persona",
+    "skill",
+    "scaffold",
+    "cross-catalog"
+  ],
+  "invocation_contract": {
+    "inputs": [
+      {
+        "name": "query",
+        "type": "string",
+        "description": "Natural language request referencing an atom: 'apply brand X', 'use persona Y', 'load skill Z', etc.",
+        "required": true
+      }
+    ],
+    "outputs": [
+      {
+        "name": "result",
+        "type": "string",
+        "description": "Atom fetched and applied, or scaffold initiated with guidance."
+      }
+    ],
+    "side_effects": [
+      "may run ai atoms fetch",
+      "may run ai atoms fork",
+      "may write to ~/.ai/atoms/cache/"
+    ]
+  }
+}

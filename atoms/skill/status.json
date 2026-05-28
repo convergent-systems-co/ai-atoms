@@ -1,0 +1,34 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/status",
+  "version": "1.0.0",
+  "name": "Status",
+  "description": "Mid-session blocked-state report. Reports ready state or lists active waits (biometric, pr-merge, scope-decision, out-of-band, background) using the Common.md \u00a7U7 typed wait-reason format.",
+  "system_prompt_fragment": "Report current session status. If nothing is pending: 'Status: ready \u2014 no pending actions.' If blocked: list each wait with its typed reason (biometric / pr-merge / scope-decision / out-of-band / background) and a description. Check TaskList for in-progress tasks. Limit output to \u226410 lines.",
+  "applicable_domains": [
+    "session-management"
+  ],
+  "authored_by": "convergent-systems-key",
+  "lifecycle": "stable",
+  "invocation": [
+    "/status"
+  ],
+  "tags": [
+    "session",
+    "status",
+    "blocked",
+    "waiting"
+  ],
+  "invocation_contract": {
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "status",
+        "type": "string",
+        "description": "Current status: ready or waiting-on list."
+      }
+    ],
+    "side_effects": []
+  }
+}

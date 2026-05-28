@@ -1,0 +1,44 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/cleanup",
+  "version": "1.0.0",
+  "name": "Cleanup",
+  "description": "Remove dead code, unused imports, commented-out blocks, and resolved TODOs. Behavior-preserving: no logic changes, only deletion of unreachable or inert code.",
+  "system_prompt_fragment": "Clean up the file or directory: delete dead code (unreachable branches, unused functions), remove unused imports, strip commented-out code blocks, remove resolved TODO/FIXME comments. Do NOT change any logic. Do NOT refactor. Do NOT rename. One commit per file cleaned. If a TODO is unresolved, leave it. Verify tests still pass after cleanup.",
+  "applicable_domains": [
+    "code"
+  ],
+  "authored_by": "convergent-systems-key",
+  "lifecycle": "stable",
+  "invocation": [
+    "/cleanup"
+  ],
+  "tags": [
+    "code",
+    "cleanup",
+    "dead-code",
+    "refactor"
+  ],
+  "invocation_contract": {
+    "inputs": [
+      {
+        "name": "target",
+        "type": "string",
+        "description": "File path or directory to clean up.",
+        "required": true
+      }
+    ],
+    "outputs": [
+      {
+        "name": "changes",
+        "type": "string",
+        "description": "Summary of what was removed."
+      }
+    ],
+    "side_effects": [
+      "modifies source files",
+      "may create git commits"
+    ]
+  }
+}
