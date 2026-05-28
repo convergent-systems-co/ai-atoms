@@ -26,7 +26,6 @@ const hooks = (catalog.atoms as any[])
         gap: 1rem;
         margin-top: 1.5rem;
       }
-      /* Cards always render light regardless of the dark shell */
       .atom-card {
         color-scheme: light;
         border: 1px solid #e2e8f0;
@@ -38,7 +37,6 @@ const hooks = (catalog.atoms as any[])
         flex-direction: column;
         gap: 0.625rem;
       }
-      /* Override atoms-catalog.css dark-mode code styling inside cards */
       .atom-card code {
         background: #e8edf5 !important;
         color: #1e3a5f !important;
@@ -106,29 +104,6 @@ const hooks = (catalog.atoms as any[])
         background: #f0fdf4;
         color: #16a34a;
       }
-      .platform-row {
-        display: flex;
-        gap: 0.375rem;
-        align-items: center;
-        flex-wrap: wrap;
-      }
-      .platform-badge {
-        font-size: 0.68rem;
-        font-weight: 600;
-        padding: 0.1rem 0.45rem;
-        border-radius: 0.25rem;
-        text-transform: lowercase;
-        letter-spacing: 0.02em;
-      }
-      .platform-linux   { background: #fef9c3; color: #854d0e; }
-      .platform-macos   { background: #e0f2fe; color: #0369a1; }
-      .platform-windows { background: #ede9fe; color: #6d28d9; }
-      .platform-note {
-        font-size: 0.75rem;
-        color: #64748b;
-        font-style: italic;
-        line-height: 1.4;
-      }
       .side-effects-list {
         margin: 0;
         padding-left: 1.25rem;
@@ -156,7 +131,7 @@ const hooks = (catalog.atoms as any[])
       .trigger-pattern {
         font-family: monospace;
         font-size: 0.8rem;
-        background: #f1f5f9;
+        background: #f8fafc;
         color: #334155;
         padding: 0.1rem 0.35rem;
         border-radius: 0.2rem;
@@ -167,8 +142,8 @@ const hooks = (catalog.atoms as any[])
     <div class="shell">
       <main class="content">
         <p style="margin-bottom: 0.5rem;"><a href="/">← ai-atoms</a></p>
-        <h1>Hooks <span style="font-weight: 400; color: #64748b; font-size: 1.25rem;">({hooks.length})</span></h1>
-        <p style="color: #64748b; max-width: 44rem; font-size: 1rem; line-height: 1.6;">
+        <h1>Hooks <span style="font-weight: 400; color: #475569; font-size: 1.25rem;">({hooks.length})</span></h1>
+        <p style="color: #475569; max-width: 44rem; font-size: 1rem; line-height: 1.6;">
           Event-driven behaviors wired into AI tool infrastructure. Each hook declares the event it
           responds to (e.g. <code>PreToolUse</code>, <code>SessionStart</code>), its trigger pattern,
           the script language, and whether it blocks execution.
@@ -228,20 +203,6 @@ const hooks = (catalog.atoms as any[])
                 )}
               </div>
 
-              {hook.platforms?.length > 0 && (
-                <div>
-                  <div class="platform-row">
-                    {hook.platforms.map((p: string) => (
-                      <span class={`platform-badge platform-${p}`}>{p}</span>
-                    ))}
-                    <span style="font-size: 0.7rem; color: #94a3b8;">invoke via <code>ai hooks run {hook.id.replace('hook/', '')}</code></span>
-                  </div>
-                  {hook.platform_notes && (
-                    <p class="platform-note" style="margin: 0.375rem 0 0;">{hook.platform_notes}</p>
-                  )}
-                </div>
-              )}
-
               {hook.tags?.length > 0 && (
                 <div class="atom-meta">
                   {hook.tags.map((t: string) => (
@@ -265,7 +226,7 @@ const hooks = (catalog.atoms as any[])
           <li><a href="/atoms/skill/">Skills</a></li>
           <li><a href="/atoms/hook/" aria-current="page">Hooks</a></li>
           <li><a href="/ai/index.json">AI</a></li>
-          <li><a href="https://schema-atoms.com">Builder ↗</a></li>
+          <li><a href="/builder/">Builder</a></li>
           <li><a href="https://github.com/convergent-systems-co/ai-atoms">GitHub ↗</a></li>
         </ul>
         <div class="aside-meta">
