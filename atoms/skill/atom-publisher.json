@@ -1,0 +1,61 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/atom-publisher",
+  "version": "1.0.0",
+  "name": "Atom Publisher",
+  "description": "Guided 5-step workflow for drafting, canonicalizing, verifying, and publishing a new atom to the appropriate *-atoms catalog. Supports skill, hook, persona, profile, plugin, amendment, and action atom types. Routes to the correct catalog based on type. Triggers on: /atom-publisher, 'publish an atom', 'create an atom', 'contribute an atom'.",
+  "system_prompt_fragment": "Guide the user through publishing an atom. Step 1 IDENTIFY: ask what type of atom (skill/hook/persona/profile/amendment/plugin/action) and which catalog it belongs to. Step 2 DRAFT: produce the JSON payload conforming to the catalog's atom-v1.json schema. Required fields: schema, type, id, version, name, description. Step 3 CANONICALIZE: run the catalog's build-exports.py to validate the atom against its schema. Fix any errors. Step 4 VERIFY: confirm the atom is reachable at its canonical URL after building. Step 5 PR: open a PR against the catalog repo with the new atom file. End each step with Did/Next/Blocked/Artifact.",
+  "applicable_domains": [
+    "atoms",
+    "meta",
+    "publishing"
+  ],
+  "invocation_contract": {
+    "inputs": [
+      {
+        "name": "atom_type",
+        "type": "string",
+        "description": "The class of atom to publish (skill, hook, persona, profile, amendment, etc.).",
+        "required": true
+      },
+      {
+        "name": "atom_data",
+        "type": "object",
+        "description": "The atom payload fields. Can be partial — the skill will prompt for missing required fields.",
+        "required": false
+      }
+    ],
+    "outputs": [
+      {
+        "name": "atom_json",
+        "type": "string",
+        "description": "The validated atom JSON ready to commit."
+      },
+      {
+        "name": "pr_url",
+        "type": "string",
+        "description": "URL of the opened PR against the catalog repo."
+      }
+    ],
+    "side_effects": [
+      "creates atom JSON file in catalog repo",
+      "opens PR against the catalog's GitHub repo"
+    ]
+  },
+  "authored_by": "convergent-systems-key",
+  "tags": [
+    "atoms",
+    "publishing",
+    "meta",
+    "workflow",
+    "catalog"
+  ],
+  "lifecycle": "stable",
+  "invocation": [
+    "/atom-publisher",
+    "/atom-publisher skill",
+    "/atom-publisher hook",
+    "/atom-publisher persona"
+  ]
+}

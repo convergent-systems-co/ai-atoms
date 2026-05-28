@@ -1,0 +1,81 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/debug",
+  "version": "1.0.0",
+  "name": "Debug",
+  "description": "Five-phase systematic debugging (reproduce → isolate → root cause → fix-with-regression-test → verify). Use when the user reports a bug, hits an error or failing test, or wants methodical investigation. Invocable as /debug, /debug \"<symptom>\", /debug --error <log>, /debug --test <test-name>.",
+  "system_prompt_fragment": "Debug using five phases — do not skip or reorder. Phase 1 REPRODUCE: if you cannot reproduce, the bug report is the deliverable; do not guess. Phase 2 ISOLATE: narrow to the smallest surface. Phase 3 ROOT CAUSE: name the root cause before proposing any fix. Phase 4 FIX + REGRESSION TEST: write a failing test first, then the minimal fix that makes it green. Phase 5 VERIFY: run the suite and cite the output. After fixing: 'Why was this not caught?' — name the gap. Apply the 3-cycle cap: after three failed attempts with the same approach, stop, name what is not working, propose an alternative, ask before continuing.",
+  "applicable_domains": [
+    "code",
+    "debug",
+    "testing"
+  ],
+  "invocation_contract": {
+    "inputs": [
+      {
+        "name": "symptom",
+        "type": "string",
+        "description": "Description of the bug, error message, or unexpected behavior.",
+        "required": true
+      },
+      {
+        "name": "error_log",
+        "type": "string",
+        "description": "Error log or stack trace (--error mode).",
+        "required": false
+      },
+      {
+        "name": "test_name",
+        "type": "string",
+        "description": "Name of the failing test (--test mode).",
+        "required": false
+      }
+    ],
+    "outputs": [
+      {
+        "name": "reproduction",
+        "type": "string",
+        "description": "Confirmed minimal reproduction case."
+      },
+      {
+        "name": "root_cause",
+        "type": "string",
+        "description": "Named root cause with evidence."
+      },
+      {
+        "name": "fix",
+        "type": "string",
+        "description": "Minimal fix addressing the root cause."
+      },
+      {
+        "name": "regression_test",
+        "type": "string",
+        "description": "Test that would have caught this bug."
+      },
+      {
+        "name": "gap_analysis",
+        "type": "string",
+        "description": "Why this was not caught and what closes the gap."
+      }
+    ],
+    "side_effects": [
+      "may write files (regression test and fix)"
+    ]
+  },
+  "authored_by": "convergent-systems-key",
+  "tags": [
+    "debug",
+    "tdd",
+    "root-cause",
+    "regression",
+    "five-phase"
+  ],
+  "lifecycle": "stable",
+  "invocation": [
+    "/debug",
+    "/debug \"<symptom>\"",
+    "/debug --error <log-or-file>",
+    "/debug --test <test-name>"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "schema": "https://ai-atoms.com/schemas/hook-v1.json",
+  "type": "hook",
+  "id": "hook/destructive-terraform-guard",
+  "version": "1.0.0",
+  "name": "Destructive Terraform Guard",
+  "description": "Blocks terraform destroy and terraform apply per Common.md §2.2. Opt-in via command-wrappers.toml. Requires explicit bypass via AI_ALLOW_DESTRUCTIVE_TERRAFORM=1. Prevents accidental infrastructure destruction or unreviewed applies. Other tofu/terraform subcommands (plan, init, validate, output) pass through.",
+  "event": "PreToolUse",
+  "language": "python",
+  "trigger": {"type": "tool-name", "pattern": "Bash"},
+  "blocking": true,
+  "side_effects": ["blocks tool call with explanation", "bypass via AI_ALLOW_DESTRUCTIVE_TERRAFORM=1"],
+  "authored_by": "convergent-systems-key",
+  "tags": ["governance", "terraform", "tofu", "infrastructure", "destructive", "guard", "claude-code"],
+  "lifecycle": "stable"
+}

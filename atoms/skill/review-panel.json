@@ -1,0 +1,59 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/review-panel",
+  "version": "1.0.0",
+  "name": "Review Panel",
+  "description": "Guided multi-panel review workflow. Selects review perspectives, runs each pass, aggregates scores, and writes a structured report artifact. Use when you need more than a single-pass review: governance files, PRs, prose drafts, or any artifact that benefits from multiple independent evaluation perspectives (architecture, correctness, documentation quality, adversarial edge cases, security).",
+  "system_prompt_fragment": "Run a multi-panel review. Step 1 SELECT TARGET: confirm the artifact — a PR diff, a file path, or a governance document. Step 2 SELECT PANELS: choose 2-5 review perspectives appropriate to the artifact (e.g. architecture, security, correctness, documentation, adversarial). Step 3 RUN PASSES: for each panel, run an independent review pass and collect findings. Each finding must cite file:line evidence. Step 4 AGGREGATE: compile findings across panels, remove duplicates, rank by severity (HIGH blocks, MEDIUM warns, LOW informs). Step 5 REPORT: write a structured report artifact with panel summaries, consolidated findings table, and verdict (PASS/WARN/BLOCK).",
+  "applicable_domains": [
+    "code",
+    "governance",
+    "review"
+  ],
+  "invocation_contract": {
+    "inputs": [
+      {
+        "name": "target",
+        "type": "string",
+        "description": "PR number, file path, or governance document to review.",
+        "required": true
+      },
+      {
+        "name": "panels",
+        "type": "array",
+        "description": "Optional list of review perspectives. Defaults to [architecture, correctness, security, documentation].",
+        "required": false
+      }
+    ],
+    "outputs": [
+      {
+        "name": "report",
+        "type": "string",
+        "description": "Structured review report with panel summaries and consolidated findings."
+      },
+      {
+        "name": "verdict",
+        "type": "string",
+        "description": "PASS | WARN | BLOCK"
+      }
+    ],
+    "side_effects": [
+      "writes review report artifact to .artifacts/reviews/"
+    ]
+  },
+  "authored_by": "convergent-systems-key",
+  "tags": [
+    "review",
+    "multi-panel",
+    "governance",
+    "quality",
+    "adversarial"
+  ],
+  "lifecycle": "stable",
+  "invocation": [
+    "/review-panel",
+    "/review-panel --pr=<number>",
+    "/review-panel <file-path>"
+  ]
+}
