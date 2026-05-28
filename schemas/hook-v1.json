@@ -39,8 +39,7 @@
     },
     "event": {
       "type": "string",
-      "minLength": 1,
-      "description": "The AI tool event this hook responds to (e.g. PreToolUse, PostToolUse, SessionStart, Stop, UserPromptSubmit, SessionEnd, SubagentStop, PreCompact)."
+      "description": "The AI tool event this hook responds to (e.g. PreToolUse, PostToolUse, SessionStart, Stop, UserPromptSubmit, SessionEnd, SubagentStop, PreCompact). Empty string for library-type atoms (trigger.type = library)."
     },
     "language": {
       "type": "string",
@@ -55,8 +54,8 @@
       "properties": {
         "type": {
           "type": "string",
-          "enum": ["tool-name", "file-pattern", "always", "tool-category"],
-          "description": "How the hook matches: by tool name, file path pattern, always, or tool category."
+          "enum": ["tool-name", "file-pattern", "always", "tool-category", "library"],
+          "description": "How the hook matches: by tool name, file path pattern, always, tool category, or library (not a runnable hook — a shared dependency)."
         },
         "pattern": {
           "type": "string",
@@ -101,6 +100,16 @@
       "type": "string",
       "enum": ["draft", "stable", "deprecated"],
       "description": "Lifecycle stage of this hook atom."
+    },
+    "script": {
+      "type": "string",
+      "description": "The complete Python (or shell) source of the hook. Installed to ~/.ai/hooks/<slug>.<ext> by the AI CLI."
+    },
+    "depends_on": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Hook IDs this hook depends on (e.g. hook/lib). Installed automatically.",
+      "default": []
     }
   }
 }

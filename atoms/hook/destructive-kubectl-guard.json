@@ -4,7 +4,7 @@
   "id": "hook/destructive-kubectl-guard",
   "version": "1.0.0",
   "name": "Destructive kubectl Guard",
-  "description": "Blocks destructive kubectl operations per Common.md §2.2. Opt-in via command-wrappers.toml. Denies kubectl delete, kubectl drain, and kubectl cordon without the bypass env AI_ALLOW_DESTRUCTIVE_KUBECTL=1. All other kubectl subcommands pass through.",
+  "description": "Blocks destructive kubectl operations per Common.md \u00a72.2. Opt-in via command-wrappers.toml. Denies kubectl delete, kubectl drain, and kubectl cordon without the bypass env AI_ALLOW_DESTRUCTIVE_KUBECTL=1. All other kubectl subcommands pass through.",
   "event": "PreToolUse",
   "language": "python",
   "trigger": {
@@ -31,5 +31,9 @@
     "macos",
     "windows"
   ],
-  "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run destructive-kubectl-guard' in settings.json — the ai binary discovers Python on each OS. kubectl available on all platforms. Python logic is cross-platform."
+  "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run destructive-kubectl-guard' in settings.json \u2014 the ai binary discovers Python on each OS. kubectl available on all platforms. Python logic is cross-platform.",
+  "script": "#!/usr/bin/env python3\n\"\"\"hooks/destructive-kubectl-guard.py \u2014 gate destructive `kubectl`\noperations per Common.md \u00a72.2. Opt-in via command-wrappers.toml.\n\nBlocks (without bypass env): `kubectl delete`, `kubectl drain`,\n`kubectl cordon`. Other subcommands pass through.\n\nThe bypass env is AI_ALLOW_DESTRUCTIVE_KUBECTL=1.\n\nSelf-check:\n  --self-check\n\"\"\"\nfrom __future__ import annotations\n\nimport argparse\nimport os\nimport sys\nfrom pathlib import Path\n\nsys.path.insert(0, str(Path(__file__).resolve().parent))\nimport _lib  # noqa: E402\n\n\nGUARDED = {\"delete\", \"drain\", \"cordon\"}\nBYPASS_ENV = \"AI_ALLOW_DESTRUCTIVE_KUBECTL\"\n\n\ndef check_invocation(argv: list[str]) -> int:\n    if not argv or argv[0] not in GUARDED:\n        return 0\n    if os.environ.get(BYPASS_ENV) == \"1\":\n        _lib.log(f\"`kubectl {argv[0]}` \u2014 bypass active ({BYPASS_ENV}=1). Logged.\")\n        return 0\n    _lib.log(f\"blocking \u2014 `kubectl {argv[0]}` mutates cluster state.\")\n    _lib.log(\"Per Common.md \u00a72.2 + \u00a72.4: state what will change, name reversibility, wait for an unambiguous yes.\")\n    _lib.log(f\"To bypass for one session only: {BYPASS_ENV}=1 kubectl {argv[0]} ...\")\n    return 1\n\n\ndef main(argv: list[str]) -> int:\n    parser = argparse.ArgumentParser(add_help=True)\n    parser.add_argument(\"--self-check\", action=\"store_true\")\n    parser.add_argument(\"rest\", nargs=argparse.REMAINDER)\n    args = parser.parse_args(argv)\n    if args.self_check:\n        return _lib.self_check_ok()\n    return check_invocation(args.rest)\n\n\nif __name__ == \"__main__\":\n    sys.exit(main(sys.argv[1:]))\n",
+  "depends_on": [
+    "hook/lib"
+  ]
 }
