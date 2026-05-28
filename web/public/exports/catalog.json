@@ -1,7 +1,7 @@
 {
   "catalog": "ai-atoms",
   "version": "0.1.0",
-  "built_at": "2026-05-28T12:43:52+00:00",
+  "built_at": "2026-05-28T12:50:11+00:00",
   "atoms": [
     {
       "schema": "https://ai-atoms.com/schemas/hook-v1.json",

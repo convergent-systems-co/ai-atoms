@@ -1,0 +1,460 @@
+---
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Build skill and hook atoms for ai-atoms.com — fill out the form and get valid JSON ready to submit." />
+    <title>Builder · ai-atoms</title>
+    <link rel="icon" type="image/svg+xml" href="https://brand-atoms.com/dist/brands/atom-family/1.0.0/assets/favicon.svg" />
+    <link rel="preconnect" href="https://brand-atoms.com" />
+    <link rel="stylesheet" href="https://brand-atoms.com/dist/brands/atom-family/1.0.0/css/tokens.css" />
+    <link rel="stylesheet" href="https://brand-atoms.com/dist/brands/atom-family/1.0.0/ui/atoms-catalog.css" />
+    <style>
+      body { min-height: 100vh; }
+      .sidenav-wordmark { width: 140px; object-fit: contain; display: block; }
+      .builder-shell {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+      }
+      @media (max-width: 900px) { .builder-shell { grid-template-columns: 1fr; } }
+      .tab-bar { display: flex; gap: 0; margin-bottom: 1.25rem; border-bottom: 2px solid #e2e8f0; }
+      .tab-btn {
+        padding: 0.5rem 1.25rem; font-size: 0.9rem; font-weight: 600;
+        border: none; background: none; cursor: pointer; color: #64748b;
+        border-bottom: 2px solid transparent; margin-bottom: -2px;
+        transition: color 0.15s, border-color 0.15s;
+      }
+      .tab-btn.active { color: #4f46e5; border-bottom-color: #4f46e5; }
+      .tab-btn:hover:not(.active) { color: #1e293b; }
+      .form-panel { display: none; flex-direction: column; gap: 1rem; }
+      .form-panel.active { display: flex; }
+      .field-group { display: flex; flex-direction: column; gap: 0.25rem; }
+      label {
+        font-size: 0.78rem; font-weight: 600; color: #334155;
+        text-transform: uppercase; letter-spacing: 0.04em;
+      }
+      label .req { color: #dc2626; margin-left: 2px; }
+      label .opt { color: #94a3b8; font-weight: 400; text-transform: none; letter-spacing: 0; }
+      input[type="text"], textarea, select {
+        width: 100%; padding: 0.5rem 0.625rem;
+        border: 1px solid #cbd5e1; border-radius: 0.375rem;
+        font-size: 0.875rem; font-family: inherit;
+        color: #1e293b; background: #fff; box-sizing: border-box;
+        transition: border-color 0.15s;
+      }
+      input[type="text"]:focus, textarea:focus, select:focus {
+        outline: none; border-color: #4f46e5;
+        box-shadow: 0 0 0 2px rgba(79,70,229,0.12);
+      }
+      textarea { resize: vertical; min-height: 5rem; }
+      .field-hint { font-size: 0.75rem; color: #64748b; line-height: 1.4; }
+      .invocation-list { display: flex; flex-direction: column; gap: 0.375rem; }
+      .invocation-row { display: flex; gap: 0.375rem; }
+      .invocation-row input { flex: 1; }
+      .icon-btn {
+        padding: 0.4rem 0.6rem; border: 1px solid #cbd5e1;
+        border-radius: 0.375rem; background: #f8fafc;
+        color: #475569; cursor: pointer; font-size: 0.85rem; line-height: 1;
+      }
+      .icon-btn:hover { background: #f1f5f9; color: #1e293b; }
+      .preview-panel {
+        display: flex; flex-direction: column; gap: 0.75rem;
+        position: sticky; top: 1.5rem; align-self: start;
+      }
+      .preview-header { display: flex; justify-content: space-between; align-items: center; }
+      .preview-header h3 { margin: 0; font-size: 0.9rem; color: #334155; }
+      .preview-actions { display: flex; gap: 0.5rem; align-items: center; }
+      .action-btn {
+        padding: 0.375rem 0.875rem; font-size: 0.8rem; font-weight: 600;
+        border-radius: 0.375rem; border: 1px solid #4f46e5;
+        background: #4f46e5; color: #fff; cursor: pointer; transition: background 0.15s;
+      }
+      .action-btn:hover { background: #4338ca; }
+      .action-btn.secondary { background: #fff; color: #4f46e5; }
+      .action-btn.secondary:hover { background: #eef2ff; }
+      pre#json-preview {
+        background: #0f172a; color: #e2e8f0; padding: 1rem;
+        border-radius: 0.5rem; font-size: 0.78rem; line-height: 1.6;
+        overflow-x: auto; white-space: pre; min-height: 12rem;
+        max-height: 60vh; overflow-y: auto; margin: 0;
+      }
+      .validation-msg {
+        font-size: 0.78rem; padding: 0.375rem 0.75rem;
+        border-radius: 0.375rem; display: none;
+      }
+      .validation-msg.error { background: #fef2f2; color: #dc2626; display: block; }
+      .validation-msg.ok { background: #f0fdf4; color: #16a34a; display: block; }
+      .copy-toast { font-size: 0.75rem; color: #16a34a; font-weight: 600; opacity: 0; transition: opacity 0.3s; }
+      .copy-toast.show { opacity: 1; }
+      .check-row { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 0.25rem; }
+      .check-label {
+        text-transform: none; letter-spacing: 0; font-weight: 400;
+        font-size: 0.875rem; display: flex; align-items: center; gap: 0.35rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <main class="content">
+        <p style="margin-bottom: 0.5rem;"><a href="/">← ai-atoms</a></p>
+        <h1>Builder</h1>
+        <p style="color: #64748b; max-width: 44rem; font-size: 1rem; line-height: 1.6;">
+          Fill out the form to generate a valid skill or hook atom JSON file.
+          Download the output, add it to <code>atoms/skill/</code> or <code>atoms/hook/</code>,
+          then open a PR against
+          <a href="https://github.com/convergent-systems-co/ai-atoms">convergent-systems-co/ai-atoms</a>.
+        </p>
+
+        <div class="tab-bar">
+          <button class="tab-btn active" data-tab="skill">Skill</button>
+          <button class="tab-btn" data-tab="hook">Hook</button>
+        </div>
+
+        <div class="builder-shell">
+          <!-- Form column -->
+          <div>
+            <!-- SKILL FORM -->
+            <div class="form-panel active" id="panel-skill">
+              <div class="field-group">
+                <label>Slug <span class="req">*</span> <span class="opt">kebab-case, e.g. my-skill</span></label>
+                <input type="text" id="s-slug" placeholder="my-skill" oninput="rebuildSkill()" />
+              </div>
+              <div class="field-group">
+                <label>Name <span class="req">*</span></label>
+                <input type="text" id="s-name" placeholder="My Skill" oninput="rebuildSkill()" />
+              </div>
+              <div class="field-group">
+                <label>Description <span class="req">*</span></label>
+                <textarea id="s-description" rows="3" placeholder="What this skill does and when to invoke it." oninput="rebuildSkill()"></textarea>
+              </div>
+              <div class="field-group">
+                <label>System prompt fragment <span class="req">*</span></label>
+                <textarea id="s-prompt" rows="5" placeholder="Write the instruction text injected into the agent when this skill loads. Use second-person imperative." oninput="rebuildSkill()"></textarea>
+              </div>
+              <div class="field-group">
+                <label>Applicable domains <span class="req">*</span> <span class="opt">comma-separated</span></label>
+                <input type="text" id="s-domains" placeholder="code, debug, testing" oninput="rebuildSkill()" />
+              </div>
+              <div class="field-group">
+                <label>Invocation commands <span class="opt">slash commands, one per row</span></label>
+                <div class="invocation-list" id="s-invocations">
+                  <div class="invocation-row">
+                    <input type="text" placeholder="/my-skill" oninput="rebuildSkill()" />
+                    <button class="icon-btn" id="s-add-inv" title="Add command">+</button>
+                  </div>
+                </div>
+                <span class="field-hint">First entry is primary. Additional entries are subcommands/variants shown indented.</span>
+              </div>
+              <div class="field-group">
+                <label>Tags <span class="opt">comma-separated</span></label>
+                <input type="text" id="s-tags" placeholder="code, review, quality" oninput="rebuildSkill()" />
+              </div>
+              <div class="field-group">
+                <label>Lifecycle</label>
+                <select id="s-lifecycle" onchange="rebuildSkill()">
+                  <option value="stable">stable</option>
+                  <option value="draft">draft</option>
+                  <option value="deprecated">deprecated</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- HOOK FORM -->
+            <div class="form-panel" id="panel-hook">
+              <div class="field-group">
+                <label>Slug <span class="req">*</span> <span class="opt">kebab-case, e.g. my-guard</span></label>
+                <input type="text" id="h-slug" placeholder="my-guard" oninput="rebuildHook()" />
+              </div>
+              <div class="field-group">
+                <label>Name <span class="req">*</span></label>
+                <input type="text" id="h-name" placeholder="My Guard" oninput="rebuildHook()" />
+              </div>
+              <div class="field-group">
+                <label>Description <span class="req">*</span></label>
+                <textarea id="h-description" rows="3" placeholder="What this hook enforces or observes." oninput="rebuildHook()"></textarea>
+              </div>
+              <div class="field-group">
+                <label>Event <span class="req">*</span></label>
+                <select id="h-event" onchange="rebuildHook()">
+                  <option value="PreToolUse">PreToolUse — before any tool call</option>
+                  <option value="PostToolUse">PostToolUse — after a tool call returns</option>
+                  <option value="Stop">Stop — when agent finishes a turn</option>
+                  <option value="SessionStart">SessionStart — session begins</option>
+                  <option value="SessionEnd">SessionEnd — session ends</option>
+                  <option value="UserPromptSubmit">UserPromptSubmit — on user prompt</option>
+                  <option value="SubagentStop">SubagentStop — subagent finishes</option>
+                  <option value="PreCompact">PreCompact — before context compaction</option>
+                </select>
+              </div>
+              <div class="field-group">
+                <label>Trigger type <span class="req">*</span></label>
+                <select id="h-trigger-type" onchange="handleTriggerTypeChange()">
+                  <option value="always">always — every event instance</option>
+                  <option value="tool-name">tool-name — specific tool (e.g. Bash)</option>
+                  <option value="file-pattern">file-pattern — matched file path</option>
+                  <option value="tool-category">tool-category — tool category</option>
+                </select>
+              </div>
+              <div class="field-group" id="h-pattern-group" style="display:none">
+                <label>Trigger pattern <span class="req">*</span></label>
+                <input type="text" id="h-trigger-pattern" placeholder="Bash" oninput="rebuildHook()" />
+                <span class="field-hint">tool-name: exact name (Bash, Edit, Write). file-pattern: glob (.github/workflows/*.yml).</span>
+              </div>
+              <div class="field-group">
+                <label>Language <span class="req">*</span></label>
+                <select id="h-language" onchange="rebuildHook()">
+                  <option value="python">python (recommended — cross-platform)</option>
+                  <option value="bash">bash (Unix/macOS only)</option>
+                  <option value="javascript">javascript</option>
+                  <option value="typescript">typescript</option>
+                </select>
+              </div>
+              <div class="field-group">
+                <label>Blocking behavior</label>
+                <select id="h-blocking" onchange="rebuildHook()">
+                  <option value="false">non-blocking — observe only</option>
+                  <option value="true">blocking — can deny the tool call</option>
+                </select>
+              </div>
+              <div class="field-group">
+                <label>Side effects <span class="opt">comma-separated</span></label>
+                <input type="text" id="h-side-effects" placeholder="writes to ~/.ai/audit/, emits warning to stderr" oninput="rebuildHook()" />
+              </div>
+              <div class="field-group">
+                <label>Supported platforms <span class="opt">uncheck if not verified</span></label>
+                <div class="check-row">
+                  <label class="check-label"><input type="checkbox" id="h-plat-linux" onchange="rebuildHook()" checked /> linux</label>
+                  <label class="check-label"><input type="checkbox" id="h-plat-macos" onchange="rebuildHook()" checked /> macos</label>
+                  <label class="check-label"><input type="checkbox" id="h-plat-windows" onchange="rebuildHook()" checked /> windows</label>
+                </div>
+              </div>
+              <div class="field-group">
+                <label>Tags <span class="opt">comma-separated</span></label>
+                <input type="text" id="h-tags" placeholder="governance, git, claude-code" oninput="rebuildHook()" />
+              </div>
+              <div class="field-group">
+                <label>Lifecycle</label>
+                <select id="h-lifecycle" onchange="rebuildHook()">
+                  <option value="stable">stable</option>
+                  <option value="draft">draft</option>
+                  <option value="deprecated">deprecated</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Preview column -->
+          <div class="preview-panel">
+            <div class="preview-header">
+              <h3>Generated JSON</h3>
+              <div class="preview-actions">
+                <span class="copy-toast" id="copy-toast">Copied!</span>
+                <button class="action-btn secondary" id="btn-copy">Copy</button>
+                <button class="action-btn" id="btn-download">Download</button>
+              </div>
+            </div>
+            <div class="validation-msg" id="validation-msg"></div>
+            <pre id="json-preview">{}</pre>
+          </div>
+        </div>
+      </main>
+
+      <nav class="sidenav">
+        <a class="brand" href="/">
+          <img src="https://brand-atoms.com/dist/brands/atom-family/1.0.0/assets/atom-family-wordmark.png" alt="ATOMS" class="sidenav-wordmark" />
+        </a>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/atoms/skill/">Skills</a></li>
+          <li><a href="/atoms/hook/">Hooks</a></li>
+          <li><a href="/ai/index.json">AI</a></li>
+          <li><a href="/builder/" aria-current="page">Builder</a></li>
+          <li><a href="https://github.com/convergent-systems-co/ai-atoms">GitHub ↗</a></li>
+        </ul>
+        <div class="aside-meta">
+          <a class="meta-link" href="https://github.com/convergent-systems-co/ai-atoms">github ↗</a>
+        </div>
+      </nav>
+    </div>
+
+    <script is:inline>
+      let currentTab = 'skill';
+      let currentAtom = {};
+
+      // Tab switching
+      document.querySelectorAll('.tab-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          currentTab = btn.dataset.tab;
+          document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+          document.querySelectorAll('.form-panel').forEach(function(p) { p.classList.remove('active'); });
+          document.getElementById('panel-' + currentTab).classList.add('active');
+          if (currentTab === 'skill') rebuildSkill(); else rebuildHook();
+        });
+      });
+
+      // Add invocation row
+      document.getElementById('s-add-inv').addEventListener('click', function() {
+        var list = document.getElementById('s-invocations');
+        var row = document.createElement('div');
+        row.className = 'invocation-row';
+        var input = document.createElement('input');
+        input.type = 'text';
+        input.placeholder = '/my-skill --flag';
+        input.addEventListener('input', rebuildSkill);
+        var removeBtn = document.createElement('button');
+        removeBtn.className = 'icon-btn';
+        removeBtn.title = 'Remove';
+        removeBtn.textContent = '×';
+        removeBtn.addEventListener('click', function() { row.remove(); rebuildSkill(); });
+        row.appendChild(input);
+        row.appendChild(removeBtn);
+        list.appendChild(row);
+      });
+
+      // Trigger type change
+      function handleTriggerTypeChange() {
+        var t = document.getElementById('h-trigger-type').value;
+        var needs = t === 'tool-name' || t === 'file-pattern';
+        document.getElementById('h-pattern-group').style.display = needs ? 'flex' : 'none';
+        rebuildHook();
+      }
+
+      // Helpers
+      function csv(id) {
+        return document.getElementById(id).value.split(',').map(function(s) { return s.trim(); }).filter(Boolean);
+      }
+      function val(id) { return document.getElementById(id).value.trim(); }
+
+      function validate(atom, required) {
+        return required.filter(function(k) {
+          var v = atom[k];
+          if (v === undefined || v === null) return true;
+          if (typeof v === 'string') return v.length === 0;
+          if (Array.isArray(v)) return v.length === 0;
+          return false;
+        });
+      }
+
+      function showValidation(missing) {
+        var el = document.getElementById('validation-msg');
+        if (missing.length === 0) {
+          el.textContent = '✓ Valid atom — ready to submit';
+          el.className = 'validation-msg ok';
+        } else {
+          el.textContent = 'Missing required fields: ' + missing.join(', ');
+          el.className = 'validation-msg error';
+        }
+      }
+
+      function renderPreview(atom) {
+        document.getElementById('json-preview').textContent = JSON.stringify(atom, null, 2);
+        currentAtom = atom;
+      }
+
+      // Skill builder
+      function rebuildSkill() {
+        var slug = val('s-slug').replace(/[^a-z0-9-]/gi, '-').toLowerCase();
+        var domains = csv('s-domains');
+        var tags = csv('s-tags');
+        var invRows = Array.from(document.querySelectorAll('#s-invocations input'))
+          .map(function(i) { return i.value.trim(); }).filter(Boolean);
+
+        var atom = {
+          schema: 'https://ai-atoms.com/schemas/skill-v1.json',
+          type: 'skill',
+          id: slug ? 'skill/' + slug : '',
+          version: '1.0.0',
+          name: val('s-name'),
+          description: val('s-description'),
+          system_prompt_fragment: val('s-prompt'),
+        };
+        if (domains.length) atom.applicable_domains = domains;
+        if (invRows.length) atom.invocation = invRows;
+        if (tags.length) atom.tags = tags;
+        atom.authored_by = 'convergent-systems-key';
+        atom.lifecycle = val('s-lifecycle') || 'stable';
+
+        var missing = validate(atom, ['id', 'name', 'description', 'system_prompt_fragment', 'applicable_domains']);
+        showValidation(missing);
+        renderPreview(atom);
+      }
+
+      // Hook builder
+      function rebuildHook() {
+        var slug = val('h-slug').replace(/[^a-z0-9-]/gi, '-').toLowerCase();
+        var triggerType = document.getElementById('h-trigger-type').value;
+        var triggerPattern = val('h-trigger-pattern');
+        var blocking = document.getElementById('h-blocking').value === 'true';
+        var sideEffects = csv('h-side-effects');
+        var tags = csv('h-tags');
+
+        var platforms = ['linux', 'macos', 'windows'].filter(function(p) {
+          return document.getElementById('h-plat-' + p).checked;
+        });
+
+        var trigger = { type: triggerType };
+        if ((triggerType === 'tool-name' || triggerType === 'file-pattern') && triggerPattern) {
+          trigger.pattern = triggerPattern;
+        }
+
+        var atom = {
+          schema: 'https://ai-atoms.com/schemas/hook-v1.json',
+          type: 'hook',
+          id: slug ? 'hook/' + slug : '',
+          version: '1.0.0',
+          name: val('h-name'),
+          description: val('h-description'),
+          event: document.getElementById('h-event').value,
+          language: document.getElementById('h-language').value,
+          trigger: trigger,
+          blocking: blocking,
+        };
+        if (sideEffects.length) atom.side_effects = sideEffects;
+        if (platforms.length < 3 && platforms.length > 0) atom.platforms = platforms;
+        if (tags.length) atom.tags = tags;
+        atom.authored_by = 'convergent-systems-key';
+        atom.lifecycle = val('h-lifecycle') || 'stable';
+
+        var required = ['id', 'name', 'description', 'event', 'language'];
+        if ((triggerType === 'tool-name' || triggerType === 'file-pattern') && !triggerPattern) {
+          required.push('trigger.pattern');
+        }
+        var missing = validate(atom, required);
+        showValidation(missing);
+        renderPreview(atom);
+      }
+
+      // Actions
+      document.getElementById('btn-copy').addEventListener('click', function() {
+        navigator.clipboard.writeText(JSON.stringify(currentAtom, null, 2)).then(function() {
+          var toast = document.getElementById('copy-toast');
+          toast.classList.add('show');
+          setTimeout(function() { toast.classList.remove('show'); }, 1800);
+        });
+      });
+
+      document.getElementById('btn-download').addEventListener('click', function() {
+        var slug = currentAtom.id ? currentAtom.id.split('/').pop() : 'atom';
+        var json = JSON.stringify(currentAtom, null, 2);
+        var blob = new Blob([json], { type: 'application/json' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = slug + '.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      });
+
+      // Init
+      handleTriggerTypeChange();
+      rebuildSkill();
+    </script>
+  </body>
+</html>
