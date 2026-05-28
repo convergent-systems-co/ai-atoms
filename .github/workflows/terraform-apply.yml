@@ -1,0 +1,48 @@
+# atom: pipeline-atoms/github/terraform-apply-dns
+name: Terraform apply
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: "Type 'apply' to confirm infrastructure changes"
+        required: true
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.confirm == 'apply' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: opentofu/setup-opentofu@v1
+        with:
+          tofu_version: "1.10.0"
+
+      - name: Resolve zone ID for ai-atoms.com
+        id: zone
+        env:
+          CLOUDFLARE_DNS_TOKEN: ${{ secrets.CLOUDFLARE_DNS_TOKEN }}
+        run: |
+          ZONE_ID=$(curl -s "https://api.cloudflare.com/client/v4/zones?name=ai-atoms.com" \
+            -H "Authorization: Bearer $CLOUDFLARE_DNS_TOKEN" | \
+            python3 -c "import sys,json; d=json.load(sys.stdin); print(d['result'][0]['id']) if d.get('result') else (print('zone not found',file=__import__('sys').stderr) or exit(1))")
+          echo "zone_id=$ZONE_ID" >> "$GITHUB_OUTPUT"
+          echo "Zone: $ZONE_ID"
+
+      - name: Terraform init
+        working-directory: infra/terraform
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+        run: tofu init
+
+      - name: Terraform apply
+        working-directory: infra/terraform
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          TF_VAR_cloudflare_account_id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          TF_VAR_cloudflare_zone_id: ${{ steps.zone.outputs.zone_id }}
+        run: tofu apply -auto-approve -exclude=cloudflare_pages_project.site
