@@ -22,5 +22,6 @@
   ],
   "authored_by": "anthropics",
   "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet11/skills/system-text-json-net11/SKILL.md",
-  "lifecycle": "stable"
+  "lifecycle": "stable",
+  "category": "dotnet"
 }

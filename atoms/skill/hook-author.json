@@ -61,5 +61,6 @@
   "lifecycle": "stable",
   "invocation": [
     "/hook-author"
-  ]
+  ],
+  "category": "governance"
 }

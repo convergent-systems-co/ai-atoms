@@ -21,5 +21,6 @@
   ],
   "authored_by": "anthropics",
   "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/product-management/skills/write-spec/SKILL.md",
-  "lifecycle": "stable"
+  "lifecycle": "stable",
+  "category": "product"
 }

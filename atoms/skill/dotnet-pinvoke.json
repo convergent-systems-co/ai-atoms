@@ -21,5 +21,6 @@
   ],
   "authored_by": "anthropics",
   "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet/skills/dotnet-pinvoke/SKILL.md",
-  "lifecycle": "stable"
+  "lifecycle": "stable",
+  "category": "dotnet"
 }

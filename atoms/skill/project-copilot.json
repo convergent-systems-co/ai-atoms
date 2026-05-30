@@ -39,5 +39,6 @@
     "side_effects": [
       "may write project.yaml, .github/copilot-instructions.md"
     ]
-  }
+  },
+  "category": "product"
 }

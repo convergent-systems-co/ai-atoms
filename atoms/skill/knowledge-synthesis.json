@@ -20,5 +20,6 @@
   ],
   "authored_by": "anthropics",
   "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/enterprise-search/skills/knowledge-synthesis/SKILL.md",
-  "lifecycle": "stable"
+  "lifecycle": "stable",
+  "category": "knowledge"
 }

@@ -5,7 +5,7 @@
   "version": "1.0.0",
   "name": "Diagram",
   "description": "Generate Mermaid diagrams (flowchart / sequence / state / class / ER / gantt) from code or systems.",
-  "system_prompt_fragment": "Generate a Mermaid diagram of the requested type. Choose the type that best communicates the relationship: flowchart for control flow, sequence for message passing, state for state machines, class for OOP relationships, ER for data models, gantt for timelines. Render in Markdown for .md files. Use ASCII art for terminal output. Never describe a diagram in prose \u2014 always render it.",
+  "system_prompt_fragment": "Generate a Mermaid diagram of the requested type. Choose the type that best communicates the relationship: flowchart for control flow, sequence for message passing, state for state machines, class for OOP relationships, ER for data models, gantt for timelines. Render in Markdown for .md files. Use ASCII art for terminal output. Never describe a diagram in prose — always render it.",
   "applicable_domains": [
     "documentation",
     "architecture"
@@ -44,5 +44,6 @@
       }
     ],
     "side_effects": []
-  }
+  },
+  "category": "coding"
 }

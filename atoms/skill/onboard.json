@@ -5,7 +5,7 @@
   "version": "1.0.0",
   "name": "Onboard",
   "description": "Generate an ONBOARDING.md for the current repo covering: stack, prerequisites, setup, run, test, structure, and common commands. Targeted at a new contributor picking up the repo cold.",
-  "system_prompt_fragment": "Generate ONBOARDING.md for this repository. Include: What is this? (1 paragraph), Who is it for?, Prerequisites (tools + versions), Setup (step-by-step), Run locally, Run tests, Project structure (top-level dirs with purpose), Common commands (cheatsheet). Read README, package.json/go.mod/Cargo.toml/etc. to derive accurate commands. Do not invent commands \u2014 only include ones you can verify from config files.",
+  "system_prompt_fragment": "Generate ONBOARDING.md for this repository. Include: What is this? (1 paragraph), Who is it for?, Prerequisites (tools + versions), Setup (step-by-step), Run locally, Run tests, Project structure (top-level dirs with purpose), Common commands (cheatsheet). Read README, package.json/go.mod/Cargo.toml/etc. to derive accurate commands. Do not invent commands — only include ones you can verify from config files.",
   "applicable_domains": [
     "documentation",
     "onboarding"
@@ -32,5 +32,6 @@
     "side_effects": [
       "writes ONBOARDING.md to repo root"
     ]
-  }
+  },
+  "category": "knowledge"
 }

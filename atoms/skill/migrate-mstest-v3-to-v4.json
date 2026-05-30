@@ -22,5 +22,6 @@
   ],
   "authored_by": "anthropics",
   "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/migrate-mstest-v3-to-v4/SKILL.md",
-  "lifecycle": "stable"
+  "lifecycle": "stable",
+  "category": "dotnet"
 }

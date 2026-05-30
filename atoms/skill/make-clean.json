@@ -36,5 +36,6 @@
       "drops stashes",
       "creates aggregate branch"
     ]
-  }
+  },
+  "category": "product"
 }

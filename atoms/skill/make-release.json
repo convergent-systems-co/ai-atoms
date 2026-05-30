@@ -42,5 +42,6 @@
     "delivery"
   ],
   "authored_by": "convergent-systems-key",
-  "lifecycle": "stable"
+  "lifecycle": "stable",
+  "category": "product"
 }
