@@ -2,10 +2,10 @@
   "schema": "https://ai-atoms.com/schemas/skill-v1.json",
   "type": "skill",
   "id": "skill/make",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "name": "Make — Unified Dispatcher",
-  "description": "Dispatcher for the make skill suite. Reads the subcommand and invokes the matching skill immediately. Subcommands: work/sprint (PM + delivery team), clean (purge merged branches), build (commit+push+PR+merge), test (run test suite), status (sprint snapshot), sync (pull all repos), review (code reviewer sweep), doctor (governance health check), atoms (atom ecosystem ops), release (full release pipeline).",
-  "system_prompt_fragment": "Read the first word after /make and dispatch to the matching skill immediately. Do not summarize, plan, or ask clarifying questions — just dispatch.\n\nDispatch table:\n  work / sprint → make-sprint\n  clean         → make-clean\n  build         → make-build\n  test          → make-test\n  status        → make-status\n  sync          → make-sync\n  review        → make-review\n  doctor        → make-doctor\n  atoms         → make-atoms\n  release       → make-release\n\nIf the subcommand is unknown or missing, print the usage table and stop.",
+  "description": "Dispatcher for the make skill suite. Reads the subcommand and invokes the matching skill immediately. Subcommands: work/sprint (PM + delivery team), clean (purge merged branches), build (commit+push+PR+merge), test (run test suite), status (sprint snapshot), sync (pull all repos), review (code reviewer sweep), doctor (governance health check), atoms (atom ecosystem ops), release (full release pipeline), project (GitHub Project: Epics→Features→Tasks).",
+  "system_prompt_fragment": "Read the first word after /make and dispatch to the matching skill immediately. Do not summarize, plan, or ask clarifying questions — just dispatch.\n\nDispatch table:\n  work / sprint → make-sprint\n  clean         → make-clean\n  build         → make-build\n  test          → make-test\n  status        → make-status\n  sync          → make-sync\n  review        → make-review\n  doctor        → make-doctor\n  atoms         → make-atoms\n  release       → make-release\n  project       → make-project\n\nIf the subcommand is unknown or missing, print the usage table and stop.",
   "invocation": [
     "/make work",
     "/make sprint",
@@ -17,13 +17,15 @@
     "/make review",
     "/make doctor",
     "/make atoms",
-    "/make release"
+    "/make release",
+    "/make project"
   ],
   "depends_on": [
     "skill/make-atoms",
     "skill/make-build",
     "skill/make-clean",
     "skill/make-doctor",
+    "skill/make-project",
     "skill/make-release",
     "skill/make-review",
     "skill/make-status",
