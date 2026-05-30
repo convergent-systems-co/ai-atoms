@@ -40,5 +40,6 @@
       "runs test subprocess",
       "may create commits if fixing"
     ]
-  }
+  },
+  "category": "product"
 }

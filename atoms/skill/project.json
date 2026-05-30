@@ -39,5 +39,6 @@
     "side_effects": [
       "delegates to project-claude and/or project-copilot"
     ]
-  }
+  },
+  "category": "product"
 }

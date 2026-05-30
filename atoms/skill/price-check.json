@@ -20,5 +20,6 @@
   ],
   "authored_by": "anthropics",
   "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/price-check/SKILL.md",
-  "lifecycle": "stable"
+  "lifecycle": "stable",
+  "category": "finance"
 }

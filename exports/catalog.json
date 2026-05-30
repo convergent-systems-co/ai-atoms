@@ -1,7 +1,7 @@
 {
   "catalog": "ai-atoms",
   "version": "0.1.0",
-  "built_at": "2026-05-30T14:38:38+00:00",
+  "built_at": "2026-05-30T14:51:27+00:00",
   "atoms": [
     {
       "schema": "https://ai-atoms.com/schemas/hook-v1.json",
@@ -528,7 +528,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/design/skills/accessibility-review/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "design"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -552,7 +553,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/sales/skills/account-research/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "sales"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -576,7 +578,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/skills/blob/main/skills/algorithmic-art/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "design"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -634,7 +637,8 @@
       "lifecycle": "stable",
       "invocation": [
         "/amendment-author"
-      ]
+      ],
+      "category": "governance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -659,7 +663,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/data/skills/analyze/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "data"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -685,7 +690,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-diag/skills/analyzing-dotnet-performance/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -711,7 +717,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-diag/skills/android-tombstone-symbolication/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -737,7 +744,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-diag/skills/apple-crash-symbolication/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -763,7 +771,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/engineering/skills/architecture/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "coding"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -789,7 +798,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/assertion-quality/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -850,7 +860,8 @@
         "/atom-publisher skill",
         "/atom-publisher hook",
         "/atom-publisher persona"
-      ]
+      ],
+      "category": "governance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -902,7 +913,8 @@
         "/atom-status",
         "/atom-status tree",
         "/atom-status tree <catalog-name>"
-      ]
+      ],
+      "category": "governance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -955,7 +967,8 @@
           "may run ai atoms fork",
           "may write to ~/.ai/atoms/cache/"
         ]
-      }
+      },
+      "category": "governance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -979,7 +992,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/finance/skills/audit-support/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "finance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1005,7 +1019,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-blazor/skills/author-component/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1031,7 +1046,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-msbuild/skills/binlog-failure-analysis/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1057,7 +1073,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-msbuild/skills/binlog-generation/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1079,7 +1096,8 @@
         "planning",
         "requirements"
       ],
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "coding"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1103,7 +1121,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/skills/blob/main/skills/brand-guidelines/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "design"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1128,7 +1147,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/marketing/skills/brand-review/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "marketing"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1153,7 +1173,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/legal/skills/brief/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "legal"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1178,7 +1199,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/data/skills/build-dashboard/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "data"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1204,7 +1226,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-msbuild/skills/build-parallelism/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1230,7 +1253,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-msbuild/skills/build-perf-baseline/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1256,7 +1280,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-msbuild/skills/build-perf-diagnostics/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1280,7 +1305,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/business-pulse/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "finance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1304,7 +1330,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/call-list/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "sales"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1328,7 +1355,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/sales/skills/call-prep/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "sales"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1353,7 +1381,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/sales/skills/call-summary/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "sales"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1378,7 +1407,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/marketing/skills/campaign-plan/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "marketing"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1402,7 +1432,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/canva-creator/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "design"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1426,7 +1457,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/skills/blob/main/skills/canvas-design/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "design"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1451,7 +1483,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/operations/skills/capacity-plan/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "operations"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1475,7 +1508,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/cash-flow-snapshot/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "finance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1500,7 +1534,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/operations/skills/change-request/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "operations"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1526,7 +1561,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-msbuild/skills/check-bin-obj-clash/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1556,7 +1592,8 @@
         "/checkpoint resume",
         "/checkpoint resume <UTC>",
         "/checkpoint list"
-      ]
+      ],
+      "category": "governance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1580,7 +1617,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/skills/blob/main/skills/claude-api/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "coding"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1624,7 +1662,8 @@
           "modifies source files",
           "may create git commits"
         ]
-      }
+      },
+      "category": "coding"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1648,7 +1687,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/finance/skills/close-management/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "finance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1672,7 +1712,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/close-month/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "finance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1698,7 +1739,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-diag/skills/clr-activation-debugging/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1724,7 +1766,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/engineering/skills/code-review/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "coding"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1750,7 +1793,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/code-testing-agent/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1776,7 +1820,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/code-testing-extensions/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1802,7 +1847,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-blazor/skills/collect-user-input/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1845,7 +1891,8 @@
         "side_effects": [
           "creates a git commit in the working tree"
         ]
-      }
+      },
+      "category": "coding"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1870,7 +1917,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/human-resources/skills/comp-analysis/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "hr"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1895,7 +1943,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/marketing/skills/competitive-brief/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "marketing"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1919,7 +1968,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/sales/skills/competitive-intelligence/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "sales"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1944,7 +1994,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/legal/skills/compliance-check/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "legal"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1968,7 +2019,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/operations/skills/compliance-tracking/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "legal"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1994,7 +2046,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-blazor/skills/configure-auth/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2020,7 +2073,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-aspnet/skills/configuring-opentelemetry-dotnet/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2044,7 +2098,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/marketing/skills/content-creation/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "marketing"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2068,7 +2123,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/content-strategy/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "marketing"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2092,7 +2148,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/contract-review/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "legal"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2118,7 +2175,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-aspnet/skills/convert-blazor-server-to-webapp/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2144,7 +2202,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-nuget/skills/convert-to-cpm/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2170,7 +2229,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-blazor/skills/coordinate-components/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2196,7 +2256,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/coverage-analysis/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2222,7 +2283,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/crap-score/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2246,7 +2308,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/sales/skills/create-an-asset/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "sales"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2272,7 +2335,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-blazor/skills/create-blazor-project/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2297,7 +2361,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/data/skills/create-viz/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "data"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2321,7 +2386,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/crm-cleanup/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "sales"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2345,7 +2411,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/crm-maintenance/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "sales"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2370,7 +2437,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet/skills/csharp-scripts/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2395,7 +2463,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/customer-support/skills/customer-escalation/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "support"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2419,7 +2488,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/customer-pulse-check/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "support"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2443,7 +2513,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/customer-pulse/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "support"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2468,7 +2539,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/customer-support/skills/customer-research/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "support"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2492,7 +2564,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/sales/skills/daily-briefing/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "sales"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2516,7 +2589,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/data/skills/data-context-extractor/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "data"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2540,7 +2614,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/data/skills/data-visualization/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "data"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2621,7 +2696,8 @@
         "/debug \"<symptom>\"",
         "/debug --error <log-or-file>",
         "/debug --test <test-name>"
-      ]
+      ],
+      "category": "coding"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2647,7 +2723,8 @@
       ],
       "authored_by": "kepano",
       "source_url": "https://github.com/kepano/obsidian-skills/blob/main/skills/defuddle/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "knowledge"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2673,7 +2750,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/engineering/skills/deploy-checklist/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "operations"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2698,7 +2776,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/design/skills/design-critique/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "design"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2723,7 +2802,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/design/skills/design-handoff/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "design"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2748,7 +2828,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/design/skills/design-system/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "design"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2774,7 +2855,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/detect-static-dependencies/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2822,7 +2904,8 @@
           }
         ],
         "side_effects": []
-      }
+      },
+      "category": "coding"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2847,7 +2930,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/enterprise-search/skills/digest/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "knowledge"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2873,7 +2957,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-msbuild/skills/directory-build-organization/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2895,7 +2980,8 @@
         "subagent",
         "dispatch"
       ],
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "governance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2919,7 +3005,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/skills/blob/main/skills/doc-coauthoring/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "knowledge"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2944,7 +3031,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/engineering/skills/documentation/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "knowledge"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2970,7 +3058,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-upgrade/skills/dotnet-aot-compat/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2996,7 +3085,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-maui/skills/dotnet-maui-doctor/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3021,7 +3111,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet/skills/dotnet-pinvoke/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3047,7 +3138,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/dotnet-test-frameworks/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3073,7 +3165,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-diag/skills/dotnet-trace-collect/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3099,7 +3192,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-aspnet/skills/dotnet-webapi/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3124,7 +3218,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/marketing/skills/draft-content/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "marketing"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3149,7 +3244,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/human-resources/skills/draft-offer/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "hr"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3173,7 +3269,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/sales/skills/draft-outreach/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "sales"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3198,7 +3295,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/customer-support/skills/draft-response/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "support"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3224,7 +3322,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-diag/skills/dump-collect/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3249,7 +3348,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/marketing/skills/email-sequence/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "marketing"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3275,7 +3375,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-msbuild/skills/eval-performance/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3301,7 +3402,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-experimental/skills/exp-mock-usage-analysis/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3327,7 +3429,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-experimental/skills/exp-simd-vectorization/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3353,7 +3456,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-experimental/skills/exp-test-maintainability/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3401,7 +3505,8 @@
           }
         ],
         "side_effects": []
-      }
+      },
+      "category": "coding"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3426,7 +3531,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/data/skills/explore-data/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "data"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3452,7 +3558,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-msbuild/skills/extension-points/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3478,7 +3585,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-blazor/skills/fetch-and-send-data/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3504,7 +3612,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/filter-syntax/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3529,7 +3638,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/finance/skills/financial-statements/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "finance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3554,7 +3664,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/sales/skills/forecast/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "sales"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3578,7 +3689,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/friday-brief/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "operations"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3602,7 +3714,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/skills/blob/main/skills/frontend-design/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "design"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3628,7 +3741,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/generate-testability-wrappers/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3652,7 +3766,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/handle-complaint/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "support"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3717,7 +3832,8 @@
       "lifecycle": "stable",
       "invocation": [
         "/hook-author"
-      ]
+      ],
+      "category": "governance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3743,7 +3859,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/engineering/skills/incident-response/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "operations"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3769,7 +3886,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-msbuild/skills/including-generated-files/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3795,7 +3913,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-msbuild/skills/incremental-build/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3819,7 +3938,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/bio-research/skills/instrument-data-to-allotrope/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "data"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3843,7 +3963,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/skills/blob/main/skills/internal-comms/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "knowledge"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3867,7 +3988,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/human-resources/skills/interview-prep/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "hr"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3891,7 +4013,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/invoice-chase/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "finance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3917,7 +4040,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-msbuild/skills/item-management/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3941,7 +4065,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/job-post-builder/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "hr"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3965,7 +4090,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/finance/skills/journal-entry-prep/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "finance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3990,7 +4116,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/finance/skills/journal-entry/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "finance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4016,7 +4143,8 @@
       ],
       "authored_by": "kepano",
       "source_url": "https://github.com/kepano/obsidian-skills/blob/main/skills/json-canvas/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "knowledge"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4041,7 +4169,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/customer-support/skills/kb-article/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "support"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4065,7 +4194,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/enterprise-search/skills/knowledge-synthesis/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "knowledge"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4089,7 +4219,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/lead-triage/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "sales"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4114,7 +4245,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/legal/skills/legal-response/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "legal"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4138,7 +4270,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/legal/skills/legal-risk-assessment/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "legal"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4191,7 +4324,8 @@
         "scaffolding"
       ],
       "authored_by": "convergent-systems-key",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "governance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4238,7 +4372,8 @@
         "delivery"
       ],
       "authored_by": "convergent-systems-key",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "product"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4278,7 +4413,8 @@
           "drops stashes",
           "creates aggregate branch"
         ]
-      }
+      },
+      "category": "product"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4325,7 +4461,8 @@
         "ci"
       ],
       "authored_by": "convergent-systems-key",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "governance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4371,7 +4508,8 @@
         "delivery"
       ],
       "authored_by": "convergent-systems-key",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "product"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4411,7 +4549,50 @@
         "adversarial"
       ],
       "authored_by": "convergent-systems-key",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "product"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/make-sprint",
+      "version": "1.0.0",
+      "name": "Make Sprint",
+      "description": "Activate PM discipline and run the multi-agent delivery team in one shot. Recovers from checkpoints, ingests the issue queue, partitions tasks, spawns Tech Lead agents per domain, runs TDD pipelines, code reviews, and builds.",
+      "system_prompt_fragment": "Execute the full PM delivery loop: (0) check for checkpoint — resume or cold start; (1) pre-flight; (2) build repo set; (3) ingest issue queue; (4) partition into domain batches, spawn Tech Lead agents per batch running Worktree→Plan→TDD→Coder→Adversarial→PR→Merge pipeline; (5) code reviewer sweep after queue empties; (6) /make build. Never skip a pipeline step. Tech Leads must never commit directly to main.",
+      "applicable_domains": [
+        "workflow",
+        "project-management",
+        "multi-agent"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable",
+      "invocation": [
+        "/make-sprint"
+      ],
+      "tags": [
+        "workflow",
+        "pm-mode",
+        "sprint",
+        "multi-agent"
+      ],
+      "invocation_contract": {
+        "inputs": [],
+        "outputs": [
+          {
+            "name": "sprint_summary",
+            "type": "string",
+            "description": "What was delivered, what is in-flight, what is blocked."
+          }
+        ],
+        "side_effects": [
+          "creates branches",
+          "opens PRs",
+          "merges PRs",
+          "creates GitHub issues"
+        ]
+      },
+      "category": "product"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4448,7 +4629,8 @@
         "read-only"
       ],
       "authored_by": "convergent-systems-key",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "product"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4486,7 +4668,8 @@
         "pull"
       ],
       "authored_by": "convergent-systems-key",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "product"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4530,48 +4713,8 @@
           "runs test subprocess",
           "may create commits if fixing"
         ]
-      }
-    },
-    {
-      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
-      "type": "skill",
-      "id": "skill/make-work",
-      "version": "1.0.0",
-      "name": "Make Work",
-      "description": "Activate PM discipline and run the multi-agent delivery team in one shot. Recovers from checkpoints, ingests the issue queue, partitions tasks, spawns Tech Lead agents per domain, runs TDD pipelines, code reviews, and builds.",
-      "system_prompt_fragment": "Execute the full PM delivery loop: (0) check for checkpoint — resume or cold start; (1) pre-flight; (2) build repo set; (3) ingest issue queue; (4) partition into domain batches, spawn Tech Lead agents per batch running Worktree→Plan→TDD→Coder→Adversarial→PR→Merge pipeline; (5) code reviewer sweep after queue empties; (6) /make build. Never skip a pipeline step. Tech Leads must never commit directly to main.",
-      "applicable_domains": [
-        "workflow",
-        "project-management",
-        "multi-agent"
-      ],
-      "authored_by": "convergent-systems-key",
-      "lifecycle": "stable",
-      "invocation": [
-        "/make-work"
-      ],
-      "tags": [
-        "workflow",
-        "pm-mode",
-        "sprint",
-        "multi-agent"
-      ],
-      "invocation_contract": {
-        "inputs": [],
-        "outputs": [
-          {
-            "name": "sprint_summary",
-            "type": "string",
-            "description": "What was delivered, what is in-flight, what is blocked."
-          }
-        ],
-        "side_effects": [
-          "creates branches",
-          "opens PRs",
-          "merges PRs",
-          "creates GitHub issues"
-        ]
-      }
+      },
+      "category": "product"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4580,7 +4723,7 @@
       "version": "1.1.0",
       "name": "Make — Unified Dispatcher",
       "description": "Dispatcher for the make skill suite. Reads the subcommand and invokes the matching skill immediately. Subcommands: work/sprint (PM + delivery team), clean (purge merged branches), build (commit+push+PR+merge), test (run test suite), status (sprint snapshot), sync (pull all repos), review (code reviewer sweep), doctor (governance health check), atoms (atom ecosystem ops), release (full release pipeline).",
-      "system_prompt_fragment": "Read the first word after /make and dispatch to the matching skill immediately. Do not summarize, plan, or ask clarifying questions — just dispatch.\n\nDispatch table:\n  work / sprint → make-work\n  clean         → make-clean\n  build         → make-build\n  test          → make-test\n  status        → make-status\n  sync          → make-sync\n  review        → make-review\n  doctor        → make-doctor\n  atoms         → make-atoms\n  release       → make-release\n\nIf the subcommand is unknown or missing, print the usage table and stop.",
+      "system_prompt_fragment": "Read the first word after /make and dispatch to the matching skill immediately. Do not summarize, plan, or ask clarifying questions — just dispatch.\n\nDispatch table:\n  work / sprint → make-sprint\n  clean         → make-clean\n  build         → make-build\n  test          → make-test\n  status        → make-status\n  sync          → make-sync\n  review        → make-review\n  doctor        → make-doctor\n  atoms         → make-atoms\n  release       → make-release\n\nIf the subcommand is unknown or missing, print the usage table and stop.",
       "invocation": [
         "/make work",
         "/make sprint",
@@ -4604,7 +4747,7 @@
         "skill/make-status",
         "skill/make-sync",
         "skill/make-test",
-        "skill/make-work"
+        "skill/make-sprint"
       ],
       "applicable_domains": [
         "code",
@@ -4619,7 +4762,8 @@
         "workflow"
       ],
       "authored_by": "convergent-systems-key",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "product"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4643,7 +4787,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/margin-analyzer/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "finance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4669,7 +4814,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-maui/skills/maui-app-lifecycle/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4695,7 +4841,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-maui/skills/maui-collectionview/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4721,7 +4868,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-maui/skills/maui-data-binding/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4747,7 +4895,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-maui/skills/maui-dependency-injection/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4773,7 +4922,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-maui/skills/maui-safe-area/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4799,7 +4949,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-maui/skills/maui-shell-navigation/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4825,7 +4976,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-maui/skills/maui-theming/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4849,7 +5001,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/skills/blob/main/skills/mcp-builder/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "coding"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4875,7 +5028,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-ai/skills/mcp-csharp-create/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4901,7 +5055,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-ai/skills/mcp-csharp-debug/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4927,7 +5082,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-ai/skills/mcp-csharp-publish/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4953,7 +5109,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-ai/skills/mcp-csharp-test/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4977,7 +5134,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/legal/skills/meeting-briefing/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "legal"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5034,7 +5192,8 @@
       "lifecycle": "stable",
       "invocation": [
         "/memory-curator"
-      ]
+      ],
+      "category": "governance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5058,7 +5217,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/productivity/skills/memory-management/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "governance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5083,7 +5243,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/product-management/skills/metrics-review/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "product"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5109,7 +5270,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-diag/skills/microbenchmarking/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5135,7 +5297,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-upgrade/skills/migrate-dotnet10-to-dotnet11/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5161,7 +5324,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-upgrade/skills/migrate-dotnet8-to-dotnet9/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5187,7 +5351,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-upgrade/skills/migrate-dotnet9-to-dotnet10/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5213,7 +5378,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/migrate-mstest-v1v2-to-v3/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5239,7 +5405,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/migrate-mstest-v3-to-v4/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5265,7 +5432,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-upgrade/skills/migrate-nullable-references/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5291,7 +5459,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/migrate-static-to-wrapper/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5317,7 +5486,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/migrate-vstest-to-mtp/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5343,7 +5513,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/migrate-xunit-to-xunit-v3/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5369,7 +5540,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-aspnet/skills/minimal-api-file-upload/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5393,7 +5565,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/monday-brief/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "operations"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5417,7 +5590,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/month-end-prep/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "finance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5441,7 +5615,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/month-heads-up/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "finance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5467,7 +5642,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-msbuild/skills/msbuild-antipatterns/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5493,7 +5669,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-msbuild/skills/msbuild-modernization/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5519,7 +5696,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-msbuild/skills/msbuild-server/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5545,7 +5723,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/mtp-hot-reload/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5569,7 +5748,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/bio-research/skills/nextflow-development/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "data"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5594,7 +5774,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet/skills/nuget-trusted-publishing/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5620,7 +5801,8 @@
       ],
       "authored_by": "kepano",
       "source_url": "https://github.com/kepano/obsidian-skills/blob/main/skills/obsidian-bases/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "knowledge"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5646,7 +5828,8 @@
       ],
       "authored_by": "kepano",
       "source_url": "https://github.com/kepano/obsidian-skills/blob/main/skills/obsidian-cli/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "knowledge"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5672,7 +5855,8 @@
       ],
       "authored_by": "kepano",
       "source_url": "https://github.com/kepano/obsidian-skills/blob/main/skills/obsidian-markdown/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "knowledge"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5708,7 +5892,8 @@
         "side_effects": [
           "writes ONBOARDING.md to repo root"
         ]
-      }
+      },
+      "category": "knowledge"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5733,7 +5918,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/human-resources/skills/onboarding/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "hr"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5759,7 +5945,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-data/skills/optimizing-ef-core-queries/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5783,7 +5970,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/human-resources/skills/org-planning/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "hr"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5808,7 +5996,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/human-resources/skills/people-report/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "hr"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5833,7 +6022,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/marketing/skills/performance-report/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "marketing"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5858,7 +6048,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/human-resources/skills/performance-review/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "hr"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5883,7 +6074,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/sales/skills/pipeline-review/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "sales"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5907,7 +6099,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/plan-payroll/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "finance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5933,7 +6126,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-blazor/skills/plan-ui-change/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5959,7 +6153,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/platform-detection/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5984,7 +6179,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/human-resources/skills/policy-lookup/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "hr"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6027,7 +6223,8 @@
         "side_effects": [
           "creates a GitHub pull request via gh CLI"
         ]
-      }
+      },
+      "category": "coding"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6051,7 +6248,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/price-check/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "finance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6076,7 +6274,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/operations/skills/process-doc/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "operations"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6100,7 +6299,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/operations/skills/process-optimization/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "operations"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6124,7 +6324,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/product-management/skills/product-brainstorming/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "product"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6167,7 +6368,8 @@
         "side_effects": [
           "may write project.yaml, .claude/settings.json, CLAUDE.md"
         ]
-      }
+      },
+      "category": "product"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6210,7 +6412,8 @@
         "side_effects": [
           "may write project.yaml, .github/copilot-instructions.md"
         ]
-      }
+      },
+      "category": "product"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6253,7 +6456,8 @@
         "side_effects": [
           "delegates to project-claude and/or project-copilot"
         ]
-      }
+      },
+      "category": "product"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6279,7 +6483,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-msbuild/skills/property-patterns/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6303,7 +6508,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/quarterly-review/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "finance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6328,7 +6534,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/finance/skills/reconciliation/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "finance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6352,7 +6559,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/human-resources/skills/recruiting-pipeline/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "hr"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6402,7 +6610,8 @@
           "modifies source files",
           "creates git commits"
         ]
-      }
+      },
+      "category": "coding"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6453,7 +6662,8 @@
           "may rewrite git history",
           "creates or modifies repositories"
         ]
-      }
+      },
+      "category": "coding"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6478,7 +6688,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/design/skills/research-synthesis/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "design"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6504,7 +6715,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-msbuild/skills/resolve-project-references/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6529,7 +6741,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/legal/skills/review-contract/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "legal"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6588,7 +6801,8 @@
         "/review-panel",
         "/review-panel --pr=<number>",
         "/review-panel <file-path>"
-      ]
+      ],
+      "category": "governance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6612,7 +6826,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/operations/skills/risk-assessment/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "operations"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6637,7 +6852,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/product-management/skills/roadmap-update/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "product"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6661,7 +6877,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/run-campaign/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "marketing"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6687,7 +6904,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/run-tests/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6712,7 +6930,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/operations/skills/runbook/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "operations"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6736,7 +6955,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/sales-brief/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "marketing"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6760,7 +6980,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/bio-research/skills/scientific-problem-selection/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "data"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6784,7 +7005,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/bio-research/skills/scvi-tools/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "data"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6808,7 +7030,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/enterprise-search/skills/search-strategy/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "knowledge"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6833,7 +7056,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/enterprise-search/skills/search/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "knowledge"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6858,7 +7082,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/marketing/skills/seo-audit/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "marketing"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6883,7 +7108,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/legal/skills/signature-request/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "legal"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6907,7 +7133,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/bio-research/skills/single-cell-rna-qc/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "data"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6931,7 +7158,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/skills/blob/main/skills/skill-creator/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "governance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6955,7 +7183,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/skills/blob/main/skills/slack-gif-creator/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "design"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6979,7 +7208,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/smb-onboard/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "hr"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7003,7 +7233,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/smb-router/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "support"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7027,7 +7258,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/enterprise-search/skills/source-management/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "knowledge"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7052,7 +7284,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/finance/skills/sox-testing/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "legal"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7077,7 +7310,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/product-management/skills/sprint-planning/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "product"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7101,7 +7335,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/data/skills/sql-queries/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "coding"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7126,7 +7361,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/product-management/skills/stakeholder-update/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "product"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7152,7 +7388,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/engineering/skills/standup/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "operations"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7176,7 +7413,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/bio-research/skills/start/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "data"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7200,7 +7438,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/data/skills/statistical-analysis/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "data"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7225,7 +7464,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/operations/skills/status-report/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "operations"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7259,7 +7499,8 @@
           }
         ],
         "side_effects": []
-      }
+      },
+      "category": "governance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7285,7 +7526,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-blazor/skills/support-prerendering/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7310,7 +7552,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/product-management/skills/synthesize-research/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "product"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7335,7 +7578,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/engineering/skills/system-design/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "coding"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7361,7 +7605,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet11/skills/system-text-json-net11/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7382,7 +7627,8 @@
         "tdd",
         "regression"
       ],
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "coding"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7408,7 +7654,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-msbuild/skills/target-authoring/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7432,7 +7679,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/productivity/skills/task-management/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "product"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7456,7 +7704,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/tax-prep/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "finance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7480,7 +7729,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/tax-season-organizer/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "finance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7505,7 +7755,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/engineering/skills/tech-debt/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "coding"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7531,7 +7782,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-ai/skills/technology-selection/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7557,7 +7809,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-template-engine/skills/template-authoring/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7583,7 +7836,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-template-engine/skills/template-discovery/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7609,7 +7863,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-template-engine/skills/template-instantiation/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7635,7 +7890,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-template-engine/skills/template-validation/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7661,7 +7917,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/test-anti-patterns/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7687,7 +7944,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/test-gap-analysis/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7709,7 +7967,8 @@
         "meta"
       ],
       "authored_by": "convergent-systems-key",
-      "lifecycle": "draft"
+      "lifecycle": "draft",
+      "category": "governance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7735,7 +7994,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/test-smell-detection/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7761,7 +8021,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/test-tagging/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7804,7 +8065,8 @@
         "side_effects": [
           "runs test subprocess"
         ]
-      }
+      },
+      "category": "coding"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7829,7 +8091,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/engineering/skills/testing-strategy/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "coding"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7853,7 +8116,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/skills/blob/main/skills/theme-factory/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "design"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7879,7 +8143,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-upgrade/skills/thread-abort-migration/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7903,7 +8168,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/ticket-deflector/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "support"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7928,7 +8194,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/customer-support/skills/ticket-triage/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "support"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7953,7 +8220,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/legal/skills/triage-nda/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "legal"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7997,7 +8265,8 @@
         "side_effects": [
           "modifies .claude/settings.json or ~/.claude/settings.json"
         ]
-      }
+      },
+      "category": "governance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -8022,7 +8291,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/productivity/skills/update/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "product"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -8048,7 +8318,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-blazor/skills/use-js-interop/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -8072,7 +8343,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/design/skills/user-research/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "design"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -8097,7 +8369,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/design/skills/ux-copy/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "design"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -8122,7 +8395,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/data/skills/validate-data/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "data"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -8147,7 +8421,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/finance/skills/variance-analysis/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "finance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -8172,7 +8447,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/legal/skills/vendor-check/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "legal"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -8197,7 +8473,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/operations/skills/vendor-review/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "operations"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -8219,7 +8496,8 @@
         "evidence",
         "ci"
       ],
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "governance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -8243,7 +8521,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/skills/blob/main/skills/web-artifacts-builder/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "coding"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -8267,7 +8546,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/skills/blob/main/skills/webapp-testing/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "coding"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -8292,7 +8572,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/data/skills/write-query/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "data"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -8317,7 +8598,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/product-management/skills/write-spec/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "product"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -8343,7 +8625,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/writing-mstest-tests/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     }
   ],
   "compositions": [],

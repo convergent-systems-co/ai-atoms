@@ -20,5 +20,6 @@
   ],
   "authored_by": "anthropics",
   "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/operations/skills/compliance-tracking/SKILL.md",
-  "lifecycle": "stable"
+  "lifecycle": "stable",
+  "category": "legal"
 }

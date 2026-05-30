@@ -40,5 +40,6 @@
       "modifies source files",
       "may create git commits"
     ]
-  }
+  },
+  "category": "coding"
 }

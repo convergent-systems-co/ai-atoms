@@ -20,5 +20,6 @@
   ],
   "authored_by": "anthropics",
   "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/bio-research/skills/scientific-problem-selection/SKILL.md",
-  "lifecycle": "stable"
+  "lifecycle": "stable",
+  "category": "data"
 }

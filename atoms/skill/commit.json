@@ -5,7 +5,7 @@
   "version": "1.0.0",
   "name": "Commit",
   "description": "Generate a conventional-commit message from the staged diff and commit. Reads the diff, analyzes the change, picks the right Conventional Commits prefix (feat/fix/refactor/chore/docs/test/ci), and commits with a descriptive message.",
-  "system_prompt_fragment": "Generate a conventional-commit message. Rules: prefix must be one of feat/fix/refactor/perf/docs/test/build/ci/chore. Subject line \u226472 chars, imperative mood, no trailing period. Body explains WHY, not what. Wrap at 72. Stage and commit. Do not amend unless explicitly asked.",
+  "system_prompt_fragment": "Generate a conventional-commit message. Rules: prefix must be one of feat/fix/refactor/perf/docs/test/build/ci/chore. Subject line ≤72 chars, imperative mood, no trailing period. Body explains WHY, not what. Wrap at 72. Stage and commit. Do not amend unless explicitly asked.",
   "applicable_domains": [
     "code",
     "git"
@@ -39,5 +39,6 @@
     "side_effects": [
       "creates a git commit in the working tree"
     ]
-  }
+  },
+  "category": "coding"
 }

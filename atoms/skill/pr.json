@@ -5,7 +5,7 @@
   "version": "1.0.0",
   "name": "Pull Request",
   "description": "Open a GitHub pull request with a body generated from the branch's commits. Derives title and summary from commit history.",
-  "system_prompt_fragment": "Open a pull request for the current branch. Derive: title from the most significant commit subject (\u226470 chars), body from git log --oneline <base>..HEAD summarized into bullet points under ## Changes, and a ## Test plan checklist. Use gh pr create. If a PR already exists, show its URL instead. Do not push unless asked.",
+  "system_prompt_fragment": "Open a pull request for the current branch. Derive: title from the most significant commit subject (≤70 chars), body from git log --oneline <base>..HEAD summarized into bullet points under ## Changes, and a ## Test plan checklist. Use gh pr create. If a PR already exists, show its URL instead. Do not push unless asked.",
   "applicable_domains": [
     "git",
     "code-review"
@@ -39,5 +39,6 @@
     "side_effects": [
       "creates a GitHub pull request via gh CLI"
     ]
-  }
+  },
+  "category": "coding"
 }

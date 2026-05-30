@@ -39,5 +39,6 @@
     "side_effects": [
       "may write project.yaml, .claude/settings.json, CLAUDE.md"
     ]
-  }
+  },
+  "category": "product"
 }

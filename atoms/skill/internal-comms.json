@@ -20,5 +20,6 @@
   ],
   "authored_by": "anthropics",
   "source_url": "https://github.com/anthropics/skills/blob/main/skills/internal-comms/SKILL.md",
-  "lifecycle": "stable"
+  "lifecycle": "stable",
+  "category": "knowledge"
 }

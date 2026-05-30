@@ -1,11 +1,11 @@
 {
   "schema": "https://ai-atoms.com/schemas/skill-v1.json",
   "type": "skill",
-  "id": "skill/make-work",
+  "id": "skill/make-sprint",
   "version": "1.0.0",
-  "name": "Make Work",
+  "name": "Make Sprint",
   "description": "Activate PM discipline and run the multi-agent delivery team in one shot. Recovers from checkpoints, ingests the issue queue, partitions tasks, spawns Tech Lead agents per domain, runs TDD pipelines, code reviews, and builds.",
-  "system_prompt_fragment": "Execute the full PM delivery loop: (0) check for checkpoint \u2014 resume or cold start; (1) pre-flight; (2) build repo set; (3) ingest issue queue; (4) partition into domain batches, spawn Tech Lead agents per batch running Worktree\u2192Plan\u2192TDD\u2192Coder\u2192Adversarial\u2192PR\u2192Merge pipeline; (5) code reviewer sweep after queue empties; (6) /make build. Never skip a pipeline step. Tech Leads must never commit directly to main.",
+  "system_prompt_fragment": "Execute the full PM delivery loop: (0) check for checkpoint — resume or cold start; (1) pre-flight; (2) build repo set; (3) ingest issue queue; (4) partition into domain batches, spawn Tech Lead agents per batch running Worktree→Plan→TDD→Coder→Adversarial→PR→Merge pipeline; (5) code reviewer sweep after queue empties; (6) /make build. Never skip a pipeline step. Tech Leads must never commit directly to main.",
   "applicable_domains": [
     "workflow",
     "project-management",
@@ -14,7 +14,7 @@
   "authored_by": "convergent-systems-key",
   "lifecycle": "stable",
   "invocation": [
-    "/make-work"
+    "/make-sprint"
   ],
   "tags": [
     "workflow",
@@ -37,5 +37,6 @@
       "merges PRs",
       "creates GitHub issues"
     ]
-  }
+  },
+  "category": "product"
 }
