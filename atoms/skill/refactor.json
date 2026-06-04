@@ -1,0 +1,51 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/refactor",
+  "version": "1.0.0",
+  "name": "Refactor",
+  "description": "Behavior-preserving refactor with test gates and the bug-report-separately rule. Tests must be green before and after. Bugs found during refactor are reported separately, not fixed inline.",
+  "system_prompt_fragment": "Refactor the target preserving all observable behavior. Rules: (1) Tests must be green before you start. (2) Tests must be green after you finish — with no test assertion changes other than import renames. (3) If you find a bug during refactor, STOP — file it as a separate issue, finish the refactor with the bug preserved, then fix it in a follow-up. (4) Use the refactor: commit prefix. (5) One logical change per commit.",
+  "applicable_domains": [
+    "code"
+  ],
+  "authored_by": "convergent-systems-key",
+  "lifecycle": "stable",
+  "invocation": [
+    "/refactor"
+  ],
+  "tags": [
+    "code",
+    "refactor",
+    "behavior-preserving",
+    "tdd"
+  ],
+  "invocation_contract": {
+    "inputs": [
+      {
+        "name": "target",
+        "type": "string",
+        "description": "File or module to refactor.",
+        "required": true
+      },
+      {
+        "name": "goal",
+        "type": "string",
+        "description": "What the refactor should achieve (rename, extract, inline, split, etc.)",
+        "required": true
+      }
+    ],
+    "outputs": [
+      {
+        "name": "changes",
+        "type": "string",
+        "description": "Summary of structural changes made."
+      }
+    ],
+    "side_effects": [
+      "modifies source files",
+      "creates git commits"
+    ]
+  },
+  "category": "coding"
+}

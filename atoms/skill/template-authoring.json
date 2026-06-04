@@ -22,5 +22,6 @@
   ],
   "authored_by": "anthropics",
   "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-template-engine/skills/template-authoring/SKILL.md",
-  "lifecycle": "stable"
+  "lifecycle": "stable",
+  "category": "dotnet"
 }

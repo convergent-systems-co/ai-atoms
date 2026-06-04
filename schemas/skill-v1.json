@@ -49,6 +49,32 @@
       "uniqueItems": true,
       "description": "Domains where this skill applies (e.g. code, design, planning, debug, agents)."
     },
+    "category": {
+      "type": "string",
+      "enum": [
+        "coding",
+        "dotnet",
+        "data",
+        "design",
+        "product",
+        "operations",
+        "finance",
+        "legal",
+        "sales",
+        "marketing",
+        "hr",
+        "support",
+        "knowledge",
+        "governance"
+      ],
+      "description": "Single primary category used to group skills for selection/presentation. Display names: coding=Engineering & Coding, dotnet=.NET / Microsoft Engineering, data=Data, Analytics & Research, design=Design & UX, product=Product & Delivery, operations=Operations & IT, finance=Finance & Accounting, legal=Legal & Compliance, sales=Sales & CRM, marketing=Marketing & Content, hr=People & HR, support=Customer Support, knowledge=Knowledge & Docs, governance=Governance & Meta."
+    },
+    "depends_on": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^skill/[a-z0-9][a-z0-9-]*$" },
+      "uniqueItems": true,
+      "description": "Sub-skills this skill installs on `ai skills install` and hides from the top-level catalog list (dispatcher pattern). Each entry is a namespaced skill id, e.g. \"skill/make-work\"."
+    },
     "invocation_contract": {
       "type": "object",
       "description": "Declared inputs, outputs, and side effects for this skill.",

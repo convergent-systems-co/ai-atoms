@@ -1,13 +1,13 @@
 {
   "catalog": "ai-atoms",
   "version": "0.1.0",
-  "built_at": "2026-06-04T15:17:45+00:00",
+  "built_at": "2026-06-04T21:17:57+00:00",
   "atoms": [
     {
       "schema": "https://ai-atoms.com/schemas/hook-v1.json",
       "type": "hook",
       "id": "hook/audit-command",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "name": "Audit Command Wrapper",
       "description": "PostToolUse hook that records every wrapped command invocation (git, gh, etc.) to the audit log. Makes the appearance side of the audit trail reliable — absence of an audit line for an expected command is itself visible during forensic review. Records WRAPPED_CMD, WRAPPED_ARGV, WRAPPED_EXIT, and WRAPPED_DURATION.",
       "event": "PostToolUse",
@@ -34,7 +34,7 @@
         "windows"
       ],
       "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run audit-command' in settings.json — the ai binary discovers Python on each OS. Reads env vars WRAPPED_CMD etc. — set by the ai command wrappers on all platforms.",
-      "script": "#!/usr/bin/env python3\n\"\"\"hooks/audit-command.py — wrapper postHook that records every wrapped\ncommand invocation to the audit log.\n\nPer SPEC.md §10.5.4: \"If a bypass leaves no audit line where one\nwould normally appear, the gap itself is visible.\" This hook makes\nthe appearance side reliable; the absence side is what surfaces in\nforensic review.\n\nInputs (from the wrapper environment):\n  WRAPPED_CMD       — the underlying command (\"git\", \"gh\", etc.)\n  WRAPPED_ARGV      — the argv it was invoked with, JSON-encoded\n  WRAPPED_EXIT      — the exit code of the real command\n  WRAPPED_DURATION  — wall-clock seconds the command took (string)\n\nSelf-check:\n  --self-check\n\"\"\"\nfrom __future__ import annotations\n\nimport argparse\nimport datetime as dt\nimport json\nimport os\nimport sys\nfrom pathlib import Path\n\nsys.path.insert(0, str(Path(__file__).resolve().parent))\nimport _lib  # noqa: E402\n\n\ndef audit_dir() -> Path:\n    root = os.environ.get(\"AI_ROOT\", str(Path.home() / \".ai\"))\n    return Path(root) / \"audit\" / \"interactions\"\n\n\ndef month_file() -> Path:\n    now = dt.datetime.now(dt.timezone.utc)\n    return audit_dir() / f\"{now.strftime('%Y-%m')}.jsonl\"\n\n\ndef chronon() -> str:\n    now = dt.datetime.now(dt.timezone.utc)\n    return now.strftime(\"%Y-%m-%dT%H:%M:%S.\") + f\"{now.microsecond // 1000:03d}Z\"\n\n\ndef main(argv: list[str]) -> int:\n    parser = argparse.ArgumentParser(add_help=True)\n    parser.add_argument(\"--self-check\", action=\"store_true\")\n    args = parser.parse_args(argv)\n    if args.self_check:\n        try:\n            audit_dir().mkdir(parents=True, exist_ok=True)\n        except Exception as e:\n            _lib.log(\"self-check FAIL:\", e)\n            return 1\n        _lib.log(\"self-check OK\")\n        return 0\n\n    cmd = os.environ.get(\"WRAPPED_CMD\", \"\")\n    argv_json = os.environ.get(\"WRAPPED_ARGV\", \"[]\")\n    exit_code = os.environ.get(\"WRAPPED_EXIT\", \"0\")\n    duration = os.environ.get(\"WRAPPED_DURATION\", \"\")\n\n    try:\n        wrapped_argv = json.loads(argv_json)\n    except json.JSONDecodeError:\n        wrapped_argv = []\n\n    # Redact the argv (the secret patterns include URL-with-credentials).\n    redacted_argv = [_lib.redact(str(a)) for a in wrapped_argv]\n    probe_payload = json.dumps(redacted_argv)[:1000]\n\n    event = {\n        \"chronon\": chronon(),\n        \"trace\": os.environ.get(\"AI_SESSION_ID\", \"\"),\n        \"cwd\": os.getcwd(),\n        \"actor\": \"tool\",\n        \"kind\": \"invocation-result\",\n        \"engine\": \"command-wrapper\",\n        \"probe\": cmd,\n        \"probe_payload\": probe_payload,\n        \"emission_marker\": f\"exit={exit_code} duration={duration}\",\n    }\n\n    try:\n        audit_dir().mkdir(parents=True, exist_ok=True)\n        with open(month_file(), \"a\", encoding=\"utf-8\") as f:\n            f.write(json.dumps(event, ensure_ascii=False) + \"\\n\")\n    except Exception as e:\n        # Never block; audit failures are themselves auditable.\n        _lib.log(\"audit-command append failed:\", e)\n    return 0\n\n\nif __name__ == \"__main__\":\n    sys.exit(main(sys.argv[1:]))\n",
+      "script": "#!/usr/bin/env python3\n\"\"\"hooks/audit-command.py — wrapper postHook that records every wrapped\ncommand invocation to the audit log.\n\nPer SPEC.md §10.5.4: \"If a bypass leaves no audit line where one\nwould normally appear, the gap itself is visible.\" This hook makes\nthe appearance side reliable; the absence side is what surfaces in\nforensic review.\n\nInputs (from the wrapper environment):\n  WRAPPED_CMD       — the underlying command (\"git\", \"gh\", etc.)\n  WRAPPED_ARGV      — the argv it was invoked with, JSON-encoded\n  WRAPPED_EXIT      — the exit code of the real command\n  WRAPPED_DURATION  — wall-clock seconds the command took (string)\n\nSelf-check:\n  --self-check\n\"\"\"\nfrom __future__ import annotations\n\nimport argparse\nimport datetime as dt\nimport json\nimport os\nimport sys\nfrom pathlib import Path\n\nsys.path.insert(0, str(Path(__file__).resolve().parent))\nimport _lib  # noqa: E402\n\n\ndef audit_dir() -> Path:\n    root = os.environ.get(\"AI_ROOT\", str(Path.home() / \".ai\"))\n    return Path(root) / \"audit\" / \"interactions\"\n\n\ndef month_file() -> Path:\n    now = dt.datetime.now(dt.timezone.utc)\n    return audit_dir() / f\"{now.strftime('%Y-%m')}.jsonl\"\n\n\ndef chronon() -> str:\n    now = dt.datetime.now(dt.timezone.utc)\n    return now.strftime(\"%Y-%m-%dT%H:%M:%S.\") + f\"{now.microsecond // 1000:03d}Z\"\n\n\ndef main(argv: list[str]) -> int:\n    parser = argparse.ArgumentParser(add_help=True)\n    parser.add_argument(\"--self-check\", action=\"store_true\")\n    # The command wrapper invokes every hook with --mode=wrapper. This hook is\n    # wrapper-only and reads its inputs from the WRAPPED_* env vars, so the flag\n    # is accepted and ignored rather than selecting a code path.\n    parser.add_argument(\"--mode\", choices=[\"claude\", \"wrapper\"], default=None,\n                        help=\"invocation mode (set by the command wrapper)\")\n    args = parser.parse_args(argv)\n    if args.self_check:\n        try:\n            audit_dir().mkdir(parents=True, exist_ok=True)\n        except Exception as e:\n            _lib.log(\"self-check FAIL:\", e)\n            return 1\n        _lib.log(\"self-check OK\")\n        return 0\n\n    cmd = os.environ.get(\"WRAPPED_CMD\", \"\")\n    argv_json = os.environ.get(\"WRAPPED_ARGV\", \"[]\")\n    exit_code = os.environ.get(\"WRAPPED_EXIT\", \"0\")\n    duration = os.environ.get(\"WRAPPED_DURATION\", \"\")\n\n    try:\n        wrapped_argv = json.loads(argv_json)\n    except json.JSONDecodeError:\n        wrapped_argv = []\n\n    # Redact the argv (the secret patterns include URL-with-credentials).\n    redacted_argv = [_lib.redact(str(a)) for a in wrapped_argv]\n    probe_payload = json.dumps(redacted_argv)[:1000]\n\n    event = {\n        \"chronon\": chronon(),\n        \"trace\": os.environ.get(\"AI_SESSION_ID\", \"\"),\n        \"cwd\": os.getcwd(),\n        \"actor\": \"tool\",\n        \"kind\": \"invocation-result\",\n        \"engine\": \"command-wrapper\",\n        \"probe\": cmd,\n        \"probe_payload\": probe_payload,\n        \"emission_marker\": f\"exit={exit_code} duration={duration}\",\n    }\n\n    try:\n        audit_dir().mkdir(parents=True, exist_ok=True)\n        with open(month_file(), \"a\", encoding=\"utf-8\") as f:\n            f.write(json.dumps(event, ensure_ascii=False) + \"\\n\")\n    except Exception as e:\n        # Never block; audit failures are themselves auditable.\n        _lib.log(\"audit-command append failed:\", e)\n    return 0\n\n\nif __name__ == \"__main__\":\n    sys.exit(main(sys.argv[1:]))\n",
       "depends_on": [
         "hook/lib"
       ]
@@ -152,7 +152,7 @@
       "schema": "https://ai-atoms.com/schemas/hook-v1.json",
       "type": "hook",
       "id": "hook/destructive-gh-guard",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "name": "Destructive GitHub CLI Guard",
       "description": "Blocks high-blast-radius, irreversible gh CLI operations per Common.md §2.2. Denies without explicit --force-i-mean-it confirmation: gh repo delete, gh release delete, gh secret delete, and gh auth logout. All other gh subcommands pass through.",
       "event": "PreToolUse",
@@ -180,7 +180,7 @@
         "windows"
       ],
       "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run destructive-gh-guard' in settings.json — the ai binary discovers Python on each OS. gh CLI available on all platforms. Python logic is cross-platform.",
-      "script": "#!/usr/bin/env python3\n\"\"\"hooks/destructive-gh-guard.py — gate destructive `gh` operations\nper Common.md §2.2.\n\nBlocks (without --force-i-mean-it confirmation):\n\n  gh repo delete <repo>\n  gh release delete <tag>\n  gh secret delete <name>\n  gh auth logout\n\nThese are the high-blast-radius / irreversible operations on the\ndefault `gh` surface. Other subcommands pass through.\n\nSelf-check:\n  --self-check\n\"\"\"\nfrom __future__ import annotations\n\nimport argparse\nimport os\nimport sys\nfrom pathlib import Path\n\nsys.path.insert(0, str(Path(__file__).resolve().parent))\nimport _lib  # noqa: E402\n\n\nGUARDED = [\n    (\"repo\", \"delete\"),\n    (\"release\", \"delete\"),\n    (\"secret\", \"delete\"),\n    (\"auth\", \"logout\"),\n]\n\n# Escape hatch: the user can set AI_ALLOW_DESTRUCTIVE_GH=1 for a single\n# session to bypass these checks. Setting this is itself a §2.2 action\n# and is logged.\nBYPASS_ENV = \"AI_ALLOW_DESTRUCTIVE_GH\"\n\n\ndef check_invocation(argv: list[str]) -> int:\n    \"\"\"argv is the args AFTER `gh`.\"\"\"\n    if len(argv) < 2:\n        return 0\n    a, b = argv[0], argv[1]\n    if (a, b) not in GUARDED:\n        return 0\n\n    if os.environ.get(BYPASS_ENV) == \"1\":\n        _lib.log(f\"`gh {a} {b}` — bypass active ({BYPASS_ENV}=1). Logged.\")\n        return 0\n\n    _lib.log(f\"blocking — `gh {a} {b}` is a §2.2 destructive operation.\")\n    _lib.log(\"Per Common.md §2.2 + §2.4: name what will be destroyed, snapshot if reversible, wait for an unambiguous yes.\")\n    _lib.log(f\"To bypass for one session only: AI_ALLOW_DESTRUCTIVE_GH=1 gh {a} {b} ...\")\n    return 1\n\n\ndef from_claude_payload() -> int:\n    import json\n    raw = sys.stdin.read()\n    if not raw.strip():\n        return 0\n    try:\n        payload = json.loads(raw)\n    except json.JSONDecodeError:\n        return 0\n    cmd = (\n        payload.get(\"command\")\n        or payload.get(\"tool_input\", {}).get(\"command\")\n        or \"\"\n    ) if isinstance(payload, dict) else \"\"\n    if not cmd.strip().startswith(\"gh \"):\n        return 0\n    return check_invocation(cmd.split()[1:])\n\n\ndef main(argv: list[str]) -> int:\n    parser = argparse.ArgumentParser(add_help=True)\n    parser.add_argument(\"--self-check\", action=\"store_true\")\n    parser.add_argument(\"--mode\", choices=[\"claude\", \"wrapper\"], default=None)\n    parser.add_argument(\"rest\", nargs=argparse.REMAINDER)\n    args = parser.parse_args(argv)\n\n    if args.self_check:\n        return _lib.self_check_ok()\n    if args.mode == \"claude\" or (args.mode is None and not sys.stdin.isatty()):\n        return from_claude_payload()\n    return check_invocation(args.rest)\n\n\nif __name__ == \"__main__\":\n    sys.exit(main(sys.argv[1:]))\n",
+      "script": "#!/usr/bin/env python3\n\"\"\"hooks/destructive-gh-guard.py — gate destructive `gh` operations\nper Common.md §2.2.\n\nBlocks (without --force-i-mean-it confirmation):\n\n  gh repo delete <repo>\n  gh release delete <tag>\n  gh secret delete <name>\n  gh auth logout\n\nThese are the high-blast-radius / irreversible operations on the\ndefault `gh` surface. Other subcommands pass through.\n\nSelf-check:\n  --self-check\n\"\"\"\nfrom __future__ import annotations\n\nimport argparse\nimport os\nimport sys\nfrom pathlib import Path\n\nsys.path.insert(0, str(Path(__file__).resolve().parent))\nimport _lib  # noqa: E402\n\n\nGUARDED = [\n    (\"repo\", \"delete\"),\n    (\"release\", \"delete\"),\n    (\"secret\", \"delete\"),\n    (\"auth\", \"logout\"),\n]\n\n# Escape hatch: the user can set AI_ALLOW_DESTRUCTIVE_GH=1 for a single\n# session to bypass these checks. Setting this is itself a §2.2 action\n# and is logged.\nBYPASS_ENV = \"AI_ALLOW_DESTRUCTIVE_GH\"\n\n\ndef check_invocation(argv: list[str]) -> int:\n    \"\"\"argv is the args AFTER `gh`.\"\"\"\n    if len(argv) < 2:\n        return 0\n    a, b = argv[0], argv[1]\n    if (a, b) not in GUARDED:\n        return 0\n\n    if os.environ.get(BYPASS_ENV) == \"1\":\n        _lib.log(f\"`gh {a} {b}` — bypass active ({BYPASS_ENV}=1). Logged.\")\n        return 0\n\n    _lib.log(f\"blocking — `gh {a} {b}` is a §2.2 destructive operation.\")\n    _lib.log(\"Per Common.md §2.2 + §2.4: name what will be destroyed, snapshot if reversible, wait for an unambiguous yes.\")\n    _lib.log(f\"To bypass for one session only: AI_ALLOW_DESTRUCTIVE_GH=1 gh {a} {b} ...\")\n    return 1\n\n\ndef argv_from_wrapper() -> list[str]:\n    \"\"\"The args after `gh`, as JSON in WRAPPED_ARGV (command-wrapper path).\n\n    The wrapper does not forward the tool's argv on the command line — it\n    publishes it in WRAPPED_ARGV so argparse never sees subcommand tokens.\n    \"\"\"\n    import json\n    try:\n        return json.loads(os.environ.get(\"WRAPPED_ARGV\", \"[]\"))\n    except json.JSONDecodeError:\n        return []\n\n\ndef from_claude_payload() -> int:\n    import json\n    raw = sys.stdin.read()\n    if not raw.strip():\n        return 0\n    try:\n        payload = json.loads(raw)\n    except json.JSONDecodeError:\n        return 0\n    cmd = (\n        payload.get(\"command\")\n        or payload.get(\"tool_input\", {}).get(\"command\")\n        or \"\"\n    ) if isinstance(payload, dict) else \"\"\n    if not cmd.strip().startswith(\"gh \"):\n        return 0\n    return check_invocation(cmd.split()[1:])\n\n\ndef main(argv: list[str]) -> int:\n    parser = argparse.ArgumentParser(add_help=True)\n    parser.add_argument(\"--self-check\", action=\"store_true\")\n    parser.add_argument(\"--mode\", choices=[\"claude\", \"wrapper\"], default=None)\n    parser.add_argument(\"rest\", nargs=argparse.REMAINDER)\n    args = parser.parse_args(argv)\n\n    if args.self_check:\n        return _lib.self_check_ok()\n    if args.mode == \"wrapper\":\n        return check_invocation(argv_from_wrapper())\n    if args.mode == \"claude\" or (args.mode is None and not sys.stdin.isatty()):\n        return from_claude_payload()\n    return check_invocation(args.rest)\n\n\nif __name__ == \"__main__\":\n    sys.exit(main(sys.argv[1:]))\n",
       "depends_on": [
         "hook/lib"
       ]
@@ -189,7 +189,7 @@
       "schema": "https://ai-atoms.com/schemas/hook-v1.json",
       "type": "hook",
       "id": "hook/destructive-kubectl-guard",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "name": "Destructive kubectl Guard",
       "description": "Blocks destructive kubectl operations per Common.md §2.2. Opt-in via command-wrappers.toml. Denies kubectl delete, kubectl drain, and kubectl cordon without the bypass env AI_ALLOW_DESTRUCTIVE_KUBECTL=1. All other kubectl subcommands pass through.",
       "event": "PreToolUse",
@@ -219,7 +219,7 @@
         "windows"
       ],
       "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run destructive-kubectl-guard' in settings.json — the ai binary discovers Python on each OS. kubectl available on all platforms. Python logic is cross-platform.",
-      "script": "#!/usr/bin/env python3\n\"\"\"hooks/destructive-kubectl-guard.py — gate destructive `kubectl`\noperations per Common.md §2.2. Opt-in via command-wrappers.toml.\n\nBlocks (without bypass env): `kubectl delete`, `kubectl drain`,\n`kubectl cordon`. Other subcommands pass through.\n\nThe bypass env is AI_ALLOW_DESTRUCTIVE_KUBECTL=1.\n\nSelf-check:\n  --self-check\n\"\"\"\nfrom __future__ import annotations\n\nimport argparse\nimport os\nimport sys\nfrom pathlib import Path\n\nsys.path.insert(0, str(Path(__file__).resolve().parent))\nimport _lib  # noqa: E402\n\n\nGUARDED = {\"delete\", \"drain\", \"cordon\"}\nBYPASS_ENV = \"AI_ALLOW_DESTRUCTIVE_KUBECTL\"\n\n\ndef check_invocation(argv: list[str]) -> int:\n    if not argv or argv[0] not in GUARDED:\n        return 0\n    if os.environ.get(BYPASS_ENV) == \"1\":\n        _lib.log(f\"`kubectl {argv[0]}` — bypass active ({BYPASS_ENV}=1). Logged.\")\n        return 0\n    _lib.log(f\"blocking — `kubectl {argv[0]}` mutates cluster state.\")\n    _lib.log(\"Per Common.md §2.2 + §2.4: state what will change, name reversibility, wait for an unambiguous yes.\")\n    _lib.log(f\"To bypass for one session only: {BYPASS_ENV}=1 kubectl {argv[0]} ...\")\n    return 1\n\n\ndef main(argv: list[str]) -> int:\n    parser = argparse.ArgumentParser(add_help=True)\n    parser.add_argument(\"--self-check\", action=\"store_true\")\n    parser.add_argument(\"rest\", nargs=argparse.REMAINDER)\n    args = parser.parse_args(argv)\n    if args.self_check:\n        return _lib.self_check_ok()\n    return check_invocation(args.rest)\n\n\nif __name__ == \"__main__\":\n    sys.exit(main(sys.argv[1:]))\n",
+      "script": "#!/usr/bin/env python3\n\"\"\"hooks/destructive-kubectl-guard.py — gate destructive `kubectl`\noperations per Common.md §2.2. Opt-in via command-wrappers.toml.\n\nBlocks (without bypass env): `kubectl delete`, `kubectl drain`,\n`kubectl cordon`. Other subcommands pass through.\n\nThe bypass env is AI_ALLOW_DESTRUCTIVE_KUBECTL=1.\n\nSelf-check:\n  --self-check\n\"\"\"\nfrom __future__ import annotations\n\nimport argparse\nimport json\nimport os\nimport sys\nfrom pathlib import Path\n\nsys.path.insert(0, str(Path(__file__).resolve().parent))\nimport _lib  # noqa: E402\n\n\nGUARDED = {\"delete\", \"drain\", \"cordon\"}\nBYPASS_ENV = \"AI_ALLOW_DESTRUCTIVE_KUBECTL\"\nTOOL = \"kubectl\"\n\n\ndef argv_from_wrapper() -> list[str]:\n    \"\"\"The args after `kubectl`, as JSON in WRAPPED_ARGV (command-wrapper path).\n\n    The wrapper does not forward the tool's argv on the command line — it\n    publishes it in WRAPPED_ARGV so argparse never sees subcommand tokens.\n    \"\"\"\n    try:\n        return json.loads(os.environ.get(\"WRAPPED_ARGV\", \"[]\"))\n    except json.JSONDecodeError:\n        return []\n\n\ndef argv_from_stdin() -> list[str]:\n    \"\"\"The args after `kubectl`, parsed from a Claude PreToolUse JSON payload.\"\"\"\n    raw = sys.stdin.read()\n    if not raw.strip():\n        return []\n    try:\n        payload = json.loads(raw)\n    except json.JSONDecodeError:\n        return []\n    cmd = (\n        payload.get(\"command\")\n        or payload.get(\"tool_input\", {}).get(\"command\")\n        or \"\"\n    ) if isinstance(payload, dict) else \"\"\n    parts = cmd.split()\n    return parts[1:] if parts and parts[0] == TOOL else []\n\n\ndef check_invocation(argv: list[str]) -> int:\n    if not argv or argv[0] not in GUARDED:\n        return 0\n    if os.environ.get(BYPASS_ENV) == \"1\":\n        _lib.log(f\"`kubectl {argv[0]}` — bypass active ({BYPASS_ENV}=1). Logged.\")\n        return 0\n    _lib.log(f\"blocking — `kubectl {argv[0]}` mutates cluster state.\")\n    _lib.log(\"Per Common.md §2.2 + §2.4: state what will change, name reversibility, wait for an unambiguous yes.\")\n    _lib.log(f\"To bypass for one session only: {BYPASS_ENV}=1 kubectl {argv[0]} ...\")\n    return 1\n\n\ndef main(argv: list[str]) -> int:\n    parser = argparse.ArgumentParser(add_help=True)\n    parser.add_argument(\"--self-check\", action=\"store_true\")\n    parser.add_argument(\"--mode\", choices=[\"claude\", \"wrapper\"], default=None,\n                        help=\"invocation mode (set by the command wrapper)\")\n    parser.add_argument(\"rest\", nargs=argparse.REMAINDER)\n    args = parser.parse_args(argv)\n    if args.self_check:\n        return _lib.self_check_ok()\n    if args.mode == \"wrapper\":\n        return check_invocation(argv_from_wrapper())\n    if args.mode == \"claude\" or not sys.stdin.isatty():\n        return check_invocation(argv_from_stdin())\n    return check_invocation(args.rest)\n\n\nif __name__ == \"__main__\":\n    sys.exit(main(sys.argv[1:]))\n",
       "depends_on": [
         "hook/lib"
       ]
@@ -228,7 +228,7 @@
       "schema": "https://ai-atoms.com/schemas/hook-v1.json",
       "type": "hook",
       "id": "hook/destructive-terraform-guard",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "name": "Destructive Terraform Guard",
       "description": "Blocks terraform destroy and terraform apply per Common.md §2.2. Opt-in via command-wrappers.toml. Requires explicit bypass via AI_ALLOW_DESTRUCTIVE_TERRAFORM=1. Prevents accidental infrastructure destruction or unreviewed applies. Other tofu/terraform subcommands (plan, init, validate, output) pass through.",
       "event": "PreToolUse",
@@ -259,7 +259,7 @@
         "windows"
       ],
       "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run destructive-terraform-guard' in settings.json — the ai binary discovers Python on each OS. tofu/terraform available on all platforms. Python logic is cross-platform.",
-      "script": "#!/usr/bin/env python3\n\"\"\"hooks/destructive-terraform-guard.py — gate `terraform {destroy,apply}`\nper Common.md §2.2. Opt-in via command-wrappers.toml.\n\nBlocks (without bypass env): `terraform destroy`, `terraform apply`.\nOther subcommands pass through.\n\nThe bypass env is AI_ALLOW_DESTRUCTIVE_TERRAFORM=1.\n\nSelf-check:\n  --self-check\n\"\"\"\nfrom __future__ import annotations\n\nimport argparse\nimport os\nimport sys\nfrom pathlib import Path\n\nsys.path.insert(0, str(Path(__file__).resolve().parent))\nimport _lib  # noqa: E402\n\n\nGUARDED = {\"destroy\", \"apply\"}\nBYPASS_ENV = \"AI_ALLOW_DESTRUCTIVE_TERRAFORM\"\n\n\ndef check_invocation(argv: list[str]) -> int:\n    if not argv or argv[0] not in GUARDED:\n        return 0\n    if os.environ.get(BYPASS_ENV) == \"1\":\n        _lib.log(f\"`terraform {argv[0]}` — bypass active ({BYPASS_ENV}=1). Logged.\")\n        return 0\n    _lib.log(f\"blocking — `terraform {argv[0]}` mutates real infrastructure.\")\n    _lib.log(\"Per Common.md §2.2 + §2.4: state what will change, name reversibility, wait for an unambiguous yes.\")\n    _lib.log(f\"To bypass for one session only: {BYPASS_ENV}=1 terraform {argv[0]} ...\")\n    return 1\n\n\ndef main(argv: list[str]) -> int:\n    parser = argparse.ArgumentParser(add_help=True)\n    parser.add_argument(\"--self-check\", action=\"store_true\")\n    parser.add_argument(\"rest\", nargs=argparse.REMAINDER)\n    args = parser.parse_args(argv)\n    if args.self_check:\n        return _lib.self_check_ok()\n    return check_invocation(args.rest)\n\n\nif __name__ == \"__main__\":\n    sys.exit(main(sys.argv[1:]))\n",
+      "script": "#!/usr/bin/env python3\n\"\"\"hooks/destructive-terraform-guard.py — gate `terraform {destroy,apply}`\nper Common.md §2.2. Opt-in via command-wrappers.toml.\n\nBlocks (without bypass env): `terraform destroy`, `terraform apply`.\nOther subcommands pass through.\n\nThe bypass env is AI_ALLOW_DESTRUCTIVE_TERRAFORM=1.\n\nSelf-check:\n  --self-check\n\"\"\"\nfrom __future__ import annotations\n\nimport argparse\nimport json\nimport os\nimport sys\nfrom pathlib import Path\n\nsys.path.insert(0, str(Path(__file__).resolve().parent))\nimport _lib  # noqa: E402\n\n\nGUARDED = {\"destroy\", \"apply\"}\nBYPASS_ENV = \"AI_ALLOW_DESTRUCTIVE_TERRAFORM\"\nTOOL = \"terraform\"\n\n\ndef argv_from_wrapper() -> list[str]:\n    \"\"\"The args after `terraform`, as JSON in WRAPPED_ARGV (command-wrapper path).\n\n    The wrapper does not forward the tool's argv on the command line — it\n    publishes it in WRAPPED_ARGV so argparse never sees subcommand tokens.\n    \"\"\"\n    try:\n        return json.loads(os.environ.get(\"WRAPPED_ARGV\", \"[]\"))\n    except json.JSONDecodeError:\n        return []\n\n\ndef argv_from_stdin() -> list[str]:\n    \"\"\"The args after `terraform`, parsed from a Claude PreToolUse JSON payload.\"\"\"\n    raw = sys.stdin.read()\n    if not raw.strip():\n        return []\n    try:\n        payload = json.loads(raw)\n    except json.JSONDecodeError:\n        return []\n    cmd = (\n        payload.get(\"command\")\n        or payload.get(\"tool_input\", {}).get(\"command\")\n        or \"\"\n    ) if isinstance(payload, dict) else \"\"\n    parts = cmd.split()\n    return parts[1:] if parts and parts[0] == TOOL else []\n\n\ndef check_invocation(argv: list[str]) -> int:\n    if not argv or argv[0] not in GUARDED:\n        return 0\n    if os.environ.get(BYPASS_ENV) == \"1\":\n        _lib.log(f\"`terraform {argv[0]}` — bypass active ({BYPASS_ENV}=1). Logged.\")\n        return 0\n    _lib.log(f\"blocking — `terraform {argv[0]}` mutates real infrastructure.\")\n    _lib.log(\"Per Common.md §2.2 + §2.4: state what will change, name reversibility, wait for an unambiguous yes.\")\n    _lib.log(f\"To bypass for one session only: {BYPASS_ENV}=1 terraform {argv[0]} ...\")\n    return 1\n\n\ndef main(argv: list[str]) -> int:\n    parser = argparse.ArgumentParser(add_help=True)\n    parser.add_argument(\"--self-check\", action=\"store_true\")\n    parser.add_argument(\"--mode\", choices=[\"claude\", \"wrapper\"], default=None,\n                        help=\"invocation mode (set by the command wrapper)\")\n    parser.add_argument(\"rest\", nargs=argparse.REMAINDER)\n    args = parser.parse_args(argv)\n    if args.self_check:\n        return _lib.self_check_ok()\n    if args.mode == \"wrapper\":\n        return check_invocation(argv_from_wrapper())\n    if args.mode == \"claude\" or not sys.stdin.isatty():\n        return check_invocation(argv_from_stdin())\n    return check_invocation(args.rest)\n\n\nif __name__ == \"__main__\":\n    sys.exit(main(sys.argv[1:]))\n",
       "depends_on": [
         "hook/lib"
       ]
@@ -290,7 +290,7 @@
       "schema": "https://ai-atoms.com/schemas/hook-v1.json",
       "type": "hook",
       "id": "hook/no-verify-strip",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "name": "No-Verify Strip",
       "description": "PreToolUse hook that strips --no-verify from git commit commands before they execute. Per Common.md §2.2 (no skipping hooks) and the governance SPEC §10.3. Default behavior: strip silently and log the bypass attempt to the audit pipeline. The bypass can be allowed per-project via allowNoVerifyBypass=true in settings, which removes this hook from the preHooks list.",
       "event": "PreToolUse",
@@ -320,7 +320,7 @@
         "windows"
       ],
       "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run no-verify-strip' in settings.json — the ai binary discovers Python on each OS. Modifies git argv in-process — cross-platform. Invoked via 'ai hooks run'.",
-      "script": "#!/usr/bin/env python3\n\"\"\"hooks/no-verify-strip.py — wrapper preHook that strips --no-verify\nfrom `git commit`. Per SPEC.md §10.3 + §10.5.2.\n\nThe wrapper at ~/.ai/bin/git invokes this with the post-strip argv\nalready; the script's job is to detect whether the user requested a\nbypass and, depending on settings.secret_scanning.allowNoVerifyBypass,\neither strip silently, warn, or pass through.\n\nDefault (allowNoVerifyBypass=false): strip silently and log to the\naudit pipeline.\nOverride (allowNoVerifyBypass=true):  the wrapper config simply\nremoves this hook from preHooks (and the one-month nag fires from\nelsewhere).\n\nSelf-check:\n  --self-check\n\"\"\"\nfrom __future__ import annotations\n\nimport argparse\nimport sys\nfrom pathlib import Path\n\nsys.path.insert(0, str(Path(__file__).resolve().parent))\nimport _lib  # noqa: E402\n\n\ndef check_invocation(argv: list[str]) -> int:\n    \"\"\"argv is the args AFTER `git`. Returns 0 always (this is an\n    advisory; the actual stripping happens in the wrapper).\"\"\"\n    if not argv or argv[0] != \"commit\":\n        return 0\n    stripped = []\n    bypass_seen = False\n    for a in argv[1:]:\n        if a in (\"--no-verify\", \"-n\"):\n            bypass_seen = True\n            continue\n        stripped.append(a)\n    if bypass_seen:\n        _lib.log(\"`--no-verify` was present and is being stripped.\")\n        _lib.log(\"Per Common.md §3.6: the override format is non-negotiable; same principle here.\")\n        _lib.log(\"To allow bypass: set settings.secret_scanning.allowNoVerifyBypass=true (one-month nag fires).\")\n    return 0\n\n\ndef main(argv: list[str]) -> int:\n    parser = argparse.ArgumentParser(add_help=True)\n    parser.add_argument(\"--self-check\", action=\"store_true\")\n    parser.add_argument(\"rest\", nargs=argparse.REMAINDER)\n    args = parser.parse_args(argv)\n    if args.self_check:\n        return _lib.self_check_ok()\n    return check_invocation(args.rest)\n\n\nif __name__ == \"__main__\":\n    sys.exit(main(sys.argv[1:]))\n",
+      "script": "#!/usr/bin/env python3\n\"\"\"hooks/no-verify-strip.py — wrapper preHook that strips --no-verify\nfrom `git commit`. Per SPEC.md §10.3 + §10.5.2.\n\nThe git command line reaches this hook two ways: the command wrapper\nsets WRAPPED_ARGV (the argv after `git`) and passes --mode=wrapper,\nwhile the Claude PreToolUse path pipes the Bash command as JSON on\nstdin. Either way the script detects whether the user requested a\nbypass and, depending on settings.secret_scanning.allowNoVerifyBypass,\neither strip silently, warn, or pass through.\n\nDefault (allowNoVerifyBypass=false): strip silently and log to the\naudit pipeline.\nOverride (allowNoVerifyBypass=true):  the wrapper config simply\nremoves this hook from preHooks (and the one-month nag fires from\nelsewhere).\n\nSelf-check:\n  --self-check\n\"\"\"\nfrom __future__ import annotations\n\nimport argparse\nimport json\nimport os\nimport sys\nfrom pathlib import Path\n\nsys.path.insert(0, str(Path(__file__).resolve().parent))\nimport _lib  # noqa: E402\n\n\ndef git_argv_from_wrapper() -> list[str]:\n    \"\"\"The args after `git`, as JSON in WRAPPED_ARGV (command-wrapper path).\"\"\"\n    try:\n        return json.loads(os.environ.get(\"WRAPPED_ARGV\", \"[]\"))\n    except json.JSONDecodeError:\n        return []\n\n\ndef git_argv_from_stdin() -> list[str]:\n    \"\"\"The args after `git`, parsed from a Claude PreToolUse JSON payload.\"\"\"\n    raw = sys.stdin.read()\n    if not raw.strip():\n        return []\n    try:\n        payload = json.loads(raw)\n    except json.JSONDecodeError:\n        return []\n    cmd = (\n        payload.get(\"command\")\n        or payload.get(\"tool_input\", {}).get(\"command\")\n        or \"\"\n    ) if isinstance(payload, dict) else \"\"\n    parts = cmd.split()\n    return parts[1:] if parts and parts[0] == \"git\" else []\n\n\ndef check_invocation(argv: list[str]) -> int:\n    \"\"\"argv is the args AFTER `git`. Returns 0 always (this is an\n    advisory; the actual stripping happens in the wrapper).\"\"\"\n    if not argv or argv[0] != \"commit\":\n        return 0\n    stripped = []\n    bypass_seen = False\n    for a in argv[1:]:\n        if a in (\"--no-verify\", \"-n\"):\n            bypass_seen = True\n            continue\n        stripped.append(a)\n    if bypass_seen:\n        _lib.log(\"`--no-verify` was present and is being stripped.\")\n        _lib.log(\"Per Common.md §3.6: the override format is non-negotiable; same principle here.\")\n        _lib.log(\"To allow bypass: set settings.secret_scanning.allowNoVerifyBypass=true (one-month nag fires).\")\n    return 0\n\n\ndef main(argv: list[str]) -> int:\n    parser = argparse.ArgumentParser(add_help=True)\n    parser.add_argument(\"--self-check\", action=\"store_true\")\n    parser.add_argument(\"--mode\", choices=[\"claude\", \"wrapper\"], default=None,\n                        help=\"invocation mode (set by the command wrapper)\")\n    parser.add_argument(\"rest\", nargs=argparse.REMAINDER)\n    args = parser.parse_args(argv)\n    if args.self_check:\n        return _lib.self_check_ok()\n    if args.mode == \"wrapper\":\n        return check_invocation(git_argv_from_wrapper())\n    if args.mode == \"claude\" or not sys.stdin.isatty():\n        return check_invocation(git_argv_from_stdin())\n    return check_invocation(args.rest)\n\n\nif __name__ == \"__main__\":\n    sys.exit(main(sys.argv[1:]))\n",
       "depends_on": [
         "hook/lib"
       ]
@@ -402,7 +402,7 @@
       "schema": "https://ai-atoms.com/schemas/hook-v1.json",
       "type": "hook",
       "id": "hook/secret-precommit",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "name": "Secret Pre-commit Scanner",
       "description": "Git pre-commit hook and CI scanner that blocks commits containing secret-shaped strings. Two modes: (1) pre-commit — scans the staged diff (git diff --cached -U0) and aborts the commit on any match; (2) CI/range scan (--ci --base BASE --head HEAD) — scans the diff from BASE..HEAD for use in secret-scan.yml workflows. Reads canonical patterns from hooks/patterns.json.",
       "event": "PreToolUse",
@@ -432,7 +432,7 @@
         "windows"
       ],
       "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run secret-precommit' in settings.json — the ai binary discovers Python on each OS. Calls subprocess git diff — git is available cross-platform. Pre-commit mode uses 'exec python3' in the shim; Windows users should use 'ai hooks run' instead.",
-      "script": "#!/usr/bin/env python3\n\"\"\"hooks/secret-precommit.py — git pre-commit hook (and CI scanner).\n\nTwo modes:\n\n  1. Pre-commit (default):  scans the staged diff\n     (`git diff --cached -U0`). Aborts the commit on any match.\n\n  2. CI / range scan (`--ci --base BASE --head HEAD`):\n     scans the diff from BASE..HEAD. Same matcher; intended for\n     .github/workflows/secret-scan.yml.\n\nReads the canonical pattern set from hooks/patterns.json\n(+ patterns.local.json if present). Per SPEC.md §10.2 + §10.4.\n\nSelf-check:\n  --self-check    Loads patterns.json and compiles every regex.\n\"\"\"\nfrom __future__ import annotations\n\nimport argparse\nimport subprocess\nimport sys\nfrom pathlib import Path\n\nsys.path.insert(0, str(Path(__file__).resolve().parent))\nimport _lib  # noqa: E402\n\n\ndef staged_diff() -> str:\n    \"\"\"Return the staged diff with 0 lines of context.\"\"\"\n    result = subprocess.run(\n        [\"git\", \"diff\", \"--cached\", \"-U0\", \"--no-color\"],\n        capture_output=True, text=True, check=False,\n    )\n    if result.returncode != 0:\n        _lib.log(\"git diff --cached failed:\", result.stderr.strip())\n        return \"\"\n    return result.stdout\n\n\ndef range_diff(base: str, head: str) -> str:\n    \"\"\"Return the diff between two revs, 0 lines of context.\"\"\"\n    result = subprocess.run(\n        [\"git\", \"diff\", \"-U0\", \"--no-color\", f\"{base}...{head}\"],\n        capture_output=True, text=True, check=False,\n    )\n    if result.returncode != 0:\n        _lib.log(f\"git diff {base}...{head} failed:\", result.stderr.strip())\n        return \"\"\n    return result.stdout\n\n\ndef added_lines(diff: str):\n    \"\"\"Yield (file, lineno, content) for every '+'-prefixed line in a\n    unified diff (skipping the '+++ b/<file>' filename markers).\"\"\"\n    cur_file = None\n    cur_lineno = 0\n    for line in diff.splitlines():\n        if line.startswith(\"+++ \"):\n            cur_file = line[6:].strip() if line.startswith(\"+++ b/\") else line[4:].strip()\n            cur_lineno = 0\n            continue\n        if line.startswith(\"@@\"):\n            # Hunk header: \"@@ -a,b +c,d @@\"\n            try:\n                plus = line.split(\"+\", 1)[1].split(\" \", 1)[0]\n                cur_lineno = int(plus.split(\",\", 1)[0]) - 1\n            except (IndexError, ValueError):\n                cur_lineno = 0\n            continue\n        if line.startswith(\"+\") and not line.startswith(\"+++\"):\n            cur_lineno += 1\n            yield (cur_file, cur_lineno, line[1:])\n        elif not line.startswith(\"-\") and not line.startswith(\"\\\\\"):\n            cur_lineno += 1\n\n\ndef main(argv: list[str]) -> int:\n    parser = argparse.ArgumentParser(add_help=True)\n    parser.add_argument(\"--self-check\", action=\"store_true\")\n    parser.add_argument(\"--ci\", action=\"store_true\",\n                        help=\"CI mode: scan a diff range instead of staged diff\")\n    parser.add_argument(\"--base\", default=None,\n                        help=\"(CI) base ref\")\n    parser.add_argument(\"--head\", default=\"HEAD\",\n                        help=\"(CI) head ref\")\n    args = parser.parse_args(argv)\n\n    if args.self_check:\n        return _lib.self_check_ok()\n\n    if args.ci:\n        if not args.base:\n            _lib.log(\"--ci requires --base\")\n            return 2\n        diff = range_diff(args.base, args.head)\n    else:\n        diff = staged_diff()\n\n    if not diff.strip():\n        return 0\n\n    patterns = _lib.load_patterns()\n    findings = []\n    for file, lineno, content in added_lines(diff):\n        for entry in patterns:\n            for m in entry[\"_compiled\"].finditer(content):\n                findings.append({\n                    \"file\": file,\n                    \"line\": lineno,\n                    \"pattern\": entry[\"id\"],\n                    \"severity\": entry.get(\"severity\", \"medium\"),\n                    \"snippet\": _lib.redact_snippet(content, m.start(), m.end(),\n                                                  entry.get(\"redaction\", \"[REDACTED]\")),\n                })\n\n    if not findings:\n        return 0\n\n    _lib.log(f\"{len(findings)} secret-like match(es) in the diff. Aborting commit.\")\n    for f in findings[:25]:\n        _lib.log(\n            f\"  {f['file']}:{f['line']}  pattern={f['pattern']} severity={f['severity']}\"\n        )\n        _lib.log(f\"      {f['snippet']}\")\n    if len(findings) > 25:\n        _lib.log(f\"  ... and {len(findings) - 25} more\")\n    _lib.log(\"\")\n    _lib.log(\"Per Common.md §1.P4 (no secrets in artifacts; non-overridable).\")\n    _lib.log(\"To fix: remove the secret-shaped content, OR add an exception to\")\n    _lib.log(\"hooks/patterns.local.json if this is a false positive (and please\")\n    _lib.log(\"file a `finding` issue so the false-positive class can be tracked).\")\n    return 1\n\n\nif __name__ == \"__main__\":\n    sys.exit(main(sys.argv[1:]))\n",
+      "script": "#!/usr/bin/env python3\n\"\"\"hooks/secret-precommit.py — git pre-commit hook (and CI scanner).\n\nTwo modes:\n\n  1. Pre-commit (default):  scans the staged diff\n     (`git diff --cached -U0`). Aborts the commit on any match.\n\n  2. CI / range scan (`--ci --base BASE --head HEAD`):\n     scans the diff from BASE..HEAD. Same matcher; intended for\n     .github/workflows/secret-scan.yml.\n\nReads the canonical pattern set from hooks/patterns.json\n(+ patterns.local.json if present). Per SPEC.md §10.2 + §10.4.\n\nSelf-check:\n  --self-check    Loads patterns.json and compiles every regex.\n\"\"\"\nfrom __future__ import annotations\n\nimport argparse\nimport subprocess\nimport sys\nfrom pathlib import Path\n\nsys.path.insert(0, str(Path(__file__).resolve().parent))\nimport _lib  # noqa: E402\n\n\ndef staged_diff() -> str:\n    \"\"\"Return the staged diff with 0 lines of context.\"\"\"\n    result = subprocess.run(\n        [\"git\", \"diff\", \"--cached\", \"-U0\", \"--no-color\"],\n        capture_output=True, text=True, check=False,\n    )\n    if result.returncode != 0:\n        _lib.log(\"git diff --cached failed:\", result.stderr.strip())\n        return \"\"\n    return result.stdout\n\n\ndef range_diff(base: str, head: str) -> str:\n    \"\"\"Return the diff between two revs, 0 lines of context.\"\"\"\n    result = subprocess.run(\n        [\"git\", \"diff\", \"-U0\", \"--no-color\", f\"{base}...{head}\"],\n        capture_output=True, text=True, check=False,\n    )\n    if result.returncode != 0:\n        _lib.log(f\"git diff {base}...{head} failed:\", result.stderr.strip())\n        return \"\"\n    return result.stdout\n\n\ndef added_lines(diff: str):\n    \"\"\"Yield (file, lineno, content) for every '+'-prefixed line in a\n    unified diff (skipping the '+++ b/<file>' filename markers).\"\"\"\n    cur_file = None\n    cur_lineno = 0\n    for line in diff.splitlines():\n        if line.startswith(\"+++ \"):\n            cur_file = line[6:].strip() if line.startswith(\"+++ b/\") else line[4:].strip()\n            cur_lineno = 0\n            continue\n        if line.startswith(\"@@\"):\n            # Hunk header: \"@@ -a,b +c,d @@\"\n            try:\n                plus = line.split(\"+\", 1)[1].split(\" \", 1)[0]\n                cur_lineno = int(plus.split(\",\", 1)[0]) - 1\n            except (IndexError, ValueError):\n                cur_lineno = 0\n            continue\n        if line.startswith(\"+\") and not line.startswith(\"+++\"):\n            cur_lineno += 1\n            yield (cur_file, cur_lineno, line[1:])\n        elif not line.startswith(\"-\") and not line.startswith(\"\\\\\"):\n            cur_lineno += 1\n\n\ndef main(argv: list[str]) -> int:\n    parser = argparse.ArgumentParser(add_help=True)\n    parser.add_argument(\"--self-check\", action=\"store_true\")\n    # The command wrapper passes --mode=wrapper to every hook. This hook scans\n    # the staged diff regardless of mode, so the flag is accepted and ignored.\n    parser.add_argument(\"--mode\", choices=[\"claude\", \"wrapper\"], default=None,\n                        help=\"invocation mode (set by the command wrapper)\")\n    parser.add_argument(\"--ci\", action=\"store_true\",\n                        help=\"CI mode: scan a diff range instead of staged diff\")\n    parser.add_argument(\"--base\", default=None,\n                        help=\"(CI) base ref\")\n    parser.add_argument(\"--head\", default=\"HEAD\",\n                        help=\"(CI) head ref\")\n    args = parser.parse_args(argv)\n\n    if args.self_check:\n        return _lib.self_check_ok()\n\n    if args.ci:\n        if not args.base:\n            _lib.log(\"--ci requires --base\")\n            return 2\n        diff = range_diff(args.base, args.head)\n    else:\n        diff = staged_diff()\n\n    if not diff.strip():\n        return 0\n\n    patterns = _lib.load_patterns()\n    findings = []\n    for file, lineno, content in added_lines(diff):\n        for entry in patterns:\n            for m in entry[\"_compiled\"].finditer(content):\n                findings.append({\n                    \"file\": file,\n                    \"line\": lineno,\n                    \"pattern\": entry[\"id\"],\n                    \"severity\": entry.get(\"severity\", \"medium\"),\n                    \"snippet\": _lib.redact_snippet(content, m.start(), m.end(),\n                                                  entry.get(\"redaction\", \"[REDACTED]\")),\n                })\n\n    if not findings:\n        return 0\n\n    _lib.log(f\"{len(findings)} secret-like match(es) in the diff. Aborting commit.\")\n    for f in findings[:25]:\n        _lib.log(\n            f\"  {f['file']}:{f['line']}  pattern={f['pattern']} severity={f['severity']}\"\n        )\n        _lib.log(f\"      {f['snippet']}\")\n    if len(findings) > 25:\n        _lib.log(f\"  ... and {len(findings) - 25} more\")\n    _lib.log(\"\")\n    _lib.log(\"Per Common.md §1.P4 (no secrets in artifacts; non-overridable).\")\n    _lib.log(\"To fix: remove the secret-shaped content, OR add an exception to\")\n    _lib.log(\"hooks/patterns.local.json if this is a false positive (and please\")\n    _lib.log(\"file a `finding` issue so the false-positive class can be tracked).\")\n    return 1\n\n\nif __name__ == \"__main__\":\n    sys.exit(main(sys.argv[1:]))\n",
       "depends_on": [
         "hook/lib"
       ]
@@ -528,7 +528,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/design/skills/accessibility-review/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "design"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -552,7 +553,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/sales/skills/account-research/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "sales"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -576,7 +578,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/skills/blob/main/skills/algorithmic-art/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "design"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -634,7 +637,8 @@
       "lifecycle": "stable",
       "invocation": [
         "/amendment-author"
-      ]
+      ],
+      "category": "governance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -659,7 +663,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/data/skills/analyze/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "data"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -685,7 +690,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-diag/skills/analyzing-dotnet-performance/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -711,7 +717,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-diag/skills/android-tombstone-symbolication/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -737,7 +744,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-diag/skills/apple-crash-symbolication/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -763,7 +771,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/engineering/skills/architecture/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "coding"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -789,7 +798,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/assertion-quality/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -850,7 +860,8 @@
         "/atom-publisher skill",
         "/atom-publisher hook",
         "/atom-publisher persona"
-      ]
+      ],
+      "category": "governance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -902,7 +913,62 @@
         "/atom-status",
         "/atom-status tree",
         "/atom-status tree <catalog-name>"
-      ]
+      ],
+      "category": "governance"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/atoms-discover",
+      "version": "1.0.0",
+      "name": "Atoms Discover",
+      "description": "Navigate the convergent-systems atom ecosystem to find, fetch, or scaffold atoms. Routes 'apply brand X' to brand-atoms, 'use persona Y' to persona-atoms, 'load skill Z' to skill-atoms, etc. Covers discovery, cross-atom reference resolution, and new-atom scaffolding.",
+      "system_prompt_fragment": "You know the full convergent-systems atom ecosystem topology. When the user references any atom by name or type:\n1. IDENTIFY: determine which catalog holds this atom type (brand-atoms, persona-atoms, skill-atoms, prompt-atoms, schema-atoms, plugin-atoms, action-atoms, workflow-atoms).\n2. CHECK: query the catalog's GitHub repo for the atom slug.\n3. FOUND → run `ai atoms fetch <catalog>/<type>/<slug>` and apply/activate it.\n4. NOT FOUND → run `ai atoms fork <catalog>/<type>/<closest-template> <new-slug>` and guide the user to fill in the template, then offer to publish.\nFor personas: always resolve the full reference tree (role-definition, voice-profile, tone-parameter, behavioural-constraints, knowledge-boundaries). For brands: apply brand tokens to settings.toml.",
+      "applicable_domains": [
+        "atoms",
+        "discovery",
+        "configuration",
+        "personas",
+        "brands",
+        "skills"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable",
+      "invocation": [
+        "/atoms-discover"
+      ],
+      "tags": [
+        "atoms",
+        "discovery",
+        "brand",
+        "persona",
+        "skill",
+        "scaffold",
+        "cross-catalog"
+      ],
+      "invocation_contract": {
+        "inputs": [
+          {
+            "name": "query",
+            "type": "string",
+            "description": "Natural language request referencing an atom: 'apply brand X', 'use persona Y', 'load skill Z', etc.",
+            "required": true
+          }
+        ],
+        "outputs": [
+          {
+            "name": "result",
+            "type": "string",
+            "description": "Atom fetched and applied, or scaffold initiated with guidance."
+          }
+        ],
+        "side_effects": [
+          "may run ai atoms fetch",
+          "may run ai atoms fork",
+          "may write to ~/.ai/atoms/cache/"
+        ]
+      },
+      "category": "governance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -926,7 +992,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/finance/skills/audit-support/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "finance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -952,7 +1019,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-blazor/skills/author-component/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -978,7 +1046,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-msbuild/skills/binlog-failure-analysis/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1004,7 +1073,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-msbuild/skills/binlog-generation/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1026,7 +1096,8 @@
         "planning",
         "requirements"
       ],
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "coding"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1050,7 +1121,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/skills/blob/main/skills/brand-guidelines/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "design"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1075,7 +1147,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/marketing/skills/brand-review/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "marketing"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1100,7 +1173,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/legal/skills/brief/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "legal"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1125,7 +1199,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/data/skills/build-dashboard/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "data"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1151,7 +1226,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-msbuild/skills/build-parallelism/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1177,7 +1253,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-msbuild/skills/build-perf-baseline/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1203,7 +1280,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-msbuild/skills/build-perf-diagnostics/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1227,7 +1305,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/business-pulse/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "finance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1251,7 +1330,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/call-list/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "sales"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1275,7 +1355,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/sales/skills/call-prep/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "sales"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1300,7 +1381,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/sales/skills/call-summary/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "sales"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1325,7 +1407,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/marketing/skills/campaign-plan/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "marketing"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1349,7 +1432,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/canva-creator/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "design"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1373,7 +1457,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/skills/blob/main/skills/canvas-design/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "design"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1398,7 +1483,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/operations/skills/capacity-plan/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "operations"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1422,7 +1508,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/cash-flow-snapshot/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "finance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1447,7 +1534,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/operations/skills/change-request/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "operations"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1473,7 +1561,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-msbuild/skills/check-bin-obj-clash/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1503,7 +1592,8 @@
         "/checkpoint resume",
         "/checkpoint resume <UTC>",
         "/checkpoint list"
-      ]
+      ],
+      "category": "governance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1527,7 +1617,53 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/skills/blob/main/skills/claude-api/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "coding"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/cleanup",
+      "version": "1.0.0",
+      "name": "Cleanup",
+      "description": "Remove dead code, unused imports, commented-out blocks, and resolved TODOs. Behavior-preserving: no logic changes, only deletion of unreachable or inert code.",
+      "system_prompt_fragment": "Clean up the file or directory: delete dead code (unreachable branches, unused functions), remove unused imports, strip commented-out code blocks, remove resolved TODO/FIXME comments. Do NOT change any logic. Do NOT refactor. Do NOT rename. One commit per file cleaned. If a TODO is unresolved, leave it. Verify tests still pass after cleanup.",
+      "applicable_domains": [
+        "code"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable",
+      "invocation": [
+        "/cleanup"
+      ],
+      "tags": [
+        "code",
+        "cleanup",
+        "dead-code",
+        "refactor"
+      ],
+      "invocation_contract": {
+        "inputs": [
+          {
+            "name": "target",
+            "type": "string",
+            "description": "File path or directory to clean up.",
+            "required": true
+          }
+        ],
+        "outputs": [
+          {
+            "name": "changes",
+            "type": "string",
+            "description": "Summary of what was removed."
+          }
+        ],
+        "side_effects": [
+          "modifies source files",
+          "may create git commits"
+        ]
+      },
+      "category": "coding"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1551,7 +1687,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/finance/skills/close-management/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "finance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1575,7 +1712,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/close-month/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "finance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1601,7 +1739,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-diag/skills/clr-activation-debugging/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1627,7 +1766,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/engineering/skills/code-review/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "coding"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1653,7 +1793,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/code-testing-agent/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1679,7 +1820,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/code-testing-extensions/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1705,7 +1847,52 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-blazor/skills/collect-user-input/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/commit",
+      "version": "1.0.0",
+      "name": "Commit",
+      "description": "Generate a conventional-commit message from the staged diff and commit. Reads the diff, analyzes the change, picks the right Conventional Commits prefix (feat/fix/refactor/chore/docs/test/ci), and commits with a descriptive message.",
+      "system_prompt_fragment": "Generate a conventional-commit message. Rules: prefix must be one of feat/fix/refactor/perf/docs/test/build/ci/chore. Subject line ≤72 chars, imperative mood, no trailing period. Body explains WHY, not what. Wrap at 72. Stage and commit. Do not amend unless explicitly asked.",
+      "applicable_domains": [
+        "code",
+        "git"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable",
+      "invocation": [
+        "/commit"
+      ],
+      "tags": [
+        "git",
+        "commit",
+        "conventional-commits"
+      ],
+      "invocation_contract": {
+        "inputs": [
+          {
+            "name": "staged_diff",
+            "type": "string",
+            "description": "The output of git diff --staged.",
+            "required": true
+          }
+        ],
+        "outputs": [
+          {
+            "name": "commit_message",
+            "type": "string",
+            "description": "The conventional commit message used."
+          }
+        ],
+        "side_effects": [
+          "creates a git commit in the working tree"
+        ]
+      },
+      "category": "coding"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1730,7 +1917,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/human-resources/skills/comp-analysis/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "hr"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1755,7 +1943,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/marketing/skills/competitive-brief/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "marketing"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1779,7 +1968,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/sales/skills/competitive-intelligence/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "sales"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1804,7 +1994,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/legal/skills/compliance-check/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "legal"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1828,7 +2019,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/operations/skills/compliance-tracking/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "legal"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1854,7 +2046,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-blazor/skills/configure-auth/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1880,7 +2073,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-aspnet/skills/configuring-opentelemetry-dotnet/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1904,7 +2098,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/marketing/skills/content-creation/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "marketing"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1928,7 +2123,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/content-strategy/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "marketing"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1952,7 +2148,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/contract-review/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "legal"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -1978,7 +2175,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-aspnet/skills/convert-blazor-server-to-webapp/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2004,7 +2202,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-nuget/skills/convert-to-cpm/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2030,7 +2229,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-blazor/skills/coordinate-components/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2056,7 +2256,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/coverage-analysis/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2082,7 +2283,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/crap-score/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2106,7 +2308,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/sales/skills/create-an-asset/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "sales"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2132,7 +2335,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-blazor/skills/create-blazor-project/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2157,7 +2361,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/data/skills/create-viz/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "data"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2181,7 +2386,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/crm-cleanup/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "sales"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2205,7 +2411,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/crm-maintenance/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "sales"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2230,7 +2437,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet/skills/csharp-scripts/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2255,7 +2463,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/customer-support/skills/customer-escalation/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "support"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2279,7 +2488,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/customer-pulse-check/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "support"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2303,7 +2513,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/customer-pulse/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "support"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2328,7 +2539,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/customer-support/skills/customer-research/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "support"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2352,7 +2564,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/sales/skills/daily-briefing/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "sales"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2376,7 +2589,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/data/skills/data-context-extractor/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "data"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2400,7 +2614,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/data/skills/data-visualization/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "data"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2481,7 +2696,8 @@
         "/debug \"<symptom>\"",
         "/debug --error <log-or-file>",
         "/debug --test <test-name>"
-      ]
+      ],
+      "category": "coding"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2507,7 +2723,8 @@
       ],
       "authored_by": "kepano",
       "source_url": "https://github.com/kepano/obsidian-skills/blob/main/skills/defuddle/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "knowledge"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2533,7 +2750,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/engineering/skills/deploy-checklist/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "operations"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2558,7 +2776,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/design/skills/design-critique/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "design"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2583,7 +2802,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/design/skills/design-handoff/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "design"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2608,7 +2828,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/design/skills/design-system/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "design"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2634,7 +2855,57 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/detect-static-dependencies/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/diagram",
+      "version": "1.0.0",
+      "name": "Diagram",
+      "description": "Generate Mermaid diagrams (flowchart / sequence / state / class / ER / gantt) from code or systems.",
+      "system_prompt_fragment": "Generate a Mermaid diagram of the requested type. Choose the type that best communicates the relationship: flowchart for control flow, sequence for message passing, state for state machines, class for OOP relationships, ER for data models, gantt for timelines. Render in Markdown for .md files. Use ASCII art for terminal output. Never describe a diagram in prose — always render it.",
+      "applicable_domains": [
+        "documentation",
+        "architecture"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable",
+      "invocation": [
+        "/diagram"
+      ],
+      "tags": [
+        "diagram",
+        "mermaid",
+        "architecture",
+        "documentation"
+      ],
+      "invocation_contract": {
+        "inputs": [
+          {
+            "name": "subject",
+            "type": "string",
+            "description": "Code, system, or concept to diagram.",
+            "required": true
+          },
+          {
+            "name": "diagram_type",
+            "type": "string",
+            "description": "flowchart | sequence | state | class | ER | gantt",
+            "required": false
+          }
+        ],
+        "outputs": [
+          {
+            "name": "diagram",
+            "type": "string",
+            "description": "Mermaid or ASCII diagram source."
+          }
+        ],
+        "side_effects": []
+      },
+      "category": "coding"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2659,7 +2930,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/enterprise-search/skills/digest/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "knowledge"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2685,7 +2957,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-msbuild/skills/directory-build-organization/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2707,7 +2980,8 @@
         "subagent",
         "dispatch"
       ],
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "governance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2731,7 +3005,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/skills/blob/main/skills/doc-coauthoring/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "knowledge"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2756,7 +3031,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/engineering/skills/documentation/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "knowledge"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2782,7 +3058,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-upgrade/skills/dotnet-aot-compat/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2808,7 +3085,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-maui/skills/dotnet-maui-doctor/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2833,7 +3111,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet/skills/dotnet-pinvoke/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2859,7 +3138,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/dotnet-test-frameworks/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2885,7 +3165,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-diag/skills/dotnet-trace-collect/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2911,7 +3192,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-aspnet/skills/dotnet-webapi/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2936,7 +3218,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/marketing/skills/draft-content/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "marketing"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2961,7 +3244,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/human-resources/skills/draft-offer/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "hr"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -2985,7 +3269,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/sales/skills/draft-outreach/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "sales"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3010,7 +3295,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/customer-support/skills/draft-response/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "support"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3036,7 +3322,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-diag/skills/dump-collect/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3061,7 +3348,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/marketing/skills/email-sequence/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "marketing"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3087,7 +3375,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-msbuild/skills/eval-performance/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3113,7 +3402,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-experimental/skills/exp-mock-usage-analysis/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3139,7 +3429,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-experimental/skills/exp-simd-vectorization/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3165,7 +3456,57 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-experimental/skills/exp-test-maintainability/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/explain",
+      "version": "1.0.0",
+      "name": "Explain",
+      "description": "Read-only code explainer with audience-tuned depth (non-technical / junior / practitioner / senior) and path:line citations. Never modifies files.",
+      "system_prompt_fragment": "Explain the code or concept at the requested depth. Levels: non-technical (analogy-first, no syntax), junior (step-by-step with syntax glossed), practitioner (assumes fluency in the language), senior (architectural implications, tradeoffs, gotchas). Cite file:line for every specific claim. Never modify files during an explain session.",
+      "applicable_domains": [
+        "code",
+        "documentation"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable",
+      "invocation": [
+        "/explain"
+      ],
+      "tags": [
+        "code",
+        "explain",
+        "documentation",
+        "read-only"
+      ],
+      "invocation_contract": {
+        "inputs": [
+          {
+            "name": "target",
+            "type": "string",
+            "description": "File path, symbol, or concept to explain.",
+            "required": true
+          },
+          {
+            "name": "audience",
+            "type": "string",
+            "description": "non-technical | junior | practitioner | senior",
+            "required": false
+          }
+        ],
+        "outputs": [
+          {
+            "name": "explanation",
+            "type": "string",
+            "description": "The explanation with path:line citations."
+          }
+        ],
+        "side_effects": []
+      },
+      "category": "coding"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3190,7 +3531,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/data/skills/explore-data/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "data"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3216,7 +3558,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-msbuild/skills/extension-points/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3242,7 +3585,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-blazor/skills/fetch-and-send-data/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3268,7 +3612,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/filter-syntax/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3293,7 +3638,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/finance/skills/financial-statements/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "finance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3318,7 +3664,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/sales/skills/forecast/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "sales"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3342,7 +3689,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/friday-brief/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "operations"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3366,7 +3714,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/skills/blob/main/skills/frontend-design/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "design"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3392,7 +3741,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/generate-testability-wrappers/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3416,7 +3766,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/handle-complaint/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "support"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3481,7 +3832,8 @@
       "lifecycle": "stable",
       "invocation": [
         "/hook-author"
-      ]
+      ],
+      "category": "governance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3507,7 +3859,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/engineering/skills/incident-response/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "operations"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3533,7 +3886,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-msbuild/skills/including-generated-files/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3559,7 +3913,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-msbuild/skills/incremental-build/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3583,7 +3938,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/bio-research/skills/instrument-data-to-allotrope/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "data"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3607,7 +3963,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/skills/blob/main/skills/internal-comms/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "knowledge"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3631,7 +3988,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/human-resources/skills/interview-prep/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "hr"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3655,7 +4013,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/invoice-chase/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "finance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3681,7 +4040,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-msbuild/skills/item-management/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3705,7 +4065,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/job-post-builder/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "hr"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3729,7 +4090,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/finance/skills/journal-entry-prep/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "finance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3754,7 +4116,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/finance/skills/journal-entry/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "finance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3780,7 +4143,8 @@
       ],
       "authored_by": "kepano",
       "source_url": "https://github.com/kepano/obsidian-skills/blob/main/skills/json-canvas/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "knowledge"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3805,7 +4169,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/customer-support/skills/kb-article/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "support"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3829,7 +4194,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/enterprise-search/skills/knowledge-synthesis/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "knowledge"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3853,7 +4219,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/lead-triage/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "sales"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3878,7 +4245,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/legal/skills/legal-response/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "legal"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3902,7 +4270,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/legal/skills/legal-risk-assessment/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "legal"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -3955,7 +4324,8 @@
         "scaffolding"
       ],
       "authored_by": "convergent-systems-key",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "governance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4002,7 +4372,49 @@
         "delivery"
       ],
       "authored_by": "convergent-systems-key",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "product"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/make-clean",
+      "version": "1.0.0",
+      "name": "Make Clean",
+      "description": "Two-command git workspace lifecycle manager: purge merged branches/worktrees/stashes, aggregate remaining in-flight work into one branch, then hand off to make build.",
+      "system_prompt_fragment": "Run the full make clean pipeline: (1) inventory all branches, worktrees, stashes; (2) delete merged branches and their worktrees (no prompt); (3) drop merged stashes; (4) aggregate in-flight branches into aggregate/<date>; (5) prune worktrees; (6) hand off to make build if aggregate branch exists. Never delete main, HEAD, or branches with uncommitted changes.",
+      "applicable_domains": [
+        "git",
+        "workflow"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable",
+      "invocation": [
+        "/make-clean"
+      ],
+      "tags": [
+        "git",
+        "cleanup",
+        "branches",
+        "worktrees"
+      ],
+      "invocation_contract": {
+        "inputs": [],
+        "outputs": [
+          {
+            "name": "cleanup_summary",
+            "type": "string",
+            "description": "Branches deleted, stashes dropped, aggregate branch created."
+          }
+        ],
+        "side_effects": [
+          "deletes git branches",
+          "removes worktrees",
+          "drops stashes",
+          "creates aggregate branch"
+        ]
+      },
+      "category": "product"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4049,7 +4461,128 @@
         "ci"
       ],
       "authored_by": "convergent-systems-key",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "governance"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/make-project",
+      "version": "1.0.0",
+      "name": "Make Project",
+      "description": "Build a GitHub Project (Projects v2) with a three-level Epic → Feature → Task hierarchy, sourced from GOALS.md, existing GitHub issues, and Azure DevOps work items. Uses native GitHub sub-issues to wire the hierarchy. Confirms the derived tree before creating anything.",
+      "system_prompt_fragment": "Build a GitHub Project (Projects v2) with an Epic → Feature → Task hierarchy from the available planning sources, wiring the hierarchy with native GitHub sub-issues.\n\n(1) Gather sources (use whatever is present; skip the rest):\n  - GOALS.md at the repo root — strategic intent; top-level goals map to Epics.\n  - GitHub issues — `gh issue list --state open --json number,title,labels,body,id`; cluster by label/theme.\n  - Azure DevOps (only if configured) — `az boards query` / `az boards work-item show` via the azure-devops CLI extension; map ADO Epic/Feature/User-Story/Task to the same levels.\n\n(2) Derive the tree: cluster sources into Epics, decompose each Epic into Features, each Feature into Tasks. Reuse an existing GitHub issue when a source already maps to a node — never duplicate. Print the proposed tree and STOP for user confirmation before creating anything (this mass-creates issues).\n\n(3) Create the project: `gh project create --owner <owner> --title \"<title>\"`; capture its number and URL.\n\n(4) Create one issue per node not already backed by an issue: `gh issue create --title ... --body ...`, labeling the level (kind/epic, kind/feature, kind/task).\n\n(5) Wire the hierarchy with GitHub sub-issues: each Feature is a sub-issue of its Epic; each Task a sub-issue of its Feature. Use `gh api` against the sub-issues endpoint — REST: `POST /repos/{owner}/{repo}/issues/{parent_number}/sub_issues` with body {\"sub_issue_id\": <child issue NODE id>} (numeric database id of the child issue, from the issue's `id`), or the GraphQL `addSubIssue` mutation. Confirm the exact endpoint shape with a single `gh api` call before bulk-applying, since the sub-issues API is still evolving.\n\n(6) Add every issue to the project: `gh project item-add <number> --owner <owner> --url <issue-url>`.\n\n(7) Print the final tree (Epics → Features → Tasks with issue numbers) and the project URL.\n\nConstraints: operate only on the owner/repo the user names; never touch other repos. Do not create the project or any issues until the user confirms the tree in step 2.",
+      "applicable_domains": [
+        "project-management",
+        "planning",
+        "delivery",
+        "github"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable",
+      "invocation": [
+        "/make-project",
+        "/make project"
+      ],
+      "tags": [
+        "make",
+        "project",
+        "github-projects",
+        "sub-issues",
+        "epics",
+        "planning",
+        "roadmap",
+        "azure-devops"
+      ],
+      "invocation_contract": {
+        "inputs": [
+          {
+            "name": "owner",
+            "type": "string",
+            "required": true,
+            "description": "GitHub owner/org that will host the project and issues."
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": false,
+            "description": "Project title; defaults to the repo or GOALS.md heading."
+          },
+          {
+            "name": "sources",
+            "type": "string",
+            "required": false,
+            "description": "Which inputs to use: any of goals, issues, ado. Defaults to all present."
+          }
+        ],
+        "outputs": [
+          {
+            "name": "project_url",
+            "type": "string",
+            "description": "URL of the created GitHub Project."
+          },
+          {
+            "name": "hierarchy_summary",
+            "type": "string",
+            "description": "The created Epic → Feature → Task tree with issue numbers."
+          }
+        ],
+        "side_effects": [
+          "creates a GitHub Project (Projects v2)",
+          "creates GitHub issues",
+          "links issues as GitHub sub-issues",
+          "reads Azure DevOps work items",
+          "reads GOALS.md"
+        ]
+      },
+      "category": "product"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/make-release",
+      "version": "1.0.0",
+      "name": "Make Release",
+      "description": "Full release pipeline: ensure all PRs are closed or merged, propose a semantic version (Major.Minor.Patch) based on commits since last tag, get user approval, then trigger the release workflow (goreleaser.yml or release.yml). Follows Conventional Commits to determine version bump type.",
+      "system_prompt_fragment": "Run the release pipeline for the current repo.\n\nStep 1 — AUDIT OPEN PRs:\nRun: gh pr list --state open --json number,title,headRefName\nIf any open PRs exist, present them to the user and ask: merge, close, or pause release?\nDo not proceed until all PRs are either merged or closed.\n\nStep 2 — DETERMINE VERSION:\nGet the last tag: git describe --tags --abbrev=0 2>/dev/null || echo 'v0.0.0'\nGet commits since last tag: git log <last_tag>..HEAD --oneline\nAnalyze commit prefixes (Conventional Commits):\n  feat!: or BREAKING CHANGE: → MAJOR bump\n  feat:                       → MINOR bump\n  fix:, perf:, refactor:      → PATCH bump\nPropose the new version. Present to user:\n  'Last release: <tag>. Proposed: <new_version> (<bump_type> — reason). Approve? (approve / pick different version)'\nWait for literal word 'approve' or a custom version string.\n\nStep 3 — TAG AND RELEASE:\nOnce approved:\n  git tag -a <new_version> -m 'Release <new_version>'\n  git push origin <new_version>\nThen trigger the release workflow:\n  If .github/workflows/goreleaser.yml exists: gh workflow run goreleaser.yml --ref <new_version>\n  Elif .github/workflows/release.yml exists: gh workflow run release.yml --ref <new_version>\n  Else: report no release workflow found and ask user how to proceed.\nMonitor the workflow run and report pass/fail.",
+      "applicable_domains": [
+        "code",
+        "delivery",
+        "git"
+      ],
+      "invocation": [
+        "/make release"
+      ],
+      "invocation_contract": {
+        "inputs": [],
+        "outputs": [
+          {
+            "name": "version",
+            "type": "string",
+            "description": "The released version tag (e.g. v1.2.3)."
+          },
+          {
+            "name": "workflow_run",
+            "type": "string",
+            "description": "URL of the triggered release workflow run."
+          }
+        ],
+        "side_effects": [
+          "creates and pushes a git tag",
+          "triggers goreleaser.yml or release.yml workflow",
+          "may merge or close open PRs if user approves"
+        ]
+      },
+      "tags": [
+        "make",
+        "release",
+        "semver",
+        "goreleaser",
+        "delivery"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable",
+      "category": "product"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4089,7 +4622,50 @@
         "adversarial"
       ],
       "authored_by": "convergent-systems-key",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "product"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/make-sprint",
+      "version": "1.0.0",
+      "name": "Make Sprint",
+      "description": "Activate PM discipline and run the multi-agent delivery team in one shot. Recovers from checkpoints, ingests the issue queue, partitions tasks, spawns Tech Lead agents per domain, runs TDD pipelines, code reviews, and builds.",
+      "system_prompt_fragment": "Execute the full PM delivery loop: (0) check for checkpoint — resume or cold start; (1) pre-flight; (2) build repo set; (3) ingest issue queue; (4) partition into domain batches, spawn Tech Lead agents per batch running Worktree→Plan→TDD→Coder→Adversarial→PR→Merge pipeline; (5) code reviewer sweep after queue empties; (6) /make build. Never skip a pipeline step. Tech Leads must never commit directly to main.",
+      "applicable_domains": [
+        "workflow",
+        "project-management",
+        "multi-agent"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable",
+      "invocation": [
+        "/make-sprint"
+      ],
+      "tags": [
+        "workflow",
+        "pm-mode",
+        "sprint",
+        "multi-agent"
+      ],
+      "invocation_contract": {
+        "inputs": [],
+        "outputs": [
+          {
+            "name": "sprint_summary",
+            "type": "string",
+            "description": "What was delivered, what is in-flight, what is blocked."
+          }
+        ],
+        "side_effects": [
+          "creates branches",
+          "opens PRs",
+          "merges PRs",
+          "creates GitHub issues"
+        ]
+      },
+      "category": "product"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4126,7 +4702,8 @@
         "read-only"
       ],
       "authored_by": "convergent-systems-key",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "product"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4164,16 +4741,62 @@
         "pull"
       ],
       "authored_by": "convergent-systems-key",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "product"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/make-test",
+      "version": "1.0.0",
+      "name": "Make Test",
+      "description": "Discover and run the project test suite across all workspace modules, report failures with file:line citations, and optionally fix them.",
+      "system_prompt_fragment": "Discover the test command from project.yaml or infer it from the build system. Run tests across all workspace modules (go.work, package.json workspaces, etc.). Report: total run, passed, failed. For each failure: file:line, test name, failure message, actual vs expected. Ask whether to fix failures. If fixing: create a failing test first (TDD) if one doesn't exist, then fix. One commit per fix.",
+      "applicable_domains": [
+        "testing",
+        "ci"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable",
+      "invocation": [
+        "/make-test"
+      ],
+      "tags": [
+        "testing",
+        "ci",
+        "workspace"
+      ],
+      "invocation_contract": {
+        "inputs": [
+          {
+            "name": "pattern",
+            "type": "string",
+            "description": "Optional test name filter.",
+            "required": false
+          }
+        ],
+        "outputs": [
+          {
+            "name": "test_results",
+            "type": "string",
+            "description": "Pass/fail summary with file:line citations for failures."
+          }
+        ],
+        "side_effects": [
+          "runs test subprocess",
+          "may create commits if fixing"
+        ]
+      },
+      "category": "product"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
       "type": "skill",
       "id": "skill/make",
-      "version": "1.0.0",
+      "version": "1.2.0",
       "name": "Make — Unified Dispatcher",
-      "description": "Dispatcher for the make skill suite. Reads the subcommand and invokes the matching skill immediately. Subcommands: work/sprint (PM + delivery team), clean (purge merged branches), build (commit+push+PR+merge), test (run test suite), status (sprint snapshot), sync (pull all repos), review (code reviewer sweep), doctor (governance health check), atoms (atom ecosystem ops).",
-      "system_prompt_fragment": "Read the first word after /make and dispatch to the matching skill immediately. Do not summarize, plan, or ask clarifying questions — just dispatch.\n\nDispatch table:\n  work / sprint → make-work\n  clean         → make-clean\n  build         → make-build\n  test          → make-test\n  status        → make-status\n  sync          → make-sync\n  review        → make-review\n  doctor        → make-doctor\n  atoms         → make-atoms\n\nIf the subcommand is unknown or missing, print the usage table and stop.",
+      "description": "Dispatcher for the make skill suite. Reads the subcommand and invokes the matching skill immediately. Subcommands: work/sprint (PM + delivery team), clean (purge merged branches), build (commit+push+PR+merge), test (run test suite), status (sprint snapshot), sync (pull all repos), review (code reviewer sweep), doctor (governance health check), atoms (atom ecosystem ops), release (full release pipeline), project (GitHub Project: Epics→Features→Tasks).",
+      "system_prompt_fragment": "Read the first word after /make and dispatch to the matching skill immediately. Do not summarize, plan, or ask clarifying questions — just dispatch.\n\nDispatch table:\n  work / sprint → make-sprint\n  clean         → make-clean\n  build         → make-build\n  test          → make-test\n  status        → make-status\n  sync          → make-sync\n  review        → make-review\n  doctor        → make-doctor\n  atoms         → make-atoms\n  release       → make-release\n  project       → make-project\n\nIf the subcommand is unknown or missing, print the usage table and stop.",
       "invocation": [
         "/make work",
         "/make sprint",
@@ -4184,7 +4807,22 @@
         "/make sync",
         "/make review",
         "/make doctor",
-        "/make atoms"
+        "/make atoms",
+        "/make release",
+        "/make project"
+      ],
+      "depends_on": [
+        "skill/make-atoms",
+        "skill/make-build",
+        "skill/make-clean",
+        "skill/make-doctor",
+        "skill/make-project",
+        "skill/make-release",
+        "skill/make-review",
+        "skill/make-status",
+        "skill/make-sync",
+        "skill/make-test",
+        "skill/make-sprint"
       ],
       "applicable_domains": [
         "code",
@@ -4199,7 +4837,8 @@
         "workflow"
       ],
       "authored_by": "convergent-systems-key",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "product"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4223,7 +4862,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/margin-analyzer/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "finance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4249,7 +4889,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-maui/skills/maui-app-lifecycle/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4275,7 +4916,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-maui/skills/maui-collectionview/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4301,7 +4943,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-maui/skills/maui-data-binding/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4327,7 +4970,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-maui/skills/maui-dependency-injection/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4353,7 +4997,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-maui/skills/maui-safe-area/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4379,7 +5024,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-maui/skills/maui-shell-navigation/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4405,7 +5051,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-maui/skills/maui-theming/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4429,7 +5076,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/skills/blob/main/skills/mcp-builder/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "coding"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4455,7 +5103,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-ai/skills/mcp-csharp-create/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4481,7 +5130,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-ai/skills/mcp-csharp-debug/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4507,7 +5157,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-ai/skills/mcp-csharp-publish/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4533,7 +5184,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-ai/skills/mcp-csharp-test/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4557,7 +5209,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/legal/skills/meeting-briefing/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "legal"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4614,7 +5267,8 @@
       "lifecycle": "stable",
       "invocation": [
         "/memory-curator"
-      ]
+      ],
+      "category": "governance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4638,7 +5292,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/productivity/skills/memory-management/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "governance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4663,7 +5318,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/product-management/skills/metrics-review/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "product"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4689,7 +5345,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-diag/skills/microbenchmarking/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4715,7 +5372,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-upgrade/skills/migrate-dotnet10-to-dotnet11/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4741,7 +5399,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-upgrade/skills/migrate-dotnet8-to-dotnet9/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4767,7 +5426,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-upgrade/skills/migrate-dotnet9-to-dotnet10/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4793,7 +5453,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/migrate-mstest-v1v2-to-v3/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4819,7 +5480,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/migrate-mstest-v3-to-v4/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4845,7 +5507,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-upgrade/skills/migrate-nullable-references/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4871,7 +5534,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/migrate-static-to-wrapper/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4897,7 +5561,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/migrate-vstest-to-mtp/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4923,7 +5588,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/migrate-xunit-to-xunit-v3/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4949,7 +5615,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-aspnet/skills/minimal-api-file-upload/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4973,7 +5640,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/monday-brief/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "operations"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -4997,7 +5665,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/month-end-prep/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "finance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5021,7 +5690,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/month-heads-up/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "finance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5047,7 +5717,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-msbuild/skills/msbuild-antipatterns/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5073,7 +5744,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-msbuild/skills/msbuild-modernization/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5099,7 +5771,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-msbuild/skills/msbuild-server/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5125,7 +5798,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/mtp-hot-reload/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5149,7 +5823,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/bio-research/skills/nextflow-development/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "data"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5174,7 +5849,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet/skills/nuget-trusted-publishing/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5200,7 +5876,8 @@
       ],
       "authored_by": "kepano",
       "source_url": "https://github.com/kepano/obsidian-skills/blob/main/skills/obsidian-bases/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "knowledge"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5226,7 +5903,8 @@
       ],
       "authored_by": "kepano",
       "source_url": "https://github.com/kepano/obsidian-skills/blob/main/skills/obsidian-cli/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "knowledge"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5252,7 +5930,45 @@
       ],
       "authored_by": "kepano",
       "source_url": "https://github.com/kepano/obsidian-skills/blob/main/skills/obsidian-markdown/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "knowledge"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/onboard",
+      "version": "1.0.0",
+      "name": "Onboard",
+      "description": "Generate an ONBOARDING.md for the current repo covering: stack, prerequisites, setup, run, test, structure, and common commands. Targeted at a new contributor picking up the repo cold.",
+      "system_prompt_fragment": "Generate ONBOARDING.md for this repository. Include: What is this? (1 paragraph), Who is it for?, Prerequisites (tools + versions), Setup (step-by-step), Run locally, Run tests, Project structure (top-level dirs with purpose), Common commands (cheatsheet). Read README, package.json/go.mod/Cargo.toml/etc. to derive accurate commands. Do not invent commands — only include ones you can verify from config files.",
+      "applicable_domains": [
+        "documentation",
+        "onboarding"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable",
+      "invocation": [
+        "/onboard"
+      ],
+      "tags": [
+        "documentation",
+        "onboarding",
+        "getting-started"
+      ],
+      "invocation_contract": {
+        "inputs": [],
+        "outputs": [
+          {
+            "name": "onboarding_doc",
+            "type": "string",
+            "description": "The generated ONBOARDING.md content."
+          }
+        ],
+        "side_effects": [
+          "writes ONBOARDING.md to repo root"
+        ]
+      },
+      "category": "knowledge"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5277,7 +5993,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/human-resources/skills/onboarding/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "hr"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5303,7 +6020,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-data/skills/optimizing-ef-core-queries/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5327,7 +6045,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/human-resources/skills/org-planning/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "hr"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5352,7 +6071,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/human-resources/skills/people-report/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "hr"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5377,7 +6097,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/marketing/skills/performance-report/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "marketing"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5402,7 +6123,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/human-resources/skills/performance-review/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "hr"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5427,7 +6149,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/sales/skills/pipeline-review/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "sales"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5451,7 +6174,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/plan-payroll/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "finance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5477,7 +6201,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-blazor/skills/plan-ui-change/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5503,7 +6228,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/platform-detection/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5528,7 +6254,52 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/human-resources/skills/policy-lookup/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "hr"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/pr",
+      "version": "1.0.0",
+      "name": "Pull Request",
+      "description": "Open a GitHub pull request with a body generated from the branch's commits. Derives title and summary from commit history.",
+      "system_prompt_fragment": "Open a pull request for the current branch. Derive: title from the most significant commit subject (≤70 chars), body from git log --oneline <base>..HEAD summarized into bullet points under ## Changes, and a ## Test plan checklist. Use gh pr create. If a PR already exists, show its URL instead. Do not push unless asked.",
+      "applicable_domains": [
+        "git",
+        "code-review"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable",
+      "invocation": [
+        "/pr"
+      ],
+      "tags": [
+        "git",
+        "pull-request",
+        "github"
+      ],
+      "invocation_contract": {
+        "inputs": [
+          {
+            "name": "base_branch",
+            "type": "string",
+            "description": "Target branch (default: main).",
+            "required": false
+          }
+        ],
+        "outputs": [
+          {
+            "name": "pr_url",
+            "type": "string",
+            "description": "URL of the created or existing PR."
+          }
+        ],
+        "side_effects": [
+          "creates a GitHub pull request via gh CLI"
+        ]
+      },
+      "category": "coding"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5552,7 +6323,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/price-check/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "finance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5577,7 +6349,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/operations/skills/process-doc/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "operations"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5601,7 +6374,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/operations/skills/process-optimization/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "operations"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5625,7 +6399,140 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/product-management/skills/product-brainstorming/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "product"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/project-claude",
+      "version": "1.0.0",
+      "name": "Project (Claude)",
+      "description": "Set up and maintain AI workspace configuration for Claude Code: project.yaml, .claude/settings.json, and CLAUDE.md. Use when initialising a project for Claude or editing its Claude-specific config.",
+      "system_prompt_fragment": "Manage Claude Code project configuration. Create or update:\n- project.yaml: tooling, test commands, build commands\n- .claude/settings.json: permissions, hooks, allowed tools\n- CLAUDE.md: project-specific instructions for Claude\n\nVerbs: setup (create all three if missing), show (display current config), set <key>=<value> (update a setting), validate (check schema). Never overwrite user-customized values without confirmation. For Copilot configuration use /project-copilot instead.",
+      "applicable_domains": [
+        "configuration",
+        "tooling"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable",
+      "invocation": [
+        "/project-claude"
+      ],
+      "tags": [
+        "configuration",
+        "claude",
+        "project-yaml"
+      ],
+      "invocation_contract": {
+        "inputs": [
+          {
+            "name": "action",
+            "type": "string",
+            "description": "setup | show | set | validate",
+            "required": false
+          }
+        ],
+        "outputs": [
+          {
+            "name": "result",
+            "type": "string",
+            "description": "Summary of configuration changes."
+          }
+        ],
+        "side_effects": [
+          "may write project.yaml, .claude/settings.json, CLAUDE.md"
+        ]
+      },
+      "category": "product"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/project-copilot",
+      "version": "1.0.0",
+      "name": "Project (Copilot)",
+      "description": "Set up and maintain AI workspace configuration for GitHub Copilot CLI: project.yaml and .github/copilot-instructions.md. Use when initialising a project for Copilot or editing its Copilot-specific config.",
+      "system_prompt_fragment": "Manage GitHub Copilot project configuration. Create or update:\n- project.yaml: tooling, test commands, build commands\n- .github/copilot-instructions.md: project-specific instructions for Copilot\n\nVerbs: setup (create both if missing), show (display current config), set <key>=<value> (update a setting), validate (check schema). Never overwrite user-customized values without confirmation. For Claude configuration use /project-claude instead.",
+      "applicable_domains": [
+        "configuration",
+        "tooling"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable",
+      "invocation": [
+        "/project-copilot"
+      ],
+      "tags": [
+        "configuration",
+        "copilot",
+        "project-yaml"
+      ],
+      "invocation_contract": {
+        "inputs": [
+          {
+            "name": "action",
+            "type": "string",
+            "description": "setup | show | set | validate",
+            "required": false
+          }
+        ],
+        "outputs": [
+          {
+            "name": "result",
+            "type": "string",
+            "description": "Summary of configuration changes."
+          }
+        ],
+        "side_effects": [
+          "may write project.yaml, .github/copilot-instructions.md"
+        ]
+      },
+      "category": "product"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/project",
+      "version": "2.0.0",
+      "name": "Project",
+      "description": "Set up AI workspace config for this project. Installs project-claude (Claude Code) and project-copilot (GitHub Copilot) together.",
+      "system_prompt_fragment": "Dispatch to the appropriate tool-specific project skill. For Claude Code setup use /project-claude. For GitHub Copilot setup use /project-copilot. When both tools are in use, both skills apply.",
+      "applicable_domains": [
+        "configuration",
+        "tooling"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable",
+      "invocation": [
+        "/project"
+      ],
+      "tags": [
+        "configuration",
+        "project-yaml",
+        "dispatcher"
+      ],
+      "invocation_contract": {
+        "inputs": [
+          {
+            "name": "tool",
+            "type": "string",
+            "description": "claude | copilot | both (default: both)",
+            "required": false
+          }
+        ],
+        "outputs": [
+          {
+            "name": "result",
+            "type": "string",
+            "description": "Summary of configuration changes."
+          }
+        ],
+        "side_effects": [
+          "delegates to project-claude and/or project-copilot"
+        ]
+      },
+      "category": "product"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5651,7 +6558,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-msbuild/skills/property-patterns/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5675,7 +6583,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/quarterly-review/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "finance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5700,7 +6609,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/finance/skills/reconciliation/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "finance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5724,7 +6634,111 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/human-resources/skills/recruiting-pipeline/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "hr"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/refactor",
+      "version": "1.0.0",
+      "name": "Refactor",
+      "description": "Behavior-preserving refactor with test gates and the bug-report-separately rule. Tests must be green before and after. Bugs found during refactor are reported separately, not fixed inline.",
+      "system_prompt_fragment": "Refactor the target preserving all observable behavior. Rules: (1) Tests must be green before you start. (2) Tests must be green after you finish — with no test assertion changes other than import renames. (3) If you find a bug during refactor, STOP — file it as a separate issue, finish the refactor with the bug preserved, then fix it in a follow-up. (4) Use the refactor: commit prefix. (5) One logical change per commit.",
+      "applicable_domains": [
+        "code"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable",
+      "invocation": [
+        "/refactor"
+      ],
+      "tags": [
+        "code",
+        "refactor",
+        "behavior-preserving",
+        "tdd"
+      ],
+      "invocation_contract": {
+        "inputs": [
+          {
+            "name": "target",
+            "type": "string",
+            "description": "File or module to refactor.",
+            "required": true
+          },
+          {
+            "name": "goal",
+            "type": "string",
+            "description": "What the refactor should achieve (rename, extract, inline, split, etc.)",
+            "required": true
+          }
+        ],
+        "outputs": [
+          {
+            "name": "changes",
+            "type": "string",
+            "description": "Summary of structural changes made."
+          }
+        ],
+        "side_effects": [
+          "modifies source files",
+          "creates git commits"
+        ]
+      },
+      "category": "coding"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/repo",
+      "version": "1.0.0",
+      "name": "Repo",
+      "description": "Repository structure tool — monorepo or polyrepo migration in either direction, preserving git history.",
+      "system_prompt_fragment": "Manage repository structure: convert to monorepo (merge repos with history), split a repo (extract subdirectory with history using git filter-repo), or standardize layout. Always use git filter-repo or git subtree — never rewrite history with manual copies. Preserve all commit history. Create a plan first, wait for approval, then execute.",
+      "applicable_domains": [
+        "git",
+        "architecture"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable",
+      "invocation": [
+        "/repo"
+      ],
+      "tags": [
+        "git",
+        "monorepo",
+        "polyrepo",
+        "structure"
+      ],
+      "invocation_contract": {
+        "inputs": [
+          {
+            "name": "operation",
+            "type": "string",
+            "description": "monorepo | split | extract | merge | standardize",
+            "required": true
+          },
+          {
+            "name": "target",
+            "type": "string",
+            "description": "Repository or subdirectory path.",
+            "required": true
+          }
+        ],
+        "outputs": [
+          {
+            "name": "result",
+            "type": "string",
+            "description": "Summary of structural changes."
+          }
+        ],
+        "side_effects": [
+          "may rewrite git history",
+          "creates or modifies repositories"
+        ]
+      },
+      "category": "coding"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5749,7 +6763,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/design/skills/research-synthesis/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "design"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5775,7 +6790,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-msbuild/skills/resolve-project-references/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5800,7 +6816,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/legal/skills/review-contract/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "legal"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5859,7 +6876,8 @@
         "/review-panel",
         "/review-panel --pr=<number>",
         "/review-panel <file-path>"
-      ]
+      ],
+      "category": "governance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5883,7 +6901,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/operations/skills/risk-assessment/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "operations"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5908,7 +6927,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/product-management/skills/roadmap-update/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "product"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5932,7 +6952,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/run-campaign/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "marketing"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5958,7 +6979,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/run-tests/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -5983,7 +7005,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/operations/skills/runbook/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "operations"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6007,7 +7030,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/sales-brief/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "marketing"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6031,7 +7055,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/bio-research/skills/scientific-problem-selection/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "data"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6055,7 +7080,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/bio-research/skills/scvi-tools/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "data"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6079,7 +7105,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/enterprise-search/skills/search-strategy/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "knowledge"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6104,7 +7131,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/enterprise-search/skills/search/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "knowledge"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6129,7 +7157,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/marketing/skills/seo-audit/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "marketing"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6154,7 +7183,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/legal/skills/signature-request/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "legal"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6178,7 +7208,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/bio-research/skills/single-cell-rna-qc/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "data"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6202,7 +7233,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/skills/blob/main/skills/skill-creator/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "governance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6226,7 +7258,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/skills/blob/main/skills/slack-gif-creator/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "design"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6250,7 +7283,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/smb-onboard/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "hr"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6274,7 +7308,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/smb-router/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "support"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6298,7 +7333,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/enterprise-search/skills/source-management/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "knowledge"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6323,7 +7359,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/finance/skills/sox-testing/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "legal"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6348,7 +7385,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/product-management/skills/sprint-planning/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "product"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6372,7 +7410,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/data/skills/sql-queries/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "coding"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6397,7 +7436,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/product-management/skills/stakeholder-update/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "product"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6423,7 +7463,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/engineering/skills/standup/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "operations"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6447,7 +7488,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/bio-research/skills/start/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "data"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6471,7 +7513,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/data/skills/statistical-analysis/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "data"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6496,7 +7539,43 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/operations/skills/status-report/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "operations"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/status",
+      "version": "1.0.0",
+      "name": "Status",
+      "description": "Mid-session blocked-state report. Reports ready state or lists active waits (biometric, pr-merge, scope-decision, out-of-band, background) using the Common.md §U7 typed wait-reason format.",
+      "system_prompt_fragment": "Report current session status. If nothing is pending: 'Status: ready — no pending actions.' If blocked: list each wait with its typed reason (biometric / pr-merge / scope-decision / out-of-band / background) and a description. Check TaskList for in-progress tasks. Limit output to ≤10 lines.",
+      "applicable_domains": [
+        "session-management"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable",
+      "invocation": [
+        "/status"
+      ],
+      "tags": [
+        "session",
+        "status",
+        "blocked",
+        "waiting"
+      ],
+      "invocation_contract": {
+        "inputs": [],
+        "outputs": [
+          {
+            "name": "status",
+            "type": "string",
+            "description": "Current status: ready or waiting-on list."
+          }
+        ],
+        "side_effects": []
+      },
+      "category": "governance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6522,7 +7601,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-blazor/skills/support-prerendering/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6547,7 +7627,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/product-management/skills/synthesize-research/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "product"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6572,7 +7653,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/engineering/skills/system-design/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "coding"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6598,7 +7680,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet11/skills/system-text-json-net11/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6619,7 +7702,8 @@
         "tdd",
         "regression"
       ],
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "coding"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6645,7 +7729,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-msbuild/skills/target-authoring/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6669,7 +7754,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/productivity/skills/task-management/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "product"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6693,7 +7779,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/tax-prep/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "finance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6717,7 +7804,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/tax-season-organizer/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "finance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6742,7 +7830,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/engineering/skills/tech-debt/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "coding"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6768,7 +7857,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-ai/skills/technology-selection/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6794,7 +7884,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-template-engine/skills/template-authoring/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6820,7 +7911,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-template-engine/skills/template-discovery/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6846,7 +7938,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-template-engine/skills/template-instantiation/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6872,7 +7965,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-template-engine/skills/template-validation/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6898,7 +7992,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/test-anti-patterns/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6924,7 +8019,31 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/test-gap-analysis/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/test-publish",
+      "version": "1.0.0",
+      "name": "Test Publish",
+      "description": "A test skill to verify the auto-publish workflow end-to-end.",
+      "system_prompt_fragment": "This is a test skill. Return a confirmation that the auto-publish workflow succeeded.",
+      "applicable_domains": [
+        "meta",
+        "testing"
+      ],
+      "invocation": [
+        "/test-publish"
+      ],
+      "tags": [
+        "test",
+        "meta"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "draft",
+      "category": "governance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6950,7 +8069,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/test-smell-detection/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -6976,7 +8096,52 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/test-tagging/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/test",
+      "version": "1.0.0",
+      "name": "Test",
+      "description": "Run repo tests via project.yaml's tooling.test_command and report failures with path:line citations.",
+      "system_prompt_fragment": "Run the test suite using the command from project.yaml tooling.test_command, or infer it from the project's build system (go test, npm test, pytest, cargo test, etc.). Report every failure with file:line:column, the failing assertion, and the actual vs expected values. Do not suppress passing tests — show the full summary. If tests pass, confirm and give the count.",
+      "applicable_domains": [
+        "code",
+        "testing"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable",
+      "invocation": [
+        "/test"
+      ],
+      "tags": [
+        "testing",
+        "ci",
+        "tdd"
+      ],
+      "invocation_contract": {
+        "inputs": [
+          {
+            "name": "pattern",
+            "type": "string",
+            "description": "Optional test name pattern to filter.",
+            "required": false
+          }
+        ],
+        "outputs": [
+          {
+            "name": "result",
+            "type": "string",
+            "description": "Pass/fail summary with path:line citations for failures."
+          }
+        ],
+        "side_effects": [
+          "runs test subprocess"
+        ]
+      },
+      "category": "coding"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7001,7 +8166,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/engineering/skills/testing-strategy/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "coding"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7025,7 +8191,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/skills/blob/main/skills/theme-factory/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "design"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7051,7 +8218,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-upgrade/skills/thread-abort-migration/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7075,7 +8243,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/ticket-deflector/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "support"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7100,7 +8269,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/customer-support/skills/ticket-triage/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "support"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7125,7 +8295,53 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/legal/skills/triage-nda/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "legal"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+      "type": "skill",
+      "id": "skill/update-config",
+      "version": "1.0.0",
+      "name": "Update Config",
+      "description": "Configure the Claude Code harness via settings.json. Handles: automated behaviors (hooks), permissions, env vars, hook troubleshooting, and changes to settings.json/settings.local.json files.",
+      "system_prompt_fragment": "Configure Claude Code settings.json. Automated behaviors require hooks — the harness executes them, not Claude. For permissions: add to allowedTools or use permissionPromptTool. For env vars: add to env block. For hooks: wire to the correct event (UserPromptSubmit/PreToolUse/PostToolUse/Stop/etc.) in the hooks block. Show the diff of settings.json changes before applying. Never edit settings.json directly — use the appropriate settings API or targeted edits.",
+      "applicable_domains": [
+        "configuration",
+        "tooling"
+      ],
+      "authored_by": "convergent-systems-key",
+      "lifecycle": "stable",
+      "invocation": [
+        "/update-config"
+      ],
+      "tags": [
+        "configuration",
+        "settings",
+        "hooks",
+        "permissions"
+      ],
+      "invocation_contract": {
+        "inputs": [
+          {
+            "name": "change_request",
+            "type": "string",
+            "description": "What the user wants to configure.",
+            "required": true
+          }
+        ],
+        "outputs": [
+          {
+            "name": "settings_diff",
+            "type": "string",
+            "description": "The diff applied to settings.json."
+          }
+        ],
+        "side_effects": [
+          "modifies .claude/settings.json or ~/.claude/settings.json"
+        ]
+      },
+      "category": "governance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7150,7 +8366,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/productivity/skills/update/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "product"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7176,7 +8393,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-blazor/skills/use-js-interop/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7200,7 +8418,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/design/skills/user-research/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "design"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7225,7 +8444,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/design/skills/ux-copy/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "design"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7250,7 +8470,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/data/skills/validate-data/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "data"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7275,7 +8496,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/finance/skills/variance-analysis/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "finance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7300,7 +8522,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/legal/skills/vendor-check/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "legal"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7325,7 +8548,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/operations/skills/vendor-review/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "operations"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7347,7 +8571,8 @@
         "evidence",
         "ci"
       ],
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "governance"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7371,7 +8596,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/skills/blob/main/skills/web-artifacts-builder/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "coding"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7395,7 +8621,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/skills/blob/main/skills/webapp-testing/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "coding"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7420,7 +8647,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/data/skills/write-query/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "data"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7445,7 +8673,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/product-management/skills/write-spec/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "product"
     },
     {
       "schema": "https://ai-atoms.com/schemas/skill-v1.json",
@@ -7471,7 +8700,8 @@
       ],
       "authored_by": "anthropics",
       "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-test/skills/writing-mstest-tests/SKILL.md",
-      "lifecycle": "stable"
+      "lifecycle": "stable",
+      "category": "dotnet"
     }
   ],
   "compositions": [],

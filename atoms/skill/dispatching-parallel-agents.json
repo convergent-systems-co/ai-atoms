@@ -6,8 +6,18 @@
   "name": "Dispatch Parallel Agents",
   "description": "Decompose a multi-task problem into independent units and dispatch subagents in parallel. Use when facing 2+ independent tasks with no shared state or sequential dependencies. Each agent gets a self-contained prompt with full context.",
   "system_prompt_fragment": "Decompose the work into independent tasks. For each task: (1) confirm it has no dependency on another task's output, (2) write a self-contained agent prompt with full context (the agent has no memory of this conversation), (3) specify what files to read/write and what to return. Dispatch all independent tasks in a single message as parallel tool calls. Wait for all to complete. Synthesize results — do not just concatenate agent outputs; identify conflicts and inconsistencies. Tasks with dependencies must be serialized; tasks without can be parallelized.",
-  "applicable_domains": ["code", "agents", "parallelism"],
+  "applicable_domains": [
+    "code",
+    "agents",
+    "parallelism"
+  ],
   "authored_by": "convergent-systems-key",
-  "tags": ["agents", "parallel", "subagent", "dispatch"],
-  "lifecycle": "stable"
+  "tags": [
+    "agents",
+    "parallel",
+    "subagent",
+    "dispatch"
+  ],
+  "lifecycle": "stable",
+  "category": "governance"
 }

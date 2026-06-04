@@ -26,5 +26,6 @@
     "/checkpoint resume",
     "/checkpoint resume <UTC>",
     "/checkpoint list"
-  ]
+  ],
+  "category": "governance"
 }

@@ -20,5 +20,6 @@
   ],
   "authored_by": "anthropics",
   "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/design/skills/user-research/SKILL.md",
-  "lifecycle": "stable"
+  "lifecycle": "stable",
+  "category": "design"
 }

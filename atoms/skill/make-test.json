@@ -1,0 +1,45 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/make-test",
+  "version": "1.0.0",
+  "name": "Make Test",
+  "description": "Discover and run the project test suite across all workspace modules, report failures with file:line citations, and optionally fix them.",
+  "system_prompt_fragment": "Discover the test command from project.yaml or infer it from the build system. Run tests across all workspace modules (go.work, package.json workspaces, etc.). Report: total run, passed, failed. For each failure: file:line, test name, failure message, actual vs expected. Ask whether to fix failures. If fixing: create a failing test first (TDD) if one doesn't exist, then fix. One commit per fix.",
+  "applicable_domains": [
+    "testing",
+    "ci"
+  ],
+  "authored_by": "convergent-systems-key",
+  "lifecycle": "stable",
+  "invocation": [
+    "/make-test"
+  ],
+  "tags": [
+    "testing",
+    "ci",
+    "workspace"
+  ],
+  "invocation_contract": {
+    "inputs": [
+      {
+        "name": "pattern",
+        "type": "string",
+        "description": "Optional test name filter.",
+        "required": false
+      }
+    ],
+    "outputs": [
+      {
+        "name": "test_results",
+        "type": "string",
+        "description": "Pass/fail summary with file:line citations for failures."
+      }
+    ],
+    "side_effects": [
+      "runs test subprocess",
+      "may create commits if fixing"
+    ]
+  },
+  "category": "product"
+}

@@ -1,0 +1,49 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/diagram",
+  "version": "1.0.0",
+  "name": "Diagram",
+  "description": "Generate Mermaid diagrams (flowchart / sequence / state / class / ER / gantt) from code or systems.",
+  "system_prompt_fragment": "Generate a Mermaid diagram of the requested type. Choose the type that best communicates the relationship: flowchart for control flow, sequence for message passing, state for state machines, class for OOP relationships, ER for data models, gantt for timelines. Render in Markdown for .md files. Use ASCII art for terminal output. Never describe a diagram in prose — always render it.",
+  "applicable_domains": [
+    "documentation",
+    "architecture"
+  ],
+  "authored_by": "convergent-systems-key",
+  "lifecycle": "stable",
+  "invocation": [
+    "/diagram"
+  ],
+  "tags": [
+    "diagram",
+    "mermaid",
+    "architecture",
+    "documentation"
+  ],
+  "invocation_contract": {
+    "inputs": [
+      {
+        "name": "subject",
+        "type": "string",
+        "description": "Code, system, or concept to diagram.",
+        "required": true
+      },
+      {
+        "name": "diagram_type",
+        "type": "string",
+        "description": "flowchart | sequence | state | class | ER | gantt",
+        "required": false
+      }
+    ],
+    "outputs": [
+      {
+        "name": "diagram",
+        "type": "string",
+        "description": "Mermaid or ASCII diagram source."
+      }
+    ],
+    "side_effects": []
+  },
+  "category": "coding"
+}

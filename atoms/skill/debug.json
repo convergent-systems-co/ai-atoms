@@ -77,5 +77,6 @@
     "/debug \"<symptom>\"",
     "/debug --error <log-or-file>",
     "/debug --test <test-name>"
-  ]
+  ],
+  "category": "coding"
 }

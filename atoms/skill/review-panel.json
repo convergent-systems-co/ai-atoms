@@ -55,5 +55,6 @@
     "/review-panel",
     "/review-panel --pr=<number>",
     "/review-panel <file-path>"
-  ]
+  ],
+  "category": "governance"
 }
