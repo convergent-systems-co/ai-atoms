@@ -174,3 +174,64 @@ def test_internal_git_bypasses_ai_bin_shim(hook_path, tmp_path):
         "canonical target denied — internal git likely used the shim: "
         + proc.stderr
     )
+
+
+def _pretooluse_decision(hook_path, command, cwd, ai_root):
+    """Run the hook's PreToolUse path; return its permissionDecision or None."""
+    payload = {
+        "hookEventName": "PreToolUse",
+        "tool_name": "Bash",
+        "tool_input": {"command": command},
+        "cwd": str(cwd),
+    }
+    proc = subprocess.run(
+        [sys.executable, str(hook_path)],
+        input=json.dumps(payload),
+        env={**os.environ, "AI_ROOT": str(ai_root)},
+        capture_output=True, text=True,
+    )
+    assert proc.returncode == 0, proc.stderr
+    if not proc.stdout.strip():
+        return None
+    return json.loads(proc.stdout)["hookSpecificOutput"]["permissionDecision"]
+
+
+def test_collects_every_worktree_add(guard):
+    """A canonical add must not mask a later non-canonical add."""
+    toks = shlex.split(
+        "git worktree add repo/.worktrees/ok HEAD "
+        "&& git worktree add /tmp/evil HEAD", posix=True)
+    assert guard._worktree_add_paths(toks) == ["repo/.worktrees/ok", "/tmp/evil"]
+
+
+def test_command_helper_splits_on_newlines(guard):
+    """shlex folds newlines into whitespace; the helper must split first."""
+    cmd = "git fetch\ngit worktree add /tmp/evil HEAD"
+    assert guard._worktree_add_paths_in_command(cmd) == ["/tmp/evil"]
+
+
+def test_pretooluse_denies_newline_separated(hook_path, tmp_path):
+    # Regression: multi-line scripts are the normal agent Bash shape.
+    decision = _pretooluse_decision(
+        hook_path, "git fetch\ngit worktree add /tmp/evil HEAD",
+        cwd=tmp_path, ai_root=tmp_path / "aihome")
+    assert decision == "deny"
+
+
+def test_pretooluse_denies_second_noncanonical_add(hook_path, tmp_path):
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    _init_repo(repo)
+    cmd = (f"git worktree add {repo}/.worktrees/feat HEAD "
+           f"&& git worktree add /tmp/evil HEAD")
+    decision = _pretooluse_decision(
+        hook_path, cmd, cwd=repo, ai_root=tmp_path / "aihome")
+    assert decision == "deny"
+
+
+def test_pretooluse_fails_closed_on_unparseable(hook_path, tmp_path):
+    # Unbalanced quote + 'worktree' present -> deny, not pass-through.
+    decision = _pretooluse_decision(
+        hook_path, "git worktree add '/tmp/bad",
+        cwd=tmp_path, ai_root=tmp_path / "aihome")
+    assert decision == "deny"
