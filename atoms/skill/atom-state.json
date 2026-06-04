@@ -48,5 +48,6 @@
     "/atom-status",
     "/atom-status tree",
     "/atom-status tree <catalog-name>"
-  ]
+  ],
+  "category": "governance"
 }

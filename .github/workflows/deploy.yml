@@ -41,3 +41,34 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy web/dist --project-name=ai-atoms
+
+      - name: Trigger downstream rebuilds
+        # Uses the CF Pages API to trigger a new deployment of dependent sites.
+        # No deploy hook URL needed — uses the existing CLOUDFLARE_API_TOKEN (Pages:Edit).
+        # To add a new downstream site, append its project name to DOWNSTREAM_PROJECTS.
+        # Non-fatal: continue-on-error so a failed trigger never blocks ai-atoms deploy.
+        continue-on-error: true
+        env:
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          # Space-separated list of CF Pages project names to rebuild after ai-atoms deploys
+          DOWNSTREAM_PROJECTS="atoms-umbrella"
+
+          for PROJECT in $DOWNSTREAM_PROJECTS; do
+            echo "→ triggering rebuild: $PROJECT"
+            RESP=$(curl -s -X POST \
+              "https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT}/pages/projects/${PROJECT}/deployments" \
+              -H "Authorization: Bearer ${CF_TOKEN}" \
+              -H "Content-Type: application/json")
+            python3 -c "
+          import json, sys
+          d = json.loads(sys.argv[1])
+          if d.get('success'):
+              r = d.get('result', {})
+              print(f'  ✓ rebuild queued: {r.get(\"id\",\"?\")[:8]} on {r.get(\"deployment_trigger\",{}).get(\"metadata\",{}).get(\"branch\",\"main\")}')
+          else:
+              errs = d.get('errors', [{}])
+              print(f'  ⚠ {errs[0].get(\"message\",\"unknown\")} (code {errs[0].get(\"code\",\"?\")})')
+          " "$RESP" || true
+          done

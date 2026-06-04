@@ -57,5 +57,6 @@
     "/atom-publisher skill",
     "/atom-publisher hook",
     "/atom-publisher persona"
-  ]
+  ],
+  "category": "governance"
 }

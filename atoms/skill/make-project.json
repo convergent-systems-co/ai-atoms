@@ -1,0 +1,73 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/make-project",
+  "version": "1.0.0",
+  "name": "Make Project",
+  "description": "Build a GitHub Project (Projects v2) with a three-level Epic → Feature → Task hierarchy, sourced from GOALS.md, existing GitHub issues, and Azure DevOps work items. Uses native GitHub sub-issues to wire the hierarchy. Confirms the derived tree before creating anything.",
+  "system_prompt_fragment": "Build a GitHub Project (Projects v2) with an Epic → Feature → Task hierarchy from the available planning sources, wiring the hierarchy with native GitHub sub-issues.\n\n(1) Gather sources (use whatever is present; skip the rest):\n  - GOALS.md at the repo root — strategic intent; top-level goals map to Epics.\n  - GitHub issues — `gh issue list --state open --json number,title,labels,body,id`; cluster by label/theme.\n  - Azure DevOps (only if configured) — `az boards query` / `az boards work-item show` via the azure-devops CLI extension; map ADO Epic/Feature/User-Story/Task to the same levels.\n\n(2) Derive the tree: cluster sources into Epics, decompose each Epic into Features, each Feature into Tasks. Reuse an existing GitHub issue when a source already maps to a node — never duplicate. Print the proposed tree and STOP for user confirmation before creating anything (this mass-creates issues).\n\n(3) Create the project: `gh project create --owner <owner> --title \"<title>\"`; capture its number and URL.\n\n(4) Create one issue per node not already backed by an issue: `gh issue create --title ... --body ...`, labeling the level (kind/epic, kind/feature, kind/task).\n\n(5) Wire the hierarchy with GitHub sub-issues: each Feature is a sub-issue of its Epic; each Task a sub-issue of its Feature. Use `gh api` against the sub-issues endpoint — REST: `POST /repos/{owner}/{repo}/issues/{parent_number}/sub_issues` with body {\"sub_issue_id\": <child issue NODE id>} (numeric database id of the child issue, from the issue's `id`), or the GraphQL `addSubIssue` mutation. Confirm the exact endpoint shape with a single `gh api` call before bulk-applying, since the sub-issues API is still evolving.\n\n(6) Add every issue to the project: `gh project item-add <number> --owner <owner> --url <issue-url>`.\n\n(7) Print the final tree (Epics → Features → Tasks with issue numbers) and the project URL.\n\nConstraints: operate only on the owner/repo the user names; never touch other repos. Do not create the project or any issues until the user confirms the tree in step 2.",
+  "applicable_domains": [
+    "project-management",
+    "planning",
+    "delivery",
+    "github"
+  ],
+  "authored_by": "convergent-systems-key",
+  "lifecycle": "stable",
+  "invocation": [
+    "/make-project",
+    "/make project"
+  ],
+  "tags": [
+    "make",
+    "project",
+    "github-projects",
+    "sub-issues",
+    "epics",
+    "planning",
+    "roadmap",
+    "azure-devops"
+  ],
+  "invocation_contract": {
+    "inputs": [
+      {
+        "name": "owner",
+        "type": "string",
+        "required": true,
+        "description": "GitHub owner/org that will host the project and issues."
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": false,
+        "description": "Project title; defaults to the repo or GOALS.md heading."
+      },
+      {
+        "name": "sources",
+        "type": "string",
+        "required": false,
+        "description": "Which inputs to use: any of goals, issues, ado. Defaults to all present."
+      }
+    ],
+    "outputs": [
+      {
+        "name": "project_url",
+        "type": "string",
+        "description": "URL of the created GitHub Project."
+      },
+      {
+        "name": "hierarchy_summary",
+        "type": "string",
+        "description": "The created Epic → Feature → Task tree with issue numbers."
+      }
+    ],
+    "side_effects": [
+      "creates a GitHub Project (Projects v2)",
+      "creates GitHub issues",
+      "links issues as GitHub sub-issues",
+      "reads Azure DevOps work items",
+      "reads GOALS.md"
+    ]
+  },
+  "category": "product"
+}

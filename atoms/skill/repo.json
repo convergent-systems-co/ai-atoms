@@ -1,0 +1,52 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/repo",
+  "version": "1.0.0",
+  "name": "Repo",
+  "description": "Repository structure tool — monorepo or polyrepo migration in either direction, preserving git history.",
+  "system_prompt_fragment": "Manage repository structure: convert to monorepo (merge repos with history), split a repo (extract subdirectory with history using git filter-repo), or standardize layout. Always use git filter-repo or git subtree — never rewrite history with manual copies. Preserve all commit history. Create a plan first, wait for approval, then execute.",
+  "applicable_domains": [
+    "git",
+    "architecture"
+  ],
+  "authored_by": "convergent-systems-key",
+  "lifecycle": "stable",
+  "invocation": [
+    "/repo"
+  ],
+  "tags": [
+    "git",
+    "monorepo",
+    "polyrepo",
+    "structure"
+  ],
+  "invocation_contract": {
+    "inputs": [
+      {
+        "name": "operation",
+        "type": "string",
+        "description": "monorepo | split | extract | merge | standardize",
+        "required": true
+      },
+      {
+        "name": "target",
+        "type": "string",
+        "description": "Repository or subdirectory path.",
+        "required": true
+      }
+    ],
+    "outputs": [
+      {
+        "name": "result",
+        "type": "string",
+        "description": "Summary of structural changes."
+      }
+    ],
+    "side_effects": [
+      "may rewrite git history",
+      "creates or modifies repositories"
+    ]
+  },
+  "category": "coding"
+}

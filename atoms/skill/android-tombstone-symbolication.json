@@ -22,5 +22,6 @@
   ],
   "authored_by": "anthropics",
   "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-diag/skills/android-tombstone-symbolication/SKILL.md",
-  "lifecycle": "stable"
+  "lifecycle": "stable",
+  "category": "dotnet"
 }

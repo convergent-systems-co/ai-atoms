@@ -54,5 +54,6 @@
   "lifecycle": "stable",
   "invocation": [
     "/amendment-author"
-  ]
+  ],
+  "category": "governance"
 }

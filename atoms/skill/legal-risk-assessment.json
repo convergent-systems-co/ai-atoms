@@ -20,5 +20,6 @@
   ],
   "authored_by": "anthropics",
   "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/legal/skills/legal-risk-assessment/SKILL.md",
-  "lifecycle": "stable"
+  "lifecycle": "stable",
+  "category": "legal"
 }

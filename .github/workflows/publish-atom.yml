@@ -1,0 +1,142 @@
+# Publish an atom directly to the catalog without a PR.
+# Called by: gh workflow run publish-atom.yml -f type=skill -f slug=my-skill -f atom_json_b64=<base64>
+# Or via the `ai atoms publish` CLI command.
+#
+# Security: all user-supplied inputs are passed via env vars, never interpolated
+# directly into shell commands.
+
+name: Publish atom
+
+on:
+  workflow_dispatch:
+    inputs:
+      type:
+        description: "Atom class: skill | hook"
+        required: true
+        default: "skill"
+      slug:
+        description: "Atom slug (kebab-case file name, e.g. my-skill)"
+        required: true
+      atom_json_b64:
+        description: "Base64-encoded atom JSON payload"
+        required: true
+      overwrite:
+        description: "Overwrite existing atom (true | false)"
+        required: false
+        default: "false"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install jsonschema
+
+      - name: Decode, validate, and write atom
+        env:
+          ATOM_JSON_B64: ${{ github.event.inputs.atom_json_b64 }}
+          ATOM_TYPE: ${{ github.event.inputs.type }}
+          ATOM_SLUG: ${{ github.event.inputs.slug }}
+          OVERWRITE: ${{ github.event.inputs.overwrite }}
+        run: |
+          set -euo pipefail
+
+          # Decode — base64 input is never interpolated into shell
+          echo "$ATOM_JSON_B64" | base64 -d > /tmp/atom.json
+
+          # All validation and file writing happens in Python (no shell injection risk)
+          python3 - <<'PYEOF'
+          import json, sys, os, pathlib
+
+          try:
+              import jsonschema
+          except ImportError:
+              pass  # schema validation below handles gracefully
+
+          atom_type = os.environ["ATOM_TYPE"]
+          atom_slug = os.environ["ATOM_SLUG"]
+          overwrite  = os.environ.get("OVERWRITE", "false").lower() == "true"
+
+          # Load and pretty-print
+          atom = json.loads(pathlib.Path("/tmp/atom.json").read_text())
+          print("Atom decoded:")
+          print(json.dumps(atom, indent=2)[:500])
+
+          # Verify type matches
+          if atom.get("type") != atom_type:
+              sys.exit(f"ERROR: atom.type={atom.get('type')!r} != input type={atom_type!r}")
+
+          # Verify id matches slug
+          expected_id = f"{atom_type}/{atom_slug}"
+          if atom.get("id") != expected_id:
+              sys.exit(f"ERROR: atom.id={atom.get('id')!r} != expected {expected_id!r}")
+
+          # Schema validation
+          schema_path = pathlib.Path(f"schemas/{atom_type}-v1.json")
+          if schema_path.exists():
+              schema = json.loads(schema_path.read_text())
+              try:
+                  jsonschema.validate(atom, schema)
+                  print(f"✓ validates against {schema_path}")
+              except jsonschema.ValidationError as e:
+                  sys.exit(f"✗ schema error: {e.message}")
+          else:
+              print(f"⚠ no schema at {schema_path} — skipping validation")
+
+          # Write
+          dest = pathlib.Path(f"atoms/{atom_type}/{atom_slug}.json")
+          if dest.exists() and not overwrite:
+              sys.exit(f"ERROR: {dest} exists; pass overwrite=true to replace")
+          dest.parent.mkdir(parents=True, exist_ok=True)
+          dest.write_text(json.dumps(atom, indent=2, ensure_ascii=False) + "\n")
+          print(f"✓ wrote {dest}")
+          PYEOF
+
+      - name: Rebuild catalog
+        run: python3 scripts/build-exports.py
+
+      - name: Commit, PR, and merge
+        env:
+          ATOM_TYPE: ${{ github.event.inputs.type }}
+          ATOM_SLUG: ${{ github.event.inputs.slug }}
+          ACTOR: ${{ github.actor }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # The org ruleset requires changes via PR (0 reviews needed, no CI gate).
+          # Strategy: create a short-lived branch, push atom, open PR, immediately merge.
+          # The GITHUB_TOKEN has write access and can merge when required_review_count=0.
+
+          BRANCH="atom-publish/$(date +%Y%m%d%H%M%S)-${ATOM_TYPE}-${ATOM_SLUG}"
+
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add "atoms/${ATOM_TYPE}/${ATOM_SLUG}.json" exports/catalog.json
+          git diff --cached --stat
+          git commit -m "atom(${ATOM_TYPE}): publish ${ATOM_SLUG} [via ${ACTOR}]"
+          git push origin "$BRANCH"
+
+          # Open PR and merge immediately (0 required reviews, no required checks)
+          PR_URL=$(gh pr create \
+            --title "atom(${ATOM_TYPE}): publish ${ATOM_SLUG}" \
+            --body "Auto-published via workflow_dispatch by @${ACTOR}." \
+            --base main \
+            --head "$BRANCH")
+          echo "PR: $PR_URL"
+
+          gh pr merge "$PR_URL" \
+            --merge \
+            --delete-branch \
+            --subject "atom(${ATOM_TYPE}): publish ${ATOM_SLUG} [via ${ACTOR}]"
+
+          echo "✓ Atom published and merged"

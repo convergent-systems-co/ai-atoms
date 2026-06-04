@@ -1,0 +1,23 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/test-publish",
+  "version": "1.0.0",
+  "name": "Test Publish",
+  "description": "A test skill to verify the auto-publish workflow end-to-end.",
+  "system_prompt_fragment": "This is a test skill. Return a confirmation that the auto-publish workflow succeeded.",
+  "applicable_domains": [
+    "meta",
+    "testing"
+  ],
+  "invocation": [
+    "/test-publish"
+  ],
+  "tags": [
+    "test",
+    "meta"
+  ],
+  "authored_by": "convergent-systems-key",
+  "lifecycle": "draft",
+  "category": "governance"
+}
