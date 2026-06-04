@@ -63,3 +63,114 @@ def guard(hook_path):
 def test_finds_path_across_segments(guard, command, expected):
     tokens = shlex.split(command, posix=True)
     assert guard.find_worktree_add_path(tokens) == expected
+
+
+def _init_repo(path: Path) -> None:
+    subprocess.run(["git", "init", "-q", str(path)], check=True)
+
+
+def _wrapper_env(tmp_path, argv):
+    """Env for a wrapper-mode invocation with an isolated AI_ROOT."""
+    return {
+        **os.environ,
+        "AI_ROOT": str(tmp_path / "aihome"),
+        "WRAPPED_CMD": "git",
+        "WRAPPED_ARGV": json.dumps(argv),
+    }
+
+
+def test_wrapper_mode_blocks_noncanonical(hook_path, tmp_path):
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    _init_repo(repo)
+    proc = subprocess.run(
+        [sys.executable, str(hook_path), "--mode=wrapper"],
+        env=_wrapper_env(tmp_path, ["worktree", "add", "/tmp/x", "HEAD"]),
+        cwd=str(repo), stdin=subprocess.DEVNULL,
+        capture_output=True, text=True,
+    )
+    assert proc.returncode == 1, "wrapper mode must block a /tmp worktree"
+    assert "Common.md" in proc.stderr
+
+
+def test_wrapper_mode_allows_canonical(hook_path, tmp_path):
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    _init_repo(repo)
+    target = repo / ".worktrees" / "feat"
+    proc = subprocess.run(
+        [sys.executable, str(hook_path), "--mode=wrapper"],
+        env=_wrapper_env(tmp_path, ["worktree", "add", str(target), "HEAD"]),
+        cwd=str(repo), stdin=subprocess.DEVNULL,
+        capture_output=True, text=True,
+    )
+    assert proc.returncode == 0, "canonical <repo>/.worktrees/ must pass"
+
+
+def test_wrapper_mode_ignores_non_add(hook_path, tmp_path):
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    _init_repo(repo)
+    proc = subprocess.run(
+        [sys.executable, str(hook_path), "--mode=wrapper"],
+        env=_wrapper_env(tmp_path, ["worktree", "list"]),
+        cwd=str(repo), stdin=subprocess.DEVNULL,
+        capture_output=True, text=True,
+    )
+    assert proc.returncode == 0
+
+
+def test_pretooluse_denies_compound_command(hook_path, tmp_path):
+    payload = {
+        "hookEventName": "PreToolUse",
+        "tool_name": "Bash",
+        "tool_input": {"command": "cd /r && git worktree add /tmp/x HEAD"},
+        "cwd": str(tmp_path),
+    }
+    proc = subprocess.run(
+        [sys.executable, str(hook_path)],
+        input=json.dumps(payload),
+        env={**os.environ, "AI_ROOT": str(tmp_path / "aihome")},
+        capture_output=True, text=True,
+    )
+    assert proc.returncode == 0
+    out = json.loads(proc.stdout)
+    assert out["hookSpecificOutput"]["permissionDecision"] == "deny"
+
+
+def test_internal_git_bypasses_ai_bin_shim(hook_path, tmp_path):
+    """resolve_repo_root must use the real git, not the $AI_ROOT/bin shim.
+
+    Regression for the cross-client target environment, where the
+    governance shim dir is on PATH. A sabotage `git` placed on
+    $AI_ROOT/bin/ stands in for that shim: if the hook routed its own
+    internal git through it, resolve_repo_root would fail and the
+    canonical target would be wrongly denied. _clean_path_env must strip
+    $AI_ROOT/bin so the real git is used.
+    """
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    _init_repo(repo)
+    ai_root = tmp_path / "aihome"
+    ai_bin = ai_root / "bin"
+    ai_bin.mkdir(parents=True)
+    sabotage = ai_bin / "git"
+    sabotage.write_text("#!/bin/sh\nexit 99\n")
+    sabotage.chmod(0o755)
+    target = repo / ".worktrees" / "feat"
+    env = {
+        **os.environ,
+        "PATH": f"{ai_bin}{os.pathsep}{os.environ.get('PATH', '')}",
+        "AI_ROOT": str(ai_root),
+        "WRAPPED_CMD": "git",
+        "WRAPPED_ARGV": json.dumps(["worktree", "add", str(target), "HEAD"]),
+    }
+    proc = subprocess.run(
+        [sys.executable, str(hook_path), "--mode=wrapper"],
+        env=env, cwd=str(repo), stdin=subprocess.DEVNULL,
+        capture_output=True, text=True, timeout=15,
+    )
+    assert proc.returncode == 0, (
+        "canonical target denied — internal git likely used the shim: "
+        + proc.stderr
+    )
