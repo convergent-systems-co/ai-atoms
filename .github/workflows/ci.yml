@@ -19,6 +19,8 @@ jobs:
           python-version: "3.12"
       - run: pip install jsonschema
       - run: python3 scripts/build-exports.py
+      - run: pip install pytest
+      - run: python3 -m pytest atoms/hook/tests/ -v
 
   build:
     runs-on: ubuntu-latest
