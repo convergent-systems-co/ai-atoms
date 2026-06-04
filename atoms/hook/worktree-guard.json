@@ -2,7 +2,7 @@
   "schema": "https://ai-atoms.com/schemas/hook-v1.json",
   "type": "hook",
   "id": "hook/worktree-guard",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "name": "Worktree Placement Guard",
   "description": "Enforces canonical git worktree placement per Common.md \u00a7U17. Denies 'git worktree add' commands that target ad-hoc paths (../branch/, /tmp/, sibling dirs). Canonical paths: <repo>/.worktrees/<name>/ for single-repo work, ~/.ai/worktrees/<name>/ for cross-repo or persistent worktrees.",
   "event": "PreToolUse",
