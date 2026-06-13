@@ -62,7 +62,9 @@ def guard(hook_path):
 ])
 def test_finds_path_across_segments(guard, command, expected):
     tokens = shlex.split(command, posix=True)
-    assert guard.find_worktree_add_path(tokens) == expected
+    paths = guard._worktree_add_paths(tokens)
+    result = paths[0] if paths else None
+    assert result == expected
 
 
 def _init_repo(path: Path) -> None:
