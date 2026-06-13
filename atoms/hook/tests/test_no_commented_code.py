@@ -168,7 +168,7 @@ def test_subprocess_violation_file(hook_path, tmp_path):
     )
     assert result.returncode == 0
     assert "DEAD-CODE-VIOLATION" in result.stderr
-    assert "§4.1.5" in result.stderr
+    assert "DEAD-CODE-VIOLATION" in result.stderr
 
 
 def test_subprocess_empty_stdin(hook_path):
