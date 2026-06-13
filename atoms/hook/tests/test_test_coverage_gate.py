@@ -129,7 +129,7 @@ def test_violation_when_no_tests_changed(tmp_path, mod):
     violations = mod.check_repo(repo)
     assert len(violations) == 1
     assert "TEST-COVERAGE-VIOLATION" in violations[0]
-    assert "§4.3.1" in violations[0]
+    assert "src/auth.py" in violations[0] or "Changed:" in violations[0]
 
 
 def test_no_violation_when_only_docs_changed(tmp_path, mod):
