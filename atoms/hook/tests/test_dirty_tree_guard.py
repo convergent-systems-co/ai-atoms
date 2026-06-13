@@ -126,10 +126,10 @@ def test_subprocess_clean_repo(hook_path, tmp_path):
     repo.mkdir()
     _init_repo(repo)
     _commit(repo, {"README.md": "hello\n"}, "initial")
-    env = {"CLAUDE_CWD": str(repo), "PATH": os.environ["PATH"], "HOME": os.environ.get("HOME", "")}
+    env = {"PATH": os.environ["PATH"], "HOME": os.environ.get("HOME", "")}
     result = subprocess.run(
         [sys.executable, str(hook_path)],
-        input="{}", capture_output=True, text=True, env=env,
+        input=json.dumps({"cwd": str(repo)}), capture_output=True, text=True, env=env,
     )
     assert result.returncode == 0
     assert "GIT-HYGIENE-VIOLATION" not in result.stdout
@@ -142,10 +142,10 @@ def test_subprocess_dirty_repo_emits_sentinel(hook_path, tmp_path):
     _init_repo(repo)
     _commit(repo, {"README.md": "hello\n"}, "initial")
     (repo / "README.md").write_text("changed\n")
-    env = {"CLAUDE_CWD": str(repo), "PATH": os.environ["PATH"], "HOME": os.environ.get("HOME", "")}
+    env = {"PATH": os.environ["PATH"], "HOME": os.environ.get("HOME", "")}
     result = subprocess.run(
         [sys.executable, str(hook_path)],
-        input="{}", capture_output=True, text=True, env=env,
+        input=json.dumps({"cwd": str(repo)}), capture_output=True, text=True, env=env,
     )
     assert result.returncode == 0  # non-blocking
     # violations go to both stdout (downstream) and stderr (structured log)
@@ -157,7 +157,7 @@ def test_subprocess_empty_stdin(hook_path, tmp_path):
     repo.mkdir()
     _init_repo(repo)
     _commit(repo, {"README.md": "hello\n"}, "initial")
-    env = {"CLAUDE_CWD": str(repo), "PATH": os.environ["PATH"], "HOME": os.environ.get("HOME", "")}
+    env = {"PATH": os.environ["PATH"], "HOME": os.environ.get("HOME", "")}
     result = subprocess.run(
         [sys.executable, str(hook_path)],
         input="", capture_output=True, text=True, env=env,
