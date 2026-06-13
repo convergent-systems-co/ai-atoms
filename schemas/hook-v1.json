@@ -110,6 +110,26 @@
       "items": {"type": "string"},
       "description": "Hook IDs this hook depends on (e.g. hook/lib). Installed automatically.",
       "default": []
+    },
+    "requires_wrap": {
+      "type": "object",
+      "required": ["binary", "description", "install_hint"],
+      "additionalProperties": false,
+      "description": "Present when the hook only achieves full coverage when the named binary is installed as a wrapper around an external tool (e.g. git aliased to 'ai git'). Without the wrapper the hook still fires for AI tool Bash calls, but direct invocations bypass it. The ai CLI reads this field in 'ai doctor' to surface the hint and in 'ai setup' to offer the wrapper install — but never requires it.",
+      "properties": {
+        "binary": {
+          "type": "string",
+          "description": "The ai CLI binary that provides the wrapper (e.g. 'ai')."
+        },
+        "description": {
+          "type": "string",
+          "description": "One sentence explaining what the wrapper does and why it is needed for full coverage."
+        },
+        "install_hint": {
+          "type": "string",
+          "description": "The CLI command the user can run to install the wrapper (e.g. 'ai setup --git-shim')."
+        }
+      }
     }
   }
 }
