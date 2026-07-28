@@ -109,6 +109,24 @@ def test_wrapper_mode_allows_canonical(hook_path, tmp_path):
     assert proc.returncode == 0, "canonical <repo>/.worktrees/ must pass"
 
 
+def test_wrapper_mode_allows_claude_native(hook_path, tmp_path):
+    """Claude Code's EnterWorktree places worktrees under .claude/worktrees/;
+    it can't be redirected to `ai worktree add`, so this root must pass."""
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    _init_repo(repo)
+    target = repo / ".claude" / "worktrees" / "feat"
+    proc = subprocess.run(
+        [sys.executable, str(hook_path), "--mode=wrapper"],
+        env=_wrapper_env(tmp_path, ["worktree", "add", str(target), "HEAD"]),
+        cwd=str(repo), stdin=subprocess.DEVNULL,
+        capture_output=True, text=True,
+    )
+    assert proc.returncode == 0, (
+        "canonical <repo>/.claude/worktrees/ must pass: " + proc.stderr
+    )
+
+
 def test_wrapper_mode_ignores_non_add(hook_path, tmp_path):
     repo = tmp_path / "repo"
     repo.mkdir()
