@@ -30,7 +30,7 @@ jobs:
       - name: Create Pages project (idempotent)
         uses: cloudflare/wrangler-action@v3
         with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          apiToken: ${{ secrets.CLOUDFLARE_ACCOUNT_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages project create ai-atoms --production-branch=main
         continue-on-error: true
@@ -38,18 +38,18 @@ jobs:
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          apiToken: ${{ secrets.CLOUDFLARE_ACCOUNT_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy web/dist --project-name=ai-atoms
 
       - name: Trigger downstream rebuilds
         # Uses the CF Pages API to trigger a new deployment of dependent sites.
-        # No deploy hook URL needed — uses the existing CLOUDFLARE_API_TOKEN (Pages:Edit).
+        # No deploy hook URL needed — uses the existing CLOUDFLARE_ACCOUNT_TOKEN (Pages:Edit).
         # To add a new downstream site, append its project name to DOWNSTREAM_PROJECTS.
         # Non-fatal: continue-on-error so a failed trigger never blocks ai-atoms deploy.
         continue-on-error: true
         env:
-          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_ACCOUNT_TOKEN }}
           CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           # Space-separated list of CF Pages project names to rebuild after ai-atoms deploys
