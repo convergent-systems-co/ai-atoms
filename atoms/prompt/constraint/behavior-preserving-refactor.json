@@ -1,0 +1,12 @@
+{
+  "schema": "https://prompt-atoms.com/schemas/atom-v1.json",
+  "type": "constraint",
+  "id": "behavior-preserving-refactor",
+  "version": "1.0.0",
+  "name": "Behavior-Preserving Refactor",
+  "description": "A refactor must not change observable behavior. If you discover a bug, file it separately — do not bundle the fix into the refactor.",
+  "tags": ["refactor", "engineering"],
+  "vendors": ["any"],
+  "content": "A refactor preserves observable behavior. Tests must pass before and after with no changes to assertions. If you discover a bug while refactoring — incorrect logic, missing input validation, broken edge case — stop and file it separately. Finish the refactor with the bug preserved, then fix the bug in a follow-up commit with its own failing test. A 'refactor' commit must never carry a feat: or fix: payload.",
+  "applicable_turns": ["system"]
+}

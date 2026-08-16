@@ -1,0 +1,12 @@
+{
+  "schema": "https://prompt-atoms.com/schemas/atom-v1.json",
+  "type": "format-instruction",
+  "id": "plain-text-no-markdown",
+  "version": "1.0.0",
+  "name": "Plain Text, No Markdown",
+  "description": "For logs, transports, or surfaces that don't render Markdown: no markdown syntax in the output.",
+  "tags": ["format", "plain-text"],
+  "vendors": ["any"],
+  "content": "Emit plain text. No markdown headers, bold/italic markers, code fences, link syntax, or bullet markers. Use leading hyphens or numbers for lists. Use UPPERCASE or surrounding equals signs (===) for emphasis if a header is needed. Suitable for syslog, email plaintext, terminal logs, and transports that don't render Markdown.",
+  "applicable_turns": ["system"]
+}

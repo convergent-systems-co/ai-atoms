@@ -1,0 +1,12 @@
+{
+  "schema": "https://prompt-atoms.com/schemas/atom-v1.json",
+  "type": "output-schema",
+  "id": "markdown-with-frontmatter",
+  "version": "1.0.0",
+  "name": "Markdown with YAML frontmatter",
+  "description": "Output is markdown with a leading YAML frontmatter block declaring title, summary, tags, generated_at.",
+  "tags": ["output-schema", "markdown", "frontmatter"],
+  "vendors": ["any"],
+  "content": "Respond as markdown. Start with a YAML frontmatter block:\n\n---\ntitle: <one-line>\nsummary: <one-paragraph>\ntags: [<list>]\ngenerated_at: <UTC ISO-8601>\n---\n\nThen the body. Use ```language fences for code blocks.",
+  "applicable_turns": ["system"]
+}

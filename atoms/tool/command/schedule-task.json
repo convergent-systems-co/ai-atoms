@@ -1,0 +1,19 @@
+{
+  "schema": "https://agent-atoms.com/schemas/atom-v1.json",
+  "type": "tool-definition",
+  "id": "schedule-task",
+  "version": "1.0.0",
+  "name": "schedule-task",
+  "description": "Register a cron / timer task. Side-effecting (creates persistent schedule).",
+  "tool_spec": {
+    "function_name": "schedule_task",
+    "summary": "Register a recurring task.",
+    "parameters": {
+      "cron": { "type": "string", "description": "Cron expression", "required": true },
+      "name": { "type": "string", "description": "Task name", "required": true },
+      "payload": { "type": "object", "description": "Task definition", "required": true }
+    },
+    "returns": { "type": "object", "description": "{task_id, next_run}." },
+    "side_effects": ["network"]
+  }
+}

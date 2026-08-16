@@ -1,0 +1,57 @@
+{
+  "schema": "https://workflow-atoms.com/schemas/composition-v1.json",
+  "id": "workflow-atoms/workflows/sre-runbook-generation",
+  "version": "1.0.0",
+  "name": "SRE Runbook Generation",
+  "description": "Generate a structured runbook for a given service or failure mode. Uses runbook-author persona with documentation-writer voice.",
+  "trigger": {
+    "atom_id": "workflow-atoms/trigger-type/manual",
+    "config": {
+      "inputs": ["service", "failure_mode", "alert_name"]
+    }
+  },
+  "steps": [
+    {
+      "id": "gather-service-context",
+      "atom_id": "workflow-atoms/step-type/clone-repository",
+      "inputs": {
+        "service": "$trigger.service"
+      }
+    },
+    {
+      "id": "identify-failure-modes",
+      "atom_id": "workflow-atoms/step-type/diagnose-incident",
+      "depends_on": ["gather-service-context"],
+      "inputs": {
+        "service": "$trigger.service",
+        "alert_name": "$trigger.alert_name",
+        "failure_mode": "$trigger.failure_mode"
+      }
+    },
+    {
+      "id": "draft-runbook",
+      "atom_id": "workflow-atoms/step-type/write-post-mortem",
+      "depends_on": ["identify-failure-modes"],
+      "inputs": {
+        "service": "$trigger.service",
+        "failure_mode": "$trigger.failure_mode",
+        "alert_name": "$trigger.alert_name"
+      }
+    },
+    {
+      "id": "validate-runbook",
+      "atom_id": "workflow-atoms/gate-type/ci-green",
+      "depends_on": ["draft-runbook"],
+      "on_failure": "fail"
+    },
+    {
+      "id": "publish-runbook",
+      "atom_id": "workflow-atoms/step-type/publish-artifact",
+      "depends_on": ["validate-runbook"],
+      "inputs": {
+        "destination": "doc-atoms"
+      }
+    }
+  ],
+  "tags": ["sre", "runbook", "documentation", "olympus"]
+}

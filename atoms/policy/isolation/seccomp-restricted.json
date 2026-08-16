@@ -1,0 +1,14 @@
+{
+  "schema": "https://agent-atoms.com/schemas/atom-v1.json",
+  "type": "isolation-constraint",
+  "id": "seccomp-restricted",
+  "version": "1.0.0",
+  "name": "Seccomp restricted",
+  "description": "Subprocess with seccomp filter — only whitelisted syscalls allowed. No network; scoped filesystem.",
+  "isolation": {
+    "process": "subprocess",
+    "network": "none",
+    "filesystem": "scoped",
+    "scoped_paths": ["${WORKSPACE_ROOT}"]
+  }
+}

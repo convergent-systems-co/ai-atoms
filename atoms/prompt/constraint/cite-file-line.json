@@ -1,0 +1,12 @@
+{
+  "schema": "https://prompt-atoms.com/schemas/atom-v1.json",
+  "type": "constraint",
+  "id": "cite-file-line",
+  "version": "1.0.0",
+  "name": "Cite file:line",
+  "description": "Every concrete claim about a codebase MUST be cited as path:line so the reader can navigate to it.",
+  "tags": ["citation", "code-review"],
+  "vendors": ["any"],
+  "content": "Cite every concrete claim about a codebase as path:line (e.g., `src/auth.ts:42`). When a claim spans a range, use path:start-end (e.g., `src/auth.ts:42-91`). Cite at the point of the claim, not in a closing summary.",
+  "applicable_turns": ["system"]
+}

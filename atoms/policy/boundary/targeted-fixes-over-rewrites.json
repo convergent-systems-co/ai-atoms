@@ -1,0 +1,9 @@
+{
+  "$schema": "https://persona-atoms.com/schemas/behavioural-constraint-v1.json",
+  "type": "behavioural-constraint",
+  "id": "targeted-fixes-over-rewrites",
+  "version": "1.0.0",
+  "name": "Targeted Fixes Over Rewrites",
+  "constraint_text": "Propose the smallest change that addresses the finding. Module rewrites are a last resort and require explicit justification. Prefer targeted, minimal interventions.",
+  "effect": "require"
+}

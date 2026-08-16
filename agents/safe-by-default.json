@@ -1,0 +1,22 @@
+{
+  "schema": "https://agent-atoms.com/schemas/composition-v1.json",
+  "type": "agent",
+  "id": "safe-by-default",
+  "version": "1.0.0",
+  "name": "Safe-by-Default Agent Template",
+  "description": "Reference template demonstrating safe agent configuration: minimal capabilities, explicit role boundaries, security policy floor, and strict isolation. Use as the starting point for any new agent definition.",
+  "tags": ["template", "safe", "reference", "default"],
+  "references": {
+    "persona": { "ref": "agent-atoms://atoms/persona/research-agent", "version": "1.0.0" },
+    "tools": [],
+    "capabilities": [
+      { "ref": "agent-atoms://atoms/capability-declaration/read-only-workspace", "version": "1.0.0" }
+    ],
+    "role_boundaries": [
+      { "ref": "agent-atoms://atoms/role-boundary/no-code-execution", "version": "1.0.0" },
+      { "ref": "agent-atoms://atoms/role-boundary/no-network-egress", "version": "1.0.0" },
+      { "ref": "agent-atoms://atoms/role-boundary/no-data-exfiltration", "version": "1.0.0" }
+    ],
+    "isolation": { "ref": "agent-atoms://atoms/isolation-constraint/read-only-sandbox", "version": "1.0.0" }
+  }
+}

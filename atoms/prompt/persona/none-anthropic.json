@@ -1,0 +1,13 @@
+{
+  "schema": "https://prompt-atoms.com/schemas/atom-v1.json",
+  "type": "persona",
+  "id": "none-anthropic",
+  "version": "1.0.0",
+  "name": "None (Anthropic)",
+  "description": "Identity persona for Anthropic Claude models. No interpretive lens.",
+  "tags": ["none", "identity", "anthropic"],
+  "vendors": ["anthropic"],
+  "persona_ref": "persona-atoms/persona/none",
+  "content": "",
+  "applicable_turns": ["system"]
+}

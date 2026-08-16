@@ -1,0 +1,17 @@
+{
+  "schema": "https://agent-atoms.com/schemas/atom-v1.json",
+  "type": "tool-definition",
+  "id": "stat",
+  "version": "1.0.0",
+  "name": "stat",
+  "description": "File metadata: size, mtime, mode, type.",
+  "tool_spec": {
+    "function_name": "stat",
+    "summary": "Return metadata for a path.",
+    "parameters": {
+      "path": { "type": "string", "description": "File or directory path", "required": true }
+    },
+    "returns": { "type": "object", "description": "Metadata fields." },
+    "side_effects": ["fs-read"]
+  }
+}

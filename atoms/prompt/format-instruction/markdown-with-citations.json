@@ -1,0 +1,12 @@
+{
+  "schema": "https://prompt-atoms.com/schemas/atom-v1.json",
+  "type": "format-instruction",
+  "id": "markdown-with-citations",
+  "version": "1.0.0",
+  "name": "Markdown with citations",
+  "description": "Output is GitHub-flavored markdown. Code references use path:line; external sources use inline links.",
+  "tags": ["format", "markdown"],
+  "vendors": ["any"],
+  "content": "Format your response as GitHub-flavored markdown. Use ```language fences for code blocks. Cite code as path:line. Use inline links [text](url) for external sources. Avoid HTML.",
+  "applicable_turns": ["system"]
+}

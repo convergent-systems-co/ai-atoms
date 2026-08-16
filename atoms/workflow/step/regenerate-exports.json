@@ -1,0 +1,17 @@
+{
+  "schema": "https://workflow-atoms.com/schemas/atom-v1.json",
+  "type": "step-type",
+  "id": "workflow-atoms/step-type/regenerate-exports",
+  "version": "1.0.0",
+  "name": "Regenerate Exports",
+  "description": "Re-run the build-exports script to regenerate catalog.json and any other export artifacts from source atoms.",
+  "inputs": [
+    {"name": "script_path", "type": "string", "required": false}
+  ],
+  "outputs": [
+    {"name": "catalog_path", "type": "string"},
+    {"name": "atom_count", "type": "integer"}
+  ],
+  "retryable": true,
+  "tags": ["atoms", "catalog", "build"]
+}

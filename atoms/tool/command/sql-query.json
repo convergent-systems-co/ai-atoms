@@ -1,0 +1,19 @@
+{
+  "schema": "https://agent-atoms.com/schemas/atom-v1.json",
+  "type": "tool-definition",
+  "id": "sql-query",
+  "version": "1.0.0",
+  "name": "sql-query",
+  "description": "Read-only SELECT against a named DSN.",
+  "tool_spec": {
+    "function_name": "sql_query",
+    "summary": "Run a SELECT and return rows.",
+    "parameters": {
+      "dsn": { "type": "string", "description": "Named DSN identifier", "required": true },
+      "sql": { "type": "string", "description": "SELECT statement", "required": true },
+      "params": { "type": "array", "description": "Parameterized values", "required": false }
+    },
+    "returns": { "type": "array", "description": "Result rows as objects." },
+    "side_effects": ["network"]
+  }
+}

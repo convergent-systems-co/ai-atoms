@@ -1,0 +1,14 @@
+{
+  "schema": "https://agent-atoms.com/schemas/atom-v1.json",
+  "type": "isolation-constraint",
+  "id": "read-only-sandbox",
+  "version": "1.0.0",
+  "name": "Read-only sandbox",
+  "description": "Subprocess with read-only filesystem mount, no network, scoped to the workspace root. Used by reviewer / analyst agents.",
+  "isolation": {
+    "process": "subprocess",
+    "network": "none",
+    "filesystem": "read-only",
+    "scoped_paths": ["${WORKSPACE_ROOT}"]
+  }
+}

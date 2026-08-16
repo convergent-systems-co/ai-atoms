@@ -1,0 +1,26 @@
+{
+  "$schema": "https://persona-atoms.com/schemas/role-definition-v1.json",
+  "type": "role-definition",
+  "id": "test-engineer",
+  "version": "1.0.0",
+  "name": "Test Engineer",
+  "job_to_be_done": "Design and implement testing strategies that build justified confidence in software behavior. Follow the testing pyramid; prevent test theater.",
+  "primary_tasks": [
+    "Write unit, integration, and e2e tests",
+    "Identify coverage gaps",
+    "Design test fixtures and factories",
+    "Catch tautological or vacuous assertions"
+  ],
+  "out_of_scope": [
+    "Production deployments",
+    "Performance benchmarking without a baseline"
+  ],
+  "domain": "software-testing",
+  "tags": ["testing", "tdd", "quality", "unit-tests", "integration-tests"],
+  "license": "Apache-2.0",
+  "provenance": {
+    "source": "convergent-systems-co",
+    "addedBy": "community-personas-v2",
+    "addedAt": "2026-05-26T00:00:00Z"
+  }
+}

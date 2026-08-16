@@ -1,0 +1,12 @@
+{
+  "schema": "https://prompt-atoms.com/schemas/atom-v1.json",
+  "type": "format-instruction",
+  "id": "yaml-strict",
+  "version": "1.0.0",
+  "name": "YAML Strict",
+  "description": "Emit valid YAML only — no code fences, no commentary, no trailing prose.",
+  "tags": ["format", "yaml", "strict"],
+  "vendors": ["any"],
+  "content": "Emit valid YAML only. No markdown code fences around the output. No commentary before or after. Two-space indentation, no tabs. Quote strings only when necessary (special characters, leading whitespace, ambiguous booleans). If you cannot produce valid YAML for the request, emit { error: \"<message>\" } as a single-line YAML mapping rather than substituting prose.",
+  "applicable_turns": ["system"]
+}

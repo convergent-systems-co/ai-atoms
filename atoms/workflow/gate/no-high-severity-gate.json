@@ -1,0 +1,17 @@
+{
+  "schema": "https://workflow-atoms.com/schemas/atom-v1.json",
+  "type": "gate-type",
+  "id": "workflow-atoms/gate-type/no-high-severity-gate",
+  "version": "1.0.0",
+  "name": "No High-Severity Vulnerabilities Gate",
+  "description": "Block the pipeline if any high-severity or critical vulnerabilities were found in the dependency audit.",
+  "inputs": [
+    {"name": "high_severity_count", "type": "integer", "required": true},
+    {"name": "fail_threshold", "type": "integer", "required": false}
+  ],
+  "outputs": [
+    {"name": "passed", "type": "boolean"}
+  ],
+  "retryable": false,
+  "tags": ["gate", "security", "dependencies"]
+}

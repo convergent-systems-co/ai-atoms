@@ -1,0 +1,24 @@
+{
+  "schema": "https://agent-atoms.com/schemas/composition-v1.json",
+  "type": "agent",
+  "id": "runbook-executor",
+  "version": "1.0.0",
+  "name": "Runbook Executor",
+  "description": "DevOps runbook execution agent. bash exec + scoped writes + outbound HTTP, gated by per-command user approval and container isolation.",
+  "tags": ["devops", "operations"],
+  "references": {
+    "persona": { "ref": "agent-atoms://atoms/persona/devops-engineer", "version": "1.0.0" },
+    "tools": [
+      { "ref": "agent-atoms://atoms/tool-definition/bash-exec", "version": "1.0.0" },
+      { "ref": "agent-atoms://atoms/tool-definition/http-fetch", "version": "1.0.0" },
+      { "ref": "agent-atoms://atoms/tool-definition/file-write", "version": "1.0.0" }
+    ],
+    "capabilities": [
+      { "ref": "agent-atoms://atoms/capability-declaration/exec-with-approval", "version": "1.0.0" }
+    ],
+    "role_boundaries": [
+      { "ref": "agent-atoms://atoms/role-boundary/no-data-exfiltration", "version": "1.0.0" }
+    ],
+    "isolation": { "ref": "agent-atoms://atoms/isolation-constraint/container-with-allowlist", "version": "1.0.0" }
+  }
+}

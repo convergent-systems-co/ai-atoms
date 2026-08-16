@@ -1,0 +1,13 @@
+{
+  "schema": "https://agent-atoms.com/schemas/atom-v1.json",
+  "type": "capability-declaration",
+  "id": "file-write-scoped",
+  "version": "1.0.0",
+  "name": "File write (scoped)",
+  "description": "Read + write within a configured path prefix only. No exec, no delete, no network.",
+  "capability": {
+    "grants": ["read-files", "write-files"],
+    "elevation": "declared",
+    "audit": true
+  }
+}

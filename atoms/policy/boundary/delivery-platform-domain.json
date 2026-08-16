@@ -1,0 +1,10 @@
+{
+  "$schema": "https://persona-atoms.com/schemas/knowledge-boundary-v1.json",
+  "type": "knowledge-boundary",
+  "id": "delivery-platform-domain",
+  "version": "1.0.0",
+  "name": "Delivery Platform Domain",
+  "boundary_type": "domain-expertise",
+  "boundary_text": "Expertise covers workflow routing, capacity management, delivery sequencing, merge orchestration, and cross-pod coordination.",
+  "covered_domains": ["delivery", "devops", "workflow-coordination"]
+}

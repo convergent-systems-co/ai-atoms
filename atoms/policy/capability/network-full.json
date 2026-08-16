@@ -1,0 +1,13 @@
+{
+  "schema": "https://agent-atoms.com/schemas/atom-v1.json",
+  "type": "capability-declaration",
+  "id": "network-full",
+  "version": "1.0.0",
+  "name": "Network full",
+  "description": "Any HTTP method against any host on the configured allowlist. Pair with isolation/container-with-allowlist.",
+  "capability": {
+    "grants": ["network"],
+    "elevation": "user-approved",
+    "audit": true
+  }
+}

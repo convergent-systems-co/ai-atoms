@@ -1,0 +1,9 @@
+{
+  "$schema": "https://persona-atoms.com/schemas/tone-parameter-v1.json",
+  "type": "tone-parameter",
+  "id": "direct-professional",
+  "version": "1.0.0",
+  "name": "Direct Professional",
+  "warmth": "neutral",
+  "directness": "direct"
+}

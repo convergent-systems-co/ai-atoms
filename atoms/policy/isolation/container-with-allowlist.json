@@ -1,0 +1,14 @@
+{
+  "schema": "https://agent-atoms.com/schemas/atom-v1.json",
+  "type": "isolation-constraint",
+  "id": "container-with-allowlist",
+  "version": "1.0.0",
+  "name": "Container with network allowlist",
+  "description": "Container-isolated execution with an allowlist for network egress (e.g., package registries, AI endpoints only). Scoped tmpfs filesystem.",
+  "isolation": {
+    "process": "container",
+    "network": "allowlist",
+    "filesystem": "scoped",
+    "scoped_paths": ["/workspace", "/tmp"]
+  }
+}

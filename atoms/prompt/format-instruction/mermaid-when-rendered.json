@@ -1,0 +1,12 @@
+{
+  "schema": "https://prompt-atoms.com/schemas/atom-v1.json",
+  "type": "format-instruction",
+  "id": "mermaid-when-rendered",
+  "version": "1.0.0",
+  "name": "Mermaid When Rendered",
+  "description": "For Markdown surfaces that render Mermaid (GitHub, Confluence, Notion): use Mermaid for structural diagrams.",
+  "tags": ["format", "markdown", "mermaid"],
+  "vendors": ["any"],
+  "content": "When the destination is a Markdown-rendering surface (GitHub PR/issue body, Confluence page, Notion, anywhere Mermaid renders), use Mermaid for architecture, sequence, state, ER, and dependency diagrams. Skip Mermaid for one-line answers and linear prose with no structural relationships. Never describe a diagram in prose when you could render one.",
+  "applicable_turns": ["system"]
+}

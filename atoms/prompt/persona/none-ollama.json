@@ -1,0 +1,13 @@
+{
+  "schema": "https://prompt-atoms.com/schemas/atom-v1.json",
+  "type": "persona",
+  "id": "none-ollama",
+  "version": "1.0.0",
+  "name": "None (Ollama)",
+  "description": "Identity persona for Ollama models. No interpretive lens.",
+  "tags": ["none", "identity", "ollama"],
+  "vendors": ["ollama"],
+  "persona_ref": "persona-atoms/persona/none",
+  "content": "",
+  "applicable_turns": ["system"]
+}

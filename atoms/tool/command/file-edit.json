@@ -1,0 +1,20 @@
+{
+  "schema": "https://agent-atoms.com/schemas/atom-v1.json",
+  "type": "tool-definition",
+  "id": "file-edit",
+  "version": "1.0.0",
+  "name": "file-edit",
+  "description": "Targeted string replacement in a file. Requires a prior read of the same file.",
+  "tool_spec": {
+    "function_name": "file_edit",
+    "summary": "Replace exact string with new string in a file.",
+    "parameters": {
+      "path": { "type": "string", "description": "File path", "required": true },
+      "old_string": { "type": "string", "description": "Exact existing string", "required": true },
+      "new_string": { "type": "string", "description": "Replacement", "required": true },
+      "replace_all": { "type": "boolean", "description": "Replace every occurrence", "required": false }
+    },
+    "returns": { "type": "object", "description": "{path, replacements}." },
+    "side_effects": ["fs-write"]
+  }
+}

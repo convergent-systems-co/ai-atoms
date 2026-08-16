@@ -1,0 +1,9 @@
+{
+  "$schema": "https://persona-atoms.com/schemas/knowledge-boundary-v1.json",
+  "type": "knowledge-boundary",
+  "id": "research-methodology-domain",
+  "version": "1.0.0",
+  "name": "Research Methodology Domain",
+  "boundary_type": "domain-expertise",
+  "boundary_text": "Expertise covers research design, literature review, statistical methods, evidence quality assessment, citation practices, and academic writing. Outside: original empirical research, clinical trials, and proprietary data access."
+}

@@ -1,0 +1,72 @@
+{
+  "schema": "https://workflow-atoms.com/schemas/composition-v1.json",
+  "id": "workflow-atoms/workflows/olympus-agentic-loop",
+  "version": "1.0.0",
+  "name": "Olympus Agentic Toolloop",
+  "description": "The core Olympus agent loop: receive prompt → invoke LLM → parse tool calls → execute → repeat until no tool calls or max iterations reached. Gates a policy broker check before each tool dispatch.",
+  "trigger": {
+    "atom_id": "workflow-atoms/trigger-type/manual",
+    "config": {
+      "inputs": ["user_prompt", "persona_ref", "policy_floor_ref"]
+    }
+  },
+  "steps": [
+    {
+      "id": "policy-gate",
+      "atom_id": "workflow-atoms/gate-type/policy-broker-gate",
+      "inputs": {
+        "tool_calls": "$ctx.pending_tool_calls",
+        "policy_floor_ref": "$trigger.policy_floor_ref",
+        "persona_ref": "$trigger.persona_ref"
+      },
+      "on_failure": "fail"
+    },
+    {
+      "id": "invoke-llm",
+      "atom_id": "workflow-atoms/step-type/invoke-llm",
+      "depends_on": ["policy-gate"],
+      "inputs": {
+        "context": "$ctx.message_context",
+        "tool_schemas": "$ctx.tool_schemas",
+        "persona_ref": "$trigger.persona_ref"
+      }
+    },
+    {
+      "id": "parse-tool-calls",
+      "atom_id": "workflow-atoms/step-type/parse-tool-calls",
+      "depends_on": ["invoke-llm"],
+      "inputs": {
+        "llm_response": "$steps.invoke-llm.response",
+        "tool_schemas": "$ctx.tool_schemas"
+      }
+    },
+    {
+      "id": "execute-tools",
+      "atom_id": "workflow-atoms/step-type/execute-tool-calls",
+      "depends_on": ["parse-tool-calls"],
+      "inputs": {
+        "tool_calls": "$steps.parse-tool-calls.tool_calls"
+      }
+    },
+    {
+      "id": "append-results",
+      "atom_id": "workflow-atoms/step-type/append-tool-results",
+      "depends_on": ["execute-tools"],
+      "inputs": {
+        "context": "$ctx.message_context",
+        "tool_calls": "$steps.parse-tool-calls.tool_calls",
+        "tool_results": "$steps.execute-tools.tool_results"
+      }
+    },
+    {
+      "id": "termination-gate",
+      "atom_id": "workflow-atoms/gate-type/no-tool-calls-gate",
+      "depends_on": ["append-results"],
+      "inputs": {
+        "has_tool_calls": "$steps.parse-tool-calls.has_tool_calls",
+        "max_iterations": 20
+      }
+    }
+  ],
+  "tags": ["olympus", "agentic", "toolloop", "zeus", "llm"]
+}

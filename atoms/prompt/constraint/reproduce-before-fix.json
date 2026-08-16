@@ -1,0 +1,12 @@
+{
+  "schema": "https://prompt-atoms.com/schemas/atom-v1.json",
+  "type": "constraint",
+  "id": "reproduce-before-fix",
+  "version": "1.0.0",
+  "name": "Reproduce Before Fix",
+  "description": "Every bug fix begins with a failing test that reproduces the bug. If you cannot reproduce, the reproduction recipe is the work product.",
+  "tags": ["debugging", "tdd"],
+  "vendors": ["any"],
+  "content": "Before fixing a bug, reproduce it reliably and capture the reproduction as a failing test. The test stays in the suite after the fix is in. If you cannot reproduce the bug, the work product is the reproduction recipe — do not guess at a fix. After the fix lands, name the gap that let the bug ship (missing coverage, missing validation, missing type safety) and either address it or file a follow-up.",
+  "applicable_turns": ["system"]
+}

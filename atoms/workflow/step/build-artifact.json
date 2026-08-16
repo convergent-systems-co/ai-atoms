@@ -1,0 +1,19 @@
+{
+  "schema": "https://workflow-atoms.com/schemas/atom-v1.json",
+  "type": "step-type",
+  "id": "workflow-atoms/step-type/build-artifact",
+  "version": "1.0.0",
+  "name": "Build Artifact",
+  "description": "Compile or bundle the project into a distributable artifact (dist/, binary, container image, etc.).",
+  "inputs": [
+    {"name": "command", "type": "string", "required": false},
+    {"name": "working_directory", "type": "string", "required": false},
+    {"name": "output_path", "type": "string", "required": false}
+  ],
+  "outputs": [
+    {"name": "artifact_path", "type": "string"},
+    {"name": "artifact_size_bytes", "type": "integer"}
+  ],
+  "retryable": false,
+  "tags": ["build", "compile", "artifact"]
+}

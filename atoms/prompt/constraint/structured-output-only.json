@@ -1,0 +1,12 @@
+{
+  "schema": "https://prompt-atoms.com/schemas/atom-v1.json",
+  "type": "constraint",
+  "id": "structured-output-only",
+  "version": "1.0.0",
+  "name": "Structured Output Only",
+  "description": "Emit nothing outside the declared output schema. No preamble, no commentary, no closing summary.",
+  "tags": ["format", "structured"],
+  "vendors": ["any"],
+  "content": "Emit only the declared output schema. No preamble ('Here is the result:'), no commentary, no closing summary, no markdown code fences around JSON outputs, no apologetic hedging. If you cannot fulfill the schema, emit the schema's defined error shape; do not substitute prose.",
+  "applicable_turns": ["system"]
+}

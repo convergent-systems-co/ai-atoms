@@ -1,0 +1,20 @@
+{
+  "schema": "https://agent-atoms.com/schemas/atom-v1.json",
+  "type": "tool-definition",
+  "id": "grep",
+  "version": "1.0.0",
+  "name": "grep",
+  "description": "Pattern search across files. Returns matching lines with file:line locations.",
+  "tool_spec": {
+    "function_name": "grep",
+    "summary": "Search for a regex pattern across files.",
+    "parameters": {
+      "pattern": { "type": "string", "description": "Regex to match", "required": true },
+      "path": { "type": "string", "description": "Root path or file", "required": true },
+      "case_insensitive": { "type": "boolean", "description": "Ignore case", "required": false },
+      "max_matches": { "type": "number", "description": "Cap on returned matches", "required": false }
+    },
+    "returns": { "type": "array", "description": "Match objects {file, line, text}." },
+    "side_effects": ["fs-read"]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "schema": "https://agent-atoms.com/schemas/atom-v1.json",
+  "type": "tool-definition",
+  "id": "http-post",
+  "version": "1.0.0",
+  "name": "http-post",
+  "description": "HTTP POST / PUT / PATCH / DELETE. Side-effecting.",
+  "tool_spec": {
+    "function_name": "http_post",
+    "summary": "Perform a side-effecting HTTP request.",
+    "parameters": {
+      "url": { "type": "string", "description": "URL", "required": true },
+      "method": { "type": "string", "description": "POST / PUT / PATCH / DELETE", "required": true },
+      "body": { "type": "string", "description": "Request body", "required": false },
+      "headers": { "type": "object", "description": "Request headers", "required": false }
+    },
+    "returns": { "type": "object", "description": "{status, headers, body}." },
+    "side_effects": ["network"]
+  }
+}

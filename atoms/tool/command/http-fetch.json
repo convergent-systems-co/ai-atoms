@@ -1,0 +1,18 @@
+{
+  "schema": "https://agent-atoms.com/schemas/atom-v1.json",
+  "type": "tool-definition",
+  "id": "http-fetch",
+  "version": "1.0.0",
+  "name": "http-fetch",
+  "description": "HTTP GET. Returns body and status.",
+  "tool_spec": {
+    "function_name": "http_fetch",
+    "summary": "Perform an HTTP GET.",
+    "parameters": {
+      "url": { "type": "string", "description": "URL to fetch", "required": true },
+      "headers": { "type": "object", "description": "Optional request headers", "required": false }
+    },
+    "returns": { "type": "object", "description": "{status, headers, body}." },
+    "side_effects": ["network"]
+  }
+}

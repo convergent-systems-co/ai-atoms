@@ -1,0 +1,19 @@
+{
+  "schema": "https://workflow-atoms.com/schemas/atom-v1.json",
+  "type": "step-type",
+  "id": "workflow-atoms/step-type/cloudflare-pages-deploy",
+  "version": "1.0.0",
+  "name": "Cloudflare Pages Deploy",
+  "description": "Deploy a built site to Cloudflare Pages using Wrangler. Requires CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID.",
+  "inputs": [
+    {"name": "project_name", "type": "string", "required": true},
+    {"name": "directory", "type": "string", "required": true},
+    {"name": "branch", "type": "string", "required": false}
+  ],
+  "outputs": [
+    {"name": "deployment_url", "type": "string"},
+    {"name": "deployment_id", "type": "string"}
+  ],
+  "retryable": true,
+  "tags": ["cloudflare", "pages", "deploy"]
+}

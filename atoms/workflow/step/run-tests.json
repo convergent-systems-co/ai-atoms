@@ -1,0 +1,20 @@
+{
+  "schema": "https://workflow-atoms.com/schemas/atom-v1.json",
+  "type": "step-type",
+  "id": "workflow-atoms/step-type/run-tests",
+  "version": "1.0.0",
+  "name": "Run Tests",
+  "description": "Execute the project test suite (unit, integration, or end-to-end). Fails the step if any test fails.",
+  "inputs": [
+    {"name": "command", "type": "string", "required": false},
+    {"name": "working_directory", "type": "string", "required": false},
+    {"name": "coverage", "type": "boolean", "required": false}
+  ],
+  "outputs": [
+    {"name": "passed", "type": "integer"},
+    {"name": "failed", "type": "integer"},
+    {"name": "coverage_pct", "type": "number"}
+  ],
+  "retryable": false,
+  "tags": ["test", "ci", "quality"]
+}

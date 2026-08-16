@@ -1,0 +1,24 @@
+{
+  "schema": "https://prompt-atoms.com/schemas/composition-v1.json",
+  "type": "prompt",
+  "id": "research-summarizer",
+  "version": "1.0.0",
+  "name": "Research Summarizer",
+  "description": "Research synthesis prompt — primary-source preference, hedge preservation, structured summary output.",
+  "tags": ["research", "summarization"],
+  "vendors": ["any"],
+  "references": {
+    "persona": { "ref": "prompt-atoms://atoms/persona/research-summarizer", "version": "1.0.0" },
+    "constraints": [
+      { "ref": "prompt-atoms://atoms/constraint/no-fabrication", "version": "1.0.0" },
+      { "ref": "prompt-atoms://atoms/constraint/cite-primary-sources", "version": "1.0.0" },
+      { "ref": "prompt-atoms://atoms/constraint/preserve-source-hedges", "version": "1.0.0" }
+    ],
+    "format_instruction": { "ref": "prompt-atoms://atoms/format-instruction/structured-research-summary", "version": "1.0.0" },
+    "tool_use_template": { "ref": "prompt-atoms://atoms/tool-use-template/single-tool-call-then-stop", "version": "1.0.0" },
+    "refusal_patterns": [
+      { "ref": "prompt-atoms://atoms/refusal-pattern/no-medical-legal-advice", "version": "1.0.0" }
+    ],
+    "output_schema": { "ref": "prompt-atoms://atoms/output-schema/json-object-with-summary", "version": "1.0.0" }
+  }
+}

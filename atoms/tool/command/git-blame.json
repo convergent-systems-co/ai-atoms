@@ -1,0 +1,18 @@
+{
+  "schema": "https://agent-atoms.com/schemas/atom-v1.json",
+  "type": "tool-definition",
+  "id": "git-blame",
+  "version": "1.0.0",
+  "name": "git-blame",
+  "description": "Per-line authorship for a file.",
+  "tool_spec": {
+    "function_name": "git_blame",
+    "summary": "Annotate each line with its last commit.",
+    "parameters": {
+      "path": { "type": "string", "description": "File path", "required": true },
+      "rev": { "type": "string", "description": "Revision to blame (default: HEAD)", "required": false }
+    },
+    "returns": { "type": "array", "description": "Annotated lines." },
+    "side_effects": ["fs-read", "exec"]
+  }
+}

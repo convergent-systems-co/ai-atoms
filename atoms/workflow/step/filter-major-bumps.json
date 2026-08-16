@@ -1,0 +1,19 @@
+{
+  "schema": "https://workflow-atoms.com/schemas/atom-v1.json",
+  "type": "step-type",
+  "id": "workflow-atoms/step-type/filter-major-bumps",
+  "version": "1.0.0",
+  "name": "Filter Major Version Bumps",
+  "description": "Inspect a Dependabot PR and exit non-zero if the update is a major version bump, allowing the pipeline to skip or route for manual review.",
+  "inputs": [
+    {"name": "pr_number", "type": "integer", "required": true},
+    {"name": "block_major", "type": "boolean", "required": false}
+  ],
+  "outputs": [
+    {"name": "is_major", "type": "boolean"},
+    {"name": "old_version", "type": "string"},
+    {"name": "new_version", "type": "string"}
+  ],
+  "retryable": false,
+  "tags": ["dependabot", "semver", "filter"]
+}

@@ -1,0 +1,19 @@
+{
+  "schema": "https://agent-atoms.com/schemas/atom-v1.json",
+  "type": "tool-definition",
+  "id": "read-file",
+  "version": "1.0.0",
+  "name": "read-file",
+  "description": "Read a file from the workspace. Read-only; no side effects beyond opening the file.",
+  "tool_spec": {
+    "function_name": "read_file",
+    "summary": "Read the contents of a file at the given path.",
+    "parameters": {
+      "path": { "type": "string", "description": "Absolute or workspace-relative path", "required": true },
+      "offset": { "type": "number", "description": "Line offset for partial reads", "required": false },
+      "limit": { "type": "number", "description": "Max lines to return", "required": false }
+    },
+    "returns": { "type": "string", "description": "File contents (or specified slice)." },
+    "side_effects": ["fs-read"]
+  }
+}

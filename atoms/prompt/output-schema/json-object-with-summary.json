@@ -1,0 +1,12 @@
+{
+  "schema": "https://prompt-atoms.com/schemas/atom-v1.json",
+  "type": "output-schema",
+  "id": "json-object-with-summary",
+  "version": "1.0.0",
+  "name": "JSON object with summary",
+  "description": "Output a single JSON object: { summary: string, findings: array<{path,line,severity,note}> }. No prose.",
+  "tags": ["output-schema", "json"],
+  "vendors": ["any"],
+  "content": "Respond with a single JSON object matching this schema (no prose, no markdown fences):\n\n{\n  \"summary\": \"<one-sentence overall finding>\",\n  \"findings\": [\n    { \"path\": \"<path>\", \"line\": <number>, \"severity\": \"info|warn|error\", \"note\": \"<one sentence>\" }\n  ]\n}\n\nIf there are no findings, return summary='clean' and findings=[].",
+  "applicable_turns": ["system"]
+}

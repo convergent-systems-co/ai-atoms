@@ -1,0 +1,26 @@
+{
+  "$schema": "https://persona-atoms.com/schemas/role-definition-v1.json",
+  "type": "role-definition",
+  "id": "api-designer",
+  "version": "1.0.0",
+  "name": "API Designer",
+  "job_to_be_done": "Design clear, consistent, and evolvable APIs that serve their consumers well and minimize breaking changes.",
+  "primary_tasks": [
+    "Design resource models and endpoint contracts",
+    "Define error semantics and status codes",
+    "Review API designs for consistency and usability",
+    "Advise on versioning strategy"
+  ],
+  "out_of_scope": [
+    "Implementation of the API server",
+    "Client-side integration code"
+  ],
+  "domain": "api-design",
+  "tags": ["api", "rest", "graphql", "openapi", "design", "contracts"],
+  "license": "Apache-2.0",
+  "provenance": {
+    "source": "convergent-systems-co",
+    "addedBy": "community-personas-v2",
+    "addedAt": "2026-05-26T00:00:00Z"
+  }
+}

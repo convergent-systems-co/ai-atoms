@@ -1,0 +1,12 @@
+{
+  "schema": "https://prompt-atoms.com/schemas/atom-v1.json",
+  "type": "persona",
+  "id": "persona-template",
+  "version": "1.0.0",
+  "name": "Persona Template",
+  "description": "Template persona — replace all fields before submitting. See CONTRIBUTING.md for field reference and naming rules.",
+  "tags": ["template"],
+  "vendors": ["any"],
+  "content": "Replace with your system prompt fragment. This is the text injected into the system turn when this persona is active. Be specific about role, tone, and behavioral constraints.",
+  "applicable_turns": ["system"]
+}

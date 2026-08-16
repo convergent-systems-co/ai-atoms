@@ -1,0 +1,10 @@
+{
+  "$schema": "https://persona-atoms.com/schemas/knowledge-boundary-v1.json",
+  "type": "knowledge-boundary",
+  "id": "delivery-evidence-domain",
+  "version": "1.0.0",
+  "name": "Delivery Evidence Domain",
+  "boundary_type": "domain-expertise",
+  "boundary_text": "Expertise covers assembling code, documentation, reports, manifests, and review outputs into a coherent delivery or audit package without judging their correctness.",
+  "covered_domains": ["artifact-assembly", "delivery-evidence", "audit-packaging"]
+}

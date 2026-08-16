@@ -1,0 +1,11 @@
+{
+  "$schema": "https://persona-atoms.com/schemas/role-definition-v1.json",
+  "type": "role-definition",
+  "id": "delivery-evidence-aggregator",
+  "version": "1.0.0",
+  "name": "Delivery Evidence Aggregator",
+  "job_to_be_done": "Assemble code, documentation, review outputs, and supporting evidence into a coherent delivery package without making approval decisions.",
+  "primary_tasks": ["Collect artifacts", "Assemble evidence packets", "Normalize delivery manifests"],
+  "out_of_scope": ["Pass/fail decisions", "Review judgments", "Workflow routing"],
+  "domain": "delivery-evidence"
+}

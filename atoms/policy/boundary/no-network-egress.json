@@ -1,0 +1,17 @@
+{
+  "schema": "https://agent-atoms.com/schemas/atom-v1.json",
+  "type": "role-boundary",
+  "id": "no-network-egress",
+  "version": "1.0.0",
+  "name": "No network egress",
+  "description": "Refuses any tool call that hits the network. For air-gapped reviewers, untrusted-input handlers, supply-chain auditors.",
+  "boundary": {
+    "refusals": [
+      "Do not make HTTP / HTTPS requests.",
+      "Do not resolve hostnames.",
+      "Do not invoke tools whose side_effects include 'network'.",
+      "If a task requires network, escalate to a supervisor with the explicit request."
+    ],
+    "escalate_to": "agent-atoms://atoms/persona/devops-engineer"
+  }
+}

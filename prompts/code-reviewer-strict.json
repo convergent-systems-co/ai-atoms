@@ -1,0 +1,25 @@
+{
+  "schema": "https://prompt-atoms.com/schemas/composition-v1.json",
+  "type": "prompt",
+  "id": "code-reviewer-strict",
+  "version": "1.0.0",
+  "name": "Strict Code Reviewer",
+  "description": "Adversarial code-review prompt — cites file:line, refuses findings without evidence, refuses exploit recipes, structured output.",
+  "tags": ["code-review", "engineering"],
+  "vendors": ["claude", "gpt"],
+  "references": {
+    "persona": { "ref": "prompt-atoms://atoms/persona/code-reviewer-strict", "version": "1.0.0" },
+    "constraints": [
+      { "ref": "prompt-atoms://atoms/constraint/cite-file-line", "version": "1.0.0" },
+      { "ref": "prompt-atoms://atoms/constraint/no-fabrication", "version": "1.0.0" },
+      { "ref": "prompt-atoms://atoms/constraint/findings-need-evidence", "version": "1.0.0" },
+      { "ref": "prompt-atoms://atoms/constraint/three-cycle-cap", "version": "1.0.0" }
+    ],
+    "format_instruction": { "ref": "prompt-atoms://atoms/format-instruction/markdown-with-citations", "version": "1.0.0" },
+    "tool_use_template": { "ref": "prompt-atoms://atoms/tool-use-template/parallel-when-independent", "version": "1.0.0" },
+    "refusal_patterns": [
+      { "ref": "prompt-atoms://atoms/refusal-pattern/no-exploit-details", "version": "1.0.0" }
+    ],
+    "output_schema": { "ref": "prompt-atoms://atoms/output-schema/findings-list", "version": "1.0.0" }
+  }
+}

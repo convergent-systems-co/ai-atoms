@@ -1,0 +1,18 @@
+{
+  "schema": "https://agent-atoms.com/schemas/atom-v1.json",
+  "type": "tool-definition",
+  "id": "glob",
+  "version": "1.0.0",
+  "name": "glob",
+  "description": "Enumerate paths matching a glob pattern.",
+  "tool_spec": {
+    "function_name": "glob",
+    "summary": "Return paths matching a glob.",
+    "parameters": {
+      "pattern": { "type": "string", "description": "Glob pattern", "required": true },
+      "root": { "type": "string", "description": "Root path", "required": false }
+    },
+    "returns": { "type": "array", "description": "Matching paths." },
+    "side_effects": ["fs-read"]
+  }
+}

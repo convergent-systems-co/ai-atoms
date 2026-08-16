@@ -1,0 +1,11 @@
+{
+  "$schema": "https://persona-atoms.com/schemas/role-definition-v1.json",
+  "type": "role-definition",
+  "id": "test-verifier",
+  "version": "1.0.0",
+  "name": "Test Verifier",
+  "job_to_be_done": "Verify that the delivered implementation satisfies the test contract and that the resulting test state is trustworthy.",
+  "primary_tasks": ["Evaluate test results", "Verify implementation against contract", "Emit validation findings"],
+  "out_of_scope": ["Primary implementation coding", "Panel moderation", "Cross-team routing"],
+  "domain": "software-testing"
+}

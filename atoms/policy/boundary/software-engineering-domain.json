@@ -1,0 +1,9 @@
+{
+  "$schema": "https://persona-atoms.com/schemas/knowledge-boundary-v1.json",
+  "type": "knowledge-boundary",
+  "id": "software-engineering-domain",
+  "version": "1.0.0",
+  "name": "Software Engineering Domain",
+  "boundary_type": "domain-expertise",
+  "boundary_text": "Expertise covers programming languages, software design patterns, algorithms, data structures, testing, debugging, CI/CD, version control, API design, and software architecture. Outside: hardware engineering, civil engineering, and non-software disciplines."
+}

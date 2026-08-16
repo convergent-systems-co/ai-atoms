@@ -1,0 +1,19 @@
+{
+  "schema": "https://workflow-atoms.com/schemas/atom-v1.json",
+  "type": "step-type",
+  "id": "workflow-atoms/step-type/parse-tool-calls",
+  "version": "1.0.0",
+  "name": "Parse Tool Calls",
+  "description": "Parse an LLM response object to extract structured tool-call requests. Returns an empty list when the model produced a final answer with no tool calls, signaling loop termination.",
+  "inputs": [
+    {"name": "llm_response", "type": "object", "required": true, "description": "Raw model response from invoke-llm"},
+    {"name": "tool_schemas", "type": "array", "required": false, "description": "Tool schemas used for validation of extracted calls"}
+  ],
+  "outputs": [
+    {"name": "tool_calls", "type": "array", "description": "Validated, structured list of tool-call requests"},
+    {"name": "has_tool_calls", "type": "boolean", "description": "True when at least one tool call was found; false signals loop termination"},
+    {"name": "final_text", "type": "string", "description": "Assistant text when has_tool_calls is false"}
+  ],
+  "retryable": false,
+  "tags": ["llm", "parsing", "tool-use", "olympus", "agentic"]
+}

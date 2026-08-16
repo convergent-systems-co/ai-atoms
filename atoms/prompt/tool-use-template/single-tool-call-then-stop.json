@@ -1,0 +1,12 @@
+{
+  "schema": "https://prompt-atoms.com/schemas/atom-v1.json",
+  "type": "tool-use-template",
+  "id": "single-tool-call-then-stop",
+  "version": "1.0.0",
+  "name": "Single tool call, then stop",
+  "description": "Call exactly one tool, then end the turn. Used when you want a deterministic single-action loop.",
+  "tags": ["tool-use", "deterministic"],
+  "vendors": ["claude", "gpt"],
+  "content": "When you have everything needed to call a tool, call exactly one tool and then end your turn. Do not narrate before or after the call. Wait for the tool's result before further reasoning.",
+  "applicable_turns": ["system"]
+}

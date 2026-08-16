@@ -1,0 +1,12 @@
+{
+  "schema": "https://prompt-atoms.com/schemas/atom-v1.json",
+  "type": "tool-use-template",
+  "id": "parallel-when-independent",
+  "version": "1.0.0",
+  "name": "Parallel when independent",
+  "description": "Issue multiple tool calls in one turn when they have no shared state or sequential dependency. Otherwise serialize.",
+  "tags": ["tool-use", "parallel"],
+  "vendors": ["claude", "gpt"],
+  "content": "When you need to call multiple tools and the calls have no shared state and no sequential dependency, issue them in a single turn (in parallel). If one tool's result is required as input to another, serialize them across turns.",
+  "applicable_turns": ["system"]
+}

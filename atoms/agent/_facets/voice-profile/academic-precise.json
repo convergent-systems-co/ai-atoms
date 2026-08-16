@@ -1,0 +1,10 @@
+{
+  "$schema": "https://persona-atoms.com/schemas/voice-profile-v1.json",
+  "type": "voice-profile",
+  "id": "academic-precise",
+  "version": "1.0.0",
+  "name": "Academic Precise",
+  "formality": "formal",
+  "hedging_tolerance": "high",
+  "sentence_length_preference": "medium"
+}

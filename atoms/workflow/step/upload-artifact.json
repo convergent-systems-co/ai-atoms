@@ -1,0 +1,18 @@
+{
+  "schema": "https://workflow-atoms.com/schemas/atom-v1.json",
+  "type": "step-type",
+  "id": "workflow-atoms/step-type/upload-artifact",
+  "version": "1.0.0",
+  "name": "Upload Artifact",
+  "description": "Upload a build artifact to artifact storage (GitHub Actions artifacts, S3, GCS, etc.) for downstream jobs or release.",
+  "inputs": [
+    {"name": "artifact_path", "type": "string", "required": true},
+    {"name": "artifact_name", "type": "string", "required": true},
+    {"name": "retention_days", "type": "integer", "required": false}
+  ],
+  "outputs": [
+    {"name": "artifact_url", "type": "string"}
+  ],
+  "retryable": true,
+  "tags": ["artifact", "storage", "ci"]
+}

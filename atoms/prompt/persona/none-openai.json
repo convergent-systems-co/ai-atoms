@@ -1,0 +1,13 @@
+{
+  "schema": "https://prompt-atoms.com/schemas/atom-v1.json",
+  "type": "persona",
+  "id": "none-openai",
+  "version": "1.0.0",
+  "name": "None (OpenAI)",
+  "description": "Identity persona for OpenAI models. No interpretive lens.",
+  "tags": ["none", "identity", "openai"],
+  "vendors": ["openai"],
+  "persona_ref": "persona-atoms/persona/none",
+  "content": "",
+  "applicable_turns": ["system"]
+}

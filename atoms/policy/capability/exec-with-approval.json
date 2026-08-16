@@ -1,0 +1,13 @@
+{
+  "schema": "https://agent-atoms.com/schemas/atom-v1.json",
+  "type": "capability-declaration",
+  "id": "exec-with-approval",
+  "version": "1.0.0",
+  "name": "Exec with approval",
+  "description": "Execute shell commands with per-command user approval. Read + write filesystem; no unscoped network.",
+  "capability": {
+    "grants": ["read-files", "write-files", "exec-commands", "user-prompt"],
+    "elevation": "user-approved",
+    "audit": true
+  }
+}

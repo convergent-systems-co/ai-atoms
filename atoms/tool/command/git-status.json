@@ -1,0 +1,15 @@
+{
+  "schema": "https://agent-atoms.com/schemas/atom-v1.json",
+  "type": "tool-definition",
+  "id": "git-status",
+  "version": "1.0.0",
+  "name": "git-status",
+  "description": "Working tree status — staged, modified, untracked.",
+  "tool_spec": {
+    "function_name": "git_status",
+    "summary": "Return the working tree status.",
+    "parameters": {},
+    "returns": { "type": "object", "description": "Status grouped by category." },
+    "side_effects": ["fs-read", "exec"]
+  }
+}

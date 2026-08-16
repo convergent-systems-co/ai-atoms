@@ -1,0 +1,12 @@
+{
+  "schema": "https://prompt-atoms.com/schemas/atom-v1.json",
+  "type": "output-schema",
+  "id": "plan-with-alternatives",
+  "version": "1.0.0",
+  "name": "Plan With Alternatives",
+  "description": "Implementation plan with Alternatives Table, scope, approach, testing, risks, dependencies. Markdown shape per Code.md §11.1.",
+  "tags": ["output", "planning"],
+  "vendors": ["any"],
+  "content": "Emit a Markdown document with these required sections, in order: (1) Objective — one sentence; (2) Alternatives — a table with columns 'Alternative | Pros | Cons | Verdict' and at least two rows including 'do nothing' where applicable; (3) Scope — files to create, modify, delete; (4) Approach — numbered steps; (5) Testing — what tests prove it works; (6) Risks — what could go wrong and mitigation; (7) Dependencies — what must land first; (8) Backward Compatibility — what breaks and the migration path. No 'TBD' or 'TODO' entries in the final draft.",
+  "applicable_turns": ["system", "assistant"]
+}

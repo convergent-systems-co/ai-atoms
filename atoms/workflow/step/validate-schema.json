@@ -1,0 +1,19 @@
+{
+  "schema": "https://workflow-atoms.com/schemas/atom-v1.json",
+  "type": "step-type",
+  "id": "workflow-atoms/step-type/validate-schema",
+  "version": "1.0.0",
+  "name": "Validate Schema",
+  "description": "Validate a set of JSON files against one or more JSON Schema definitions. Reports all violations.",
+  "inputs": [
+    {"name": "schema_path", "type": "string", "required": true},
+    {"name": "target_glob", "type": "string", "required": true}
+  ],
+  "outputs": [
+    {"name": "valid_count", "type": "integer"},
+    {"name": "invalid_count", "type": "integer"},
+    {"name": "violations", "type": "array"}
+  ],
+  "retryable": false,
+  "tags": ["schema", "validation", "atoms"]
+}
