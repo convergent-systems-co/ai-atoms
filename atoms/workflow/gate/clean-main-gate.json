@@ -1,0 +1,18 @@
+{
+  "schema": "https://workflow-atoms.com/schemas/atom-v1.json",
+  "type": "gate-type",
+  "id": "workflow-atoms/gate-type/clean-main-gate",
+  "version": "1.0.0",
+  "name": "Clean Main Gate",
+  "description": "Verify that the main branch has a clean working tree, no uncommitted changes, and is up to date with the remote before allowing a release operation.",
+  "inputs": [
+    {"name": "branch", "type": "string", "required": false},
+    {"name": "remote", "type": "string", "required": false}
+  ],
+  "outputs": [
+    {"name": "is_clean", "type": "boolean"},
+    {"name": "is_up_to_date", "type": "boolean"}
+  ],
+  "retryable": true,
+  "tags": ["gate", "release", "git"]
+}

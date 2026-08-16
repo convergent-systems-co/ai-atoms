@@ -1,0 +1,24 @@
+{
+  "schema": "https://skill-atoms.com/schemas/atom-v1.json",
+  "type": "skill",
+  "id": "skill/finishing-a-development-branch",
+  "version": "1.0.0",
+  "name": "Finish Development Branch",
+  "description": "Guides completion of a development branch: verify all tests pass, run the adversarial self-pass, open PR, wait for CI green, merge. Presents structured options for merge, PR, or cleanup. Use when implementation is complete.",
+  "system_prompt_fragment": "Complete the development branch. Step 1: verify all tests pass (cite output). Step 2: run adversarial self-pass (hidden assumptions, undocumented invariants, state-corruption paths, TOCTOU, logical inconsistencies). Step 3: commit with a Conventional Commit message. Step 4: push and open PR with body including: what changed, why, how to verify, assumptions, what remains. Step 5: wait for CI green. Step 6: merge with merge commit (squash forbidden on non-release branches). Step 7: remove the worktree. Step 8: delete the branch. Report: what was shipped and what follow-ups were filed.",
+  "applicable_domains": ["code", "git", "delivery"],
+  "invocation_contract": {
+    "inputs": [
+      { "name": "branch", "type": "string", "description": "The feature branch to finish and merge.", "required": false },
+      { "name": "linked_issue", "type": "string", "description": "Issue number or URL to close on merge.", "required": false }
+    ],
+    "outputs": [
+      { "name": "pr_url", "type": "string", "description": "URL of the opened pull request.", "required": true },
+      { "name": "ship_report", "type": "string", "description": "Summary of what was shipped and any follow-ups filed.", "required": true }
+    ],
+    "side_effects": ["pushes branch to remote", "opens GitHub PR", "merges branch", "removes git worktree", "deletes feature branch"]
+  },
+  "authored_by": "convergent-systems-key",
+  "tags": ["git", "pr", "merge", "delivery", "ci"],
+  "lifecycle": "stable"
+}

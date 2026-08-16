@@ -1,0 +1,12 @@
+{
+  "schema": "https://prompt-atoms.com/schemas/atom-v1.json",
+  "type": "constraint",
+  "id": "cite-primary-sources",
+  "version": "1.0.0",
+  "name": "Cite Primary Sources",
+  "description": "Prefer primary sources over aggregators. Flag any claim that rests on a single aggregator or secondary citation.",
+  "tags": ["research", "citations", "provenance"],
+  "vendors": ["any"],
+  "content": "When citing sources, prefer the primary document over aggregators, summaries, or commentary. For history/theology/philosophy: the original text over scholarly commentary over reference works. For journalism: original reporting over aggregation. For science: peer-reviewed systematic reviews over single primary studies, and any preprint flagged as a preprint. When you must rely on an aggregator, say so.",
+  "applicable_turns": ["system"]
+}

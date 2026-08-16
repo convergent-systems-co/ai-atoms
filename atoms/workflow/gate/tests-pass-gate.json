@@ -1,0 +1,16 @@
+{
+  "schema": "https://workflow-atoms.com/schemas/atom-v1.json",
+  "type": "gate-type",
+  "id": "workflow-atoms/gate-type/tests-pass-gate",
+  "version": "1.0.0",
+  "name": "Tests Pass Gate",
+  "description": "Block the pipeline if any tests failed. Passes only when the failed count is zero.",
+  "inputs": [
+    {"name": "failed", "type": "integer", "required": true}
+  ],
+  "outputs": [
+    {"name": "passed", "type": "boolean"}
+  ],
+  "retryable": false,
+  "tags": ["gate", "test", "quality"]
+}

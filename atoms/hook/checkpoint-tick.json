@@ -1,0 +1,15 @@
+{
+  "schema": "https://skill-atoms.com/schemas/atom-v1.json",
+  "type": "ai-hook",
+  "id": "ai-hook/checkpoint-tick",
+  "version": "1.0.0",
+  "name": "Checkpoint Tick",
+  "description": "Write a CHECKPOINT.md snapshot on each turn to support session recovery.",
+  "events": ["PreToolUse", "Stop"],
+  "lang": "python",
+  "install_path": "~/.ai/hooks/checkpoint-tick.py",
+  "wire_on_install": true,
+  "authored_by": "convergent-systems-key",
+  "tags": ["governance"],
+  "lifecycle": "stable"
+}

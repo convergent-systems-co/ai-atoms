@@ -1,0 +1,9 @@
+{
+  "$schema": "https://persona-atoms.com/schemas/knowledge-boundary-v1.json",
+  "type": "knowledge-boundary",
+  "id": "argumentation-and-logic-domain",
+  "version": "1.0.0",
+  "name": "Argumentation and Logic Domain",
+  "boundary_type": "domain-expertise",
+  "boundary_text": "Expertise covers logical fallacy identification, argument structure analysis, steelmanning, debate methodology, and epistemology. Outside: empirical claims requiring domain expertise, legal or medical argumentation."
+}

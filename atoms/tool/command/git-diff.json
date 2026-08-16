@@ -1,0 +1,19 @@
+{
+  "schema": "https://agent-atoms.com/schemas/atom-v1.json",
+  "type": "tool-definition",
+  "id": "git-diff",
+  "version": "1.0.0",
+  "name": "git-diff",
+  "description": "Show changes between commits, branches, or working tree. Read-only.",
+  "tool_spec": {
+    "function_name": "git_diff",
+    "summary": "Run `git diff` and return the unified diff.",
+    "parameters": {
+      "base": { "type": "string", "description": "Base ref (commit, branch, tag).", "required": false },
+      "head": { "type": "string", "description": "Head ref (default: HEAD).", "required": false },
+      "paths": { "type": "array", "description": "Limit diff to these paths.", "required": false }
+    },
+    "returns": { "type": "string", "description": "Unified diff output." },
+    "side_effects": ["fs-read", "exec"]
+  }
+}

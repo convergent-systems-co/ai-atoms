@@ -1,0 +1,19 @@
+{
+  "schema": "https://workflow-atoms.com/schemas/atom-v1.json",
+  "type": "step-type",
+  "id": "workflow-atoms/step-type/github-pr-merge",
+  "version": "1.0.0",
+  "name": "GitHub PR Merge",
+  "description": "Merge a GitHub pull request using the repository's configured merge method (merge commit, squash, or rebase).",
+  "inputs": [
+    {"name": "pr_number", "type": "integer", "required": true},
+    {"name": "merge_method", "type": "string", "required": false},
+    {"name": "delete_branch", "type": "boolean", "required": false}
+  ],
+  "outputs": [
+    {"name": "merge_sha", "type": "string"},
+    {"name": "merged_at", "type": "string"}
+  ],
+  "retryable": false,
+  "tags": ["github", "pr", "merge"]
+}

@@ -1,0 +1,19 @@
+{
+  "schema": "https://workflow-atoms.com/schemas/atom-v1.json",
+  "type": "step-type",
+  "id": "workflow-atoms/step-type/git-create-tag",
+  "version": "1.0.0",
+  "name": "Git Create Tag",
+  "description": "Create an annotated git tag at the current HEAD and push it to the remote. Used to mark releases.",
+  "inputs": [
+    {"name": "tag_name", "type": "string", "required": true},
+    {"name": "message", "type": "string", "required": false},
+    {"name": "ref", "type": "string", "required": false}
+  ],
+  "outputs": [
+    {"name": "tag_sha", "type": "string"},
+    {"name": "tag_url", "type": "string"}
+  ],
+  "retryable": false,
+  "tags": ["git", "tag", "release"]
+}

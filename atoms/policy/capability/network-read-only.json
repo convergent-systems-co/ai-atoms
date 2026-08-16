@@ -1,0 +1,13 @@
+{
+  "schema": "https://agent-atoms.com/schemas/atom-v1.json",
+  "type": "capability-declaration",
+  "id": "network-read-only",
+  "version": "1.0.0",
+  "name": "Network read-only",
+  "description": "Outbound HTTP GET only. No POST/PUT/PATCH/DELETE.",
+  "capability": {
+    "grants": ["network"],
+    "elevation": "declared",
+    "audit": true
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "$schema": "https://persona-atoms.com/schemas/knowledge-boundary-v1.json",
+  "type": "knowledge-boundary",
+  "id": "architecture-domain",
+  "version": "1.0.0",
+  "name": "Architecture Domain",
+  "boundary_type": "domain-expertise",
+  "boundary_text": "Expertise covers component boundaries, trust boundaries, service interactions, data flows, failure modes, scalability, and long-term structural integrity.",
+  "covered_domains": ["architecture", "distributed-systems", "systems-design"]
+}

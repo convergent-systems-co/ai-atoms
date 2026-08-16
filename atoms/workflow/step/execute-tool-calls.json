@@ -1,0 +1,20 @@
+{
+  "schema": "https://workflow-atoms.com/schemas/atom-v1.json",
+  "type": "step-type",
+  "id": "workflow-atoms/step-type/execute-tool-calls",
+  "version": "1.0.0",
+  "name": "Execute Tool Calls",
+  "description": "Dispatch each tool call in the list to the ToolExecutor and collect results. Each call is routed to the appropriate registered tool handler; results are returned in the same order as the input calls.",
+  "inputs": [
+    {"name": "tool_calls", "type": "array", "required": true, "description": "Structured tool-call list from parse-tool-calls"},
+    {"name": "tool_executor_ref", "type": "string", "required": false, "description": "Reference to the ToolExecutor instance or config"},
+    {"name": "timeout_seconds", "type": "integer", "required": false}
+  ],
+  "outputs": [
+    {"name": "tool_results", "type": "array", "description": "Ordered list of tool execution results, one per input call"},
+    {"name": "failed_calls", "type": "array", "description": "Tool calls that errored; empty on full success"}
+  ],
+  "timeout_seconds": 300,
+  "retryable": false,
+  "tags": ["tool-use", "execution", "olympus", "agentic"]
+}

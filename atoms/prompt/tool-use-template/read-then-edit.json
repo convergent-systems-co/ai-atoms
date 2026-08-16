@@ -1,0 +1,12 @@
+{
+  "schema": "https://prompt-atoms.com/schemas/atom-v1.json",
+  "type": "tool-use-template",
+  "id": "read-then-edit",
+  "version": "1.0.0",
+  "name": "Read Then Edit",
+  "description": "Pair every file edit with a prior read of the same file. Refuse to edit a file you haven't read in the current session.",
+  "tags": ["tools", "discipline"],
+  "vendors": ["any"],
+  "content": "Before invoking any edit tool on a file, you must have invoked a read tool on the same file in the current session. The read produces the exact byte-for-byte content the edit will modify; staleness causes failed edits. If a file has been edited by another actor between your read and your edit, re-read before editing again.",
+  "applicable_turns": ["tool"]
+}

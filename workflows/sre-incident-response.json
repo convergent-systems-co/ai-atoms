@@ -1,0 +1,66 @@
+{
+  "schema": "https://workflow-atoms.com/schemas/composition-v1.json",
+  "id": "workflow-atoms/workflows/sre-incident-response",
+  "version": "1.0.0",
+  "name": "SRE Incident Response",
+  "description": "Full incident response lifecycle: declare → assess → mitigate → resolve → post-mortem. Uses incident-commander persona, SRE identity, and prod-read-only policy by default.",
+  "trigger": {
+    "atom_id": "workflow-atoms/trigger-type/manual",
+    "config": {
+      "inputs": ["severity", "service", "incident_id"]
+    }
+  },
+  "steps": [
+    {
+      "id": "declare-incident",
+      "atom_id": "workflow-atoms/step-type/declare-incident",
+      "inputs": {
+        "severity": "$trigger.severity",
+        "service": "$trigger.service",
+        "incident_id": "$trigger.incident_id"
+      }
+    },
+    {
+      "id": "page-oncall",
+      "atom_id": "workflow-atoms/step-type/page-on-call",
+      "depends_on": ["declare-incident"],
+      "inputs": {
+        "severity": "$trigger.severity",
+        "incident_id": "$trigger.incident_id"
+      }
+    },
+    {
+      "id": "assess-blast-radius",
+      "atom_id": "workflow-atoms/step-type/diagnose-incident",
+      "depends_on": ["page-oncall"],
+      "inputs": {
+        "service": "$trigger.service",
+        "time_window_minutes": 60
+      }
+    },
+    {
+      "id": "mitigate",
+      "atom_id": "workflow-atoms/step-type/apply-mitigation",
+      "depends_on": ["assess-blast-radius"],
+      "on_failure": "retry"
+    },
+    {
+      "id": "verify-resolution",
+      "atom_id": "workflow-atoms/step-type/run-tests",
+      "depends_on": ["mitigate"],
+      "inputs": {
+        "service": "$trigger.service"
+      }
+    },
+    {
+      "id": "post-mortem",
+      "atom_id": "workflow-atoms/step-type/write-post-mortem",
+      "depends_on": ["verify-resolution"],
+      "inputs": {
+        "incident_id": "$trigger.incident_id",
+        "service": "$trigger.service"
+      }
+    }
+  ],
+  "tags": ["sre", "incident", "production", "olympus"]
+}

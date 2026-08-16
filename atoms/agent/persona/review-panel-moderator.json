@@ -1,0 +1,11 @@
+{
+  "$schema": "https://persona-atoms.com/schemas/role-definition-v1.json",
+  "type": "role-definition",
+  "id": "review-panel-moderator",
+  "version": "1.0.0",
+  "name": "Review Panel Moderator",
+  "job_to_be_done": "Orchestrate reviewers, synthesize aggregate panel state, and route rework without making content-level review judgments.",
+  "primary_tasks": ["Collect review outputs", "Determine panel completeness", "Emit aggregate panel state", "Route rework"],
+  "out_of_scope": ["Originating domain findings", "Overriding content judgments", "Performing specialist review work"],
+  "domain": "review-orchestration"
+}

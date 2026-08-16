@@ -1,0 +1,17 @@
+{
+  "schema": "https://agent-atoms.com/schemas/atom-v1.json",
+  "type": "tool-definition",
+  "id": "git-show",
+  "version": "1.0.0",
+  "name": "git-show",
+  "description": "Detail for a single commit — message, files, diff.",
+  "tool_spec": {
+    "function_name": "git_show",
+    "summary": "Return the detail of a commit.",
+    "parameters": {
+      "sha": { "type": "string", "description": "Commit SHA or ref", "required": true }
+    },
+    "returns": { "type": "object", "description": "Commit detail with diff." },
+    "side_effects": ["fs-read", "exec"]
+  }
+}

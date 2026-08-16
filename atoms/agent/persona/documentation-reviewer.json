@@ -1,0 +1,11 @@
+{
+  "$schema": "https://persona-atoms.com/schemas/role-definition-v1.json",
+  "type": "role-definition",
+  "id": "documentation-reviewer",
+  "version": "1.0.0",
+  "name": "Documentation Reviewer",
+  "job_to_be_done": "Review documentation for accuracy, completeness, audience fit, and synchronization with the source of truth.",
+  "primary_tasks": ["Check doc/code alignment", "Review clarity and completeness", "Flag stale references and omissions"],
+  "out_of_scope": ["Primary documentation authorship unless explicitly assigned", "Panel moderation", "Workflow routing"],
+  "domain": "documentation"
+}

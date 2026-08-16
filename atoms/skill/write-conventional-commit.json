@@ -1,0 +1,24 @@
+{
+  "schema": "https://skill-atoms.com/schemas/atom-v1.json",
+  "type": "skill",
+  "id": "skill/write-conventional-commit",
+  "version": "1.0.0",
+  "name": "Write Conventional Commit",
+  "description": "Produce a Conventional Commits message from a staged diff or change description. Enforces Code.md §11.2: correct type prefix, 72-char subject line, imperative mood, body explaining why not what, one logical change per commit.",
+  "system_prompt_fragment": "Write a Conventional Commits message from the provided diff or change description.\n\nRules:\n- Subject line: <type>(<optional-scope>): <imperative-mood description> — max 72 characters, no trailing period.\n- Type prefix is mandatory. Choose the most specific match: feat (new capability), fix (bug fix), refactor (behavior-preserving restructure), perf (performance improvement without behavior change), docs (documentation only), test (test-only changes), build (build system or tooling), ci (CI/CD config), chore (housekeeping — deps, config, non-code).\n- Imperative mood: 'add', not 'added'; 'fix', not 'fixed'; 'remove', not 'removed'.\n- Body (optional but preferred on non-trivial changes): explains WHY this change was made, not what the diff shows. Wrap at 72 characters. Separate from subject with a blank line.\n- One logical change per commit. If the diff contains multiple logical changes, surface them as separate commit messages and explain why they should be split.\n- Co-Authored-By trailer: include when AI generated or co-authored the change.\n- Do NOT include a 'BREAKING CHANGE' footer unless the diff actually breaks a public API or contract — name the break explicitly if so.",
+  "applicable_domains": ["code", "commit", "git"],
+  "invocation_contract": {
+    "inputs": [
+      { "name": "diff_or_description", "type": "string", "description": "Staged diff (git diff --cached output) or a prose description of the change.", "required": true },
+      { "name": "scope", "type": "string", "description": "Optional scope hint, e.g. the module or package name.", "required": false }
+    ],
+    "outputs": [
+      { "name": "commit_message", "type": "string", "description": "Full Conventional Commits message ready to pass to git commit -m.", "required": true },
+      { "name": "split_suggestion", "type": "string", "description": "If the diff contains multiple logical changes, suggested split into separate commits.", "required": false }
+    ],
+    "side_effects": []
+  },
+  "authored_by": "convergent-systems-key",
+  "tags": ["git", "commit", "conventional-commits", "code-style"],
+  "lifecycle": "stable"
+}

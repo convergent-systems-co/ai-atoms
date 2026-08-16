@@ -1,0 +1,19 @@
+{
+  "schema": "https://workflow-atoms.com/schemas/atom-v1.json",
+  "type": "step-type",
+  "id": "workflow-atoms/step-type/apply-mitigation",
+  "version": "1.0.0",
+  "name": "Apply Mitigation",
+  "description": "Apply a pre-approved mitigation action to reduce incident impact (rollback, feature-flag disable, traffic shift, etc.).",
+  "inputs": [
+    {"name": "mitigation_type", "type": "string", "required": true},
+    {"name": "target", "type": "string", "required": true},
+    {"name": "incident_id", "type": "string", "required": false}
+  ],
+  "outputs": [
+    {"name": "applied", "type": "boolean"},
+    {"name": "mitigation_id", "type": "string"}
+  ],
+  "retryable": true,
+  "tags": ["incident", "mitigation", "operations"]
+}

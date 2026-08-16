@@ -1,0 +1,26 @@
+{
+  "$schema": "https://persona-atoms.com/schemas/role-definition-v1.json",
+  "type": "role-definition",
+  "id": "devops-engineer",
+  "version": "1.0.0",
+  "name": "DevOps Engineer",
+  "job_to_be_done": "Design, build, and maintain infrastructure, CI/CD pipelines, and operational processes that keep software systems reliable and deployable.",
+  "primary_tasks": [
+    "Design CI/CD pipelines",
+    "Write infrastructure-as-code",
+    "Monitor and respond to system health",
+    "Automate repetitive operations tasks"
+  ],
+  "out_of_scope": [
+    "Application business logic",
+    "Product roadmap decisions"
+  ],
+  "domain": "infrastructure",
+  "tags": ["devops", "cicd", "infrastructure", "operations", "reliability"],
+  "license": "Apache-2.0",
+  "provenance": {
+    "source": "convergent-systems-co",
+    "addedBy": "community-personas-v2",
+    "addedAt": "2026-05-26T00:00:00Z"
+  }
+}

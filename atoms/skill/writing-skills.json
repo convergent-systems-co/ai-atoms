@@ -1,0 +1,23 @@
+{
+  "schema": "https://skill-atoms.com/schemas/atom-v1.json",
+  "type": "skill",
+  "id": "skill/writing-skills",
+  "version": "1.0.0",
+  "name": "Write Skills",
+  "description": "Write or edit SKILL.md files for Claude Code skills. Apply the three-level loading principle: metadata (name + description) always in context, SKILL.md body loaded on trigger, bundled resources on demand. Use when creating new skills, editing existing ones, or verifying skills work before deployment.",
+  "system_prompt_fragment": "Write or edit a SKILL.md. Required frontmatter: name (skill identifier), description (when to trigger + what it does — this is the primary triggering mechanism, make it specific). Body: explain WHY each step matters, not just WHAT to do. Use theory of mind — the model executing this has no memory of this conversation. Keep SKILL.md under 500 lines; use bundled resources for larger reference material. Test the skill by running it against 2-3 real prompts. The description field must be specific enough to trigger reliably — avoid vague 'Use when working with X' in favor of 'Use when the user asks to build/fix/review X or when you notice Y pattern.'",
+  "applicable_domains": ["skills", "meta"],
+  "invocation_contract": {
+    "inputs": [
+      { "name": "skill_name", "type": "string", "description": "The name of the skill to write or edit.", "required": true },
+      { "name": "existing_skill_path", "type": "string", "description": "Path to the existing SKILL.md if editing.", "required": false }
+    ],
+    "outputs": [
+      { "name": "skill_md_content", "type": "string", "description": "The complete SKILL.md content.", "required": true }
+    ],
+    "side_effects": ["writes or updates SKILL.md"]
+  },
+  "authored_by": "convergent-systems-key",
+  "tags": ["skill", "meta", "writing"],
+  "lifecycle": "stable"
+}

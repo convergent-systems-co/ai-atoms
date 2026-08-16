@@ -1,0 +1,15 @@
+{
+  "schema": "https://skill-atoms.com/schemas/atom-v1.json",
+  "type": "ai-hook",
+  "id": "ai-hook/patterns",
+  "version": "1.0.0",
+  "name": "Secret Scan Patterns",
+  "description": "JSON pattern library used by secret-block and secret-precommit for secret detection.",
+  "events": [],
+  "lang": "data",
+  "install_path": "~/.ai/hooks/patterns.json",
+  "wire_on_install": false,
+  "authored_by": "convergent-systems-key",
+  "tags": ["governance"],
+  "lifecycle": "stable"
+}

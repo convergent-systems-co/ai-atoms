@@ -1,0 +1,12 @@
+{
+  "schema": "https://prompt-atoms.com/schemas/atom-v1.json",
+  "type": "format-instruction",
+  "id": "structured-research-summary",
+  "version": "1.0.0",
+  "name": "Structured Research Summary",
+  "description": "Findings / Evidence / Open Questions / Sources layout for research output.",
+  "tags": ["research", "format"],
+  "vendors": ["any"],
+  "content": "Structure the response as four sections, in order:\n\n1. **Findings** — bulleted; each finding is one sentence stating a claim.\n2. **Evidence** — for each finding, the source(s) supporting it, with direct quotes where possible.\n3. **Open Questions** — claims you could not verify, gaps in the evidence, conflicting accounts.\n4. **Sources** — numbered list; each source includes title, author, year, and a URL or document identifier.",
+  "applicable_turns": ["system"]
+}

@@ -1,0 +1,12 @@
+{
+  "schema": "https://prompt-atoms.com/schemas/atom-v1.json",
+  "type": "format-instruction",
+  "id": "numbered-steps",
+  "version": "1.0.0",
+  "name": "Numbered Steps",
+  "description": "Procedural output as a numbered list. One action per step. No nested numbering.",
+  "tags": ["format", "procedure"],
+  "vendors": ["any"],
+  "content": "Emit the response as a numbered list. Exactly one action per step — if a step has two actions, split it. No nested numbering (no 1.1, 1.2). Each step starts with an imperative verb. Steps that are conditional state the condition first ('If X, then Y'). Steps that involve waiting or external triggers say so explicitly.",
+  "applicable_turns": ["system"]
+}

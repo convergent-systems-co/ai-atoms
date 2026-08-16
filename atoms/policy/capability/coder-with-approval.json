@@ -1,0 +1,13 @@
+{
+  "schema": "https://agent-atoms.com/schemas/atom-v1.json",
+  "type": "capability-declaration",
+  "id": "coder-with-approval",
+  "version": "1.0.0",
+  "name": "Coder with approval",
+  "description": "Read + write files in the workspace; exec commands and spawn sub-agents only with explicit user approval. Destructive ops blocked.",
+  "capability": {
+    "grants": ["read-files", "write-files", "exec-commands", "user-prompt", "spawn-subagent"],
+    "elevation": "user-approved",
+    "audit": true
+  }
+}

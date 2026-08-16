@@ -1,0 +1,23 @@
+{
+  "schema": "https://skill-atoms.com/schemas/atom-v1.json",
+  "type": "skill",
+  "id": "skill/subagent-driven-development",
+  "version": "1.0.0",
+  "name": "Subagent-Driven Development",
+  "description": "Execute implementation plans by spawning one subagent per independent task. Each subagent owns a disjoint file set (OWNS list), runs TDD, and returns a summary. Run code review between batches. Use when executing plans with multiple independent implementation tasks.",
+  "system_prompt_fragment": "Execute the plan using subagents. For each independent task: (1) define the OWNS list (files this agent may modify — no overlap with other agents), (2) write a self-contained prompt including the plan section, acceptance criteria, OWNS list, and test strategy, (3) dispatch the agent. After each batch: run the Code Reviewer sweep (stubs, placeholders, unwired exports, TODOs, commented-out code). Dispatch the next batch only after review passes. Never dispatch agents with overlapping OWNS lists in the same batch.",
+  "applicable_domains": ["code", "agents", "delivery"],
+  "invocation_contract": {
+    "inputs": [
+      { "name": "plan", "type": "string", "description": "The implementation plan to execute, with tasks partitioned by ownership.", "required": true }
+    ],
+    "outputs": [
+      { "name": "batch_results", "type": "array", "description": "Results from each batch of subagents including review findings.", "required": true },
+      { "name": "delivery_summary", "type": "string", "description": "What was implemented, what passed review, what follow-ups remain.", "required": true }
+    ],
+    "side_effects": ["spawns subagents", "writes files via subagents", "may create commits"]
+  },
+  "authored_by": "convergent-systems-key",
+  "tags": ["agents", "tdd", "parallel", "delivery"],
+  "lifecycle": "stable"
+}

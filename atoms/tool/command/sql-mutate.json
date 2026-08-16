@@ -1,0 +1,19 @@
+{
+  "schema": "https://agent-atoms.com/schemas/atom-v1.json",
+  "type": "tool-definition",
+  "id": "sql-mutate",
+  "version": "1.0.0",
+  "name": "sql-mutate",
+  "description": "INSERT / UPDATE / DELETE against a named DSN. Side-effecting.",
+  "tool_spec": {
+    "function_name": "sql_mutate",
+    "summary": "Run a DML statement.",
+    "parameters": {
+      "dsn": { "type": "string", "description": "Named DSN", "required": true },
+      "sql": { "type": "string", "description": "INSERT / UPDATE / DELETE", "required": true },
+      "params": { "type": "array", "description": "Parameterized values", "required": false }
+    },
+    "returns": { "type": "object", "description": "{rows_affected}." },
+    "side_effects": ["network", "user-prompt"]
+  }
+}

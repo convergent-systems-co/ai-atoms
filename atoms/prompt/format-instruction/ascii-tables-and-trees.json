@@ -1,0 +1,12 @@
+{
+  "schema": "https://prompt-atoms.com/schemas/atom-v1.json",
+  "type": "format-instruction",
+  "id": "ascii-tables-and-trees",
+  "version": "1.0.0",
+  "name": "ASCII Tables and Trees",
+  "description": "For TUI / terminal surfaces: ASCII / box-drawing art for diagrams, trees, flowcharts; aligned ASCII tables for tabular data.",
+  "tags": ["format", "tui", "ascii"],
+  "vendors": ["any"],
+  "content": "When the destination is a terminal session or text-only renderer, draw diagrams, trees, and flowcharts in ASCII or box-drawing characters. Use aligned ASCII tables for tabular data. Do not emit Mermaid source for a terminal surface — it renders as unrendered noise. Code fences remain the right home for commands and code.",
+  "applicable_turns": ["system"]
+}

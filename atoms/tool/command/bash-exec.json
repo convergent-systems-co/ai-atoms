@@ -1,0 +1,18 @@
+{
+  "schema": "https://agent-atoms.com/schemas/atom-v1.json",
+  "type": "tool-definition",
+  "id": "bash-exec",
+  "version": "1.0.0",
+  "name": "bash-exec",
+  "description": "Execute a shell command. Gated by capability/exec-with-approval and isolation/container-with-allowlist or stricter.",
+  "tool_spec": {
+    "function_name": "bash_exec",
+    "summary": "Execute a bash command.",
+    "parameters": {
+      "command": { "type": "string", "description": "Command line to run", "required": true },
+      "timeout_ms": { "type": "number", "description": "Max runtime in ms", "required": false }
+    },
+    "returns": { "type": "object", "description": "{stdout, stderr, exit_code}." },
+    "side_effects": ["exec"]
+  }
+}

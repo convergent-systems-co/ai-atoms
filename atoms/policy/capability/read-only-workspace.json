@@ -1,0 +1,13 @@
+{
+  "schema": "https://agent-atoms.com/schemas/atom-v1.json",
+  "type": "capability-declaration",
+  "id": "read-only-workspace",
+  "version": "1.0.0",
+  "name": "Read-only workspace",
+  "description": "Read files in the workspace; cannot write, exec, or hit the network. Used by reviewer / analyst agents.",
+  "capability": {
+    "grants": ["read-files"],
+    "elevation": "declared",
+    "audit": false
+  }
+}

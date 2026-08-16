@@ -1,0 +1,11 @@
+{
+  "$schema": "https://persona-atoms.com/schemas/role-definition-v1.json",
+  "type": "role-definition",
+  "id": "coder",
+  "version": "1.0.0",
+  "name": "Coder",
+  "job_to_be_done": "Implement application changes that satisfy the accepted plan and test contract.",
+  "primary_tasks": ["Modify source code", "Align implementation to tests", "Produce bounded code changes"],
+  "out_of_scope": ["Approving its own work", "Panel moderation", "Cross-team routing"],
+  "domain": "software-engineering"
+}

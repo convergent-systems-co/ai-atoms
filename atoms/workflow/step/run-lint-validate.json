@@ -1,0 +1,18 @@
+{
+  "schema": "https://workflow-atoms.com/schemas/atom-v1.json",
+  "type": "step-type",
+  "id": "workflow-atoms/step-type/run-lint-validate",
+  "version": "1.0.0",
+  "name": "Run Lint / Validate",
+  "description": "Execute linting, type-checking, and static validation steps (eslint, tsc, flake8, etc.).",
+  "inputs": [
+    {"name": "command", "type": "string", "required": false},
+    {"name": "working_directory", "type": "string", "required": false}
+  ],
+  "outputs": [
+    {"name": "exit_code", "type": "integer"},
+    {"name": "violation_count", "type": "integer"}
+  ],
+  "retryable": false,
+  "tags": ["lint", "validate", "quality"]
+}

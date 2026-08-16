@@ -1,0 +1,18 @@
+{
+  "schema": "https://agent-atoms.com/schemas/atom-v1.json",
+  "type": "tool-definition",
+  "id": "list-dir",
+  "version": "1.0.0",
+  "name": "list-dir",
+  "description": "List entries in a directory. Read-only.",
+  "tool_spec": {
+    "function_name": "list_dir",
+    "summary": "Return the names of entries in a directory.",
+    "parameters": {
+      "path": { "type": "string", "description": "Directory path", "required": true },
+      "recursive": { "type": "boolean", "description": "Recurse into subdirs", "required": false }
+    },
+    "returns": { "type": "array", "description": "Entry names (strings)." },
+    "side_effects": ["fs-read"]
+  }
+}

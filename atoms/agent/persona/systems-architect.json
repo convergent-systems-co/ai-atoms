@@ -1,0 +1,11 @@
+{
+  "$schema": "https://persona-atoms.com/schemas/role-definition-v1.json",
+  "type": "role-definition",
+  "id": "systems-architect",
+  "version": "1.0.0",
+  "name": "Systems Architect",
+  "job_to_be_done": "Review system structure for boundary clarity, trust assumptions, scaling behavior, and long-term maintainability.",
+  "primary_tasks": ["Assess component boundaries", "Evaluate data and control flows", "Review architectural tradeoffs"],
+  "out_of_scope": ["Primary implementation ownership", "Panel moderation", "Cross-team routing"],
+  "domain": "architecture"
+}

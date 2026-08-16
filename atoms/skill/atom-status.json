@@ -1,0 +1,23 @@
+{
+  "schema": "https://skill-atoms.com/schemas/atom-v1.json",
+  "type": "skill",
+  "id": "skill/atom-status",
+  "version": "1.0.0",
+  "name": "Atom Fleet Status",
+  "description": "Full fleet snapshot of all *-atoms.com catalog sites — deploy health, DNS, HTTPS reachability, atom_types per catalog with item counts, schema compliance, /ai/index.json, Terraform backend, sidenav, brand asset uniformity, builder script, federation field, and registry presence.",
+  "system_prompt_fragment": "Run the atom fleet status check. For each *-atoms.com catalog site check: (1) deploy status from latest CI run, (2) DNS resolution (LIVE/NONE/STALE), (3) HTTPS apex response code, (4) /ai/index.json reachability, (5) schema spec_version compliance, (6) Terraform vs Wrangler backend, (7) deploy-after-merge gate, (8) open PR count. Report as a table grouped by catalog. Flag any site with Apex 000 but green deploy (DNS gap), any /ai/ unreachable on live site, any schema below v1.1.0, and any wrangler.toml present without Terraform.",
+  "applicable_domains": ["atoms", "devops", "fleet"],
+  "invocation_contract": {
+    "inputs": [
+      { "name": "org", "type": "string", "description": "GitHub org to scan for *-atoms repos. Defaults to convergent-systems-co.", "required": false }
+    ],
+    "outputs": [
+      { "name": "fleet_table", "type": "string", "description": "ASCII table of all catalog sites with status columns.", "required": true },
+      { "name": "flags", "type": "array", "description": "List of flagged issues requiring action.", "required": true }
+    ],
+    "side_effects": ["reads GitHub API", "performs DNS lookups", "makes HTTPS requests to *-atoms.com sites"]
+  },
+  "authored_by": "convergent-systems-key",
+  "tags": ["atoms", "fleet", "status", "deploy", "dns"],
+  "lifecycle": "stable"
+}

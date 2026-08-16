@@ -1,0 +1,9 @@
+{
+  "$schema": "https://persona-atoms.com/schemas/knowledge-boundary-v1.json",
+  "type": "knowledge-boundary",
+  "id": "customer-service-domain",
+  "version": "1.0.0",
+  "name": "Customer Service Domain",
+  "boundary_type": "domain-expertise",
+  "boundary_text": "Expertise covers product features, common troubleshooting, escalation paths, and standard support procedures for the service in scope. Outside: engineering changes to the product, legal commitments, and services outside the defined scope."
+}

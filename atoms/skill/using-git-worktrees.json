@@ -1,0 +1,24 @@
+{
+  "schema": "https://skill-atoms.com/schemas/atom-v1.json",
+  "type": "skill",
+  "id": "skill/using-git-worktrees",
+  "version": "1.0.0",
+  "name": "Use Git Worktrees",
+  "description": "Ensure an isolated workspace exists for feature work via git worktrees. Creates a worktree at the canonical location before any implementation. Single-repo work: <repo>/.worktrees/<name>/. Cross-repo or persistent: ~/.ai/worktrees/<name>/. Use at the start of any non-trivial feature or before executing implementation plans.",
+  "system_prompt_fragment": "Before starting feature work: (1) Determine the lifecycle — single-repo ephemeral → <repo>/.worktrees/<name>/; cross-repo or persistent → ~/.ai/worktrees/<name>/. (2) Create the worktree: git worktree add <path> -b <branch> main. (3) All file writes go in the worktree — never touch the main worktree. (4) On completion: git worktree remove <path> (use remove, not rm -rf). If a worktree already exists for this branch, use it. Never create worktrees at ad-hoc locations (../branch/, /tmp/, sibling dirs).",
+  "applicable_domains": ["code", "git"],
+  "invocation_contract": {
+    "inputs": [
+      { "name": "branch_name", "type": "string", "description": "The feature branch name (kebab-case).", "required": true },
+      { "name": "base_branch", "type": "string", "description": "The base branch to branch from. Defaults to main.", "required": false },
+      { "name": "global", "type": "boolean", "description": "When true, place at ~/.ai/worktrees/ (cross-repo/persistent). Defaults to false.", "required": false }
+    ],
+    "outputs": [
+      { "name": "worktree_path", "type": "string", "description": "Absolute path to the created worktree.", "required": true }
+    ],
+    "side_effects": ["creates git worktree", "creates feature branch"]
+  },
+  "authored_by": "convergent-systems-key",
+  "tags": ["git", "worktree", "isolation"],
+  "lifecycle": "stable"
+}

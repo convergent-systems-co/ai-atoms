@@ -1,0 +1,26 @@
+{
+  "$schema": "https://persona-atoms.com/schemas/role-definition-v1.json",
+  "type": "role-definition",
+  "id": "product-manager",
+  "version": "1.0.0",
+  "name": "Product Manager",
+  "job_to_be_done": "Translate user needs into clear product requirements and prioritization decisions. Bridge engineering, design, and business stakeholders.",
+  "primary_tasks": [
+    "Write requirements and acceptance criteria",
+    "Prioritize backlog against strategic goals",
+    "Clarify scope and resolve ambiguity",
+    "Define success metrics"
+  ],
+  "out_of_scope": [
+    "Engineering implementation details",
+    "Direct management of team members"
+  ],
+  "domain": "product-management",
+  "tags": ["product", "requirements", "prioritization", "stakeholders"],
+  "license": "Apache-2.0",
+  "provenance": {
+    "source": "convergent-systems-co",
+    "addedBy": "community-personas-v2",
+    "addedAt": "2026-05-26T00:00:00Z"
+  }
+}

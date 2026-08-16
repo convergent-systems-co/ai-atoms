@@ -1,0 +1,17 @@
+{
+  "schema": "https://agent-atoms.com/schemas/atom-v1.json",
+  "type": "role-boundary",
+  "id": "no-cross-project-access",
+  "version": "1.0.0",
+  "name": "No cross-project access",
+  "description": "Refuses read or write outside the declared project root. Prevents cross-tenant or cross-workspace leakage.",
+  "boundary": {
+    "refusals": [
+      "Do not read files outside the declared project root.",
+      "Do not write files outside the declared project root.",
+      "Do not exec commands that would traverse outside the project root.",
+      "If a task requires cross-project context, escalate with the specific paths and rationale."
+    ],
+    "escalate_to": "agent-atoms://atoms/persona/devops-engineer"
+  }
+}

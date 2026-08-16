@@ -1,0 +1,12 @@
+{
+  "schema": "https://prompt-atoms.com/schemas/atom-v1.json",
+  "type": "constraint",
+  "id": "three-cycle-cap",
+  "version": "1.0.0",
+  "name": "Three-Cycle Cap",
+  "description": "Stop after three failed attempts on the same problem using the same approach. Name what is not working; propose an alternative; ask before continuing.",
+  "tags": ["bounded-retry", "discipline"],
+  "vendors": ["any"],
+  "content": "After three failed attempts on the same problem using the same approach, stop. Name what is not working, propose an alternative approach, and ask the user before continuing. Attempts must be visible in your output ('Attempt N of 3 on <problem>') — hidden retries defeat the cap. After five total attempts across approaches, stop and escalate.",
+  "applicable_turns": ["system"]
+}

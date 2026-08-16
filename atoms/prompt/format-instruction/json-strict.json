@@ -1,0 +1,12 @@
+{
+  "schema": "https://prompt-atoms.com/schemas/atom-v1.json",
+  "type": "format-instruction",
+  "id": "json-strict",
+  "version": "1.0.0",
+  "name": "JSON Strict",
+  "description": "Emit valid JSON only — no code fences, no commentary, no trailing prose.",
+  "tags": ["format", "json", "strict"],
+  "vendors": ["any"],
+  "content": "Emit valid JSON only. No markdown code fences around the output. No commentary before or after. No trailing newlines beyond a single terminal newline. UTF-8, double-quoted keys and strings, no trailing commas. If you cannot produce valid JSON for the request, emit {\"error\": \"<message>\"} rather than substituting prose.",
+  "applicable_turns": ["system"]
+}

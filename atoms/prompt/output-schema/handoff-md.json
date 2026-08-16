@@ -1,0 +1,12 @@
+{
+  "schema": "https://prompt-atoms.com/schemas/atom-v1.json",
+  "type": "output-schema",
+  "id": "handoff-md",
+  "version": "1.0.0",
+  "name": "HANDOFF.md",
+  "description": "Cross-session continuity document. State, next steps, open questions, files in flight, last known-good commit.",
+  "tags": ["output", "handoff", "context"],
+  "vendors": ["any"],
+  "content": "Emit a Markdown document with these required sections, in order: (1) Current state — what is in flight, what is committed; (2) Next steps — concrete actions for the resuming session; (3) Open questions — decisions awaiting input; (4) Files in flight — paths being modified, with line ranges if helpful; (5) Last known-good commit — SHA + one-line description; (6) Audit references — any in-progress override or violation log entries. No secrets in any section; redact with [REDACTED:<kind>] if a secret would otherwise appear.",
+  "applicable_turns": ["system", "assistant"]
+}

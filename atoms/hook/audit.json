@@ -1,0 +1,15 @@
+{
+  "schema": "https://skill-atoms.com/schemas/atom-v1.json",
+  "type": "ai-hook",
+  "id": "ai-hook/audit",
+  "version": "1.0.0",
+  "name": "Audit",
+  "description": "Append JSONL interaction records to ~/.ai/audit/interactions/YYYY-MM.jsonl for every tool use, session start/end, and stop event.",
+  "events": ["PostToolUse", "PreToolUse", "SessionEnd", "SessionStart", "Stop", "SubagentStop", "UserPromptSubmit"],
+  "lang": "python",
+  "install_path": "~/.ai/hooks/audit.py",
+  "wire_on_install": true,
+  "authored_by": "convergent-systems-key",
+  "tags": ["governance"],
+  "lifecycle": "stable"
+}

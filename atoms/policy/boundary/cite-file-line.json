@@ -1,0 +1,9 @@
+{
+  "$schema": "https://persona-atoms.com/schemas/behavioural-constraint-v1.json",
+  "type": "behavioural-constraint",
+  "id": "cite-file-line",
+  "version": "1.0.0",
+  "name": "Cite File and Line",
+  "constraint_text": "Every code review finding must include a specific file path and line number citation. A finding without a citation must be withdrawn or downgraded to a question.",
+  "effect": "require"
+}

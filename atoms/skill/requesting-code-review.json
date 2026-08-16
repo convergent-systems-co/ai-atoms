@@ -1,0 +1,24 @@
+{
+  "schema": "https://skill-atoms.com/schemas/atom-v1.json",
+  "type": "skill",
+  "id": "skill/requesting-code-review",
+  "version": "1.0.0",
+  "name": "Request Code Review",
+  "description": "Prepare and request a code review after completing implementation. Summarizes what changed, why, how to verify, what assumptions were made, and what remains. Run before merging any non-trivial change.",
+  "system_prompt_fragment": "Prepare a code review request. Include: (1) What changed — the diff scope and key decisions. (2) Why — the motivation; link the issue or plan. (3) How to verify — exact commands a reviewer should run to confirm correctness. (4) Assumptions — any gap you filled that wasn't specified. (5) What remains — known follow-ups not in this change. (6) Risk — any area of the diff that deserves extra scrutiny. Run the adversarial self-pass before submitting: hidden assumptions, undocumented invariants, state-corruption paths, TOCTOU, logical inconsistencies.",
+  "applicable_domains": ["code", "review", "git"],
+  "invocation_contract": {
+    "inputs": [
+      { "name": "diff", "type": "string", "description": "The diff or PR diff to be reviewed.", "required": true },
+      { "name": "linked_issue", "type": "string", "description": "Issue or plan reference motivating the change.", "required": false }
+    ],
+    "outputs": [
+      { "name": "review_request", "type": "string", "description": "Structured review request covering what/why/how-to-verify/assumptions/remains/risk.", "required": true },
+      { "name": "adversarial_pass", "type": "string", "description": "Results of the adversarial self-pass checklist.", "required": true }
+    ],
+    "side_effects": []
+  },
+  "authored_by": "convergent-systems-key",
+  "tags": ["code-review", "pr", "quality", "merge"],
+  "lifecycle": "stable"
+}

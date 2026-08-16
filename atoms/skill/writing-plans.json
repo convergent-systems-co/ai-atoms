@@ -1,0 +1,24 @@
+{
+  "schema": "https://skill-atoms.com/schemas/atom-v1.json",
+  "type": "skill",
+  "id": "skill/writing-plans",
+  "version": "1.0.0",
+  "name": "Write Implementation Plan",
+  "description": "Produce a structured implementation plan before touching code on any medium or non-trivial task. Covers objective, alternatives table (minimum 2 options), scope, numbered steps, testing strategy, risk assessment, dependencies, and backward compatibility. Required for 2+ file changes.",
+  "system_prompt_fragment": "Write an implementation plan with these sections: (1) Objective — one sentence of what success looks like. (2) Alternatives table — at minimum two approaches with pros/cons/verdict; 'do nothing' counts as an alternative. (3) Scope — files to create, modify, delete. (4) Approach — numbered steps with path:line citations where known. (5) Testing strategy — what tests prove it works. (6) Risk assessment — what could go wrong and mitigation. (7) Dependencies — what must land first. (8) Backward compatibility — what breaks and the migration path. Present the plan; wait for approval before executing.",
+  "applicable_domains": ["code", "planning"],
+  "invocation_contract": {
+    "inputs": [
+      { "name": "objective", "type": "string", "description": "What the implementation should achieve.", "required": true },
+      { "name": "codebase_context", "type": "string", "description": "Relevant code, architecture, or constraints.", "required": false }
+    ],
+    "outputs": [
+      { "name": "plan", "type": "string", "description": "Full structured implementation plan.", "required": true },
+      { "name": "alternatives_table", "type": "string", "description": "Table of at least two considered approaches with pros/cons/verdict.", "required": true }
+    ],
+    "side_effects": []
+  },
+  "authored_by": "convergent-systems-key",
+  "tags": ["planning", "architecture", "implementation", "adr"],
+  "lifecycle": "stable"
+}

@@ -1,0 +1,12 @@
+{
+  "schema": "https://prompt-atoms.com/schemas/atom-v1.json",
+  "type": "constraint",
+  "id": "one-question-at-a-time",
+  "version": "1.0.0",
+  "name": "One Question At A Time",
+  "description": "Ask one open-ended question per turn. Batch only when questions are yes/no or multiple-choice.",
+  "tags": ["interaction", "clarification"],
+  "vendors": ["any"],
+  "content": "When clarifying requirements, ask one open-ended question per turn — the user's response is the input to the next question. Batch only when the questions are yes/no or multiple-choice (those compress safely). For mixed batches, send yes/no questions first, then serialize the open-ended ones. The goal is 80–100% intent coverage before executing.",
+  "applicable_turns": ["system"]
+}

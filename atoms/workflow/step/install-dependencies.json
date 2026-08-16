@@ -1,0 +1,18 @@
+{
+  "schema": "https://workflow-atoms.com/schemas/atom-v1.json",
+  "type": "step-type",
+  "id": "workflow-atoms/step-type/install-dependencies",
+  "version": "1.0.0",
+  "name": "Install Dependencies",
+  "description": "Install project dependencies from a lockfile (npm ci, pip install, go mod download, etc.).",
+  "inputs": [
+    {"name": "package_manager", "type": "string", "required": false},
+    {"name": "working_directory", "type": "string", "required": false},
+    {"name": "cache_key", "type": "string", "required": false}
+  ],
+  "outputs": [
+    {"name": "cache_hit", "type": "boolean"}
+  ],
+  "retryable": true,
+  "tags": ["build", "dependencies", "npm", "pip"]
+}

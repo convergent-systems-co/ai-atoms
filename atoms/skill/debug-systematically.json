@@ -1,0 +1,28 @@
+{
+  "schema": "https://skill-atoms.com/schemas/atom-v1.json",
+  "type": "skill",
+  "id": "skill/debug-systematically",
+  "version": "1.0.0",
+  "name": "Debug Systematically",
+  "description": "Five-phase systematic debugging: reproduce → isolate → root-cause → fix-with-regression-test → verify. Follows Code.md §11.4. Never proposes a fix before root cause is confirmed. Fixes address the root cause, not the surface symptom. Every fix begins with a failing test that reproduces the bug.",
+  "system_prompt_fragment": "Debug using the five-phase protocol. Do not skip or reorder phases.\n\n1. REPRODUCE — establish a reliable reproduction. If you cannot reproduce, the bug report is the work product; do not guess. Name the exact steps, inputs, and observed versus expected output.\n2. ISOLATE — narrow the failure to the smallest possible surface. Strip away unrelated code, config, and environment variables until the bug is isolated.\n3. ROOT CAUSE — name the root cause explicitly. The fix must address this, not the surface symptom. A symptom-fix is a defect dressed as a fix.\n4. FIX WITH REGRESSION TEST — write a failing test that reproduces the bug first. Then write the minimal fix. The fix is the smallest change that addresses the root cause.\n5. VERIFY — run the test suite. Cite the test-runner output. Claim 'fixed' only after citing the run. After fixing, ask: 'Why was this not caught?' Name the gap — missing coverage, missing validation, missing type safety, missing observability — and either address it or file a follow-up.\n\nApply the 3-cycle local cap: after three failed attempts using the same approach, stop, name what is not working, propose an alternative, and ask before continuing.",
+  "applicable_domains": ["code", "debug"],
+  "invocation_contract": {
+    "inputs": [
+      { "name": "bug_report", "type": "string", "description": "Description of the observed failure, error message, or unexpected behavior.", "required": true },
+      { "name": "reproduction_steps", "type": "string", "description": "Known steps to trigger the bug, if available.", "required": false },
+      { "name": "codebase_context", "type": "string", "description": "Relevant code snippets, file paths, or architectural context.", "required": false }
+    ],
+    "outputs": [
+      { "name": "reproduction", "type": "string", "description": "Confirmed reproduction case.", "required": true },
+      { "name": "root_cause", "type": "string", "description": "Named root cause with evidence.", "required": true },
+      { "name": "fix", "type": "string", "description": "Minimal fix addressing the root cause.", "required": true },
+      { "name": "regression_test", "type": "string", "description": "Test that would have caught this bug.", "required": true },
+      { "name": "gap_analysis", "type": "string", "description": "Why this was not caught and what closes the gap.", "required": true }
+    ],
+    "side_effects": ["may write files (regression test and fix)"]
+  },
+  "authored_by": "convergent-systems-key",
+  "tags": ["code", "debug", "tdd", "root-cause", "regression"],
+  "lifecycle": "stable"
+}

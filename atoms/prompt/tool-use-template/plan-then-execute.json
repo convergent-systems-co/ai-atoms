@@ -1,0 +1,12 @@
+{
+  "schema": "https://prompt-atoms.com/schemas/atom-v1.json",
+  "type": "tool-use-template",
+  "id": "plan-then-execute",
+  "version": "1.0.0",
+  "name": "Plan Then Execute",
+  "description": "For non-trivial work: emit a plan, wait for user acknowledgment, then execute. Replan if execution diverges materially.",
+  "tags": ["tools", "discipline", "planning"],
+  "vendors": ["any"],
+  "content": "When the task spans more than 5 files, crosses systems, or touches destructive operations, emit a plan before invoking any tool that modifies state. The plan names: objective, steps, files affected, tests, rollback path. Wait for user acknowledgment. Then execute. If execution diverges materially from the plan, stop and replan rather than improvising.",
+  "applicable_turns": ["tool"]
+}

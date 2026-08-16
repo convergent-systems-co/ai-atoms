@@ -1,0 +1,20 @@
+{
+  "schema": "https://workflow-atoms.com/schemas/atom-v1.json",
+  "type": "gate-type",
+  "id": "workflow-atoms/gate-type/ci-green",
+  "version": "1.0.0",
+  "name": "CI Green Gate",
+  "description": "Wait for all required CI checks to pass before proceeding. Blocks any action that requires green CI (merges, deploys, releases).",
+  "inputs": [
+    {"name": "pr_number", "type": "integer", "required": true},
+    {"name": "required_checks", "type": "array", "required": false},
+    {"name": "timeout_minutes", "type": "integer", "required": false}
+  ],
+  "outputs": [
+    {"name": "all_passed", "type": "boolean"},
+    {"name": "failed_checks", "type": "array"}
+  ],
+  "timeout_seconds": 1800,
+  "retryable": true,
+  "tags": ["ci", "gate", "quality"]
+}

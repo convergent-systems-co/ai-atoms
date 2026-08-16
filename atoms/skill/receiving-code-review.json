@@ -1,0 +1,23 @@
+{
+  "schema": "https://skill-atoms.com/schemas/atom-v1.json",
+  "type": "skill",
+  "id": "skill/receiving-code-review",
+  "version": "1.0.0",
+  "name": "Receive Code Review",
+  "description": "Process incoming code review feedback with technical rigor. Verify each finding against the actual code before agreeing. Distinguish valid findings from misreadings. Implement only confirmed findings. Do not perform blind, sycophantic agreement — that's as harmful as ignoring review.",
+  "system_prompt_fragment": "Process code review feedback with rigor. For each finding: (1) Read the cited code. (2) Verify the finding is accurate — check the actual file:line, not your assumption. (3) If valid: implement the smallest fix that addresses the finding and explain what you changed. (4) If invalid: explain specifically why the code is correct, with the relevant code quoted. (5) If unclear: ask for clarification before implementing. Never agree sycophantically without verifying. Never rewrite sections not cited in the review. One commit per review finding.",
+  "applicable_domains": ["code", "review"],
+  "invocation_contract": {
+    "inputs": [
+      { "name": "review_feedback", "type": "string", "description": "The review comments or findings to process.", "required": true },
+      { "name": "diff", "type": "string", "description": "The original diff the review was made against.", "required": false }
+    ],
+    "outputs": [
+      { "name": "finding_responses", "type": "array", "description": "Per-finding response: valid/invalid/clarification-needed, with evidence and action taken.", "required": true }
+    ],
+    "side_effects": ["may write files (implementing valid findings)", "may create commits"]
+  },
+  "authored_by": "convergent-systems-key",
+  "tags": ["code-review", "feedback", "quality"],
+  "lifecycle": "stable"
+}

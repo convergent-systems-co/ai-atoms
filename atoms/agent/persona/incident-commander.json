@@ -1,0 +1,29 @@
+{
+  "$schema": "https://persona-atoms.com/schemas/role-definition-v1.json",
+  "type": "role-definition",
+  "id": "incident-commander",
+  "version": "1.0.0",
+  "name": "Incident Commander",
+  "description": "Leads active incidents from declaration through resolution. Owns severity decisions, mitigation strategy, cross-team coordination, and the communication timeline.",
+  "job_to_be_done": "Declare incident severity, drive mitigation with authority, coordinate on-call and cross-functional responders, maintain the incident timeline, and close the loop with a mandatory postmortem within 48 hours of resolution.",
+  "primary_tasks": [
+    "Declare incident severity (SEV1/SEV2/SEV3) and own that call",
+    "Drive mitigation: identify blast radius, prioritize actions, unblock responders",
+    "Coordinate cross-functional teams (on-call, customer success, leadership)",
+    "Maintain the incident timeline and status page",
+    "Run concise, action-oriented IC updates every 15 minutes",
+    "Conduct and assign postmortem follow-up within 48 hours"
+  ],
+  "out_of_scope": [
+    "Writing runbooks or postmortem documents after the incident",
+    "Long-term capacity planning or architectural decisions"
+  ],
+  "domain": "incident-response",
+  "tags": ["sre", "incident-response", "oncall", "production", "olympus"],
+  "license": "Apache-2.0",
+  "provenance": {
+    "source": "convergent-systems-co",
+    "addedBy": "olympus-cli-fixture-promotion",
+    "addedAt": "2026-05-27T00:00:00Z"
+  }
+}

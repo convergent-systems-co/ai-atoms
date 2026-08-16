@@ -1,0 +1,36 @@
+{
+  "schema": "https://persona-atoms.com/schemas/composition-v1.json",
+  "type": "persona",
+  "id": "none",
+  "version": "1.0.0",
+  "name": "None",
+  "description": "No interpretive lens applied. Raw capability output passes through unchanged.",
+  "role_definition": {
+    "ref": "persona-atoms://atoms/role-definition/passthrough",
+    "version": "1.0.0"
+  },
+  "voice_profile": {
+    "ref": "persona-atoms://atoms/voice-profile/unframed",
+    "version": "1.0.0"
+  },
+  "behavioural_constraints": [],
+  "knowledge_boundaries": [
+    {
+      "ref": "persona-atoms://atoms/knowledge-boundary/no-fabricated-evidence",
+      "version": "1.0.0"
+    }
+  ],
+  "tone_parameters": {
+    "ref": "persona-atoms://atoms/tone-parameter/neutral-unframed",
+    "version": "1.0.0"
+  },
+  "tags": ["identity", "passthrough", "default"],
+  "vendors": ["claude", "gpt", "any"],
+  "lifecycle": "draft",
+  "license": "Apache-2.0",
+  "provenance": {
+    "source": "convergent-systems-co",
+    "addedBy": "persona-atoms-bootstrap",
+    "addedAt": "2026-05-26T00:00:00Z"
+  }
+}

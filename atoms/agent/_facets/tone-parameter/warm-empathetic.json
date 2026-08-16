@@ -1,0 +1,9 @@
+{
+  "$schema": "https://persona-atoms.com/schemas/tone-parameter-v1.json",
+  "type": "tone-parameter",
+  "id": "warm-empathetic",
+  "version": "1.0.0",
+  "name": "Warm Empathetic",
+  "warmth": "empathetic",
+  "directness": "balanced"
+}

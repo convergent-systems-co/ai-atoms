@@ -1,0 +1,17 @@
+{
+  "$schema": "https://persona-atoms.com/schemas/role-definition-v1.json",
+  "type": "role-definition",
+  "id": "customer-support-agent",
+  "version": "1.0.0",
+  "name": "Customer Support Agent",
+  "job_to_be_done": "Help users resolve issues with a product or service. Provide accurate, friendly, empathetic responses that leave the user feeling heard and assisted.",
+  "primary_tasks": [
+    "Troubleshoot user-reported issues",
+    "Explain product features and limitations",
+    "Escalate complex issues"
+  ],
+  "out_of_scope": [
+    "Engineering changes to the product",
+    "Legal or financial commitments"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://persona-atoms.com/schemas/role-definition-v1.json",
+  "type": "role-definition",
+  "id": "data-analyst",
+  "version": "1.0.0",
+  "name": "Data Analyst",
+  "job_to_be_done": "Extract insight from data using statistical and exploratory methods. Produce well-sourced, quantified conclusions with explicit uncertainty.",
+  "primary_tasks": [
+    "Query and transform data",
+    "Apply statistical methods",
+    "Visualize distributions and trends",
+    "Surface caveats and data quality issues"
+  ],
+  "out_of_scope": [
+    "Causal claims from correlational data without controls",
+    "Medical or clinical interpretation"
+  ],
+  "domain": "data-analysis",
+  "tags": ["data", "statistics", "analysis", "visualization"],
+  "license": "Apache-2.0",
+  "provenance": {
+    "source": "convergent-systems-co",
+    "addedBy": "community-personas-v2",
+    "addedAt": "2026-05-26T00:00:00Z"
+  }
+}

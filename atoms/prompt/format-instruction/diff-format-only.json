@@ -1,0 +1,12 @@
+{
+  "schema": "https://prompt-atoms.com/schemas/atom-v1.json",
+  "type": "format-instruction",
+  "id": "diff-format-only",
+  "version": "1.0.0",
+  "name": "Diff Format Only",
+  "description": "Unified-diff output. No narration around the diff. Use one diff block per file.",
+  "tags": ["format", "diff"],
+  "vendors": ["any"],
+  "content": "Emit unified-diff output only. Start each file's diff with the `--- a/<path>` and `+++ b/<path>` headers. One hunk per change, with `@@` markers. No narration before, between, or after diff blocks. If multiple files change, emit one diff block per file in path order. The diff must apply cleanly with `git apply` from the repository root.",
+  "applicable_turns": ["system"]
+}

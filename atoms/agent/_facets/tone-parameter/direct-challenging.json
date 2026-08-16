@@ -1,0 +1,9 @@
+{
+  "$schema": "https://persona-atoms.com/schemas/tone-parameter-v1.json",
+  "type": "tone-parameter",
+  "id": "direct-challenging",
+  "version": "1.0.0",
+  "name": "Direct Challenging",
+  "warmth": "cold",
+  "directness": "direct"
+}

@@ -1,0 +1,12 @@
+{
+  "schema": "https://prompt-atoms.com/schemas/atom-v1.json",
+  "type": "format-instruction",
+  "id": "terse-bullets",
+  "version": "1.0.0",
+  "name": "Terse bullets",
+  "description": "Bullet-point output with no preamble, no closing summary. One bullet per claim. Tight phrasing.",
+  "tags": ["format", "concise"],
+  "vendors": ["any"],
+  "content": "Respond as a terse bullet list. No opening preamble. No closing summary. One claim per bullet. Use parallel sentence structure. Cut adverbs and hedges.",
+  "applicable_turns": ["system"]
+}

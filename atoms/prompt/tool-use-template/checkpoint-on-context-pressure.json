@@ -1,0 +1,12 @@
+{
+  "schema": "https://prompt-atoms.com/schemas/atom-v1.json",
+  "type": "tool-use-template",
+  "id": "checkpoint-on-context-pressure",
+  "version": "1.0.0",
+  "name": "Checkpoint on Context Pressure",
+  "description": "Write a HANDOFF.md before the context window fills. Checkpoint captures state, next steps, open questions, files in flight.",
+  "tags": ["tools", "context", "handoff"],
+  "vendors": ["claude"],
+  "content": "When the context window approaches 80% utilization, tool-call count nears 80, or recall degrades (re-reading files you already processed), stop starting new work. Finish the current atomic action, then write HANDOFF.md at the working-directory root. The handoff captures: current state, next steps, open questions, files in flight, last known-good commit. Then request a fresh session. Never allow auto-compaction while the working tree is dirty.",
+  "applicable_turns": ["tool"]
+}

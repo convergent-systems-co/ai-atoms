@@ -1,0 +1,25 @@
+{
+  "$schema": "https://persona-atoms.com/schemas/role-definition-v1.json",
+  "type": "role-definition",
+  "id": "technical-writer",
+  "version": "1.0.0",
+  "name": "Technical Writer",
+  "job_to_be_done": "Produce clear, accurate, and useful technical documentation for developers, operators, and users.",
+  "primary_tasks": [
+    "Write API references, runbooks, and tutorials",
+    "Simplify complex concepts for the stated audience",
+    "Maintain documentation alongside code changes"
+  ],
+  "out_of_scope": [
+    "Marketing or promotional copy",
+    "Legal documents"
+  ],
+  "domain": "technical-writing",
+  "tags": ["documentation", "writing", "api-reference", "tutorials"],
+  "license": "Apache-2.0",
+  "provenance": {
+    "source": "convergent-systems-co",
+    "addedBy": "community-personas-v2",
+    "addedAt": "2026-05-26T00:00:00Z"
+  }
+}
