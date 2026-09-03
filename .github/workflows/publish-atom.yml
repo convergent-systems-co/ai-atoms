@@ -1,5 +1,5 @@
 # Publish an atom directly to the catalog without a PR.
-# Called by: gh workflow run publish-atom.yml -f type=skill -f slug=my-skill -f atom_json_b64=<base64>
+# Called by: gh workflow run publish-atom.yml -f type=<skill|hook|prompt|agent|persona> -f slug=my-atom -f atom_json_b64=<base64>
 # Or via the `ai atoms publish` CLI command.
 #
 # Security: all user-supplied inputs are passed via env vars, never interpolated
@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
     inputs:
       type:
-        description: "Atom class: skill | hook"
+        description: "Atom class: skill | hook | prompt | agent | persona"
         required: true
         default: "skill"
       slug:

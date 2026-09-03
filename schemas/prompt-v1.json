@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-atoms.com/schemas/prompt-v1.json",
+  "title": "ai-atoms prompt v1",
+  "description": "A prompt atom — text a runtime injects into a model's context window. The subtype says what kind of text it is; content is the text itself, verbatim.",
+  "type": "object",
+  "required": [
+    "schema",
+    "type",
+    "id",
+    "version",
+    "name",
+    "description",
+    "subtype",
+    "content"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "https://ai-atoms.com/schemas/prompt-v1.json"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "prompt"
+      ]
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^prompt/[a-z0-9][a-z0-9-]*$",
+      "description": "Namespaced identifier in the form prompt/<slug>."
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[A-Za-z0-9.-]+)?$",
+      "description": "Semantic version of this prompt atom."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80,
+      "description": "Human-readable display name."
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1000,
+      "description": "What this prompt does and when to inject it."
+    },
+    "subtype": {
+      "type": "string",
+      "enum": [
+        "persona",
+        "constraint",
+        "format",
+        "output-schema",
+        "refusal",
+        "tool-use",
+        "composite"
+      ],
+      "description": "persona = identity voice for a system turn; constraint = a rule the model must follow; format = how output is shaped; output-schema = a machine-readable output contract; refusal = what to decline and how; tool-use = discipline around tool calls; composite = a bundle assembled from other prompt atoms via `includes`."
+    },
+    "content": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The injected text, verbatim. For composite prompts this is the resolved concatenation of `includes`, in order."
+    },
+    "applicable_turns": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "system",
+          "user",
+          "assistant",
+          "tool"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true,
+      "description": "Which conversation turns this text may be injected into. Omit to mean system only."
+    },
+    "vendors": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true,
+      "description": "Model vendors this prompt is written for (e.g. anthropic, openai, ollama); 'any' for vendor-neutral."
+    },
+    "persona_ref": {
+      "type": "string",
+      "pattern": "^persona/[a-z0-9][a-z0-9-]*$",
+      "description": "For subtype persona: the persona atom this text renders."
+    },
+    "includes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^prompt/[a-z0-9][a-z0-9-]*$"
+      },
+      "minItems": 1,
+      "uniqueItems": true,
+      "description": "For subtype composite: the prompt atoms concatenated into `content`, in order. Every entry must resolve in the catalog."
+    },
+    "authored_by": {
+      "type": "string",
+      "description": "Key atom ID or author identifier."
+    },
+    "source_url": {
+      "type": "string",
+      "description": "URL of the original source when imported from an external repository."
+    },
+    "category": {
+      "$ref": "https://ai-atoms.com/schemas/common-v1.json#/$defs/category"
+    },
+    "provenance": {
+      "$ref": "https://ai-atoms.com/schemas/common-v1.json#/$defs/provenance"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 40
+      },
+      "uniqueItems": true
+    },
+    "lifecycle": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "stable",
+        "deprecated"
+      ],
+      "description": "Lifecycle stage of this prompt atom."
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "subtype": {
+            "const": "composite"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "includes"
+        ]
+      }
+    }
+  ]
+}
