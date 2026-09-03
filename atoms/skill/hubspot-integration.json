@@ -1,0 +1,33 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/hubspot-integration",
+  "version": "1.0.0",
+  "name": "hubspot-integration",
+  "description": "Expert patterns for HubSpot CRM integration including OAuth authentication, CRM objects, associations, batch operations, webhooks, and custom objects. Covers Node.js and Python SDKs. Use when: hubs...",
+  "system_prompt_fragment": "# HubSpot Integration\n\n## Patterns\n\n### OAuth 2.0 Authentication\n\nSecure authentication for public apps\n\n### Private App Token\n\nAuthentication for single-account integrations\n\n### CRM Object CRUD Operations\n\nCreate, read, update, delete CRM records\n\n## Anti-Patterns\n\n### ❌ Using Deprecated API Keys\n\n### ❌ Individual Requests Instead of Batch\n\n### ❌ Polling Instead of Webhooks\n\n## ⚠️ Sharp Edges\n\n| Issue | Severity | Solution |\n|-------|----------|----------|\n| Issue | high | See docs |\n| Issue | high | See docs |\n| Issue | critical | See docs |\n| Issue | high | See docs |\n| Issue | critical | See docs |\n| Issue | medium | See docs |\n| Issue | high | See docs |\n| Issue | medium | See docs |\n\n## When to Use\nThis skill is applicable to execute the workflow or actions described in the overview.",
+  "applicable_domains": [
+    "general"
+  ],
+  "invocation": [
+    "/hubspot-integration"
+  ],
+  "tags": [
+    "claudeskills.in",
+    "other",
+    "unreviewed"
+  ],
+  "authored_by": "claudeskills.in contributors",
+  "source_url": "https://claudeskills.in/skill/hubspot-integration",
+  "provenance": {
+    "source": "claudeskills.in",
+    "source_type": "catalog-site",
+    "source_url": "https://claudeskills.in/skill/hubspot-integration",
+    "author": "claudeskills.in contributors",
+    "license": "Apache-2.0",
+    "retrieved_at": "2026-09-02",
+    "modified": false,
+    "notes": "Aggregated by claudeskills.in; upstream recorded as \"vibeship-spawner-skills (Apache 2.0)\". Verify the upstream license before redistributing."
+  },
+  "lifecycle": "draft"
+}

@@ -1,0 +1,35 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/azure-functions",
+  "version": "1.0.0",
+  "name": "azure-functions",
+  "description": "Expert patterns for Azure Functions development including isolated worker model, Durable Functions orchestration, cold start optimization, and production patterns. Covers .NET, Python, and Node.js ...",
+  "system_prompt_fragment": "# Azure Functions\n\n## Patterns\n\n### Isolated Worker Model (.NET)\n\nModern .NET execution model with process isolation\n\n### Node.js v4 Programming Model\n\nModern code-centric approach for TypeScript/JavaScript\n\n### Python v2 Programming Model\n\nDecorator-based approach for Python functions\n\n## Anti-Patterns\n\n### ❌ Blocking Async Calls\n\n### ❌ New HttpClient Per Request\n\n### ❌ In-Process Model for New Projects\n\n## ⚠️ Sharp Edges\n\n| Issue | Severity | Solution |\n|-------|----------|----------|\n| Issue | high | ## Use async pattern with Durable Functions |\n| Issue | high | ## Use IHttpClientFactory (Recommended) |\n| Issue | high | ## Always use async/await |\n| Issue | medium | ## Configure maximum timeout (Consumption) |\n| Issue | high | ## Use isolated worker for new projects |\n| Issue | medium | ## Configure Application Insights properly |\n| Issue | medium | ## Check extension bundle (most common) |\n| Issue | medium | ## Add warmup trigger to initialize your code |\n\n## When to Use\nThis skill is applicable to execute the workflow or actions described in the overview.",
+  "applicable_domains": [
+    "operations",
+    "devops"
+  ],
+  "invocation": [
+    "/azure-functions"
+  ],
+  "tags": [
+    "claudeskills.in",
+    "devops",
+    "unreviewed"
+  ],
+  "authored_by": "claudeskills.in contributors",
+  "source_url": "https://claudeskills.in/skill/azure-functions",
+  "provenance": {
+    "source": "claudeskills.in",
+    "source_type": "catalog-site",
+    "source_url": "https://claudeskills.in/skill/azure-functions",
+    "author": "claudeskills.in contributors",
+    "license": "Apache-2.0",
+    "retrieved_at": "2026-09-02",
+    "modified": false,
+    "notes": "Aggregated by claudeskills.in; upstream recorded as \"vibeship-spawner-skills (Apache 2.0)\". Verify the upstream license before redistributing."
+  },
+  "lifecycle": "draft",
+  "category": "operations"
+}

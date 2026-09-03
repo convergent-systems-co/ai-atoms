@@ -1,0 +1,34 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/clerk-auth",
+  "version": "1.0.0",
+  "name": "clerk-auth",
+  "description": "Expert patterns for Clerk auth implementation, middleware, organizations, webhooks, and user sync Use when: adding authentication, clerk auth, user authentication, sign in, sign up.",
+  "system_prompt_fragment": "# Clerk Authentication\n\n## Patterns\n\n### Next.js App Router Setup\n\nComplete Clerk setup for Next.js 14/15 App Router.\n\nIncludes ClerkProvider, environment variables, and basic\nsign-in/sign-up components.\n\nKey components:\n- ClerkProvider: Wraps app for auth context\n- <SignIn />, <SignUp />: Pre-built auth forms\n- <UserButton />: User menu with session management\n\n\n### Middleware Route Protection\n\nProtect routes using clerkMiddleware and createRouteMatcher.\n\nBest practices:\n- Single middleware.ts file at project root\n- Use createRouteMatcher for route groups\n- auth.protect() for explicit protection\n- Centralize all auth logic in middleware\n\n\n### Server Component Authentication\n\nAccess auth state in Server Components using auth() and currentUser().\n\nKey functions:\n- auth(): Returns userId, sessionId, orgId, claims\n- currentUser(): Returns full User object\n- Both require clerkMiddleware to be configured\n\n\n## ⚠️ Sharp Edges\n\n| Issue | Severity | Solution |\n|-------|----------|----------|\n| Issue | critical | See docs |\n| Issue | high | See docs |\n| Issue | high | See docs |\n| Issue | high | See docs |\n| Issue | medium | See docs |\n| Issue | medium | See docs |\n| Issue | medium | See docs |\n| Issue | medium | See docs |\n\n## When to Use\nThis skill is applicable to execute the workflow or actions described in the overview.",
+  "applicable_domains": [
+    "security"
+  ],
+  "invocation": [
+    "/clerk-auth"
+  ],
+  "tags": [
+    "claudeskills.in",
+    "security",
+    "unreviewed"
+  ],
+  "authored_by": "claudeskills.in contributors",
+  "source_url": "https://claudeskills.in/skill/clerk-auth",
+  "provenance": {
+    "source": "claudeskills.in",
+    "source_type": "catalog-site",
+    "source_url": "https://claudeskills.in/skill/clerk-auth",
+    "author": "claudeskills.in contributors",
+    "license": "Apache-2.0",
+    "retrieved_at": "2026-09-02",
+    "modified": false,
+    "notes": "Aggregated by claudeskills.in; upstream recorded as \"vibeship-spawner-skills (Apache 2.0)\". Verify the upstream license before redistributing."
+  },
+  "lifecycle": "draft",
+  "category": "governance"
+}
