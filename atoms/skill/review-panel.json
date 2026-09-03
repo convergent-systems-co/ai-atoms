@@ -56,5 +56,12 @@
     "/review-panel --pr=<number>",
     "/review-panel <file-path>"
   ],
-  "category": "governance"
+  "category": "governance",
+  "provenance": {
+    "source": "convergent-systems-co/ai-atoms",
+    "source_type": "first-party",
+    "author": "Convergent Systems",
+    "license": "Apache-2.0",
+    "retrieved_at": "2026-05-28"
+  }
 }

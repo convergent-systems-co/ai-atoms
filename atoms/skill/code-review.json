@@ -23,5 +23,14 @@
   "authored_by": "anthropics",
   "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/engineering/skills/code-review/SKILL.md",
   "lifecycle": "stable",
-  "category": "coding"
+  "category": "coding",
+  "provenance": {
+    "source": "anthropics/knowledge-work-plugins",
+    "source_type": "github-repo",
+    "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/engineering/skills/code-review/SKILL.md",
+    "author": "Anthropic",
+    "license": "Apache-2.0",
+    "retrieved_at": "2026-05-28",
+    "modified": false
+  }
 }

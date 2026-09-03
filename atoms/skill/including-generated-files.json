@@ -20,8 +20,18 @@
     "csharp",
     "microsoft"
   ],
-  "authored_by": "anthropics",
+  "authored_by": "dotnet",
   "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-msbuild/skills/including-generated-files/SKILL.md",
   "lifecycle": "stable",
-  "category": "dotnet"
+  "category": "dotnet",
+  "provenance": {
+    "source": "dotnet/skills",
+    "source_type": "github-repo",
+    "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-msbuild/skills/including-generated-files/SKILL.md",
+    "author": ".NET Foundation and contributors",
+    "license": "MIT",
+    "retrieved_at": "2026-05-28",
+    "modified": false,
+    "notes": "Previously mis-credited as authored_by=anthropics; upstream owner is the dotnet org."
+  }
 }

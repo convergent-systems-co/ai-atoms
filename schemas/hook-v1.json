@@ -2,9 +2,19 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://ai-atoms.com/schemas/hook-v1.json",
   "title": "ai-atoms hook v1",
-  "description": "A hook atom — an event-driven runtime behavior wired into AI tool infrastructure (Claude Code, Copilot CLI, etc.).",
+  "description": "A hook atom \u2014 an event-driven runtime behavior wired into AI tool infrastructure (Claude Code, Copilot CLI, etc.).",
   "type": "object",
-  "required": ["schema", "type", "id", "version", "name", "description", "event", "language", "trigger"],
+  "required": [
+    "schema",
+    "type",
+    "id",
+    "version",
+    "name",
+    "description",
+    "event",
+    "language",
+    "trigger"
+  ],
   "additionalProperties": false,
   "properties": {
     "schema": {
@@ -13,7 +23,9 @@
     },
     "type": {
       "type": "string",
-      "enum": ["hook"]
+      "enum": [
+        "hook"
+      ]
     },
     "id": {
       "type": "string",
@@ -43,19 +55,32 @@
     },
     "language": {
       "type": "string",
-      "enum": ["python", "bash", "javascript", "typescript"],
+      "enum": [
+        "python",
+        "bash",
+        "javascript",
+        "typescript"
+      ],
       "description": "Implementation language of the hook script."
     },
     "trigger": {
       "type": "object",
-      "required": ["type"],
+      "required": [
+        "type"
+      ],
       "additionalProperties": false,
       "description": "Condition under which this hook fires.",
       "properties": {
         "type": {
           "type": "string",
-          "enum": ["tool-name", "file-pattern", "always", "tool-category", "library"],
-          "description": "How the hook matches: by tool name, file path pattern, always, tool category, or library (not a runnable hook — a shared dependency)."
+          "enum": [
+            "tool-name",
+            "file-pattern",
+            "always",
+            "tool-category",
+            "library"
+          ],
+          "description": "How the hook matches: by tool name, file path pattern, always, tool category, or library (not a runnable hook \u2014 a shared dependency)."
         },
         "pattern": {
           "type": "string",
@@ -73,13 +98,23 @@
     },
     "side_effects": {
       "type": "array",
-      "items": { "type": "string", "minLength": 1 },
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
       "uniqueItems": true,
       "description": "Observable effects of this hook (e.g. writes to audit log, emits warning to stderr)."
     },
     "platforms": {
       "type": "array",
-      "items": { "type": "string", "enum": ["linux", "macos", "windows"] },
+      "items": {
+        "type": "string",
+        "enum": [
+          "linux",
+          "macos",
+          "windows"
+        ]
+      },
       "uniqueItems": true,
       "description": "Platforms on which this hook's logic is verified. Omit to mean all platforms. Wiring is always cross-platform via 'ai hooks run <slug>'."
     },
@@ -91,14 +126,76 @@
       "type": "string",
       "description": "Key atom ID or author identifier."
     },
+    "provenance": {
+      "type": "object",
+      "description": "Where this atom came from and who deserves credit. Present on every atom imported from an external source; omit only for original first-party work.",
+      "required": [
+        "source"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120,
+          "description": "Stable identifier of the upstream source the atom was taken from, e.g. \"anthropics/knowledge-work-plugins\", \"obsidian-kepano\", \"claudeskills.in\"."
+        },
+        "source_type": {
+          "type": "string",
+          "enum": [
+            "first-party",
+            "github-repo",
+            "catalog-site",
+            "documentation",
+            "community",
+            "unknown"
+          ],
+          "description": "What kind of source this came from. first-party = authored in this catalog."
+        },
+        "source_url": {
+          "type": "string",
+          "description": "URL of the original artifact upstream, used for attribution and for tracking upstream changes."
+        },
+        "author": {
+          "type": "string",
+          "description": "Original author or maintainer to credit, as they identify themselves upstream (org, handle, or person)."
+        },
+        "license": {
+          "type": "string",
+          "description": "SPDX identifier of the upstream license (e.g. \"Apache-2.0\", \"MIT\", \"CC-BY-4.0\"), or \"unknown\" when the source states none. \"unknown\" means redistribution has not been cleared."
+        },
+        "retrieved_at": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "description": "ISO-8601 date (YYYY-MM-DD) the atom was pulled from the source."
+        },
+        "modified": {
+          "type": "boolean",
+          "description": "Whether this atom's content was changed from the upstream original during import."
+        },
+        "notes": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "Free-text attribution or licensing caveats a redistributor needs to know."
+        }
+      }
+    },
     "tags": {
       "type": "array",
-      "items": { "type": "string", "minLength": 1, "maxLength": 40 },
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 40
+      },
       "uniqueItems": true
     },
     "lifecycle": {
       "type": "string",
-      "enum": ["draft", "stable", "deprecated"],
+      "enum": [
+        "draft",
+        "stable",
+        "deprecated"
+      ],
       "description": "Lifecycle stage of this hook atom."
     },
     "script": {
@@ -107,15 +204,21 @@
     },
     "depends_on": {
       "type": "array",
-      "items": {"type": "string"},
+      "items": {
+        "type": "string"
+      },
       "description": "Hook IDs this hook depends on (e.g. hook/lib). Installed automatically.",
       "default": []
     },
     "requires_wrap": {
       "type": "object",
-      "required": ["binary", "description", "install_hint"],
+      "required": [
+        "binary",
+        "description",
+        "install_hint"
+      ],
       "additionalProperties": false,
-      "description": "Present when the hook only achieves full coverage when the named binary is installed as a wrapper around an external tool (e.g. git aliased to 'ai git'). Without the wrapper the hook still fires for AI tool Bash calls, but direct invocations bypass it. The ai CLI reads this field in 'ai doctor' to surface the hint and in 'ai setup' to offer the wrapper install — but never requires it.",
+      "description": "Present when the hook only achieves full coverage when the named binary is installed as a wrapper around an external tool (e.g. git aliased to 'ai git'). Without the wrapper the hook still fires for AI tool Bash calls, but direct invocations bypass it. The ai CLI reads this field in 'ai doctor' to surface the hint and in 'ai setup' to offer the wrapper install \u2014 but never requires it.",
       "properties": {
         "binary": {
           "type": "string",

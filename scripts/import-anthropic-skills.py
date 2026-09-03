@@ -6,8 +6,9 @@ Sources (both Apache-2.0 where noted):
   anthropics/skills                  — Apache-2.0 skills only
                                        (skips docx/pdf/pptx/xlsx which are source-available only)
 
-Attribution: All imported atoms carry authored_by="anthropics" and a
-source_url field pointing to the original SKILL.md on GitHub.
+Attribution: every imported atom carries a `provenance` block naming the
+upstream repo, its owner, its license, and the URL of the original SKILL.md.
+Add an entry to SOURCES below before importing from a new upstream.
 
 Usage: python3 scripts/import-anthropic-skills.py [--dry-run]
 """
@@ -17,6 +18,7 @@ import sys
 import time
 import urllib.request
 import urllib.error
+from datetime import date
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -32,6 +34,34 @@ KWP_DOMAINS = [
     "enterprise-search", "finance", "human-resources", "legal", "marketing",
     "operations", "product-management", "productivity", "sales", "small-business",
 ]
+
+# Upstream registry — keyed by repo URL prefix. Every import must resolve to
+# one of these so the atom gets an accurate provenance block.
+SOURCES = {
+    "https://github.com/anthropics/knowledge-work-plugins": {
+        "source": "anthropics/knowledge-work-plugins",
+        "source_type": "github-repo",
+        "author": "Anthropic",
+        "license": "Apache-2.0",
+        "authored_by": "anthropics",
+    },
+    "https://github.com/anthropics/skills": {
+        "source": "anthropics/skills",
+        "source_type": "github-repo",
+        "author": "Anthropic",
+        "license": "Apache-2.0",
+        "authored_by": "anthropics",
+        "notes": "Upstream repo is mixed-license; only the Apache-2.0 skills are "
+                 "imported (docx/pdf/pptx/xlsx are source-available and skipped).",
+    },
+    "https://github.com/dotnet/skills": {
+        "source": "dotnet/skills",
+        "source_type": "github-repo",
+        "author": ".NET Foundation and contributors",
+        "license": "MIT",
+        "authored_by": "dotnet",
+    },
+}
 
 DRY_RUN = "--dry-run" in sys.argv
 GITHUB_TOKEN = None
@@ -130,6 +160,23 @@ def skill_to_atom(parsed: dict, slug: str, source_url: str,
     if not system_prompt:
         system_prompt = f"Execute the {name} skill as described."
 
+    base = source_url.split("/blob/")[0]
+    src = SOURCES.get(base)
+    if src is None:
+        raise SystemExit(f"error: no SOURCES entry for {base} — add one so the "
+                         f"atom can carry accurate attribution")
+    provenance = {
+        "source": src["source"],
+        "source_type": src["source_type"],
+        "source_url": source_url,
+        "author": src["author"],
+        "license": src["license"],
+        "retrieved_at": date.today().isoformat(),
+        "modified": False,
+    }
+    if src.get("notes"):
+        provenance["notes"] = src["notes"]
+
     atom = {
         "schema": "https://ai-atoms.com/schemas/skill-v1.json",
         "type": "skill",
@@ -141,8 +188,9 @@ def skill_to_atom(parsed: dict, slug: str, source_url: str,
         "applicable_domains": domains,
         "invocation": invocation,
         "tags": tags,
-        "authored_by": "anthropics",
+        "authored_by": src["authored_by"],
         "source_url": source_url,
+        "provenance": provenance,
         "lifecycle": "stable",
     }
     return atom

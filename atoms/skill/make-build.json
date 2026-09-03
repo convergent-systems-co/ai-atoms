@@ -44,5 +44,12 @@
   ],
   "authored_by": "convergent-systems-key",
   "lifecycle": "stable",
-  "category": "product"
+  "category": "product",
+  "provenance": {
+    "source": "convergent-systems-co/ai-atoms",
+    "source_type": "first-party",
+    "author": "Convergent Systems",
+    "license": "Apache-2.0",
+    "retrieved_at": "2026-05-28"
+  }
 }

@@ -2,9 +2,18 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://ai-atoms.com/schemas/skill-v1.json",
   "title": "ai-atoms skill v1",
-  "description": "A skill atom — a bounded, invocable unit of AI capability with a declared system-prompt fragment, inputs, outputs, and side effects.",
+  "description": "A skill atom \u2014 a bounded, invocable unit of AI capability with a declared system-prompt fragment, inputs, outputs, and side effects.",
   "type": "object",
-  "required": ["schema", "type", "id", "version", "name", "description", "system_prompt_fragment", "applicable_domains"],
+  "required": [
+    "schema",
+    "type",
+    "id",
+    "version",
+    "name",
+    "description",
+    "system_prompt_fragment",
+    "applicable_domains"
+  ],
   "additionalProperties": false,
   "properties": {
     "schema": {
@@ -13,7 +22,9 @@
     },
     "type": {
       "type": "string",
-      "enum": ["skill"]
+      "enum": [
+        "skill"
+      ]
     },
     "id": {
       "type": "string",
@@ -44,7 +55,10 @@
     },
     "applicable_domains": {
       "type": "array",
-      "items": { "type": "string", "minLength": 1 },
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
       "minItems": 1,
       "uniqueItems": true,
       "description": "Domains where this skill applies (e.g. code, design, planning, debug, agents)."
@@ -71,7 +85,10 @@
     },
     "depends_on": {
       "type": "array",
-      "items": { "type": "string", "pattern": "^skill/[a-z0-9][a-z0-9-]*$" },
+      "items": {
+        "type": "string",
+        "pattern": "^skill/[a-z0-9][a-z0-9-]*$"
+      },
       "uniqueItems": true,
       "description": "Sub-skills this skill installs on `ai skills install` and hides from the top-level catalog list (dispatcher pattern). Each entry is a namespaced skill id, e.g. \"skill/make-work\"."
     },
@@ -84,13 +101,24 @@
           "type": "array",
           "items": {
             "type": "object",
-            "required": ["name", "type"],
+            "required": [
+              "name",
+              "type"
+            ],
             "additionalProperties": false,
             "properties": {
-              "name": { "type": "string" },
-              "type": { "type": "string" },
-              "required": { "type": "boolean" },
-              "description": { "type": "string" }
+              "name": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              },
+              "required": {
+                "type": "boolean"
+              },
+              "description": {
+                "type": "string"
+              }
             }
           }
         },
@@ -98,25 +126,39 @@
           "type": "array",
           "items": {
             "type": "object",
-            "required": ["name", "type"],
+            "required": [
+              "name",
+              "type"
+            ],
             "additionalProperties": false,
             "properties": {
-              "name": { "type": "string" },
-              "type": { "type": "string" },
-              "description": { "type": "string" }
+              "name": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              }
             }
           }
         },
         "side_effects": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "uniqueItems": true
         }
       }
     },
     "invocation": {
       "type": "array",
-      "items": { "type": "string", "minLength": 1 },
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
       "description": "Slash-command invocation forms, e.g. [\"/debug\", \"/debug \\\"<symptom>\\\"\", \"/debug --error <log>\"]. Omit for skills with no slash-command entry point.",
       "uniqueItems": true
     },
@@ -124,18 +166,80 @@
       "type": "string",
       "description": "Key atom ID or author identifier (e.g. 'convergent-systems-key', 'anthropics', 'kepano')."
     },
+    "provenance": {
+      "type": "object",
+      "description": "Where this atom came from and who deserves credit. Present on every atom imported from an external source; omit only for original first-party work.",
+      "required": [
+        "source"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120,
+          "description": "Stable identifier of the upstream source the atom was taken from, e.g. \"anthropics/knowledge-work-plugins\", \"obsidian-kepano\", \"claudeskills.in\"."
+        },
+        "source_type": {
+          "type": "string",
+          "enum": [
+            "first-party",
+            "github-repo",
+            "catalog-site",
+            "documentation",
+            "community",
+            "unknown"
+          ],
+          "description": "What kind of source this came from. first-party = authored in this catalog."
+        },
+        "source_url": {
+          "type": "string",
+          "description": "URL of the original artifact upstream, used for attribution and for tracking upstream changes."
+        },
+        "author": {
+          "type": "string",
+          "description": "Original author or maintainer to credit, as they identify themselves upstream (org, handle, or person)."
+        },
+        "license": {
+          "type": "string",
+          "description": "SPDX identifier of the upstream license (e.g. \"Apache-2.0\", \"MIT\", \"CC-BY-4.0\"), or \"unknown\" when the source states none. \"unknown\" means redistribution has not been cleared."
+        },
+        "retrieved_at": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "description": "ISO-8601 date (YYYY-MM-DD) the atom was pulled from the source."
+        },
+        "modified": {
+          "type": "boolean",
+          "description": "Whether this atom's content was changed from the upstream original during import."
+        },
+        "notes": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "Free-text attribution or licensing caveats a redistributor needs to know."
+        }
+      }
+    },
     "source_url": {
       "type": "string",
       "description": "URL of the original source file when this atom was imported from an external open-source repository. Used for attribution and tracking upstream changes."
     },
     "tags": {
       "type": "array",
-      "items": { "type": "string", "minLength": 1, "maxLength": 40 },
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 40
+      },
       "uniqueItems": true
     },
     "lifecycle": {
       "type": "string",
-      "enum": ["draft", "stable", "deprecated"],
+      "enum": [
+        "draft",
+        "stable",
+        "deprecated"
+      ],
       "description": "Lifecycle stage of this skill atom."
     }
   }
