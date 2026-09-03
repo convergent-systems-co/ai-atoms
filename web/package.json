@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "prebuild": "mkdir -p public/exports && cp ../exports/catalog.json public/exports/catalog.json",
+    "prebuild": "mkdir -p public/exports public/schemas && cp ../exports/catalog.json public/exports/catalog.json && cp ../schemas/*.json public/schemas/",
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
