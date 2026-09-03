@@ -1,0 +1,35 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/azure-mgmt-mixedreality-py",
+  "version": "1.0.0",
+  "name": "azure-mgmt-mixedreality-py",
+  "description": "Python SDK for Azure Mixed Reality: Remote Rendering and Object Anchors management.",
+  "system_prompt_fragment": "# Azure Mixed Reality Management (Python)\n\nGuide for managing Mixed Reality accounts in Azure using the `azure-mgmt-mixedreality` package.\n\n## Core Operations\n\n### 1. Remote Rendering\n\n```python\nfrom azure.mgmt.mixedreality import MixedRealityClient\n\nclient = MixedRealityClient(credential, subscription_id)\n# Management of Remote Rendering accounts\n```\n\n### 2. Object Anchors\n\n```python\n# Management of Object Anchors accounts\n```\n\n## Best Practices\n\n1. **Regional isolation** — Deploy accounts close to users for low latency.\n2. **Use Shared Access Signatures (SAS)** for secure client communication.",
+  "applicable_domains": [
+    "operations",
+    "devops"
+  ],
+  "invocation": [
+    "/azure-mgmt-mixedreality-py"
+  ],
+  "tags": [
+    "claudeskills.in",
+    "devops",
+    "unreviewed"
+  ],
+  "authored_by": "claudeskills.in contributors",
+  "source_url": "https://claudeskills.in/skill/azure-mgmt-mixedreality-py",
+  "provenance": {
+    "source": "claudeskills.in",
+    "source_type": "catalog-site",
+    "source_url": "https://claudeskills.in/skill/azure-mgmt-mixedreality-py",
+    "author": "claudeskills.in contributors",
+    "license": "unknown",
+    "retrieved_at": "2026-09-02",
+    "modified": false,
+    "notes": "Aggregated by claudeskills.in, which publishes no license or terms of use. Redistribution is NOT cleared."
+  },
+  "lifecycle": "draft",
+  "category": "operations"
+}

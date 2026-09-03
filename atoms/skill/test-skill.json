@@ -1,0 +1,35 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/test-skill",
+  "version": "1.0.0",
+  "name": "test-skill",
+  "description": "test desc",
+  "system_prompt_fragment": "test content",
+  "applicable_domains": [
+    "code",
+    "testing"
+  ],
+  "invocation": [
+    "/test-skill"
+  ],
+  "tags": [
+    "claudeskills.in",
+    "test",
+    "unreviewed"
+  ],
+  "authored_by": "claudeskills.in contributors",
+  "source_url": "https://claudeskills.in/skill/test-skill",
+  "provenance": {
+    "source": "claudeskills.in",
+    "source_type": "catalog-site",
+    "source_url": "https://claudeskills.in/skill/test-skill",
+    "author": "claudeskills.in contributors",
+    "license": "unknown",
+    "retrieved_at": "2026-09-02",
+    "modified": false,
+    "notes": "Aggregated by claudeskills.in, which publishes no license or terms of use. Redistribution is NOT cleared."
+  },
+  "lifecycle": "draft",
+  "category": "coding"
+}

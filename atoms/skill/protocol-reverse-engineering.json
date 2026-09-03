@@ -1,0 +1,33 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/protocol-reverse-engineering",
+  "version": "1.0.0",
+  "name": "protocol-reverse-engineering",
+  "description": "Master network protocol reverse engineering including packet analysis, protocol dissection, and custom protocol documentation. Use when analyzing network traffic, understanding proprietary protocol...",
+  "system_prompt_fragment": "# Protocol Reverse Engineering\n\nComprehensive techniques for capturing, analyzing, and documenting network protocols for security research, interoperability, and debugging.\n\n## Use this skill when\n\n- Working on protocol reverse engineering tasks or workflows\n- Needing guidance, best practices, or checklists for protocol reverse engineering\n\n## Do not use this skill when\n\n- The task is unrelated to protocol reverse engineering\n- You need a different domain or tool outside this scope\n\n## Instructions\n\n- Clarify goals, constraints, and required inputs.\n- Apply relevant best practices and validate outcomes.\n- Provide actionable steps and verification.\n- If detailed examples are required, open `resources/implementation-playbook.md`.\n\n## Resources\n\n- `resources/implementation-playbook.md` for detailed patterns and examples.",
+  "applicable_domains": [
+    "general"
+  ],
+  "invocation": [
+    "/protocol-reverse-engineering"
+  ],
+  "tags": [
+    "claudeskills.in",
+    "other",
+    "unreviewed"
+  ],
+  "authored_by": "claudeskills.in contributors",
+  "source_url": "https://claudeskills.in/skill/protocol-reverse-engineering",
+  "provenance": {
+    "source": "claudeskills.in",
+    "source_type": "catalog-site",
+    "source_url": "https://claudeskills.in/skill/protocol-reverse-engineering",
+    "author": "claudeskills.in contributors",
+    "license": "unknown",
+    "retrieved_at": "2026-09-02",
+    "modified": false,
+    "notes": "Aggregated by claudeskills.in, which publishes no license or terms of use. Redistribution is NOT cleared."
+  },
+  "lifecycle": "draft"
+}

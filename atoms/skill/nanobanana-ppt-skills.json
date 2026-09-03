@@ -1,0 +1,32 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/nanobanana-ppt-skills",
+  "version": "1.0.0",
+  "name": "nanobanana-ppt-skills",
+  "description": "AI-powered PPT generation with document analysis and styled images",
+  "system_prompt_fragment": "# Nanobanana Ppt Skills\n\n## Overview\n\nAI-powered PPT generation with document analysis and styled images\n\n## When to Use This Skill\n\nUse this skill when you need to work with ai-powered ppt generation with document analysis and styled images.\n\n## Instructions\n\nThis skill provides guidance and patterns for ai-powered ppt generation with document analysis and styled images.\n\nFor more information, see the [source repository](https://github.com/op7418/NanoBanana-PPT-Skills).",
+  "applicable_domains": [
+    "general"
+  ],
+  "invocation": [
+    "/nanobanana-ppt-skills"
+  ],
+  "tags": [
+    "claudeskills.in",
+    "other"
+  ],
+  "authored_by": "op7418",
+  "source_url": "https://claudeskills.in/skill/nanobanana-ppt-skills",
+  "provenance": {
+    "source": "claudeskills.in",
+    "source_type": "catalog-site",
+    "source_url": "https://claudeskills.in/skill/nanobanana-ppt-skills",
+    "author": "op7418",
+    "license": "unknown",
+    "retrieved_at": "2026-09-02",
+    "modified": false,
+    "notes": "Aggregated by claudeskills.in from https://github.com/op7418/NanoBanana-PPT-Skills. Verify the upstream license before redistributing."
+  },
+  "lifecycle": "draft"
+}

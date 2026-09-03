@@ -1,0 +1,34 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/aws-skills",
+  "version": "1.0.0",
+  "name": "aws-skills",
+  "description": "AWS development with infrastructure automation and cloud architecture patterns",
+  "system_prompt_fragment": "# Aws Skills\n\n## Overview\n\nAWS development with infrastructure automation and cloud architecture patterns\n\n## When to Use This Skill\n\nUse this skill when you need to work with aws development with infrastructure automation and cloud architecture patterns.\n\n## Instructions\n\nThis skill provides guidance and patterns for aws development with infrastructure automation and cloud architecture patterns.\n\nFor more information, see the [source repository](https://github.com/zxkane/aws-skills).",
+  "applicable_domains": [
+    "operations",
+    "devops"
+  ],
+  "invocation": [
+    "/aws-skills"
+  ],
+  "tags": [
+    "claudeskills.in",
+    "devops"
+  ],
+  "authored_by": "zxkane",
+  "source_url": "https://claudeskills.in/skill/aws-skills",
+  "provenance": {
+    "source": "claudeskills.in",
+    "source_type": "catalog-site",
+    "source_url": "https://claudeskills.in/skill/aws-skills",
+    "author": "zxkane",
+    "license": "unknown",
+    "retrieved_at": "2026-09-02",
+    "modified": false,
+    "notes": "Aggregated by claudeskills.in from https://github.com/zxkane/aws-skills. Verify the upstream license before redistributing."
+  },
+  "lifecycle": "draft",
+  "category": "operations"
+}

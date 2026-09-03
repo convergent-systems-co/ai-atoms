@@ -1,0 +1,32 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/fal-generate",
+  "version": "1.0.0",
+  "name": "fal-generate",
+  "description": "Generate images and videos using fal.ai AI models",
+  "system_prompt_fragment": "# Fal Generate\n\n## Overview\n\nGenerate images and videos using fal.ai AI models\n\n## When to Use This Skill\n\nUse this skill when you need to work with generate images and videos using fal.ai ai models.\n\n## Instructions\n\nThis skill provides guidance and patterns for generate images and videos using fal.ai ai models.\n\nFor more information, see the [source repository](https://github.com/fal-ai-community/skills/blob/main/skills/claude.ai/fal-generate/SKILL.md).",
+  "applicable_domains": [
+    "general"
+  ],
+  "invocation": [
+    "/fal-generate"
+  ],
+  "tags": [
+    "claudeskills.in",
+    "other"
+  ],
+  "authored_by": "fal-ai-community",
+  "source_url": "https://claudeskills.in/skill/fal-generate",
+  "provenance": {
+    "source": "claudeskills.in",
+    "source_type": "catalog-site",
+    "source_url": "https://claudeskills.in/skill/fal-generate",
+    "author": "fal-ai-community",
+    "license": "unknown",
+    "retrieved_at": "2026-09-02",
+    "modified": false,
+    "notes": "Aggregated by claudeskills.in from https://github.com/fal-ai-community/skills/blob/main/skills/claude.ai/fal-generate/SKILL.md. Verify the upstream license before redistributing."
+  },
+  "lifecycle": "draft"
+}

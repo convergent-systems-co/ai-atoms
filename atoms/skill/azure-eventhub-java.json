@@ -1,0 +1,35 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/azure-eventhub-java",
+  "version": "1.0.0",
+  "name": "azure-eventhub-java",
+  "description": "|",
+  "system_prompt_fragment": "...",
+  "applicable_domains": [
+    "code",
+    "backend"
+  ],
+  "invocation": [
+    "/azure-eventhub-java"
+  ],
+  "tags": [
+    "backend",
+    "claudeskills.in",
+    "unreviewed"
+  ],
+  "authored_by": "claudeskills.in contributors",
+  "source_url": "https://claudeskills.in/skill/azure-eventhub-java",
+  "provenance": {
+    "source": "claudeskills.in",
+    "source_type": "catalog-site",
+    "source_url": "https://claudeskills.in/skill/azure-eventhub-java",
+    "author": "claudeskills.in contributors",
+    "license": "unknown",
+    "retrieved_at": "2026-09-02",
+    "modified": false,
+    "notes": "Aggregated by claudeskills.in, which publishes no license or terms of use. Redistribution is NOT cleared."
+  },
+  "lifecycle": "draft",
+  "category": "coding"
+}

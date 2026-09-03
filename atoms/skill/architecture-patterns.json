@@ -1,0 +1,33 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/architecture-patterns",
+  "version": "1.0.0",
+  "name": "architecture-patterns",
+  "description": "Implement proven backend architecture patterns including Clean Architecture, Hexagonal Architecture, and Domain-Driven Design. Use when architecting complex backend systems or refactoring existing ...",
+  "system_prompt_fragment": "# Architecture Patterns\n\nMaster proven backend architecture patterns including Clean Architecture, Hexagonal Architecture, and Domain-Driven Design to build maintainable, testable, and scalable systems.\n\n## Use this skill when\n\n- Designing new backend systems from scratch\n- Refactoring monolithic applications for better maintainability\n- Establishing architecture standards for your team\n- Migrating from tightly coupled to loosely coupled architectures\n- Implementing domain-driven design principles\n- Creating testable and mockable codebases\n- Planning microservices decomposition\n\n## Do not use this skill when\n\n- You only need small, localized refactors\n- The system is primarily frontend with no backend architecture changes\n- You need implementation details without architectural design\n\n## Instructions\n\n1. Clarify domain boundaries, constraints, and scalability targets.\n2. Select an architecture pattern that fits the domain complexity.\n3. Define module boundaries, interfaces, and dependency rules.\n4. Provide migration steps and validation checks.\n\nRefer to `resources/implementation-playbook.md` for detailed patterns, checklists, and templates.\n\n## Resources\n\n- `resources/implementation-playbook.md` for detailed patterns, checklists, and templates.",
+  "applicable_domains": [
+    "general"
+  ],
+  "invocation": [
+    "/architecture-patterns"
+  ],
+  "tags": [
+    "claudeskills.in",
+    "other",
+    "unreviewed"
+  ],
+  "authored_by": "claudeskills.in contributors",
+  "source_url": "https://claudeskills.in/skill/architecture-patterns",
+  "provenance": {
+    "source": "claudeskills.in",
+    "source_type": "catalog-site",
+    "source_url": "https://claudeskills.in/skill/architecture-patterns",
+    "author": "claudeskills.in contributors",
+    "license": "unknown",
+    "retrieved_at": "2026-09-02",
+    "modified": false,
+    "notes": "Aggregated by claudeskills.in, which publishes no license or terms of use. Redistribution is NOT cleared."
+  },
+  "lifecycle": "draft"
+}

@@ -1,0 +1,34 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/security-bluebook-builder",
+  "version": "1.0.0",
+  "name": "security-bluebook-builder",
+  "description": "Build security Blue Books for sensitive apps",
+  "system_prompt_fragment": "# Security Bluebook Builder\n\n## Overview\n\nBuild security Blue Books for sensitive apps\n\n## When to Use This Skill\n\nUse this skill when you need to work with build security blue books for sensitive apps.\n\n## Instructions\n\nThis skill provides guidance and patterns for build security blue books for sensitive apps.\n\nFor more information, see the [source repository](https://github.com/SHADOWPR0/security-bluebook-builder).",
+  "applicable_domains": [
+    "code",
+    "frontend"
+  ],
+  "invocation": [
+    "/security-bluebook-builder"
+  ],
+  "tags": [
+    "claudeskills.in",
+    "frontend"
+  ],
+  "authored_by": "SHADOWPR0",
+  "source_url": "https://claudeskills.in/skill/security-bluebook-builder",
+  "provenance": {
+    "source": "claudeskills.in",
+    "source_type": "catalog-site",
+    "source_url": "https://claudeskills.in/skill/security-bluebook-builder",
+    "author": "SHADOWPR0",
+    "license": "unknown",
+    "retrieved_at": "2026-09-02",
+    "modified": false,
+    "notes": "Aggregated by claudeskills.in from https://github.com/SHADOWPR0/security-bluebook-builder. Verify the upstream license before redistributing."
+  },
+  "lifecycle": "draft",
+  "category": "coding"
+}

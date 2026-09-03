@@ -1,0 +1,33 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/incident-responder",
+  "version": "1.0.0",
+  "name": "incident-responder",
+  "description": "...",
+  "system_prompt_fragment": "...",
+  "applicable_domains": [
+    "general"
+  ],
+  "invocation": [
+    "/incident-responder"
+  ],
+  "tags": [
+    "claudeskills.in",
+    "other",
+    "unreviewed"
+  ],
+  "authored_by": "claudeskills.in contributors",
+  "source_url": "https://claudeskills.in/skill/incident-responder",
+  "provenance": {
+    "source": "claudeskills.in",
+    "source_type": "catalog-site",
+    "source_url": "https://claudeskills.in/skill/incident-responder",
+    "author": "claudeskills.in contributors",
+    "license": "unknown",
+    "retrieved_at": "2026-09-02",
+    "modified": false,
+    "notes": "Aggregated by claudeskills.in, which publishes no license or terms of use. Redistribution is NOT cleared."
+  },
+  "lifecycle": "draft"
+}

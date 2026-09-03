@@ -1,0 +1,32 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/culture-index",
+  "version": "1.0.0",
+  "name": "culture-index",
+  "description": "Index and search culture documentation",
+  "system_prompt_fragment": "# Culture Index\n\n## Overview\n\nIndex and search culture documentation to help teams understand organizational values, practices, and guidelines.\n\n## When to Use This Skill\n\nUse this skill when you need to index and search culture documentation.\n\nUse this skill when:\n- You need to search through organizational culture documentation\n- You want to index culture-related documents for easy retrieval\n- You need to understand team values, practices, or guidelines\n- You're building a knowledge base for culture documentation\n\n## Instructions\n\nThis skill provides capabilities for indexing and searching culture documentation. It helps teams:\n\n1. **Index Culture Documents**: Organize and index culture-related documentation\n2. **Search Functionality**: Quickly find relevant culture information\n3. **Knowledge Retrieval**: Access organizational values and practices efficiently\n\n## Usage\n\nWhen working with culture documentation:\n\n1. Identify the culture documents to index\n2. Use the indexing functionality to organize the content\n3. Search through indexed documents to find relevant information\n4. Retrieve specific culture guidelines or practices as needed\n\n## Resources\n\nFor more information, see the [source repository](https://github.com/trailofbits/skills/tree/main/plugins/culture-index).",
+  "applicable_domains": [
+    "general"
+  ],
+  "invocation": [
+    "/culture-index"
+  ],
+  "tags": [
+    "claudeskills.in",
+    "other"
+  ],
+  "authored_by": "trailofbits",
+  "source_url": "https://claudeskills.in/skill/culture-index",
+  "provenance": {
+    "source": "claudeskills.in",
+    "source_type": "catalog-site",
+    "source_url": "https://claudeskills.in/skill/culture-index",
+    "author": "trailofbits",
+    "license": "unknown",
+    "retrieved_at": "2026-09-02",
+    "modified": false,
+    "notes": "Aggregated by claudeskills.in from https://github.com/trailofbits/skills/tree/main/plugins/culture-index. Verify the upstream license before redistributing."
+  },
+  "lifecycle": "draft"
+}

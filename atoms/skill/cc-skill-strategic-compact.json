@@ -1,0 +1,33 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/cc-skill-strategic-compact",
+  "version": "1.0.0",
+  "name": "cc-skill-strategic-compact",
+  "description": "Development skill from everything-claude-code",
+  "system_prompt_fragment": "# cc-skill-strategic-compact\n\nDevelopment skill skill.\n\n## When to Use\nThis skill is applicable to execute the workflow or actions described in the overview.",
+  "applicable_domains": [
+    "general"
+  ],
+  "invocation": [
+    "/cc-skill-strategic-compact"
+  ],
+  "tags": [
+    "claudeskills.in",
+    "other",
+    "unreviewed"
+  ],
+  "authored_by": "claudeskills.in contributors",
+  "source_url": "https://claudeskills.in/skill/cc-skill-strategic-compact",
+  "provenance": {
+    "source": "claudeskills.in",
+    "source_type": "catalog-site",
+    "source_url": "https://claudeskills.in/skill/cc-skill-strategic-compact",
+    "author": "claudeskills.in contributors",
+    "license": "unknown",
+    "retrieved_at": "2026-09-02",
+    "modified": false,
+    "notes": "Aggregated by claudeskills.in, which publishes no license or terms of use. Redistribution is NOT cleared."
+  },
+  "lifecycle": "draft"
+}

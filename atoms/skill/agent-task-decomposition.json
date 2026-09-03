@@ -1,0 +1,35 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/agent-task-decomposition",
+  "version": "1.0.0",
+  "name": "agent-task-decomposition",
+  "description": "Break down complex user requests into smaller, manageable sub-tasks for multi-agent systems and individual agent workflows.",
+  "system_prompt_fragment": "# Agent Task Decomposition\n\nBreak down complex user requests into smaller, manageable sub-tasks for multi-agent systems and individual agent workflows.\n\n[... Rest of the file content for agent-task-decomposition ...]",
+  "applicable_domains": [
+    "code",
+    "agents"
+  ],
+  "invocation": [
+    "/agent-task-decomposition"
+  ],
+  "tags": [
+    "ai",
+    "claudeskills.in",
+    "unreviewed"
+  ],
+  "authored_by": "claudeskills.in contributors",
+  "source_url": "https://claudeskills.in/skill/agent-task-decomposition",
+  "provenance": {
+    "source": "claudeskills.in",
+    "source_type": "catalog-site",
+    "source_url": "https://claudeskills.in/skill/agent-task-decomposition",
+    "author": "claudeskills.in contributors",
+    "license": "unknown",
+    "retrieved_at": "2026-09-02",
+    "modified": false,
+    "notes": "Aggregated by claudeskills.in, which publishes no license or terms of use. Redistribution is NOT cleared."
+  },
+  "lifecycle": "draft",
+  "category": "coding"
+}

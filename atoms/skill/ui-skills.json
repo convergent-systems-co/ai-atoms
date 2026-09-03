@@ -1,0 +1,34 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/ui-skills",
+  "version": "1.0.0",
+  "name": "ui-skills",
+  "description": "Opinionated, evolving constraints to guide agents when building interfaces",
+  "system_prompt_fragment": "# Ui Skills\n\n## Overview\n\nOpinionated, evolving constraints to guide agents when building interfaces\n\n## When to Use This Skill\n\nUse this skill when you need to work with opinionated, evolving constraints to guide agents when building interfaces.\n\n## Instructions\n\nThis skill provides guidance and patterns for opinionated, evolving constraints to guide agents when building interfaces.\n\nFor more information, see the [source repository](https://github.com/ibelick/ui-skills).",
+  "applicable_domains": [
+    "code",
+    "frontend"
+  ],
+  "invocation": [
+    "/ui-skills"
+  ],
+  "tags": [
+    "claudeskills.in",
+    "frontend"
+  ],
+  "authored_by": "ibelick",
+  "source_url": "https://claudeskills.in/skill/ui-skills",
+  "provenance": {
+    "source": "claudeskills.in",
+    "source_type": "catalog-site",
+    "source_url": "https://claudeskills.in/skill/ui-skills",
+    "author": "ibelick",
+    "license": "unknown",
+    "retrieved_at": "2026-09-02",
+    "modified": false,
+    "notes": "Aggregated by claudeskills.in from https://github.com/ibelick/ui-skills. Verify the upstream license before redistributing."
+  },
+  "lifecycle": "draft",
+  "category": "coding"
+}

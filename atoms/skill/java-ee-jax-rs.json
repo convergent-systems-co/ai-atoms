@@ -1,0 +1,35 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/java-ee-jax-rs",
+  "version": "1.0.0",
+  "name": "java-ee-jax-rs",
+  "description": "Java EE JAX-RS Resource Creation: Annotations, Response types, JSON mapping, and Exception mapping. For high-density industrial backends.",
+  "system_prompt_fragment": "# JAX-RS Resource Implementation\n\nGuide for creating RESTful resources in Java EE (Jakarta EE) using JAX-RS.\n\n## Core Annotations\n\n| Annotation | Purpose | Usage |\n|------------|---------|-------|\n| `@Path` | Resource entry point | Type or Method level |\n| `@GET/POST...` | HTTP Method | Method level |\n| `@Produces` | Output Media Type | Type or Method level |\n| `@Consumes` | Input Media Type | Type or Method level |\n| `@PathParam` | Extract from path | Parameter level |\n| `@QueryParam` | Extract from query | Parameter level |\n| `@Context` | Inject Request/Context | Parameter level |\n\n## Example Resource\n\n```java\nimport jakarta.ws.rs.*;\nimport jakarta.ws.rs.core.*;\n\n@Path(\"/users\")\n@Produces(MediaType.APPLICATION_JSON)\n@Consumes(MediaType.APPLICATION_JSON)\npublic class UserResource {\n\n    @GET\n    @Path(\"/{id}\")\n    public Response getUser(@PathParam(\"id\") String id) {\n        // Logic to fetch user\n        User user = userService.find(id);\n        if (user == null) {\n            return Response.status(Response.Status.NOT_FOUND).build();\n        }\n        return Response.ok(user).build();\n    }\n\n    @POST\n    public Response createUser(User user, @Context UriInfo uriInfo) {\n        // Logic to create user\n        String id = userService.save(user);\n        UriBuilder builder = uriInfo.getAbsolutePathBuilder();\n        builder.path(id);\n        return Response.created(builder.build()).entity(user).build();\n    }\n}\n```\n\n## Exception Mapping\n\nUse `ExceptionMapper` to return clean error responses.\n\n```java\nimport jakarta.ws.rs.ext.*;\nimport jakarta.ws.rs.core.*;\n\n@Provider\npublic class EntityNotFoundMapper implements ExceptionMapper<EntityNotFoundException> {\n    @Override\n    public Response toResponse(EntityNotFoundException ex) {\n        ErrorResponse error = new ErrorResponse(\"NOT_FOUND\", ex.getMessage());\n        return Response.status(Response.Status.NOT_FOUND)\n            .entity(error)\n            .type(MediaType.APPLICATION_JSON)\n            .build();\n    }\n}\n```\n\n## JSON Data Mapping\n\nEnsure you have a JSON provider (like Jackson or Yasson) registered. Standard DTO:\n\n```java\npublic class UserDTO {\n    public String id;\n    public String name;\n    // Getters and setters\n}\n```\n\n## Best Practices\n\n1. **Use `Response` return type** for full control over headers and status codes.\n2. **Follow RESTful naming conventions** (plural for resource paths).\n3. **Use Transfer Objects (DTOs)** instead of exposing entities directly.\n4. **Implement ExceptionMappers** for consistent error structures.\n5. **Annotate classes with `@Produces` and `@Consumes`** at the type level to avoid repetition.",
+  "applicable_domains": [
+    "code",
+    "backend"
+  ],
+  "invocation": [
+    "/java-ee-jax-rs"
+  ],
+  "tags": [
+    "backend",
+    "claudeskills.in",
+    "unreviewed"
+  ],
+  "authored_by": "claudeskills.in contributors",
+  "source_url": "https://claudeskills.in/skill/java-ee-jax-rs",
+  "provenance": {
+    "source": "claudeskills.in",
+    "source_type": "catalog-site",
+    "source_url": "https://claudeskills.in/skill/java-ee-jax-rs",
+    "author": "claudeskills.in contributors",
+    "license": "unknown",
+    "retrieved_at": "2026-09-02",
+    "modified": false,
+    "notes": "Aggregated by claudeskills.in, which publishes no license or terms of use. Redistribution is NOT cleared."
+  },
+  "lifecycle": "draft",
+  "category": "coding"
+}

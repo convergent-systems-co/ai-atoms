@@ -1,0 +1,33 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/similarity-search-patterns",
+  "version": "1.0.0",
+  "name": "similarity-search-patterns",
+  "description": "Implement efficient similarity search with vector databases. Use when building semantic search, implementing nearest neighbor queries, or optimizing retrieval performance.",
+  "system_prompt_fragment": "# Similarity Search Patterns\n\nPatterns for implementing efficient similarity search in production systems.\n\n## Use this skill when\n\n- Building semantic search systems\n- Implementing RAG retrieval\n- Creating recommendation engines\n- Optimizing search latency\n- Scaling to millions of vectors\n- Combining semantic and keyword search\n\n## Do not use this skill when\n\n- The task is unrelated to similarity search patterns\n- You need a different domain or tool outside this scope\n\n## Instructions\n\n- Clarify goals, constraints, and required inputs.\n- Apply relevant best practices and validate outcomes.\n- Provide actionable steps and verification.\n- If detailed examples are required, open `resources/implementation-playbook.md`.\n\n## Resources\n\n- `resources/implementation-playbook.md` for detailed patterns and examples.",
+  "applicable_domains": [
+    "general"
+  ],
+  "invocation": [
+    "/similarity-search-patterns"
+  ],
+  "tags": [
+    "claudeskills.in",
+    "other",
+    "unreviewed"
+  ],
+  "authored_by": "claudeskills.in contributors",
+  "source_url": "https://claudeskills.in/skill/similarity-search-patterns",
+  "provenance": {
+    "source": "claudeskills.in",
+    "source_type": "catalog-site",
+    "source_url": "https://claudeskills.in/skill/similarity-search-patterns",
+    "author": "claudeskills.in contributors",
+    "license": "unknown",
+    "retrieved_at": "2026-09-02",
+    "modified": false,
+    "notes": "Aggregated by claudeskills.in, which publishes no license or terms of use. Redistribution is NOT cleared."
+  },
+  "lifecycle": "draft"
+}

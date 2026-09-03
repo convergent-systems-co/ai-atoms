@@ -1,0 +1,32 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/fal-image-edit",
+  "version": "1.0.0",
+  "name": "fal-image-edit",
+  "description": "AI-powered image editing with style transfer and object removal",
+  "system_prompt_fragment": "# Fal Image Edit\n\n## Overview\n\nAI-powered image editing with style transfer and object removal\n\n## When to Use This Skill\n\nUse this skill when you need to work with ai-powered image editing with style transfer and object removal.\n\n## Instructions\n\nThis skill provides guidance and patterns for ai-powered image editing with style transfer and object removal.\n\nFor more information, see the [source repository](https://github.com/fal-ai-community/skills/blob/main/skills/claude.ai/fal-image-edit/SKILL.md).",
+  "applicable_domains": [
+    "general"
+  ],
+  "invocation": [
+    "/fal-image-edit"
+  ],
+  "tags": [
+    "claudeskills.in",
+    "other"
+  ],
+  "authored_by": "fal-ai-community",
+  "source_url": "https://claudeskills.in/skill/fal-image-edit",
+  "provenance": {
+    "source": "claudeskills.in",
+    "source_type": "catalog-site",
+    "source_url": "https://claudeskills.in/skill/fal-image-edit",
+    "author": "fal-ai-community",
+    "license": "unknown",
+    "retrieved_at": "2026-09-02",
+    "modified": false,
+    "notes": "Aggregated by claudeskills.in from https://github.com/fal-ai-community/skills/blob/main/skills/claude.ai/fal-image-edit/SKILL.md. Verify the upstream license before redistributing."
+  },
+  "lifecycle": "draft"
+}
