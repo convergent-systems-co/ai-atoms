@@ -1,0 +1,71 @@
+---
+// Left rail on listing pages: search plus facets. Filters .card elements by their
+// data-* attributes; a ?category= or ?facet= in the URL preselects.
+interface Props { atoms: any[]; facetLabel?: string; facets: Record<string, number>; categories: Record<string, number>; sources: Record<string, number>; licenses: Record<string, number> }
+const { atoms, facetLabel, facets, categories, sources, licenses } = Astro.props;
+const sorted = (o: Record<string, number>) => Object.entries(o).sort((a, b) => b[1] - a[1]);
+---
+<aside class="rail" data-rail>
+  <input type="search" placeholder="Filter this list…" aria-label="Filter this list" />
+  {facetLabel && Object.keys(facets).length > 1 && (
+    <details class="facet" open><summary>{facetLabel}</summary>
+      <ul>{sorted(facets).map(([k, n]) => <li><button type="button" data-f="facet" data-v={k} aria-pressed="false">{k}<span class="n">{n}</span></button></li>)}</ul>
+    </details>
+  )}
+  {Object.keys(categories).length > 1 && (
+    <details class="facet" open><summary>Category</summary>
+      <ul>{sorted(categories).map(([k, n]) => <li><button type="button" data-f="category" data-v={k} aria-pressed="false">{k}<span class="n">{n}</span></button></li>)}</ul>
+    </details>
+  )}
+  {Object.keys(sources).length > 1 && (
+    <details class="facet"><summary>Source</summary>
+      <ul>{sorted(sources).map(([k, n]) => <li><button type="button" data-f="source" data-v={k} aria-pressed="false">{k}<span class="n">{n}</span></button></li>)}</ul>
+    </details>
+  )}
+  {Object.keys(licenses).length > 1 && (
+    <details class="facet"><summary>License</summary>
+      <ul>{sorted(licenses).map(([k, n]) => <li><button type="button" data-f="license" data-v={k} aria-pressed="false">{k}<span class="n">{n}</span></button></li>)}</ul>
+    </details>
+  )}
+</aside>
+<script>
+  const rail = document.querySelector<HTMLElement>("[data-rail]")!;
+  const input = rail.querySelector<HTMLInputElement>("input")!;
+  const cards = Array.from(document.querySelectorAll<HTMLElement>(".card[data-search]"));
+  const countEl = document.querySelector<HTMLElement>("[data-shown]");
+  const activeEl = document.querySelector<HTMLElement>("[data-active]");
+  const clearBtn = document.querySelector<HTMLButtonElement>("[data-clear]");
+  const empty = document.querySelector<HTMLElement>("[data-empty]");
+  const params = new URLSearchParams(location.search);
+  const active: Record<string, string> = {};
+  for (const f of ["facet", "category", "source", "license"]) if (params.get(f)) active[f] = params.get(f)!;
+  if (params.get("q")) input.value = params.get("q")!;
+  function apply() {
+    const q = input.value.trim().toLowerCase();
+    let shown = 0;
+    for (const c of cards) {
+      const ok = Object.entries(active).every(([f, v]) => c.dataset[f] === v) && (!q || c.dataset.search!.includes(q));
+      c.hidden = !ok; if (ok) shown++;
+    }
+    if (countEl) countEl.textContent = `${shown} of ${cards.length}`;
+    if (empty) empty.hidden = shown > 0;
+    rail.querySelectorAll<HTMLButtonElement>("button[data-f]").forEach((b) => b.setAttribute("aria-pressed", String(active[b.dataset.f!] === b.dataset.v)));
+    if (activeEl) activeEl.innerHTML = Object.entries(active).map(([f, v]) => `<span class="chip cat">${f}: ${v}</span>`).join("");
+    if (clearBtn) clearBtn.hidden = !Object.keys(active).length && !q;
+    const url = new URL(location.href);
+    ["facet", "category", "source", "license", "q"].forEach((k) => url.searchParams.delete(k));
+    Object.entries(active).forEach(([f, v]) => url.searchParams.set(f, v));
+    if (q) url.searchParams.set("q", q);
+    history.replaceState(null, "", url);
+  }
+  rail.addEventListener("click", (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLButtonElement>("button[data-f]");
+    if (!b) return;
+    const f = b.dataset.f!, v = b.dataset.v!;
+    if (active[f] === v) delete active[f]; else active[f] = v;
+    apply();
+  });
+  input.addEventListener("input", apply);
+  clearBtn?.addEventListener("click", () => { for (const k of Object.keys(active)) delete active[k]; input.value = ""; apply(); });
+  apply();
+</script>

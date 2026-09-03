@@ -1,0 +1,74 @@
+---
+import { marked } from "marked";
+import Site from "../../../layouts/Site.astro";
+import ActionRail from "../../../components/ActionRail.astro";
+import Provenance from "../../../components/Provenance.astro";
+import CategoryChip from "../../../components/CategoryChip.astro";
+import { ATOMS, hrefOf, slugOf } from "../../../lib/catalog";
+
+export function getStaticPaths() {
+  return ATOMS.filter((a: any) => a.type === "persona").map((a: any) => ({ params: { slug: slugOf(a.id) }, props: { persona: a } }));
+}
+const { persona } = Astro.props;
+const agents = ATOMS.filter((a: any) => a.type === "agent" && a.persona === persona.id);
+const prompts = ATOMS.filter((a: any) => a.type === "prompt" && a.persona_ref === persona.id);
+const fragmentHtml = persona.system_prompt_fragment ? marked.parse(persona.system_prompt_fragment) : "";
+const rendered = [
+  `# ${persona.name}`,
+  persona.system_prompt_fragment ?? "",
+  `## Role\n${persona.role.job_to_be_done}`,
+  persona.role.primary_tasks?.length ? `Primary tasks:\n${persona.role.primary_tasks.map((t: string) => `- ${t}`).join("\n")}` : "",
+  persona.role.out_of_scope?.length ? `Out of scope:\n${persona.role.out_of_scope.map((t: string) => `- ${t}`).join("\n")}` : "",
+  persona.voice || persona.tone ? `## Voice and tone\n${[persona.voice?.formality, persona.voice?.hedging_tolerance && `${persona.voice.hedging_tolerance} hedging`, persona.voice?.sentence_length && `${persona.voice.sentence_length} sentences`, persona.tone?.warmth, persona.tone?.directness].filter(Boolean).join(", ")}${persona.voice?.style_notes ? `. ${persona.voice.style_notes}` : ""}` : "",
+  persona.constraints?.length ? `## Constraints\n${persona.constraints.map((c: any) => `- ${c.text}`).join("\n")}` : "",
+  persona.knowledge_boundaries?.length ? `## Knowledge boundaries\n${persona.knowledge_boundaries.map((b: any) => `- ${b.text}`).join("\n")}` : "",
+].filter(Boolean).join("\n\n") + "\n";
+const wc = persona.work_contract;
+const contractRows: Array<[string, any]> = wc ? [["Goal", wc.goal], ["Inputs", wc.inputs], ["Allowed", wc.allowed_actions], ["Forbidden", wc.forbidden_actions], ["Outputs", wc.output_artifacts], ["Hands off to", wc.handoff_targets], ["Escalates when", wc.escalation_triggers], ["Done when", wc.done_criteria], ["Decides", wc.decision_scope]].filter(([, v]) => v && (!Array.isArray(v) || v.length)) : [];
+---
+<Site title={persona.name} description={persona.description} current="/atoms/persona/">
+  <div class="detail hue-persona">
+    <article>
+      <a class="small muted" href="/atoms/persona/">← Personas</a>
+      <div class="detail-hero" style="margin-top:0.8rem;">
+        <div class="chips"><span class="chip cls">Pe persona</span>{wc?.class && <span class="chip sub">{wc.class}</span>}<CategoryChip category={persona.category} />{persona.lifecycle && <span class={`lifecycle ${persona.lifecycle}`}>{persona.lifecycle}</span>}</div>
+        <h1>{persona.name}</h1>
+        <p class="lede">{persona.description}</p>
+        <div class="idline"><span>id <b>{persona.id}</b></span><span>v<b>{persona.version}</b></span>{persona.role.domain && <span>domain <b>{persona.role.domain}</b></span>}{persona.brand_ref && <span>brand <b>{persona.brand_ref}</b></span>}</div>
+      </div>
+
+      <h2 class="h-section">Role</h2>
+      <dl class="kv-table">
+        <dt>Job to be done</dt><dd>{persona.role.job_to_be_done}</dd>
+        {persona.role.expertise?.length > 0 && <><dt>Expertise</dt><dd>{persona.role.expertise.map((e: string) => <code style="margin-right:0.3rem;">{e}</code>)}</dd></>}
+        {persona.role.primary_tasks?.length > 0 && <><dt>Primary tasks</dt><dd><ul class="list" style="padding-left:1rem;">{persona.role.primary_tasks.map((t: string) => <li>{t}</li>)}</ul></dd></>}
+        {persona.role.out_of_scope?.length > 0 && <><dt>Out of scope</dt><dd><ul class="list" style="padding-left:1rem;">{persona.role.out_of_scope.map((t: string) => <li>{t}</li>)}</ul></dd></>}
+      </dl>
+
+      {(persona.voice || persona.tone) && <>
+        <h2 class="h-section">Voice and tone</h2>
+        <dl class="kv-table">
+          {persona.voice?.formality && <><dt>Formality</dt><dd><code>{persona.voice.formality}</code></dd></>}
+          {persona.voice?.hedging_tolerance && <><dt>Hedging</dt><dd><code>{persona.voice.hedging_tolerance}</code></dd></>}
+          {persona.voice?.sentence_length && <><dt>Sentences</dt><dd><code>{persona.voice.sentence_length}</code></dd></>}
+          {persona.tone?.warmth && <><dt>Warmth</dt><dd><code>{persona.tone.warmth}</code></dd></>}
+          {persona.tone?.directness && <><dt>Directness</dt><dd><code>{persona.tone.directness}</code></dd></>}
+          {persona.voice?.style_notes && <><dt>Style</dt><dd>{persona.voice.style_notes}</dd></>}
+        </dl>
+      </>}
+
+      {wc && <>
+        <h2 class="h-section">Work contract · {wc.class}</h2>
+        <dl class="kv-table">{contractRows.map(([k, v]) => <><dt>{k}</dt><dd>{Array.isArray(v) ? <ul class="list" style="padding-left:1rem;">{v.map((x: string) => <li>{x}</li>)}</ul> : v}</dd></>)}</dl>
+      </>}
+
+      {persona.constraints?.length > 0 && <><h2 class="h-section">Behavioural constraints</h2>{persona.constraints.map((c: any) => <div class="rule-card"><b>{c.name}{c.effect && <span class="chip sub">{c.effect}</span>}</b><p>{c.text}</p></div>)}</>}
+      {persona.knowledge_boundaries?.length > 0 && <><h2 class="h-section">Knowledge boundaries</h2>{persona.knowledge_boundaries.map((b: any) => <div class="rule-card"><b>{b.name}</b><p>{b.text}</p>{(b.covered_domains?.length || b.excluded_domains?.length) > 0 && <div class="chips" style="margin-top:0.5rem;">{b.covered_domains?.map((d: string) => <span class="chip cat">{d}</span>)}{b.excluded_domains?.map((d: string) => <span class="tag">not {d}</span>)}</div>}</div>)}</>}
+      {fragmentHtml && <><h2 class="h-section">System prompt fragment</h2><div class="prose" set:html={fragmentHtml} /></>}
+      {(agents.length || prompts.length) > 0 && <><h2 class="h-section">Used by</h2><ul class="list">{agents.map((a: any) => <li><a class="ref" href={hrefOf(a.id)}>{a.id}</a> — {a.name}</li>)}{prompts.map((p: any) => <li><a class="ref" href={hrefOf(p.id)}>{p.id}</a> — {p.name}</li>)}</ul></>}
+      {(persona.tags?.length || persona.vendors?.length) > 0 && <div class="chips" style="margin-top:1.2rem;">{persona.vendors?.map((v: string) => <span class="chip sub">{v}</span>)}{persona.tags?.map((t: string) => <span class="tag">{t}</span>)}</div>}
+      <Provenance atom={persona} />
+    </article>
+    <ActionRail atom={persona} text={rendered} textFilename="PERSONA.md" />
+  </div>
+</Site>

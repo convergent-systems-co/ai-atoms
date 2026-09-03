@@ -1,0 +1,50 @@
+---
+import Site from "../../../layouts/Site.astro";
+import ActionRail from "../../../components/ActionRail.astro";
+import Provenance from "../../../components/Provenance.astro";
+import CategoryChip from "../../../components/CategoryChip.astro";
+import { ATOMS, hrefOf, slugOf } from "../../../lib/catalog";
+
+export function getStaticPaths() {
+  return ATOMS.filter((a: any) => a.type === "model").map((a: any) => ({ params: { slug: slugOf(a.id) }, props: { model: a } }));
+}
+const { model } = Astro.props;
+const primary = model.providers[0];
+const siblings = ATOMS.filter((a: any) => a.type === "model" && a.id !== model.id && a.family && a.family === model.family).slice(0, 14);
+const commands: Array<[string, string]> = [];
+if (primary?.pull_command) commands.push(["pull", primary.pull_command]);
+if (primary?.run_command) commands.push(["run", primary.run_command]);
+---
+<Site title={model.name} description={model.description} current="/atoms/model/">
+  <div class="detail hue-model">
+    <article>
+      <a class="small muted" href="/atoms/model/">← Models</a>
+      <div class="detail-hero" style="margin-top:0.8rem;">
+        <div class="chips"><span class="chip cls">Mo model</span><span class="chip sub">{model.task}</span><CategoryChip category={model.category} />{model.lifecycle && <span class={`lifecycle ${model.lifecycle}`}>{model.lifecycle}</span>}{model.planned_deprecation && <span class="chip warn">deprecation announced</span>}</div>
+        <h1>{model.name}</h1>
+        <p class="lede">{model.description}</p>
+        <div class="idline"><span>id <b>{model.id}</b></span><span>vendor <b>{model.vendor}</b></span>{model.family && <span>family <b>{model.family}</b></span>}{model.license && <span>weights <b>{model.license}</b></span>}</div>
+      </div>
+
+      <dl class="kv-table">
+        {model.parameter_sizes?.length > 0 && <><dt>Sizes</dt><dd>{model.parameter_sizes.map((s: string) => <code style="margin-right:0.3rem;">{s}</code>)}</dd></>}
+        {model.capabilities?.length > 0 && <><dt>Capabilities</dt><dd><span class="chips">{model.capabilities.map((c: string) => <span class="chip sub">{c}</span>)}</span></dd></>}
+        {model.context_window_tokens && <><dt>Context</dt><dd>{model.context_window_tokens.toLocaleString()} tokens</dd></>}
+        {model.links?.model_card && <><dt>Model card</dt><dd><a href={model.links.model_card} target="_blank" rel="noopener">{model.links.model_card} ↗</a></dd></>}
+        {model.links?.paper && <><dt>Paper</dt><dd><a href={model.links.paper} target="_blank" rel="noopener">{model.links.paper} ↗</a></dd></>}
+        {model.replacement && <><dt>Replacement</dt><dd><a class="ref" href={hrefOf(model.replacement)}>{model.replacement}</a></dd></>}
+      </dl>
+
+      <h2 class="h-section">Providers</h2>
+      <div class="scroll"><table class="table" style="max-width:60rem;">
+        <thead><tr><th>Provider</th><th>Model id</th><th>Get it</th><th class="num">Tags</th><th class="num">Pulls</th><th>Updated</th></tr></thead>
+        <tbody>{model.providers.map((p: any) => <tr><td><a href={p.url} target="_blank" rel="noopener">{p.name} ↗</a></td><td><code>{p.model_id}</code></td><td>{p.pull_command ? <code>{p.pull_command}</code> : "—"}</td><td class="num">{p.tag_count ?? "—"}</td><td class="num">{p.pulls ?? "—"}</td><td>{p.updated_at ?? "—"}</td></tr>)}</tbody>
+      </table></div>
+
+      {siblings.length > 0 && <><h2 class="h-section">Same family</h2><div class="chips">{siblings.map((s: any) => <a class="chip" href={hrefOf(s.id)}>{s.name}</a>)}</div></>}
+      {model.tags?.length > 0 && <div class="chips" style="margin-top:1.2rem;">{model.tags.map((t: string) => <span class="tag">{t}</span>)}</div>}
+      <Provenance atom={model} />
+    </article>
+    <ActionRail atom={model} commands={commands} />
+  </div>
+</Site>

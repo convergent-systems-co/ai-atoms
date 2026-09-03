@@ -1,0 +1,148 @@
+---
+// Every page: head, top bar with global search and theme toggle, footer, and the
+// search palette. Pages pass `current` so the nav marks where you are.
+import "../styles/site.css";
+import { CLASSES, CLASS_META, CATALOG_VERSION } from "../lib/catalog";
+interface Props { title: string; description: string; current?: string; wide?: boolean }
+const { title, description, current = "" } = Astro.props;
+const nav: Array<[string, string]> = [
+  ...CLASSES.map((c) => [`/atoms/${c}/`, CLASS_META[c].plural] as [string, string]),
+  ["/categories/", "Categories"],
+  ["/start/", "Start here"],
+];
+const fullTitle = title === "ai-atoms" ? "ai-atoms — AI runtime primitives" : `${title} · ai-atoms`;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="color-scheme" content="light dark" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content="ai-atoms" />
+    <title>{fullTitle}</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate" type="application/json" href="/ai/index.json" title="ai-atoms machine index" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" />
+    <script is:inline>
+      // Apply a stored theme choice before first paint so the page never flashes.
+      try { var t = localStorage.getItem("ai-atoms-theme"); if (t === "dark" || t === "light") document.documentElement.dataset.theme = t; } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="wrap">
+        <a class="logo" href="/" aria-label="ai-atoms home">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="3.2" fill="currentColor"/><ellipse cx="16" cy="16" rx="13" ry="5.2" fill="none" stroke="currentColor" stroke-width="1.7"/><ellipse cx="16" cy="16" rx="13" ry="5.2" fill="none" stroke="currentColor" stroke-width="1.7" transform="rotate(60 16 16)"/><ellipse cx="16" cy="16" rx="13" ry="5.2" fill="none" stroke="currentColor" stroke-width="1.7" transform="rotate(120 16 16)"/></svg>
+          ai-atoms
+        </a>
+        <nav class="nav" aria-label="Primary">
+          {nav.map(([href, label]) => <a href={href} aria-current={href === current ? "page" : undefined}>{label}</a>)}
+        </nav>
+        <span class="spacer"></span>
+        <button class="search-trigger" type="button" data-open-search aria-label="Search the catalog">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <span class="hint">Search 1,000+ atoms</span>
+          <kbd>/</kbd>
+        </button>
+        <button class="icon-btn" type="button" data-toggle-theme aria-label="Toggle light or dark theme" title="Theme">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9c0-.5 0-1-.1-1.4A5.5 5.5 0 0 1 12.6 3.1 9 9 0 0 0 12 3z"/></svg>
+        </button>
+      </div>
+      <div class="wrap mobile-nav" aria-label="Sections">
+        {nav.map(([href, label]) => <a href={href} aria-current={href === current ? "page" : undefined}>{label}</a>)}
+      </div>
+    </header>
+
+    <main class="wrap"><slot /></main>
+
+    <footer class="site-footer">
+      <div class="wrap">
+        <span>ai-atoms catalog v{CATALOG_VERSION}</span>
+        <a href="/ai/index.json">/ai/index.json</a>
+        <a href="/llms.txt">/llms.txt</a>
+        <a href="/exports/catalog.json">/exports/catalog.json</a>
+        <a href="/builder/">Builder</a>
+        <a href="https://github.com/convergent-systems-co/ai-atoms">GitHub</a>
+        <span>Code Apache-2.0 · catalog data CC-BY-4.0 · imports keep their source's terms</span>
+        <span>Part of <a href="https://convergent-systems.co">convergent-systems.co</a></span>
+      </div>
+    </footer>
+
+    <div class="palette" data-palette hidden role="dialog" aria-modal="true" aria-label="Search">
+      <div class="palette-box">
+        <input type="search" placeholder="Search by name, id, description, tag, vendor…" aria-label="Search query" autocomplete="off" />
+        <ul class="palette-list" data-results></ul>
+        <div class="palette-foot"><span><kbd>↑</kbd> <kbd>↓</kbd> move</span><span><kbd>↵</kbd> open</span><span><kbd>esc</kbd> close</span><span data-status style="margin-left:auto;"></span></div>
+      </div>
+    </div>
+
+    <script>
+      // Theme toggle: light ⇄ dark, persisted; removing the stamp returns to system.
+      const root = document.documentElement;
+      document.querySelector("[data-toggle-theme]")?.addEventListener("click", () => {
+        const dark = root.dataset.theme === "dark" || (!root.dataset.theme && matchMedia("(prefers-color-scheme: dark)").matches);
+        const next = dark ? "light" : "dark";
+        root.dataset.theme = next;
+        try { localStorage.setItem("ai-atoms-theme", next); } catch {}
+      });
+
+      // Global search palette over a lazily loaded index of every atom.
+      const palette = document.querySelector<HTMLElement>("[data-palette]")!;
+      const input = palette.querySelector<HTMLInputElement>("input")!;
+      const list = palette.querySelector<HTMLUListElement>("[data-results]")!;
+      const status = palette.querySelector<HTMLElement>("[data-status]")!;
+      let index: Array<{ id: string; n: string; d: string; c: string; k: string; s: string }> | null = null;
+      let selected = 0;
+      const SYMBOL: Record<string, string> = { skill: "Sk", hook: "Hk", prompt: "Pr", agent: "Ag", persona: "Pe", model: "Mo" };
+      async function load() {
+        if (index) return;
+        status.textContent = "loading…";
+        try { index = await (await fetch("/search-index.json")).json(); status.textContent = `${index!.length} atoms`; }
+        catch { status.textContent = "index unavailable"; index = []; }
+      }
+      function score(item: any, terms: string[]): number {
+        const hay = `${item.n} ${item.id} ${item.d} ${item.k} ${item.s}`.toLowerCase();
+        let s = 0;
+        for (const t of terms) {
+          if (!hay.includes(t)) return 0;
+          s += item.n.toLowerCase().startsWith(t) ? 5 : item.n.toLowerCase().includes(t) ? 3 : item.id.includes(t) ? 2 : 1;
+        }
+        return s;
+      }
+      function render() {
+        const q = input.value.trim().toLowerCase();
+        const terms = q.split(/\s+/).filter(Boolean);
+        const hits = (index ?? []).map((it) => [score(it, terms), it] as const).filter(([s]) => s > 0)
+          .sort((a, b) => b[0] - a[0]).slice(0, 12).map(([, it]) => it);
+        selected = 0;
+        list.innerHTML = hits.map((it, i) => `<li><a href="/atoms/${it.c}/${it.id.slice(it.c.length + 1)}/" class="hue-${it.c}" aria-selected="${i === 0}"><span class="sym">${SYMBOL[it.c] ?? it.c}</span><span><span class="t">${esc(it.n)}</span><span class="d">${esc(it.d)}</span></span><span class="chip cat">${esc(it.k)}</span></a></li>`).join("")
+          || (q ? `<li class="empty" style="margin:0.5rem;">No atom matches “${esc(q)}”.</li>` : "");
+      }
+      function esc(s: string) { return s.replace(/[&<>"]/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]!)); }
+      function open() { palette.hidden = false; input.value = ""; list.innerHTML = ""; input.focus(); load().then(render); }
+      function close() { palette.hidden = true; }
+      document.querySelectorAll("[data-open-search]").forEach((b) => b.addEventListener("click", open));
+      palette.addEventListener("click", (e) => { if (e.target === palette) close(); });
+      input.addEventListener("input", render);
+      document.addEventListener("keydown", (e) => {
+        const typing = (e.target as HTMLElement).matches("input, textarea, select");
+        if (e.key === "/" && !typing) { e.preventDefault(); open(); }
+        if (palette.hidden) return;
+        const links = Array.from(list.querySelectorAll<HTMLAnchorElement>("a"));
+        if (e.key === "Escape") close();
+        if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+          e.preventDefault();
+          selected = (selected + (e.key === "ArrowDown" ? 1 : links.length - 1)) % Math.max(links.length, 1);
+          links.forEach((l, i) => l.setAttribute("aria-selected", String(i === selected)));
+          links[selected]?.scrollIntoView({ block: "nearest" });
+        }
+        if (e.key === "Enter" && links[selected]) location.href = links[selected].href;
+      });
+    </script>
+  </body>
+</html>

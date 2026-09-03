@@ -1,0 +1,38 @@
+---
+// One card for any class. Class-specific facts go in the key/value block; the rest is shared.
+import CategoryChip from "./CategoryChip.astro";
+import { CLASS_META, hrefOf, facetOf, sourceOf, licenseOf, searchText } from "../lib/catalog";
+interface Props { atom: any; showClass?: boolean; specimenLabel?: string }
+const { atom, showClass = false, specimenLabel } = Astro.props;
+const cls = atom.type;
+const facet = facetOf(atom);
+const facts: Array<[string, any]> = [];
+if (cls === "skill" && atom.invocation?.[0]) facts.push(["invoke", atom.invocation[0]]);
+if (cls === "hook") { facts.push(["event", atom.event || "library"]); if (atom.trigger) facts.push(["trigger", atom.trigger.type + (atom.trigger.pattern ? ` ${atom.trigger.pattern}` : "")]); }
+if (cls === "prompt") facts.push(["turns", (atom.applicable_turns ?? ["system"]).join(", ")]);
+if (cls === "agent") facts.push(["persona", atom.persona]);
+if (cls === "persona") { facts.push(["job", atom.role?.job_to_be_done]); if (atom.role?.domain) facts.push(["domain", atom.role.domain]); }
+if (cls === "model") { facts.push(["vendor", atom.vendor + (atom.family ? ` · ${atom.family}` : "")]); if (atom.parameter_sizes?.length) facts.push(["sizes", atom.parameter_sizes.join(" ")]); if (atom.providers?.[0]?.pull_command) facts.push([atom.providers[0].name.toLowerCase(), atom.providers[0].pull_command]); }
+---
+<article class={`card ${specimenLabel ? "specimen" : ""} hue-${cls}`} data-category={atom.category ?? "other"} data-facet={facet ?? ""} data-source={sourceOf(atom)} data-license={licenseOf(atom)} data-search={searchText(atom)}>
+  {specimenLabel && <span class="label"><span class="dot"></span>{specimenLabel}</span>}
+  <div class="card-top">
+    {showClass && <span class="chip cls">{CLASS_META[cls].symbol} {cls}</span>}
+    {facet && <span class="chip sub">{facet}</span>}
+    {cls === "hook" && atom.blocking !== undefined && <span class={`chip ${atom.blocking ? "danger" : "ok"}`}>{atom.blocking ? "blocking" : "advisory"}</span>}
+    {atom.lifecycle && <span class={`lifecycle ${atom.lifecycle}`}>{atom.lifecycle}</span>}
+  </div>
+  <h3><a href={hrefOf(atom.id)}>{atom.name}</a></h3>
+  <p>{atom.description}</p>
+  {facts.length > 0 && (
+    <dl class="kv">
+      {facts.map(([k, v]) => <><dt>{k}</dt><dd>{typeof v === "string" && (k === "invoke" || k === "persona" || k.endsWith("ollama") || k === "trigger") ? <code>{v}</code> : v}</dd></>)}
+    </dl>
+  )}
+  <div class="chips">
+    <CategoryChip category={atom.category} />
+    {cls === "model" && atom.capabilities?.map((c: string) => <span class="tag">{c}</span>)}
+    {licenseOf(atom) === "unknown" && <span class="chip warn">license unknown</span>}
+  </div>
+  <div class="foot"><span class="id">{atom.id}</span><span>v{atom.version}</span><span>{sourceOf(atom)}</span></div>
+</article>

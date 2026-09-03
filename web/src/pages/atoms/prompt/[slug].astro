@@ -1,0 +1,36 @@
+---
+import Site from "../../../layouts/Site.astro";
+import ActionRail from "../../../components/ActionRail.astro";
+import Provenance from "../../../components/Provenance.astro";
+import CategoryChip from "../../../components/CategoryChip.astro";
+import { ATOMS, BY_ID, hrefOf, slugOf } from "../../../lib/catalog";
+
+export function getStaticPaths() {
+  return ATOMS.filter((a: any) => a.type === "prompt").map((a: any) => ({ params: { slug: slugOf(a.id) }, props: { prompt: a } }));
+}
+const { prompt } = Astro.props;
+const parts = (prompt.includes ?? []).map((id: string) => BY_ID.get(id)).filter(Boolean);
+const usedBy = ATOMS.filter((a: any) => (a.type === "prompt" && a.includes?.includes(prompt.id)) || (a.type === "agent" && a.prompts?.includes(prompt.id)));
+const persona = prompt.persona_ref ? BY_ID.get(prompt.persona_ref) : null;
+---
+<Site title={prompt.name} description={prompt.description} current="/atoms/prompt/">
+  <div class="detail hue-prompt">
+    <article>
+      <a class="small muted" href="/atoms/prompt/">← Prompts</a>
+      <div class="detail-hero" style="margin-top:0.8rem;">
+        <div class="chips"><span class="chip cls">Pr prompt</span><span class="chip sub">{prompt.subtype}</span><CategoryChip category={prompt.category} />{prompt.lifecycle && <span class={`lifecycle ${prompt.lifecycle}`}>{prompt.lifecycle}</span>}</div>
+        <h1>{prompt.name}</h1>
+        <p class="lede">{prompt.description}</p>
+        <div class="idline"><span>id <b>{prompt.id}</b></span><span>v<b>{prompt.version}</b></span><span>turns <b>{(prompt.applicable_turns ?? ["system"]).join(", ")}</b></span>{prompt.vendors?.length > 0 && <span>vendors <b>{prompt.vendors.join(", ")}</b></span>}</div>
+      </div>
+      {persona && <p class="small" style="margin-bottom:1rem;">Renders persona <a class="ref" href={hrefOf(persona.id)}>{persona.id}</a> — {persona.name}.</p>}
+      {parts.length > 0 && <><h2 class="h-section">Assembled from {parts.length} parts, in order</h2><ol class="list">{parts.map((p: any) => <li><a class="ref" href={hrefOf(p.id)}>{p.id}</a> <span class="chip sub">{p.subtype}</span> — {p.name}</li>)}</ol></>}
+      <h2 class="h-section">Content</h2>
+      <div class="content-text">{prompt.content}</div>
+      {usedBy.length > 0 && <><h2 class="h-section">Used by</h2><ul class="list">{usedBy.map((a: any) => <li><a class="ref" href={hrefOf(a.id)}>{a.id}</a> — {a.name}</li>)}</ul></>}
+      {prompt.tags?.length > 0 && <div class="chips" style="margin-top:1.2rem;">{prompt.tags.map((t: string) => <span class="tag">{t}</span>)}</div>}
+      <Provenance atom={prompt} />
+    </article>
+    <ActionRail atom={prompt} text={prompt.content} textFilename={`${slugOf(prompt.id)}.md`} />
+  </div>
+</Site>

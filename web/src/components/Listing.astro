@@ -1,0 +1,26 @@
+---
+// A whole listing page body: title, rail, results grid. Class pages pass their atoms.
+import AtomCard from "./AtomCard.astro";
+import FilterRail from "./FilterRail.astro";
+import { count, facetOf, sourceOf, licenseOf, CLASS_META } from "../lib/catalog";
+interface Props { cls: string; atoms: any[]; intro: string; facetLabel?: string }
+const { cls, atoms, intro, facetLabel } = Astro.props;
+const meta = CLASS_META[cls];
+---
+<div class={`hue-${cls}`}>
+  <p class="eyebrow">{meta.symbol} · class {cls}</p>
+  <h1 style="margin-top:0.3rem;">{meta.plural} <span class="muted tabular" style="font-weight:500;">{atoms.length}</span></h1>
+  <p class="lede" style="margin-top:0.6rem;" set:html={intro} />
+  <div class="listing" style="margin-top:1.8rem;">
+    <FilterRail atoms={atoms} facetLabel={facetLabel} facets={count(atoms, facetOf)} categories={count(atoms, (a) => a.category ?? "other")} sources={count(atoms, sourceOf)} licenses={count(atoms, licenseOf)} />
+    <section>
+      <div class="results-head">
+        <span><b class="tabular" data-shown>{atoms.length} of {atoms.length}</b> shown</span>
+        <span class="active" data-active></span>
+        <button class="clear" type="button" data-clear hidden>Clear filters</button>
+      </div>
+      <div class="grid">{atoms.map((a) => <AtomCard atom={a} />)}</div>
+      <p class="empty" data-empty hidden>Nothing matches. Clear a filter or try the global search (<kbd>/</kbd>).</p>
+    </section>
+  </div>
+</div>

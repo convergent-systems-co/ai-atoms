@@ -1,0 +1,55 @@
+---
+// Sticky rail on a detail page: copy / download / JSON / install, then class facts.
+interface Props { atom: any; text?: string; textFilename?: string; install?: string; commands?: Array<[string, string]> }
+const { atom, text, textFilename = "atom.md", install, commands = [] } = Astro.props;
+const cls = atom.id.split("/")[0];
+const slug = atom.id.slice(cls.length + 1);
+const payload = JSON.stringify({ text: text ?? "", json: JSON.stringify(atom, null, 2), textFilename, jsonFilename: `${slug}.json` });
+const textLabel = textFilename.endsWith(".md") ? "markdown" : textFilename.endsWith(".py") || textFilename.endsWith(".sh") ? "script" : "text";
+---
+<aside class="detail-rail">
+  <div class="panel" data-actions={payload}>
+    <h4>Use it</h4>
+    <div class="stack">
+      {text && <button class="btn primary" type="button" data-act="copy-text">Copy {textLabel}</button>}
+      {text && <button class="btn" type="button" data-act="download-text">Download {textFilename}</button>}
+      <button class="btn" type="button" data-act="copy-json">Copy JSON</button>
+      <a class="btn" href={`/atoms/${cls}/${slug}.json`}>Raw JSON ↗</a>
+    </div>
+  </div>
+  {(install || commands.length > 0) && (
+    <div class="panel">
+      <h4>Commands</h4>
+      <div class="stack">
+        {install && <div class="cmd"><span class="lbl">install</span><code>{install}</code><button type="button" data-copy={install}>copy</button></div>}
+        {commands.map(([label, cmd]) => <div class="cmd"><span class="lbl">{label}</span><code>{cmd}</code><button type="button" data-copy={cmd}>copy</button></div>)}
+      </div>
+    </div>
+  )}
+  <slot />
+</aside>
+<script>
+  function flash(btn: HTMLButtonElement, label: string) {
+    const original = btn.textContent; btn.textContent = label; btn.classList.add("done");
+    setTimeout(() => { btn.textContent = original; btn.classList.remove("done"); }, 1400);
+  }
+  function download(name: string, content: string, type: string) {
+    const url = URL.createObjectURL(new Blob([content], { type }));
+    const a = Object.assign(document.createElement("a"), { href: url, download: name });
+    document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  }
+  document.querySelectorAll<HTMLElement>("[data-actions]").forEach((panel) => {
+    const data = JSON.parse(panel.dataset.actions!);
+    panel.addEventListener("click", async (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>("button[data-act]");
+      if (!btn) return;
+      try {
+        if (btn.dataset.act === "copy-text") { await navigator.clipboard.writeText(data.text); flash(btn, "Copied"); }
+        if (btn.dataset.act === "copy-json") { await navigator.clipboard.writeText(data.json); flash(btn, "Copied"); }
+        if (btn.dataset.act === "download-text") download(data.textFilename, data.text, "text/plain");
+      } catch { flash(btn, "Clipboard blocked"); }
+    });
+  });
+  document.querySelectorAll<HTMLButtonElement>("button[data-copy]").forEach((b) =>
+    b.addEventListener("click", async () => { try { await navigator.clipboard.writeText(b.dataset.copy!); flash(b, "copied"); } catch { flash(b, "blocked"); } }));
+</script>

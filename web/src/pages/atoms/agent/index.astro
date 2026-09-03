@@ -1,0 +1,9 @@
+---
+import Site from "../../../layouts/Site.astro";
+import Listing from "../../../components/Listing.astro";
+import { atomsOf, CLASS_META } from "../../../lib/catalog";
+const atoms = atomsOf("agent");
+---
+<Site title={CLASS_META["agent"].plural} description={`${atoms.length} agent atoms — ${CLASS_META["agent"].blurb}`} current="/atoms/agent/">
+  <Listing cls="agent" atoms={atoms} intro={'Bindable identities. An agent takes one persona and binds it to the prompts, skills, tools, policies, and hooks it runs with. Actors produce work; reviewers judge it against declared criteria.'} facetLabel='Subtype' />
+</Site>

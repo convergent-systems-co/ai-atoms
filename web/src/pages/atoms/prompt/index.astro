@@ -1,0 +1,9 @@
+---
+import Site from "../../../layouts/Site.astro";
+import Listing from "../../../components/Listing.astro";
+import { atomsOf, CLASS_META } from "../../../lib/catalog";
+const atoms = atomsOf("prompt");
+---
+<Site title={CLASS_META["prompt"].plural} description={`${atoms.length} prompt atoms — ${CLASS_META["prompt"].blurb}`} current="/atoms/prompt/">
+  <Listing cls="prompt" atoms={atoms} intro={'Text a runtime injects into the context window. The subtype says what kind of text it is; <code>content</code> is the text itself. Composite prompts arrive pre-resolved.'} facetLabel='Subtype' />
+</Site>
