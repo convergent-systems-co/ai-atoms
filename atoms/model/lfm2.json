@@ -1,0 +1,48 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/lfm2",
+  "version": "1.0.0",
+  "name": "lfm2",
+  "description": "LFM2 is a family of hybrid models designed for on-device deployment. LFM2-24B-A2B is the largest model in the family, scaling the architecture to 24 billion parameters while keeping inference efficient.",
+  "vendor": "Liquid AI",
+  "family": "LFM",
+  "task": "text-generation",
+  "capabilities": [
+    "tools"
+  ],
+  "parameter_sizes": [
+    "24b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "lfm2",
+      "url": "https://ollama.com/library/lfm2",
+      "pull_command": "ollama pull lfm2",
+      "run_command": "ollama run lfm2",
+      "tag_count": 6,
+      "pulls": "1.1M",
+      "updated_at": "2026-02-24"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/lfm2"
+  },
+  "authored_by": "Liquid AI",
+  "source_url": "https://ollama.com/library/lfm2",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/lfm2",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "tools"
+  ],
+  "lifecycle": "stable"
+}

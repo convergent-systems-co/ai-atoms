@@ -1,0 +1,30 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/solidity-security",
+  "version": "1.0.0",
+  "name": "Solidity Security",
+  "description": "Master smart contract security best practices to prevent common vulnerabilities and implement secure Solidity patterns. Use when writing smart contracts, auditing existing contracts, or implementin...",
+  "system_prompt_fragment": "# Solidity Security\n\nMaster smart contract security best practices, vulnerability prevention, and secure Solidity development patterns.\n\n## Use this skill when\n\n- Writing secure smart contracts\n- Auditing existing contracts for vulnerabilities\n- Implementing secure DeFi protocols\n- Preventing reentrancy, overflow, and access control issues\n- Optimizing gas usage while maintaining security\n- Preparing contracts for professional audits\n- Understanding common attack vectors\n\n## Do not use this skill when\n\n- The task is unrelated to solidity security\n- You need a different domain or tool outside this scope\n\n## Instructions\n\n- Clarify goals, constraints, and required inputs.\n- Apply relevant best practices and validate outcomes.\n- Provide actionable steps and verification.\n- If detailed examples are required, open `resources/implementation-playbook.md`.\n\n## Resources\n\n- `resources/implementation-playbook.md` for detailed patterns and examples.",
+  "applicable_domains": [
+    "security"
+  ],
+  "category": "security",
+  "invocation": [
+    "/solidity-security"
+  ],
+  "authored_by": "claudeskills.in community",
+  "source_url": "https://claudeskills.in/skill/solidity-security",
+  "provenance": {
+    "source": "claudeskills.in",
+    "source_url": "https://claudeskills.in/skill/solidity-security",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Aggregated by claudeskills.in from community GitHub lists."
+  },
+  "tags": [
+    "claudeskills",
+    "security"
+  ],
+  "lifecycle": "draft"
+}

@@ -1,0 +1,31 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/cc-skill-continuous-learning",
+  "version": "1.0.0",
+  "name": "Cc Skill Continuous Learning",
+  "description": "Development skill from everything-claude-code",
+  "system_prompt_fragment": "# cc-skill-continuous-learning\n\nDevelopment skill skill.\n\n## When to Use\nThis skill is applicable to execute the workflow or actions described in the overview.",
+  "applicable_domains": [
+    "other"
+  ],
+  "category": "other",
+  "invocation": [
+    "/cc-skill-continuous-learning"
+  ],
+  "authored_by": "affaan-m",
+  "source_url": "https://claudeskills.in/skill/cc-skill-continuous-learning",
+  "provenance": {
+    "source": "claudeskills.in",
+    "source_url": "https://claudeskills.in/skill/cc-skill-continuous-learning",
+    "author": "affaan-m",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Aggregated by claudeskills.in from community GitHub lists."
+  },
+  "tags": [
+    "claudeskills",
+    "other"
+  ],
+  "lifecycle": "draft"
+}

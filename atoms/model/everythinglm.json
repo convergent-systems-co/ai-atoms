@@ -1,0 +1,45 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/everythinglm",
+  "version": "1.0.0",
+  "name": "everythinglm",
+  "description": "Uncensored Llama2 based model with support for a 16K context window.",
+  "vendor": "Totally Not An LLM",
+  "family": "EverythingLM",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "13b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "everythinglm",
+      "url": "https://ollama.com/library/everythinglm",
+      "pull_command": "ollama pull everythinglm",
+      "run_command": "ollama run everythinglm",
+      "tag_count": 18,
+      "pulls": "564.1K",
+      "updated_at": "2023-12-27"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/everythinglm"
+  },
+  "authored_by": "Totally Not An LLM",
+  "source_url": "https://ollama.com/library/everythinglm",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/everythinglm",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

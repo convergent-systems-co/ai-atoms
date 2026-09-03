@@ -1,0 +1,47 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/vicuna",
+  "version": "1.0.0",
+  "name": "vicuna",
+  "description": "General use chat model based on Llama and Llama 2 with 2K to 16K context sizes.",
+  "vendor": "LMSYS",
+  "family": "Vicuna",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "7b",
+    "13b",
+    "33b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "vicuna",
+      "url": "https://ollama.com/library/vicuna",
+      "pull_command": "ollama pull vicuna",
+      "run_command": "ollama run vicuna",
+      "tag_count": 111,
+      "pulls": "1.2M",
+      "updated_at": "2023-10-28"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/vicuna"
+  },
+  "authored_by": "LMSYS",
+  "source_url": "https://ollama.com/library/vicuna",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/vicuna",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

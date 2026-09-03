@@ -1,0 +1,51 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/gpt-oss-safeguard",
+  "version": "1.0.0",
+  "name": "gpt-oss-safeguard",
+  "description": "gpt-oss-safeguard-20b and gpt-oss-safeguard-120b are safety reasoning models built-upon gpt-oss",
+  "vendor": "OpenAI",
+  "family": "GPT-OSS",
+  "task": "reasoning",
+  "capabilities": [
+    "tools",
+    "thinking"
+  ],
+  "parameter_sizes": [
+    "20b",
+    "120b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "gpt-oss-safeguard",
+      "url": "https://ollama.com/library/gpt-oss-safeguard",
+      "pull_command": "ollama pull gpt-oss-safeguard",
+      "run_command": "ollama run gpt-oss-safeguard",
+      "tag_count": 3,
+      "pulls": "154.3K",
+      "updated_at": "2025-10-29"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/gpt-oss-safeguard"
+  },
+  "authored_by": "OpenAI",
+  "source_url": "https://ollama.com/library/gpt-oss-safeguard",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/gpt-oss-safeguard",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "tools",
+    "thinking"
+  ],
+  "lifecycle": "stable"
+}

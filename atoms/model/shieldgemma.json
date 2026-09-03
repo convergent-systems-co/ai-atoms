@@ -1,0 +1,47 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/shieldgemma",
+  "version": "1.0.0",
+  "name": "shieldgemma",
+  "description": "ShieldGemma is set of instruction tuned models for evaluating the safety of text prompt input and text output responses against a set of defined safety policies.",
+  "vendor": "Google",
+  "family": "ShieldGemma",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "2b",
+    "9b",
+    "27b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "shieldgemma",
+      "url": "https://ollama.com/library/shieldgemma",
+      "pull_command": "ollama pull shieldgemma",
+      "run_command": "ollama run shieldgemma",
+      "tag_count": 49,
+      "pulls": "930K",
+      "updated_at": "2024-10-11"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/shieldgemma"
+  },
+  "authored_by": "Google",
+  "source_url": "https://ollama.com/library/shieldgemma",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/shieldgemma",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

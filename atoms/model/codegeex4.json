@@ -1,0 +1,45 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/codegeex4",
+  "version": "1.0.0",
+  "name": "codegeex4",
+  "description": "A versatile model for AI software development scenarios, including code completion.",
+  "vendor": "Zhipu AI",
+  "family": "CodeGeeX",
+  "task": "code-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "9b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "codegeex4",
+      "url": "https://ollama.com/library/codegeex4",
+      "pull_command": "ollama pull codegeex4",
+      "run_command": "ollama run codegeex4",
+      "tag_count": 17,
+      "pulls": "688.8K",
+      "updated_at": "2024-07-09"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/codegeex4"
+  },
+  "authored_by": "Zhipu AI",
+  "source_url": "https://ollama.com/library/codegeex4",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/codegeex4",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

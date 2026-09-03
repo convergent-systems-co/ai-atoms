@@ -4,7 +4,17 @@
   "title": "ai-atoms hook v1",
   "description": "A hook atom — an event-driven runtime behavior wired into AI tool infrastructure (Claude Code, Copilot CLI, etc.).",
   "type": "object",
-  "required": ["schema", "type", "id", "version", "name", "description", "event", "language", "trigger"],
+  "required": [
+    "schema",
+    "type",
+    "id",
+    "version",
+    "name",
+    "description",
+    "event",
+    "language",
+    "trigger"
+  ],
   "additionalProperties": false,
   "properties": {
     "schema": {
@@ -13,7 +23,9 @@
     },
     "type": {
       "type": "string",
-      "enum": ["hook"]
+      "enum": [
+        "hook"
+      ]
     },
     "id": {
       "type": "string",
@@ -43,18 +55,31 @@
     },
     "language": {
       "type": "string",
-      "enum": ["python", "bash", "javascript", "typescript"],
+      "enum": [
+        "python",
+        "bash",
+        "javascript",
+        "typescript"
+      ],
       "description": "Implementation language of the hook script."
     },
     "trigger": {
       "type": "object",
-      "required": ["type"],
+      "required": [
+        "type"
+      ],
       "additionalProperties": false,
       "description": "Condition under which this hook fires.",
       "properties": {
         "type": {
           "type": "string",
-          "enum": ["tool-name", "file-pattern", "always", "tool-category", "library"],
+          "enum": [
+            "tool-name",
+            "file-pattern",
+            "always",
+            "tool-category",
+            "library"
+          ],
           "description": "How the hook matches: by tool name, file path pattern, always, tool category, or library (not a runnable hook — a shared dependency)."
         },
         "pattern": {
@@ -73,13 +98,23 @@
     },
     "side_effects": {
       "type": "array",
-      "items": { "type": "string", "minLength": 1 },
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
       "uniqueItems": true,
       "description": "Observable effects of this hook (e.g. writes to audit log, emits warning to stderr)."
     },
     "platforms": {
       "type": "array",
-      "items": { "type": "string", "enum": ["linux", "macos", "windows"] },
+      "items": {
+        "type": "string",
+        "enum": [
+          "linux",
+          "macos",
+          "windows"
+        ]
+      },
       "uniqueItems": true,
       "description": "Platforms on which this hook's logic is verified. Omit to mean all platforms. Wiring is always cross-platform via 'ai hooks run <slug>'."
     },
@@ -91,29 +126,25 @@
       "type": "string",
       "description": "Key atom ID or author identifier."
     },
-    "tags": {
-      "type": "array",
-      "items": { "type": "string", "minLength": 1, "maxLength": 40 },
-      "uniqueItems": true
-    },
-    "lifecycle": {
-      "type": "string",
-      "enum": ["draft", "stable", "deprecated"],
-      "description": "Lifecycle stage of this hook atom."
-    },
     "script": {
       "type": "string",
       "description": "The complete Python (or shell) source of the hook. Installed to ~/.ai/hooks/<slug>.<ext> by the AI CLI."
     },
     "depends_on": {
       "type": "array",
-      "items": {"type": "string"},
+      "items": {
+        "type": "string"
+      },
       "description": "Hook IDs this hook depends on (e.g. hook/lib). Installed automatically.",
       "default": []
     },
     "requires_wrap": {
       "type": "object",
-      "required": ["binary", "description", "install_hint"],
+      "required": [
+        "binary",
+        "description",
+        "install_hint"
+      ],
       "additionalProperties": false,
       "description": "Present when the hook only achieves full coverage when the named binary is installed as a wrapper around an external tool (e.g. git aliased to 'ai git'). Without the wrapper the hook still fires for AI tool Bash calls, but direct invocations bypass it. The ai CLI reads this field in 'ai doctor' to surface the hint and in 'ai setup' to offer the wrapper install — but never requires it.",
       "properties": {
@@ -130,6 +161,30 @@
           "description": "The CLI command the user can run to install the wrapper (e.g. 'ai setup --git-shim')."
         }
       }
+    },
+    "category": {
+      "$ref": "https://ai-atoms.com/schemas/common-v1.json#/$defs/category"
+    },
+    "provenance": {
+      "$ref": "https://ai-atoms.com/schemas/common-v1.json#/$defs/provenance"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 40
+      },
+      "uniqueItems": true
+    },
+    "lifecycle": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "stable",
+        "deprecated"
+      ],
+      "description": "Lifecycle stage of this hook atom."
     }
   }
 }

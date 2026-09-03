@@ -4,7 +4,16 @@
   "title": "ai-atoms skill v1",
   "description": "A skill atom — a bounded, invocable unit of AI capability with a declared system-prompt fragment, inputs, outputs, and side effects.",
   "type": "object",
-  "required": ["schema", "type", "id", "version", "name", "description", "system_prompt_fragment", "applicable_domains"],
+  "required": [
+    "schema",
+    "type",
+    "id",
+    "version",
+    "name",
+    "description",
+    "system_prompt_fragment",
+    "applicable_domains"
+  ],
   "additionalProperties": false,
   "properties": {
     "schema": {
@@ -13,7 +22,9 @@
     },
     "type": {
       "type": "string",
-      "enum": ["skill"]
+      "enum": [
+        "skill"
+      ]
     },
     "id": {
       "type": "string",
@@ -44,34 +55,20 @@
     },
     "applicable_domains": {
       "type": "array",
-      "items": { "type": "string", "minLength": 1 },
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
       "minItems": 1,
       "uniqueItems": true,
       "description": "Domains where this skill applies (e.g. code, design, planning, debug, agents)."
     },
-    "category": {
-      "type": "string",
-      "enum": [
-        "coding",
-        "dotnet",
-        "data",
-        "design",
-        "product",
-        "operations",
-        "finance",
-        "legal",
-        "sales",
-        "marketing",
-        "hr",
-        "support",
-        "knowledge",
-        "governance"
-      ],
-      "description": "Single primary category used to group skills for selection/presentation. Display names: coding=Engineering & Coding, dotnet=.NET / Microsoft Engineering, data=Data, Analytics & Research, design=Design & UX, product=Product & Delivery, operations=Operations & IT, finance=Finance & Accounting, legal=Legal & Compliance, sales=Sales & CRM, marketing=Marketing & Content, hr=People & HR, support=Customer Support, knowledge=Knowledge & Docs, governance=Governance & Meta."
-    },
     "depends_on": {
       "type": "array",
-      "items": { "type": "string", "pattern": "^skill/[a-z0-9][a-z0-9-]*$" },
+      "items": {
+        "type": "string",
+        "pattern": "^skill/[a-z0-9][a-z0-9-]*$"
+      },
       "uniqueItems": true,
       "description": "Sub-skills this skill installs on `ai skills install` and hides from the top-level catalog list (dispatcher pattern). Each entry is a namespaced skill id, e.g. \"skill/make-work\"."
     },
@@ -84,13 +81,24 @@
           "type": "array",
           "items": {
             "type": "object",
-            "required": ["name", "type"],
+            "required": [
+              "name",
+              "type"
+            ],
             "additionalProperties": false,
             "properties": {
-              "name": { "type": "string" },
-              "type": { "type": "string" },
-              "required": { "type": "boolean" },
-              "description": { "type": "string" }
+              "name": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              },
+              "required": {
+                "type": "boolean"
+              },
+              "description": {
+                "type": "string"
+              }
             }
           }
         },
@@ -98,25 +106,39 @@
           "type": "array",
           "items": {
             "type": "object",
-            "required": ["name", "type"],
+            "required": [
+              "name",
+              "type"
+            ],
             "additionalProperties": false,
             "properties": {
-              "name": { "type": "string" },
-              "type": { "type": "string" },
-              "description": { "type": "string" }
+              "name": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              }
             }
           }
         },
         "side_effects": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "uniqueItems": true
         }
       }
     },
     "invocation": {
       "type": "array",
-      "items": { "type": "string", "minLength": 1 },
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
       "description": "Slash-command invocation forms, e.g. [\"/debug\", \"/debug \\\"<symptom>\\\"\", \"/debug --error <log>\"]. Omit for skills with no slash-command entry point.",
       "uniqueItems": true
     },
@@ -128,14 +150,28 @@
       "type": "string",
       "description": "URL of the original source file when this atom was imported from an external open-source repository. Used for attribution and tracking upstream changes."
     },
+    "category": {
+      "$ref": "https://ai-atoms.com/schemas/common-v1.json#/$defs/category"
+    },
+    "provenance": {
+      "$ref": "https://ai-atoms.com/schemas/common-v1.json#/$defs/provenance"
+    },
     "tags": {
       "type": "array",
-      "items": { "type": "string", "minLength": 1, "maxLength": 40 },
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 40
+      },
       "uniqueItems": true
     },
     "lifecycle": {
       "type": "string",
-      "enum": ["draft", "stable", "deprecated"],
+      "enum": [
+        "draft",
+        "stable",
+        "deprecated"
+      ],
       "description": "Lifecycle stage of this skill atom."
     }
   }

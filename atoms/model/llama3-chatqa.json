@@ -1,0 +1,46 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/llama3-chatqa",
+  "version": "1.0.0",
+  "name": "llama3-chatqa",
+  "description": "A model from NVIDIA based on Llama 3 that excels at conversational question answering (QA) and retrieval-augmented generation (RAG).",
+  "vendor": "Meta",
+  "family": "Llama 3",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "8b",
+    "70b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "llama3-chatqa",
+      "url": "https://ollama.com/library/llama3-chatqa",
+      "pull_command": "ollama pull llama3-chatqa",
+      "run_command": "ollama run llama3-chatqa",
+      "tag_count": 35,
+      "pulls": "1M",
+      "updated_at": "2024-05-10"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/llama3-chatqa"
+  },
+  "authored_by": "Meta",
+  "source_url": "https://ollama.com/library/llama3-chatqa",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/llama3-chatqa",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

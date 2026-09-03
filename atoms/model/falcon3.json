@@ -1,0 +1,48 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/falcon3",
+  "version": "1.0.0",
+  "name": "falcon3",
+  "description": "A family of efficient AI models under 10B parameters performant in science, math, and coding through innovative training techniques.",
+  "vendor": "TII",
+  "family": "Falcon",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "1b",
+    "3b",
+    "7b",
+    "10b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "falcon3",
+      "url": "https://ollama.com/library/falcon3",
+      "pull_command": "ollama pull falcon3",
+      "run_command": "ollama run falcon3",
+      "tag_count": 17,
+      "pulls": "2.6M",
+      "updated_at": "2024-12-17"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/falcon3"
+  },
+  "authored_by": "TII",
+  "source_url": "https://ollama.com/library/falcon3",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/falcon3",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

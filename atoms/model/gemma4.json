@@ -1,0 +1,60 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/gemma4",
+  "version": "1.0.0",
+  "name": "gemma4",
+  "description": "Gemma 4 models are designed to deliver frontier-level performance at each size. They are well-suited for reasoning, agentic workflows, coding, and multimodal understanding.",
+  "vendor": "Google",
+  "family": "Gemma",
+  "task": "reasoning",
+  "capabilities": [
+    "vision",
+    "tools",
+    "thinking",
+    "audio",
+    "cloud"
+  ],
+  "parameter_sizes": [
+    "2b",
+    "4b",
+    "12b",
+    "26b",
+    "31b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "gemma4",
+      "url": "https://ollama.com/library/gemma4",
+      "pull_command": "ollama pull gemma4",
+      "run_command": "ollama run gemma4",
+      "tag_count": 50,
+      "pulls": "24.1M",
+      "updated_at": "2026-08-31"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/gemma4"
+  },
+  "authored_by": "Google",
+  "source_url": "https://ollama.com/library/gemma4",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/gemma4",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "vision",
+    "tools",
+    "thinking",
+    "audio",
+    "cloud"
+  ],
+  "lifecycle": "stable"
+}

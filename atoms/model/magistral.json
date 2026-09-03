@@ -1,0 +1,50 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/magistral",
+  "version": "1.0.0",
+  "name": "magistral",
+  "description": "Magistral is a small, efficient reasoning model with 24B parameters.",
+  "vendor": "Mistral AI",
+  "family": "Magistral",
+  "task": "reasoning",
+  "capabilities": [
+    "tools",
+    "thinking"
+  ],
+  "parameter_sizes": [
+    "24b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "magistral",
+      "url": "https://ollama.com/library/magistral",
+      "pull_command": "ollama pull magistral",
+      "run_command": "ollama run magistral",
+      "tag_count": 5,
+      "pulls": "1.5M",
+      "updated_at": "2025-06-16"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/magistral"
+  },
+  "authored_by": "Mistral AI",
+  "source_url": "https://ollama.com/library/magistral",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/magistral",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "tools",
+    "thinking"
+  ],
+  "lifecycle": "stable"
+}

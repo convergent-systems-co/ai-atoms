@@ -1,0 +1,30 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/react-modernization",
+  "version": "1.0.0",
+  "name": "React Modernization",
+  "description": "Upgrade React applications to latest versions, migrate from class components to hooks, and adopt concurrent features. Use when modernizing React codebases, migrating to React Hooks, or upgrading to...",
+  "system_prompt_fragment": "# React Modernization\n\nMaster React version upgrades, class to hooks migration, concurrent features adoption, and codemods for automated transformation.\n\n## Use this skill when\n\n- Upgrading React applications to latest versions\n- Migrating class components to functional components with hooks\n- Adopting concurrent React features (Suspense, transitions)\n- Applying codemods for automated refactoring\n- Modernizing state management patterns\n- Updating to TypeScript\n- Improving performance with React 18+ features\n\n## Do not use this skill when\n\n- The task is unrelated to react modernization\n- You need a different domain or tool outside this scope\n\n## Instructions\n\n- Clarify goals, constraints, and required inputs.\n- Apply relevant best practices and validate outcomes.\n- Provide actionable steps and verification.\n- If detailed examples are required, open `resources/implementation-playbook.md`.\n\n## Resources\n\n- `resources/implementation-playbook.md` for detailed patterns and examples.",
+  "applicable_domains": [
+    "frontend"
+  ],
+  "category": "frontend",
+  "invocation": [
+    "/react-modernization"
+  ],
+  "authored_by": "claudeskills.in community",
+  "source_url": "https://claudeskills.in/skill/react-modernization",
+  "provenance": {
+    "source": "claudeskills.in",
+    "source_url": "https://claudeskills.in/skill/react-modernization",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Aggregated by claudeskills.in from community GitHub lists."
+  },
+  "tags": [
+    "claudeskills",
+    "frontend"
+  ],
+  "lifecycle": "draft"
+}

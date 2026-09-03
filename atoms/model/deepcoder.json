@@ -1,0 +1,46 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/deepcoder",
+  "version": "1.0.0",
+  "name": "deepcoder",
+  "description": "DeepCoder is a fully open-Source 14B coder model at O3-mini level, with a 1.5B version also available.",
+  "vendor": "Agentica",
+  "family": "DeepCoder",
+  "task": "code-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "1.5b",
+    "14b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "deepcoder",
+      "url": "https://ollama.com/library/deepcoder",
+      "pull_command": "ollama pull deepcoder",
+      "run_command": "ollama run deepcoder",
+      "tag_count": 9,
+      "pulls": "948.5K",
+      "updated_at": "2025-04-08"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/deepcoder"
+  },
+  "authored_by": "Agentica",
+  "source_url": "https://ollama.com/library/deepcoder",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/deepcoder",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

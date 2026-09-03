@@ -1,0 +1,46 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/gemma3n",
+  "version": "1.0.0",
+  "name": "gemma3n",
+  "description": "Gemma 3n models are designed for efficient execution on everyday devices such as laptops, tablets or phones.",
+  "vendor": "Google",
+  "family": "Gemma 3n",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "2b",
+    "4b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "gemma3n",
+      "url": "https://ollama.com/library/gemma3n",
+      "pull_command": "ollama pull gemma3n",
+      "run_command": "ollama run gemma3n",
+      "tag_count": 9,
+      "pulls": "2.1M",
+      "updated_at": "2025-06-27"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/gemma3n"
+  },
+  "authored_by": "Google",
+  "source_url": "https://ollama.com/library/gemma3n",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/gemma3n",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

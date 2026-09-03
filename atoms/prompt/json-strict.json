@@ -1,0 +1,32 @@
+{
+  "schema": "https://ai-atoms.com/schemas/prompt-v1.json",
+  "type": "prompt",
+  "id": "prompt/json-strict",
+  "version": "1.0.0",
+  "name": "JSON Strict",
+  "description": "Emit valid JSON only — no code fences, no commentary, no trailing prose.",
+  "subtype": "format",
+  "content": "Emit valid JSON only. No markdown code fences around the output. No commentary before or after. No trailing newlines beyond a single terminal newline. UTF-8, double-quoted keys and strings, no trailing commas. If you cannot produce valid JSON for the request, emit {\"error\": \"<message>\"} rather than substituting prose.",
+  "applicable_turns": [
+    "system"
+  ],
+  "vendors": [
+    "any"
+  ],
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/format-instruction/json-strict.json",
+  "tags": [
+    "format",
+    "json",
+    "strict"
+  ],
+  "lifecycle": "draft",
+  "category": "governance",
+  "provenance": {
+    "source": "convergent-systems-co/prompt-atoms",
+    "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/format-instruction/json-strict.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed by scripts/migrate-retired-atoms.py from the retired catalog."
+  }
+}

@@ -1,0 +1,18 @@
+---
+// Attribution footer: author, source, license. 'unknown' is shown, never hidden.
+interface Props { atom: any }
+const { atom } = Astro.props;
+const p = atom.provenance;
+const license = p?.license;
+---
+{(atom.authored_by || atom.source_url || p) && (
+  <div class="attribution">
+    {atom.authored_by && <>Author <b>{atom.authored_by}</b>. </>}
+    {p?.source && <>Source <b>{p.source}</b>{p.source_url ? <> (<a href={p.source_url} target="_blank" rel="noopener">original ↗</a>)</> : null}. </>}
+    {!p?.source && atom.source_url && <><a href={atom.source_url} target="_blank" rel="noopener">Original source ↗</a>. </>}
+    {license && <>License <span class={`chip ${license === "unknown" ? "warn" : "ok"}`}>{license}</span>{license === "unknown" ? " — the source states none; review before redistributing." : "."} </>}
+    {p?.imported_at && <>Imported {p.imported_at}. </>}
+    {p?.notes && <span style="display:block;margin-top:0.35rem;">{p.notes}</span>}
+    {!license && <>Catalog data license CC-BY-4.0.</>}
+  </div>
+)}

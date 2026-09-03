@@ -1,0 +1,52 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/nemotron-3-super",
+  "version": "1.0.0",
+  "name": "nemotron-3-super",
+  "description": "NVIDIA Nemotron 3 Super is a 120B open MoE model activating just 12B parameters to deliver maximum compute efficiency and accuracy for complex multi-agent applications.",
+  "vendor": "NVIDIA",
+  "family": "Nemotron 3",
+  "task": "reasoning",
+  "capabilities": [
+    "tools",
+    "thinking",
+    "cloud"
+  ],
+  "parameter_sizes": [
+    "120b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "nemotron-3-super",
+      "url": "https://ollama.com/library/nemotron-3-super",
+      "pull_command": "ollama pull nemotron-3-super",
+      "run_command": "ollama run nemotron-3-super",
+      "tag_count": 7,
+      "pulls": "2.9M",
+      "updated_at": "2026-03-11"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/nemotron-3-super"
+  },
+  "authored_by": "NVIDIA",
+  "source_url": "https://ollama.com/library/nemotron-3-super",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/nemotron-3-super",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "tools",
+    "thinking",
+    "cloud"
+  ],
+  "lifecycle": "stable"
+}

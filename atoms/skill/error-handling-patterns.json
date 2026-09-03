@@ -1,0 +1,30 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/error-handling-patterns",
+  "version": "1.0.0",
+  "name": "Error Handling Patterns",
+  "description": "Master error handling patterns across languages including exceptions, Result types, error propagation, and graceful degradation to build resilient applications. Use when implementing error handling...",
+  "system_prompt_fragment": "# Error Handling Patterns\n\nBuild resilient applications with robust error handling strategies that gracefully handle failures and provide excellent debugging experiences.\n\n## Use this skill when\n\n- Implementing error handling in new features\n- Designing error-resilient APIs\n- Debugging production issues\n- Improving application reliability\n- Creating better error messages for users and developers\n- Implementing retry and circuit breaker patterns\n- Handling async/concurrent errors\n- Building fault-tolerant distributed systems\n\n## Do not use this skill when\n\n- The task is unrelated to error handling patterns\n- You need a different domain or tool outside this scope\n\n## Instructions\n\n- Clarify goals, constraints, and required inputs.\n- Apply relevant best practices and validate outcomes.\n- Provide actionable steps and verification.\n- If detailed examples are required, open `resources/implementation-playbook.md`.\n\n## Resources\n\n- `resources/implementation-playbook.md` for detailed patterns and examples.",
+  "applicable_domains": [
+    "other"
+  ],
+  "category": "other",
+  "invocation": [
+    "/error-handling-patterns"
+  ],
+  "authored_by": "claudeskills.in community",
+  "source_url": "https://claudeskills.in/skill/error-handling-patterns",
+  "provenance": {
+    "source": "claudeskills.in",
+    "source_url": "https://claudeskills.in/skill/error-handling-patterns",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Aggregated by claudeskills.in from community GitHub lists."
+  },
+  "tags": [
+    "claudeskills",
+    "other"
+  ],
+  "lifecycle": "draft"
+}

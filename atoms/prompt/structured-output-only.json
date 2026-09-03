@@ -1,0 +1,31 @@
+{
+  "schema": "https://ai-atoms.com/schemas/prompt-v1.json",
+  "type": "prompt",
+  "id": "prompt/structured-output-only",
+  "version": "1.0.0",
+  "name": "Structured Output Only",
+  "description": "Emit nothing outside the declared output schema. No preamble, no commentary, no closing summary.",
+  "subtype": "constraint",
+  "content": "Emit only the declared output schema. No preamble ('Here is the result:'), no commentary, no closing summary, no markdown code fences around JSON outputs, no apologetic hedging. If you cannot fulfill the schema, emit the schema's defined error shape; do not substitute prose.",
+  "applicable_turns": [
+    "system"
+  ],
+  "vendors": [
+    "any"
+  ],
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/constraint/structured-output-only.json",
+  "tags": [
+    "format",
+    "structured"
+  ],
+  "lifecycle": "draft",
+  "category": "governance",
+  "provenance": {
+    "source": "convergent-systems-co/prompt-atoms",
+    "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/constraint/structured-output-only.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed by scripts/migrate-retired-atoms.py from the retired catalog."
+  }
+}

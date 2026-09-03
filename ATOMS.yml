@@ -5,17 +5,24 @@
 
 spec_version: atoms-spec/v1.1.0
 name: ai-atoms
-version: 0.1.0
+version: 0.3.0
 canonical_domain: ai-atoms.com
 federation: convergent-systems.co
 description: |
-  AI runtime primitives — hooks and skills for AI agents, Claude Code, and agentic pipelines.
-  Skills are bounded, invocable units of AI capability with declared inputs, outputs, and
-  system-prompt fragments. Hooks are event-driven runtime behaviors wired into AI tool
-  infrastructure (Claude Code PreToolUse/PostToolUse, Copilot CLI, etc.).
+  AI runtime primitives — skills, hooks, prompts, agents, and personas for AI agents,
+  Claude Code, and agentic pipelines. Skills are bounded, invocable units of AI capability
+  with declared inputs, outputs, and system-prompt fragments. Hooks are event-driven runtime
+  behaviors wired into AI tool infrastructure. Prompts are typed text injected into the
+  context window. Personas are portable identities. Agents bind a persona to the prompts,
+  skills, tools, policies, and hooks it runs with. Models are reference data about AI models
+  and the providers a runtime can get them from.
 atom_types:
   - skill
   - hook
+  - prompt
+  - agent
+  - persona
+  - model
 composition_type: workflows
 composition_dir: workflows
 runtime_consumers:

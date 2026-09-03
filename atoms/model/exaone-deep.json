@@ -1,0 +1,47 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/exaone-deep",
+  "version": "1.0.0",
+  "name": "exaone-deep",
+  "description": "EXAONE Deep exhibits superior capabilities in various reasoning tasks including math and coding benchmarks, ranging from 2.4B to 32B parameters developed and released by LG AI Research.",
+  "vendor": "LG AI Research",
+  "family": "EXAONE",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "2.4b",
+    "7.8b",
+    "32b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "exaone-deep",
+      "url": "https://ollama.com/library/exaone-deep",
+      "pull_command": "ollama pull exaone-deep",
+      "run_command": "ollama run exaone-deep",
+      "tag_count": 13,
+      "pulls": "764.3K",
+      "updated_at": "2025-03-19"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/exaone-deep"
+  },
+  "authored_by": "LG AI Research",
+  "source_url": "https://ollama.com/library/exaone-deep",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/exaone-deep",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

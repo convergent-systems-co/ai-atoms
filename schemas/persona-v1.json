@@ -1,0 +1,359 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-atoms.com/schemas/persona-v1.json",
+  "title": "ai-atoms persona v1",
+  "description": "A persona atom — a portable AI identity: role, voice, tone, work contract, behavioural constraints, and knowledge boundaries. A persona binds no tools, skills, or policies; an agent atom binds a persona to those. Self-contained: every constraint and boundary is carried inline as text so a runtime can render the persona without resolving references.",
+  "type": "object",
+  "required": [
+    "schema",
+    "type",
+    "id",
+    "version",
+    "name",
+    "description",
+    "role"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "https://ai-atoms.com/schemas/persona-v1.json"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "persona"
+      ]
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^persona/[a-z0-9][a-z0-9-]*$",
+      "description": "Namespaced identifier in the form persona/<slug>."
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[A-Za-z0-9.-]+)?$",
+      "description": "Semantic version of this persona atom."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80,
+      "description": "Human-readable display name."
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1000,
+      "description": "Who this persona is, what it is for, and when to activate it."
+    },
+    "role": {
+      "type": "object",
+      "required": [
+        "job_to_be_done"
+      ],
+      "additionalProperties": false,
+      "description": "What the persona is responsible for. Replaces the retired role-definition atom type.",
+      "properties": {
+        "job_to_be_done": {
+          "type": "string",
+          "minLength": 1,
+          "description": "One or two sentences stating the outcome this persona owns."
+        },
+        "primary_tasks": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "out_of_scope": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true,
+          "description": "Work this persona must hand off rather than do."
+        },
+        "domain": {
+          "type": "string",
+          "description": "Primary domain slug (e.g. software-engineering, incident-response)."
+        },
+        "expertise": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true,
+          "description": "Topic slugs the persona is expected to know well."
+        }
+      }
+    },
+    "voice": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "How the persona writes. Replaces the retired voice-profile atom type.",
+      "properties": {
+        "formality": {
+          "type": "string",
+          "enum": [
+            "casual",
+            "conversational",
+            "professional",
+            "formal",
+            "academic"
+          ]
+        },
+        "hedging_tolerance": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ],
+          "description": "How much qualifying language is acceptable. low = state it plainly."
+        },
+        "sentence_length": {
+          "type": "string",
+          "enum": [
+            "short",
+            "medium",
+            "long"
+          ]
+        },
+        "style_notes": {
+          "type": "string",
+          "description": "Free-text voice guidance (e.g. 'Cites path:line. Refuses findings without evidence.')."
+        }
+      }
+    },
+    "tone": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Emotional register. Replaces the retired tone-parameter atom type.",
+      "properties": {
+        "warmth": {
+          "type": "string",
+          "enum": [
+            "cold",
+            "neutral",
+            "warm",
+            "empathetic"
+          ]
+        },
+        "directness": {
+          "type": "string",
+          "enum": [
+            "direct",
+            "balanced",
+            "gentle"
+          ]
+        }
+      }
+    },
+    "work_contract": {
+      "type": "object",
+      "required": [
+        "class",
+        "goal"
+      ],
+      "additionalProperties": false,
+      "description": "How the persona participates in a multi-persona workflow. Replaces the retired work-contract atom type.",
+      "properties": {
+        "class": {
+          "type": "string",
+          "enum": [
+            "planner",
+            "executor",
+            "reviewer",
+            "coordinator",
+            "aggregator",
+            "moderator"
+          ],
+          "description": "Workflow role class. Reviewers judge; executors produce; planners decompose; coordinators route; aggregators assemble; moderators synthesize reviewer state."
+        },
+        "goal": {
+          "type": "string",
+          "minLength": 1
+        },
+        "inputs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "allowed_actions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "forbidden_actions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "output_artifacts": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "handoff_targets": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "escalation_triggers": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "done_criteria": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "decision_scope": {
+          "type": "string",
+          "description": "What the persona may decide on its own (e.g. 'none', 'content-level findings only')."
+        }
+      }
+    },
+    "constraints": {
+      "type": "array",
+      "description": "Behavioural constraints carried inline. Replaces the retired behavioural-constraint atom type.",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "text"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The constraint as the model should read it."
+          },
+          "effect": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "require",
+              "prefer"
+            ]
+          }
+        }
+      }
+    },
+    "knowledge_boundaries": {
+      "type": "array",
+      "description": "What the persona knows and where it must defer. Replaces the retired knowledge-boundary atom type.",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "text"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1
+          },
+          "covered_domains": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "excluded_domains": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          }
+        }
+      }
+    },
+    "system_prompt_fragment": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Optional hand-written identity text injected verbatim when the persona is activated. When absent, runtimes render one from role, voice, tone, constraints, and boundaries."
+    },
+    "brand_ref": {
+      "type": "string",
+      "description": "Optional brand-atoms reference this persona is bound to (e.g. 'brand-atoms.com/brands/atom-family')."
+    },
+    "vendors": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true,
+      "description": "Model vendors this persona is written for; 'any' for vendor-neutral."
+    },
+    "authored_by": {
+      "type": "string",
+      "description": "Key atom ID or author identifier."
+    },
+    "source_url": {
+      "type": "string",
+      "description": "URL of the original source when imported from an external repository."
+    },
+    "category": {
+      "$ref": "https://ai-atoms.com/schemas/common-v1.json#/$defs/category"
+    },
+    "provenance": {
+      "$ref": "https://ai-atoms.com/schemas/common-v1.json#/$defs/provenance"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 40
+      },
+      "uniqueItems": true
+    },
+    "lifecycle": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "stable",
+        "deprecated"
+      ],
+      "description": "Lifecycle stage of this persona atom."
+    }
+  }
+}

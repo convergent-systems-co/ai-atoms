@@ -1,0 +1,9 @@
+---
+import Site from "../../../layouts/Site.astro";
+import Listing from "../../../components/Listing.astro";
+import { atomsOf, CLASS_META } from "../../../lib/catalog";
+const atoms = atomsOf("persona");
+---
+<Site title={CLASS_META["persona"].plural} description={`${atoms.length} persona atoms — ${CLASS_META["persona"].blurb}`} current="/atoms/persona/">
+  <Listing cls="persona" atoms={atoms} intro={'Portable identities. A persona says who the model is — role, voice, tone, work contract, constraints, and knowledge boundaries — and binds nothing else. Everything a runtime needs is inline.'}  />
+</Site>

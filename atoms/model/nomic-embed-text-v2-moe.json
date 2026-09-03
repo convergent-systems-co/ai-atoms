@@ -1,0 +1,45 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/nomic-embed-text-v2-moe",
+  "version": "1.0.0",
+  "name": "nomic-embed-text-v2-moe",
+  "description": "nomic-embed-text-v2-moe is a multilingual MoE text embedding model that excels at multilingual retrieval.",
+  "vendor": "Nomic AI",
+  "family": "Nomic Embed",
+  "task": "embedding",
+  "capabilities": [
+    "embedding"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "nomic-embed-text-v2-moe",
+      "url": "https://ollama.com/library/nomic-embed-text-v2-moe",
+      "pull_command": "ollama pull nomic-embed-text-v2-moe",
+      "run_command": "ollama run nomic-embed-text-v2-moe",
+      "tag_count": 1,
+      "pulls": "837.7K",
+      "updated_at": "2025-12-10"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/nomic-embed-text-v2-moe"
+  },
+  "authored_by": "Nomic AI",
+  "source_url": "https://ollama.com/library/nomic-embed-text-v2-moe",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/nomic-embed-text-v2-moe",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "embedding"
+  ],
+  "lifecycle": "stable"
+}

@@ -1,0 +1,30 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/stride-analysis-patterns",
+  "version": "1.0.0",
+  "name": "Stride Analysis Patterns",
+  "description": "Apply STRIDE methodology to systematically identify threats. Use when analyzing system security, conducting threat modeling sessions, or creating security documentation.",
+  "system_prompt_fragment": "# STRIDE Analysis Patterns\n\nSystematic threat identification using the STRIDE methodology.\n\n## Use this skill when\n\n- Starting new threat modeling sessions\n- Analyzing existing system architecture\n- Reviewing security design decisions\n- Creating threat documentation\n- Training teams on threat identification\n- Compliance and audit preparation\n\n## Do not use this skill when\n\n- The task is unrelated to stride analysis patterns\n- You need a different domain or tool outside this scope\n\n## Instructions\n\n- Clarify goals, constraints, and required inputs.\n- Apply relevant best practices and validate outcomes.\n- Provide actionable steps and verification.\n- If detailed examples are required, open `resources/implementation-playbook.md`.\n\n## Resources\n\n- `resources/implementation-playbook.md` for detailed patterns and examples.",
+  "applicable_domains": [
+    "other"
+  ],
+  "category": "other",
+  "invocation": [
+    "/stride-analysis-patterns"
+  ],
+  "authored_by": "claudeskills.in community",
+  "source_url": "https://claudeskills.in/skill/stride-analysis-patterns",
+  "provenance": {
+    "source": "claudeskills.in",
+    "source_url": "https://claudeskills.in/skill/stride-analysis-patterns",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Aggregated by claudeskills.in from community GitHub lists."
+  },
+  "tags": [
+    "claudeskills",
+    "other"
+  ],
+  "lifecycle": "draft"
+}

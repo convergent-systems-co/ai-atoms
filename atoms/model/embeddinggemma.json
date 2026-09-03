@@ -1,0 +1,48 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/embeddinggemma",
+  "version": "1.0.0",
+  "name": "embeddinggemma",
+  "description": "EmbeddingGemma is a 300M parameter embedding model from Google.",
+  "vendor": "Google",
+  "family": "Gemma",
+  "task": "embedding",
+  "capabilities": [
+    "embedding"
+  ],
+  "parameter_sizes": [
+    "300m"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "embeddinggemma",
+      "url": "https://ollama.com/library/embeddinggemma",
+      "pull_command": "ollama pull embeddinggemma",
+      "run_command": "ollama run embeddinggemma",
+      "tag_count": 5,
+      "pulls": "2M",
+      "updated_at": "2025-09-09"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/embeddinggemma"
+  },
+  "authored_by": "Google",
+  "source_url": "https://ollama.com/library/embeddinggemma",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/embeddinggemma",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "embedding"
+  ],
+  "lifecycle": "stable"
+}

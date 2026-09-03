@@ -1,0 +1,33 @@
+{
+  "schema": "https://ai-atoms.com/schemas/prompt-v1.json",
+  "type": "prompt",
+  "id": "prompt/findings-list",
+  "version": "1.0.0",
+  "name": "Findings List",
+  "description": "JSON array of code-review findings. Each finding has file, line, severity, finding, evidence. For machine consumption.",
+  "subtype": "output-schema",
+  "content": "Emit a JSON array. Each element is a finding object with these required fields: file (string, repository-relative path), line (integer or 'L<start>-L<end>' string for ranges), severity (enum: 'low' | 'medium' | 'high' | 'critical'), finding (string ≤ 240 chars stating what is wrong), evidence (string ≤ 240 chars, a code snippet from the actual file). Optional fields: suggestion (string ≤ 480 chars), category (enum from a fixed taxonomy: 'correctness' | 'security' | 'performance' | 'maintainability' | 'style'). The array may be empty; an empty array means 'no findings'.",
+  "applicable_turns": [
+    "system",
+    "assistant"
+  ],
+  "vendors": [
+    "any"
+  ],
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/output-schema/findings-list.json",
+  "tags": [
+    "output",
+    "code-review",
+    "json"
+  ],
+  "lifecycle": "draft",
+  "category": "governance",
+  "provenance": {
+    "source": "convergent-systems-co/prompt-atoms",
+    "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/output-schema/findings-list.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed by scripts/migrate-retired-atoms.py from the retired catalog."
+  }
+}

@@ -58,5 +58,6 @@
     "testing",
     "red-green-refactor"
   ],
-  "lifecycle": "stable"
+  "lifecycle": "stable",
+  "category": "testing"
 }

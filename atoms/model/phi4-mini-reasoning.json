@@ -1,0 +1,45 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/phi4-mini-reasoning",
+  "version": "1.0.0",
+  "name": "phi4-mini-reasoning",
+  "description": "Phi 4 mini reasoning is a lightweight open model that balances efficiency with advanced reasoning ability.",
+  "vendor": "Microsoft",
+  "family": "Phi-4",
+  "task": "reasoning",
+  "capabilities": [],
+  "parameter_sizes": [
+    "3.8b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "phi4-mini-reasoning",
+      "url": "https://ollama.com/library/phi4-mini-reasoning",
+      "pull_command": "ollama pull phi4-mini-reasoning",
+      "run_command": "ollama run phi4-mini-reasoning",
+      "tag_count": 5,
+      "pulls": "308.2K",
+      "updated_at": "2025-05-01"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/phi4-mini-reasoning"
+  },
+  "authored_by": "Microsoft",
+  "source_url": "https://ollama.com/library/phi4-mini-reasoning",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/phi4-mini-reasoning",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

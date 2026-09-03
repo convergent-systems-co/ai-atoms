@@ -1,111 +1,100 @@
 ---
-import catalog from "../../public/exports/catalog.json";
-const title = "ai-atoms";
-const tagline = "AI runtime primitives — hooks and skills for AI agents and agentic pipelines.";
-const skills = (catalog.atoms as Array<{type: string; id: string}>).filter(a => a.type === "skill");
-const hooks = (catalog.atoms as Array<{type: string; id: string}>).filter(a => a.type === "hook");
-const counts = {
-  atoms: catalog.atoms.length,
-  skills: skills.length,
-  hooks: hooks.length,
-};
+import Site from "../layouts/Site.astro";
+import Specimens from "../components/Specimens.astro";
+import { ATOMS, CLASSES, COUNTS, CATEGORY_INDEX, CATEGORY_LABEL, CLASS_META, BUILT_AT } from "../lib/catalog";
+
+const tagline = "The periodic table of AI runtime primitives. Skills, hooks, prompts, agents, personas, and models — typed, versioned, attributed, and addressable by id.";
+const built = BUILT_AT?.slice(0, 10);
+const sources = new Set(ATOMS.map((a) => a.provenance?.source).filter(Boolean)).size;
+const cats = Object.entries(CATEGORY_INDEX).map(([cat, byClass]) => ({ cat, byClass, total: Object.values(byClass).reduce((a, b) => a + b, 0) })).sort((a, b) => b.total - a.total);
 ---
+<Site title="ai-atoms" description={tagline} current="/">
+  <section style="padding:1.5rem 0 0.5rem;">
+    <p class="eyebrow">catalog · {ATOMS.length} atoms · {CLASSES.length} classes · {sources} sources · built {built}</p>
+    <h1 style="margin-top:0.6rem;max-width:22ch;">Every part an AI runtime needs, as one table of atoms.</h1>
+    <p class="lede" style="margin-top:0.9rem;">{tagline} Open any tile to browse a class, press <kbd>/</kbd> to search everything, or <a href="/start/">start here</a> if you are a person or an agent arriving for the first time.</p>
+  </section>
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content={tagline} />
-    <title>{title}</title>
-    <link rel="icon" type="image/svg+xml" href="https://brand-atoms.com/dist/brands/atom-family/1.0.0/assets/favicon.svg" />
-    <link rel="preconnect" href="https://brand-atoms.com" />
-    <link rel="stylesheet" href="https://brand-atoms.com/dist/brands/atom-family/1.0.0/css/tokens.css" />
-    <link rel="stylesheet" href="https://brand-atoms.com/dist/brands/atom-family/1.0.0/ui/atoms-catalog.css" />
-    <style>
-      body { min-height: 100vh; }
-      .hero-mark { width: 160px; height: 160px; margin-bottom: 20px; object-fit: contain; }
-      .sidenav-wordmark { width: 140px; object-fit: contain; display: block; }
-      .stat-bar { display: flex; gap: 2rem; margin: 1.5rem 0; flex-wrap: wrap; }
-      .stat { display: flex; flex-direction: column; }
-      .stat-value { font-size: 2rem; font-weight: 700; color: var(--accent, #4f46e5); line-height: 1; }
-      .stat-label { font-size: 0.875rem; color: var(--muted); margin-top: 0.25rem; }
-      .links-row { display: flex; gap: 1.5rem; flex-wrap: wrap; margin: 1rem 0; }
-    </style>
-  </head>
-  <body>
-    <div class="shell">
-      <main class="content">
-        <section class="hero">
-          <img src="https://brand-atoms.com/dist/brands/atom-family/1.0.0/assets/atom-family-icon.png" alt="atom-family" class="hero-mark" />
-          <h1>{title}</h1>
-          <p class="lede">{tagline}</p>
-        </section>
+  <section class="elements" style="margin-top:2rem;" aria-label="Atom classes">
+    {CLASSES.map((cls) => (
+      <a class={`element hue-${cls}`} href={`/atoms/${cls}/`}>
+        <span class="num tabular">{COUNTS[cls]}</span>
+        <span class="sym">{CLASS_META[cls].symbol}</span>
+        <span><span class="name">{CLASS_META[cls].plural}</span><br /><span class="desc">{CLASS_META[cls].blurb}</span></span>
+      </a>
+    ))}
+  </section>
 
-        <div class="stat-bar">
-          <div class="stat">
-            <span class="stat-value">{counts.atoms}</span>
-            <span class="stat-label">atoms</span>
-          </div>
-          <div class="stat">
-            <span class="stat-value">{counts.skills}</span>
-            <span class="stat-label">skills</span>
-          </div>
-          <div class="stat">
-            <span class="stat-value">{counts.hooks}</span>
-            <span class="stat-label">hooks</span>
-          </div>
-        </div>
-
-        <p style="font-size: 1.125rem; color: var(--muted); max-width: 40rem;">
-          Two classes of AI runtime primitive — skills (bounded, invocable units of AI capability
-          with declared system-prompt fragments) and hooks (event-driven behaviors wired into
-          AI tool infrastructure). Portable, typed, and catalog-addressable.
-        </p>
-
-        <h2>Atom types</h2>
-        <ul>
-          <li><strong>skill</strong> — {counts.skills} atoms — bounded AI behavior protocols with invocation contracts</li>
-          <li><strong>hook</strong> — {counts.hooks} atoms — event-driven runtime hooks for Claude Code, Copilot CLI, and agentic pipelines</li>
-        </ul>
-
-        <h2>Catalog at v{catalog.version}</h2>
-        <div class="links-row">
-          <a href="/ai/index.json">/ai/index.json</a>
-          <a href="/exports/catalog.json">/exports/catalog.json</a>
-          <a href="https://github.com/convergent-systems-co/ai-atoms">GitHub ↗</a>
-        </div>
-
-        <h2>Civilization-grade properties</h2>
-        <ul>
-          <li><strong>Typed</strong> — every atom validates against a JSON Schema (skill-v1.json or hook-v1.json).</li>
-          <li><strong>Versioned</strong> — every atom has a semver <code>version</code> field.</li>
-          <li><strong>Machine-readable</strong> — <a href="/exports/catalog.json">/exports/catalog.json</a> is the canonical manifest.</li>
-          <li><strong>Event-driven</strong> — hooks declare their trigger event, language, and blocking behavior.</li>
-          <li><strong>Open</strong> — Apache-2.0 code license, CC-BY-4.0 data license.</li>
-          <li><strong>Durable</strong> — no external dependencies in the hot path.</li>
-        </ul>
-
-        <footer>
-          Apache-2.0 &middot; CC-BY-4.0 data &middot; <a href="https://convergent-systems.co">convergent-systems.co</a>
-        </footer>
-      </main>
-      <nav class="sidenav">
-        <a class="brand" href="/">
-          <img src="https://brand-atoms.com/dist/brands/atom-family/1.0.0/assets/atom-family-wordmark.png" alt="ATOMS" class="sidenav-wordmark" />
-        </a>
-        <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/atoms/skill/">Skills</a></li>
-          <li><a href="/atoms/hook/">Hooks</a></li>
-          <li><a href="/ai/index.json">AI</a></li>
-          <li><a href="/builder/">Builder</a></li>
-          <li><a href="https://github.com/convergent-systems-co/ai-atoms">GitHub ↗</a></li>
-        </ul>
-        <div class="aside-meta">
-          <a class="meta-link" href="https://github.com/convergent-systems-co/ai-atoms">github ↗</a>
-        </div>
-      </nav>
+  <section class="section">
+    <div class="section-head">
+      <h2>Today's specimens</h2>
+      <p class="small muted">One per class, drawn each day from the stable, attributed part of the catalog. Come back tomorrow for five more.</p>
     </div>
-  </body>
-</html>
+    <Specimens classes={["skill", "hook", "persona", "prompt", "model"]} />
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <h2>Two ways in</h2>
+      <p class="small muted">The catalog is written for people and for the agents they run. <a href="/start/">Start here</a> has the full version of both.</p>
+    </div>
+    <div class="paths">
+      <div class="path">
+        <p class="eyebrow">For humans</p>
+        <h2>Inspect, copy, install</h2>
+        <ol>
+          <li><b>Inspect.</b> Every atom page renders the full text, shows who made it, where it came from, and its license.</li>
+          <li><b>Copy.</b> A skill page hands you a ready <code>SKILL.md</code> for <code>.claude/skills/</code>; hooks copy as their script; personas as a rendered identity.</li>
+          <li><b>Install by id</b> with the <code>ai</code> CLI, or pull a model with Ollama.
+            <div class="cmd"><code>ai skills install commit</code><button type="button" data-copy="ai skills install commit">copy</button></div>
+          </li>
+        </ol>
+      </div>
+      <div class="path">
+        <p class="eyebrow">For AI agents</p>
+        <h2>Discover, query, resolve</h2>
+        <ol>
+          <li><b>Discover</b> classes, categories, and every id from one JSON document.
+            <div class="cmd"><code>GET /ai/index.json</code><button type="button" data-copy="https://ai-atoms.com/ai/index.json">copy</button></div>
+          </li>
+          <li><b>Query</b> a category for ids grouped by class, or take the whole catalog inline.
+            <div class="cmd"><code>GET /categories/security.json</code><button type="button" data-copy="https://ai-atoms.com/categories/security.json">copy</button></div>
+          </li>
+          <li><b>Resolve</b> one atom by id and use the class's operative field. The contract is in <a href="/ai/instructions.md">/ai/instructions.md</a> and <a href="/llms.txt">/llms.txt</a>.
+            <div class="cmd"><code>GET /atoms/skill/commit.json</code><button type="button" data-copy="https://ai-atoms.com/atoms/skill/commit.json">copy</button></div>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <h2>Browse by category</h2>
+      <p class="small muted">One vocabulary across all six classes. The bar shows which classes a category holds.</p>
+    </div>
+    <div class="cats">
+      {cats.map(({ cat, byClass, total }) => (
+        <a class="cat" href={`/categories/${cat}/`}>
+          <b>{CATEGORY_LABEL[cat] ?? cat}</b>
+          <span class="bars">{CLASSES.filter((c) => byClass[c]).map((c) => <i class={`hue-${c}`} style={`flex:${byClass[c]}`} title={`${byClass[c]} ${c}s`}></i>)}</span>
+          <span class="n tabular">{total} atoms · {Object.keys(byClass).length} {Object.keys(byClass).length === 1 ? "class" : "classes"}</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><h2>What makes it a catalog</h2></div>
+    <div class="paths">
+      <div class="path"><b>Typed.</b><p class="small muted">Every atom validates against <code>schemas/&lt;class&gt;-v1.json</code>; category and provenance are defined once in <code>common-v1.json</code>.</p></div>
+      <div class="path"><b>Resolvable.</b><p class="small muted">An agent's persona, prompts, skills, tools, policies, and hooks are ids that the build checks. A dangling reference fails the build.</p></div>
+      <div class="path"><b>Attributed.</b><p class="small muted">Imported atoms say where they came from and under what license. <code>unknown</code> is shown as such, never hidden.</p></div>
+      <div class="path"><b>Open.</b><p class="small muted">Apache-2.0 code, CC-BY-4.0 catalog data, and a <a href="/builder/">builder</a> that turns a form into a valid atom ready for a pull request.</p></div>
+    </div>
+  </section>
+  <script>
+    document.querySelectorAll<HTMLButtonElement>("button[data-copy]").forEach((b) =>
+      b.addEventListener("click", async () => { try { await navigator.clipboard.writeText(b.dataset.copy!); b.textContent = "copied"; setTimeout(() => (b.textContent = "copy"), 1400); } catch { b.textContent = "blocked"; } }));
+  </script>
+</Site>

@@ -1,0 +1,42 @@
+{
+  "schema": "https://ai-atoms.com/schemas/agent-v1.json",
+  "type": "agent",
+  "id": "agent/code-reviewer",
+  "version": "1.0.0",
+  "name": "Code Reviewer",
+  "description": "Read-only adversarial code-review agent. Reads diffs, grep'd context, files findings. Cannot exec, cannot reach network.",
+  "subtype": "actor",
+  "persona": "persona/code-reviewer",
+  "tools": [
+    "tool/git-diff",
+    "tool/read-file",
+    "tool/list-dir",
+    "tool/grep"
+  ],
+  "policies": [
+    "policy/read-only-workspace",
+    "policy/no-code-execution",
+    "policy/no-network-egress",
+    "policy/read-only-sandbox"
+  ],
+  "execution": {
+    "planner": "react",
+    "memory": "scratchpad",
+    "supervisor": "none"
+  },
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/agents/code-reviewer.json",
+  "tags": [
+    "engineering",
+    "code-review"
+  ],
+  "lifecycle": "draft",
+  "category": "governance",
+  "provenance": {
+    "source": "convergent-systems-co/agent-atoms",
+    "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/agents/code-reviewer.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed by scripts/migrate-retired-atoms.py from the retired catalog."
+  }
+}

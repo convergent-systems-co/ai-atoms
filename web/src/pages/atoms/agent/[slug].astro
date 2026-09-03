@@ -1,0 +1,46 @@
+---
+import Site from "../../../layouts/Site.astro";
+import ActionRail from "../../../components/ActionRail.astro";
+import Provenance from "../../../components/Provenance.astro";
+import CategoryChip from "../../../components/CategoryChip.astro";
+import { ATOMS, BY_ID, hrefOf, slugOf } from "../../../lib/catalog";
+
+export function getStaticPaths() {
+  return ATOMS.filter((a: any) => a.type === "agent").map((a: any) => ({ params: { slug: slugOf(a.id) }, props: { agent: a } }));
+}
+const { agent } = Astro.props;
+const persona = BY_ID.get(agent.persona);
+const LINKED = new Set(["persona", "prompt", "skill", "hook", "agent", "model"]);
+const bindings: Array<[string, string[]]> = ([["Prompts", agent.prompts ?? []], ["Skills", agent.skills ?? []], ["Tools", agent.tools ?? []], ["Policies", agent.policies ?? []], ["Hooks", agent.hooks ?? []]] as Array<[string, string[]]>).filter(([, ids]) => ids.length);
+---
+<Site title={agent.name} description={agent.description} current="/atoms/agent/">
+  <div class="detail hue-agent">
+    <article>
+      <a class="small muted" href="/atoms/agent/">← Agents</a>
+      <div class="detail-hero" style="margin-top:0.8rem;">
+        <div class="chips"><span class="chip cls">Ag agent</span><span class="chip sub">{agent.subtype}</span><CategoryChip category={agent.category} />{agent.lifecycle && <span class={`lifecycle ${agent.lifecycle}`}>{agent.lifecycle}</span>}</div>
+        <h1>{agent.name}</h1>
+        <p class="lede">{agent.description}</p>
+        <div class="idline"><span>id <b>{agent.id}</b></span><span>v<b>{agent.version}</b></span>{agent.authored_by && <span>by <b>{agent.authored_by}</b></span>}</div>
+      </div>
+
+      <h2 class="h-section">Persona</h2>
+      <dl class="kv-table">
+        <dt>Embodies</dt><dd><a class="ref" href={hrefOf(agent.persona)}>{agent.persona}</a>{persona && <> — {persona.name}. <span class="muted">{persona.role?.job_to_be_done}</span></>}</dd>
+        {agent.execution?.planner && <><dt>Planner</dt><dd><code>{agent.execution.planner}</code></dd></>}
+        {agent.execution?.memory && <><dt>Memory</dt><dd><code>{agent.execution.memory}</code></dd></>}
+        {agent.execution?.supervisor && <><dt>Supervisor</dt><dd><code>{agent.execution.supervisor}</code></dd></>}
+      </dl>
+
+      {bindings.length > 0 ? <>
+        <h2 class="h-section">Bindings</h2>
+        <dl class="kv-table">{bindings.map(([label, ids]) => <><dt>{label}</dt><dd><ul class="list" style="padding-left:1rem;">{ids.map((id: string) => { const t = BY_ID.get(id); return <li>{LINKED.has(id.split("/")[0]) ? <a class="ref" href={hrefOf(id)}>{id}</a> : <code>{id}</code>}{t && <span class="muted"> — {t.name}</span>}</li>; })}</ul></dd></>)}</dl>
+      </> : <p class="empty">This agent binds nothing but its persona and execution preferences.</p>}
+
+      {agent.review_criteria?.length > 0 && <><h2 class="h-section">Review criteria</h2><ol class="list">{agent.review_criteria.map((c: string) => <li>{c}</li>)}</ol></>}
+      {agent.tags?.length > 0 && <div class="chips" style="margin-top:1.2rem;">{agent.tags.map((t: string) => <span class="tag">{t}</span>)}</div>}
+      <Provenance atom={agent} />
+    </article>
+    <ActionRail atom={agent} />
+  </div>
+</Site>

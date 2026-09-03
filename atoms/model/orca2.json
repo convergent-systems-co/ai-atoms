@@ -1,0 +1,46 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/orca2",
+  "version": "1.0.0",
+  "name": "orca2",
+  "description": "Orca 2 is built by Microsoft research, and are a fine-tuned version of Meta's Llama 2 models. The model is designed to excel particularly in reasoning.",
+  "vendor": "Microsoft",
+  "family": "Orca",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "7b",
+    "13b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "orca2",
+      "url": "https://ollama.com/library/orca2",
+      "pull_command": "ollama pull orca2",
+      "run_command": "ollama run orca2",
+      "tag_count": 33,
+      "pulls": "933.7K",
+      "updated_at": "2023-11-22"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/orca2"
+  },
+  "authored_by": "Microsoft",
+  "source_url": "https://ollama.com/library/orca2",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/orca2",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

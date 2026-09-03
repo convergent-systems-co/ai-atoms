@@ -1,0 +1,31 @@
+{
+  "schema": "https://ai-atoms.com/schemas/prompt-v1.json",
+  "type": "prompt",
+  "id": "prompt/terse-bullets",
+  "version": "1.0.0",
+  "name": "Terse bullets",
+  "description": "Bullet-point output with no preamble, no closing summary. One bullet per claim. Tight phrasing.",
+  "subtype": "format",
+  "content": "Respond as a terse bullet list. No opening preamble. No closing summary. One claim per bullet. Use parallel sentence structure. Cut adverbs and hedges.",
+  "applicable_turns": [
+    "system"
+  ],
+  "vendors": [
+    "any"
+  ],
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/format-instruction/terse-bullets.json",
+  "tags": [
+    "format",
+    "concise"
+  ],
+  "lifecycle": "draft",
+  "category": "governance",
+  "provenance": {
+    "source": "convergent-systems-co/prompt-atoms",
+    "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/format-instruction/terse-bullets.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed by scripts/migrate-retired-atoms.py from the retired catalog."
+  }
+}

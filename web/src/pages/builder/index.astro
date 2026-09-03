@@ -1,5 +1,8 @@
 ---
+import Site from "../../layouts/Site.astro";
 import catalog from "../../../public/exports/catalog.json";
+import { CATEGORY_LABEL } from "../../lib/catalog";
+const CATEGORIES = Object.keys(CATEGORY_LABEL);
 
 // Derive the distinct atom classes from the live catalog
 const allTypes: string[] = [];
@@ -11,33 +14,32 @@ allTypes.sort();
 const classDescriptions: Record<string, string> = {
   skill: "A bounded, invocable unit of AI capability — bundles a system prompt fragment, invocation commands, and an input/output contract.",
   hook:  "An event-driven runtime behavior wired into Claude Code or another AI tool — responds to events like PreToolUse, Stop, or SessionStart.",
+  prompt: "Text a runtime injects into the context window — typed by what kind of text it is (persona, constraint, format, output-schema, refusal, tool-use, composite).",
+  agent: "A bindable identity — one persona bound to the prompts, skills, tools, policies, and hooks it runs with, plus execution preferences.",
+  persona: "A portable AI identity — role, voice, tone, work contract, behavioural constraints, and knowledge boundaries. Binds no tools or skills.",
+  model: "Reference data about one AI model — vendor, task, capabilities, sizes, and the providers a runtime can get it from.",
 };
 
 const classSchemas: Record<string, string> = {
   skill: "https://ai-atoms.com/schemas/skill-v1.json",
   hook:  "https://ai-atoms.com/schemas/hook-v1.json",
+  prompt: "https://ai-atoms.com/schemas/prompt-v1.json",
+  agent: "https://ai-atoms.com/schemas/agent-v1.json",
+  persona: "https://ai-atoms.com/schemas/persona-v1.json",
+  model: "https://ai-atoms.com/schemas/model-v1.json",
 };
----
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content={`Build atoms for ai-atoms.com — select a class (${allTypes.join(', ')}) and fill out the form to generate valid JSON.`} />
-    <title>Builder · ai-atoms</title>
-    <link rel="icon" type="image/svg+xml" href="https://brand-atoms.com/dist/brands/atom-family/1.0.0/assets/favicon.svg" />
-    <link rel="preconnect" href="https://brand-atoms.com" />
-    <link rel="stylesheet" href="https://brand-atoms.com/dist/brands/atom-family/1.0.0/css/tokens.css" />
-    <link rel="stylesheet" href="https://brand-atoms.com/dist/brands/atom-family/1.0.0/ui/atoms-catalog.css" />
-    <style>
-      body { min-height: 100vh; }
-      .sidenav-wordmark { width: 140px; object-fit: contain; display: block; }
 
+// Agents must bind an existing persona; offer the catalog's personas in a select.
+const personaIds: string[] = (catalog.atoms as any[]).filter(a => a.type === "persona").map(a => a.id).sort();
+---
+<Site title="Builder" description={`Build a valid atom for any class (${allTypes.join(", ")}) from a form and open a pull request.`} current="/builder/">
+  <style>
+      
       .class-bar {
         display: flex;
         gap: 0;
         margin-bottom: 0;
-        border-bottom: 2px solid #e2e8f0;
+        border-bottom: 2px solid var(--line);
         flex-wrap: wrap;
       }
       .class-btn {
@@ -47,7 +49,7 @@ const classSchemas: Record<string, string> = {
         border: none;
         background: none;
         cursor: pointer;
-        color: #64748b;
+        color: var(--ink-3);
         border-bottom: 3px solid transparent;
         margin-bottom: -2px;
         transition: color 0.15s, border-color 0.15s;
@@ -56,17 +58,17 @@ const classSchemas: Record<string, string> = {
         align-items: flex-start;
         gap: 0.1rem;
       }
-      .class-btn .class-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: #94a3b8; font-weight: 500; }
+      .class-btn .class-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-3); font-weight: 500; }
       .class-btn .class-name { font-size: 0.95rem; }
-      .class-btn.active { color: #4f46e5; border-bottom-color: #4f46e5; }
-      .class-btn.active .class-label { color: #a5b4fc; }
-      .class-btn:hover:not(.active) { color: #1e293b; }
+      .class-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+      .class-btn.active .class-label { color: var(--accent); }
+      .class-btn:hover:not(.active) { color: var(--ink); }
 
       .class-desc {
         font-size: 0.85rem;
-        color: #64748b;
+        color: var(--ink-3);
         padding: 0.75rem 0;
-        border-bottom: 1px solid #f1f5f9;
+        border-bottom: 1px solid var(--sunken);
         margin-bottom: 1rem;
         line-height: 1.5;
       }
@@ -85,51 +87,51 @@ const classSchemas: Record<string, string> = {
       .field-label {
         font-size: 0.72rem;
         font-weight: 700;
-        color: #334155;
+        color: var(--ink-2);
         text-transform: uppercase;
         letter-spacing: 0.06em;
         display: flex;
         align-items: center;
         gap: 0.375rem;
       }
-      .req { color: #dc2626; font-size: 0.8rem; }
-      .opt { color: #94a3b8; font-weight: 400; font-size: 0.7rem; text-transform: none; letter-spacing: 0; }
+      .req { color: var(--danger); font-size: 0.8rem; }
+      .opt { color: var(--ink-3); font-weight: 400; font-size: 0.7rem; text-transform: none; letter-spacing: 0; }
       input[type="text"], textarea, select {
         width: 100%;
         padding: 0.5rem 0.625rem;
-        border: 1px solid #cbd5e1;
+        border: 1px solid var(--line-strong);
         border-radius: 0.375rem;
         font-size: 0.875rem;
         font-family: inherit;
-        color: #1e293b;
-        background: #fff;
+        color: var(--ink);
+        background: var(--surface);
         box-sizing: border-box;
         transition: border-color 0.15s, box-shadow 0.15s;
       }
       input:focus, textarea:focus, select:focus {
         outline: none;
-        border-color: #4f46e5;
-        box-shadow: 0 0 0 3px rgba(79,70,229,0.1);
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px var(--accent-soft);
       }
       textarea { resize: vertical; min-height: 4.5rem; }
-      .field-hint { font-size: 0.72rem; color: #94a3b8; line-height: 1.45; }
+      .field-hint { font-size: 0.72rem; color: var(--ink-3); line-height: 1.45; }
 
       .inv-list { display: flex; flex-direction: column; gap: 0.3rem; }
       .inv-row { display: flex; gap: 0.3rem; }
       .inv-row input { flex: 1; }
-      .icon-btn {
+      .bicon {
         flex-shrink: 0;
         padding: 0.45rem 0.7rem;
-        border: 1px solid #cbd5e1;
+        border: 1px solid var(--line-strong);
         border-radius: 0.375rem;
-        background: #f8fafc;
-        color: #475569;
+        background: var(--sunken);
+        color: var(--ink-2);
         cursor: pointer;
         font-size: 0.85rem;
         line-height: 1;
         font-weight: 600;
       }
-      .icon-btn:hover { background: #e2e8f0; color: #1e293b; }
+      .bicon:hover { background: var(--line); color: var(--ink); }
 
       .check-row { display: flex; gap: 0.75rem; flex-wrap: wrap; padding-top: 0.25rem; }
       .check-label {
@@ -137,7 +139,7 @@ const classSchemas: Record<string, string> = {
         align-items: center;
         gap: 0.35rem;
         font-size: 0.875rem;
-        color: #334155;
+        color: var(--ink-2);
         font-weight: 400;
         cursor: pointer;
       }
@@ -156,24 +158,24 @@ const classSchemas: Record<string, string> = {
         justify-content: space-between;
         align-items: center;
       }
-      .preview-title { margin: 0; font-size: 0.85rem; font-weight: 600; color: #334155; }
+      .preview-title { margin: 0; font-size: 0.85rem; font-weight: 600; color: var(--ink-2); }
       .preview-actions { display: flex; gap: 0.5rem; align-items: center; }
-      .btn {
+      .bbtn {
         padding: 0.375rem 0.9rem;
         font-size: 0.8rem;
         font-weight: 600;
         border-radius: 0.375rem;
         cursor: pointer;
         transition: background 0.15s;
-        border: 1px solid #4f46e5;
+        border: 1px solid var(--accent);
       }
-      .btn-primary { background: #4f46e5; color: #fff; }
-      .btn-primary:hover { background: #4338ca; }
-      .btn-ghost { background: #fff; color: #4f46e5; }
-      .btn-ghost:hover { background: #eef2ff; }
+      .bbtn-primary { background: var(--accent); color: var(--accent-ink); }
+      .bbtn-primary:hover { background: var(--accent-hover); }
+      .bbtn-ghost { background: var(--surface); color: var(--accent); }
+      .bbtn-ghost:hover { background: var(--accent-soft); }
       pre#json-out {
-        background: #0f172a;
-        color: #e2e8f0;
+        background: var(--terminal);
+        color: var(--line);
         padding: 1.125rem;
         border-radius: 0.5rem;
         font-size: 0.75rem;
@@ -190,11 +192,11 @@ const classSchemas: Record<string, string> = {
         border-radius: 0.375rem;
         display: none;
       }
-      .val-badge.ok { background: #f0fdf4; color: #16a34a; display: block; }
-      .val-badge.err { background: #fef2f2; color: #dc2626; display: block; }
+      .val-badge.ok { background: var(--ok-soft); color: var(--ok); display: block; }
+      .val-badge.err { background: var(--danger-soft); color: var(--danger); display: block; }
       .copy-flash {
         font-size: 0.72rem;
-        color: #16a34a;
+        color: var(--ok);
         font-weight: 700;
         opacity: 0;
         transition: opacity 0.25s;
@@ -203,18 +205,15 @@ const classSchemas: Record<string, string> = {
 
       .schema-ref {
         font-size: 0.72rem;
-        color: #94a3b8;
+        color: var(--ink-3);
         margin-top: 0.25rem;
       }
-      .schema-ref a { color: #818cf8; }
-    </style>
-  </head>
-  <body>
-    <div class="shell">
-      <main class="content">
+      .schema-ref a { color: var(--accent); }
+  </style>
+  <div>
         <p style="margin-bottom: 0.5rem;"><a href="/">← ai-atoms</a></p>
         <h1>Builder</h1>
-        <p style="color: #64748b; max-width: 44rem; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.5rem;">
+        <p style="color: var(--ink-3); max-width: 44rem; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.5rem;">
           Select a class, fill out the form, and download valid JSON ready to PR into
           <a href="https://github.com/convergent-systems-co/ai-atoms">ai-atoms</a>.
           New classes appear here automatically as the catalog grows.
@@ -272,7 +271,7 @@ const classSchemas: Record<string, string> = {
                 <div class="inv-list" id="s-inv">
                   <div class="inv-row">
                     <input type="text" placeholder="/my-skill" oninput="rebuildSkill()" />
-                    <button class="icon-btn" id="s-add-inv">+ Add</button>
+                    <button class="bicon" id="s-add-inv">+ Add</button>
                   </div>
                 </div>
                 <span class="field-hint">First entry is the primary command. Additional entries are subcommands shown indented below it.</span>
@@ -280,6 +279,13 @@ const classSchemas: Record<string, string> = {
               <div class="field-group">
                 <div class="field-label">Tags <span class="opt">comma-separated</span></div>
                 <input type="text" id="s-tags" placeholder="code, review, quality" oninput="rebuildSkill()" />
+              </div>
+              <div class="field-group">
+                <div class="field-label">Category <span class="opt">shared vocabulary across every class</span></div>
+                <select id="s-category" onchange="rebuildSkill()">
+                  <option value="">choose a category…</option>
+                  {CATEGORIES.map((c) => <option value={c}>{c} — {CATEGORY_LABEL[c]}</option>)}
+                </select>
               </div>
               <div class="field-group">
                 <div class="field-label">Lifecycle</div>
@@ -365,6 +371,13 @@ const classSchemas: Record<string, string> = {
                 <input type="text" id="h-tags" placeholder="governance, git, claude-code" oninput="rebuildHook()" />
               </div>
               <div class="field-group">
+                <div class="field-label">Category <span class="opt">shared vocabulary across every class</span></div>
+                <select id="h-category" onchange="rebuildHook()">
+                  <option value="">choose a category…</option>
+                  {CATEGORIES.map((c) => <option value={c}>{c} — {CATEGORY_LABEL[c]}</option>)}
+                </select>
+              </div>
+              <div class="field-group">
                 <div class="field-label">Lifecycle</div>
                 <select id="h-lifecycle" onchange="rebuildHook()">
                   <option value="stable">stable</option>
@@ -377,45 +390,314 @@ const classSchemas: Record<string, string> = {
           </div>
 
           <!-- Preview column -->
+            <!-- ── Prompt form ── -->
+            <div class="form-panel" id="form-prompt">
+              <div class="field-group">
+                <div class="field-label">Slug <span class="req">*</span> <span class="opt">kebab-case</span></div>
+                <input type="text" id="p-slug" placeholder="no-fabrication" oninput="rebuildPrompt()" />
+              </div>
+              <div class="field-group">
+                <div class="field-label">Name <span class="req">*</span></div>
+                <input type="text" id="p-name" placeholder="No fabrication" oninput="rebuildPrompt()" />
+              </div>
+              <div class="field-group">
+                <div class="field-label">Description <span class="req">*</span> <span class="opt">what it does and when to inject it</span></div>
+                <textarea id="p-desc" rows="2" oninput="rebuildPrompt()"></textarea>
+              </div>
+              <div class="field-group">
+                <div class="field-label">Subtype <span class="req">*</span></div>
+                <select id="p-subtype" onchange="rebuildPrompt()">
+                  <option value="constraint">constraint — a rule the model must follow</option>
+                  <option value="persona">persona — identity voice for a system turn</option>
+                  <option value="format">format — how output is shaped</option>
+                  <option value="output-schema">output-schema — machine-readable output contract</option>
+                  <option value="refusal">refusal — what to decline and how</option>
+                  <option value="tool-use">tool-use — discipline around tool calls</option>
+                  <option value="composite">composite — bundle of other prompts</option>
+                </select>
+              </div>
+              <div class="field-group">
+                <div class="field-label">Content <span class="req">*</span> <span class="opt">the injected text, verbatim</span></div>
+                <textarea id="p-content" rows="5" oninput="rebuildPrompt()"></textarea>
+              </div>
+              <div class="field-group" id="p-includes-row" style="display:none">
+                <div class="field-label">Includes <span class="req">*</span> <span class="opt">comma-separated prompt ids, in order</span></div>
+                <input type="text" id="p-includes" placeholder="prompt/no-fabrication, prompt/json-strict" oninput="rebuildPrompt()" />
+              </div>
+              <div class="field-group">
+                <div class="field-label">Applicable turns</div>
+                <div class="check-row">
+                  <label class="check-label"><input type="checkbox" id="p-turn-system" onchange="rebuildPrompt()" checked /> system</label>
+                  <label class="check-label"><input type="checkbox" id="p-turn-user" onchange="rebuildPrompt()" /> user</label>
+                  <label class="check-label"><input type="checkbox" id="p-turn-assistant" onchange="rebuildPrompt()" /> assistant</label>
+                  <label class="check-label"><input type="checkbox" id="p-turn-tool" onchange="rebuildPrompt()" /> tool</label>
+                </div>
+              </div>
+              <div class="field-group">
+                <div class="field-label">Vendors <span class="opt">comma-separated; "any" for vendor-neutral</span></div>
+                <input type="text" id="p-vendors" placeholder="any" oninput="rebuildPrompt()" />
+              </div>
+              <div class="field-group">
+                <div class="field-label">Tags <span class="opt">comma-separated</span></div>
+                <input type="text" id="p-tags" oninput="rebuildPrompt()" />
+              </div>
+              <div class="field-group">
+                <div class="field-label">Category <span class="opt">shared vocabulary across every class</span></div>
+                <select id="p-category" onchange="rebuildPrompt()">
+                  <option value="">choose a category…</option>
+                  {CATEGORIES.map((c) => <option value={c}>{c} — {CATEGORY_LABEL[c]}</option>)}
+                </select>
+              </div>
+              <div class="field-group">
+                <div class="field-label">Lifecycle</div>
+                <select id="p-lifecycle" onchange="rebuildPrompt()">
+                  <option value="draft">draft</option>
+                  <option value="stable">stable</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- ── Persona form ── -->
+            <div class="form-panel" id="form-persona">
+              <div class="field-group">
+                <div class="field-label">Slug <span class="req">*</span> <span class="opt">kebab-case</span></div>
+                <input type="text" id="pe-slug" placeholder="staff-engineer" oninput="rebuildPersona()" />
+              </div>
+              <div class="field-group">
+                <div class="field-label">Name <span class="req">*</span></div>
+                <input type="text" id="pe-name" oninput="rebuildPersona()" />
+              </div>
+              <div class="field-group">
+                <div class="field-label">Description <span class="req">*</span> <span class="opt">who this is and when to activate it</span></div>
+                <textarea id="pe-desc" rows="2" oninput="rebuildPersona()"></textarea>
+              </div>
+              <div class="field-group">
+                <div class="field-label">Job to be done <span class="req">*</span> <span class="opt">the outcome this persona owns</span></div>
+                <textarea id="pe-jtbd" rows="2" oninput="rebuildPersona()"></textarea>
+              </div>
+              <div class="field-group">
+                <div class="field-label">Primary tasks <span class="opt">one per line</span></div>
+                <textarea id="pe-tasks" rows="3" oninput="rebuildPersona()"></textarea>
+              </div>
+              <div class="field-group">
+                <div class="field-label">Out of scope <span class="opt">one per line</span></div>
+                <textarea id="pe-oos" rows="2" oninput="rebuildPersona()"></textarea>
+              </div>
+              <div class="field-group">
+                <div class="field-label">Domain <span class="opt">slug, e.g. software-engineering</span></div>
+                <input type="text" id="pe-domain" oninput="rebuildPersona()" />
+              </div>
+              <div class="field-group">
+                <div class="field-label">Voice and tone</div>
+                <div class="check-row">
+                  <select id="pe-formality" onchange="rebuildPersona()">
+                    <option value="">formality…</option>
+                    <option>casual</option><option>conversational</option><option>professional</option><option>formal</option><option>academic</option>
+                  </select>
+                  <select id="pe-hedging" onchange="rebuildPersona()">
+                    <option value="">hedging…</option>
+                    <option>low</option><option>medium</option><option>high</option>
+                  </select>
+                  <select id="pe-sentences" onchange="rebuildPersona()">
+                    <option value="">sentences…</option>
+                    <option>short</option><option>medium</option><option>long</option>
+                  </select>
+                  <select id="pe-warmth" onchange="rebuildPersona()">
+                    <option value="">warmth…</option>
+                    <option>cold</option><option>neutral</option><option>warm</option><option>empathetic</option>
+                  </select>
+                  <select id="pe-directness" onchange="rebuildPersona()">
+                    <option value="">directness…</option>
+                    <option>direct</option><option>balanced</option><option>gentle</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field-group">
+                <div class="field-label">Constraints <span class="opt">one per line, as the model should read them</span></div>
+                <textarea id="pe-constraints" rows="3" placeholder="Never invent citations. If you do not know, say so." oninput="rebuildPersona()"></textarea>
+              </div>
+              <div class="field-group">
+                <div class="field-label">Tags <span class="opt">comma-separated</span></div>
+                <input type="text" id="pe-tags" oninput="rebuildPersona()" />
+              </div>
+              <div class="field-group">
+                <div class="field-label">Category <span class="opt">shared vocabulary across every class</span></div>
+                <select id="pe-category" onchange="rebuildPersona()">
+                  <option value="">choose a category…</option>
+                  {CATEGORIES.map((c) => <option value={c}>{c} — {CATEGORY_LABEL[c]}</option>)}
+                </select>
+              </div>
+              <div class="field-group">
+                <div class="field-label">Lifecycle</div>
+                <select id="pe-lifecycle" onchange="rebuildPersona()">
+                  <option value="draft">draft</option>
+                  <option value="stable">stable</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- ── Agent form ── -->
+            <div class="form-panel" id="form-agent">
+              <div class="field-group">
+                <div class="field-label">Slug <span class="req">*</span> <span class="opt">kebab-case</span></div>
+                <input type="text" id="a-slug" placeholder="tech-lead" oninput="rebuildAgent()" />
+              </div>
+              <div class="field-group">
+                <div class="field-label">Name <span class="req">*</span></div>
+                <input type="text" id="a-name" oninput="rebuildAgent()" />
+              </div>
+              <div class="field-group">
+                <div class="field-label">Description <span class="req">*</span> <span class="opt">what it does, what it may touch, what it must not</span></div>
+                <textarea id="a-desc" rows="2" oninput="rebuildAgent()"></textarea>
+              </div>
+              <div class="field-group">
+                <div class="field-label">Subtype <span class="req">*</span></div>
+                <select id="a-subtype" onchange="rebuildAgent()">
+                  <option value="actor">actor — produces work products</option>
+                  <option value="reviewer">reviewer — judges work against review criteria</option>
+                </select>
+              </div>
+              <div class="field-group">
+                <div class="field-label">Persona <span class="req">*</span></div>
+                <select id="a-persona" onchange="rebuildAgent()">
+                  <option value="">choose a persona…</option>
+                  {personaIds.map((id) => <option value={id}>{id}</option>)}
+                </select>
+              </div>
+              <div class="field-group" id="a-criteria-row" style="display:none">
+                <div class="field-label">Review criteria <span class="req">*</span> <span class="opt">one per line</span></div>
+                <textarea id="a-criteria" rows="3" oninput="rebuildAgent()"></textarea>
+              </div>
+              <div class="field-group">
+                <div class="field-label">Bindings <span class="opt">comma-separated atom ids; every id must exist in the catalog</span></div>
+                <input type="text" id="a-prompts" placeholder="prompts: prompt/no-fabrication" oninput="rebuildAgent()" />
+                <input type="text" id="a-skills" placeholder="skills: skill/commit, skill/pr" oninput="rebuildAgent()" />
+                <input type="text" id="a-tools" placeholder="tools: tool/git-diff" oninput="rebuildAgent()" />
+                <input type="text" id="a-policies" placeholder="policies: policy/read-only-workspace" oninput="rebuildAgent()" />
+                <input type="text" id="a-hooks" placeholder="hooks: hook/branch-guard" oninput="rebuildAgent()" />
+              </div>
+              <div class="field-group">
+                <div class="field-label">Execution</div>
+                <div class="check-row">
+                  <select id="a-planner" onchange="rebuildAgent()">
+                    <option value="">planner…</option>
+                    <option>none</option><option>react</option><option>plan-and-execute</option><option>tree-of-thoughts</option>
+                  </select>
+                  <select id="a-memory" onchange="rebuildAgent()">
+                    <option value="">memory…</option>
+                    <option>none</option><option>scratchpad</option><option>short-term</option><option>long-term</option><option>vector</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field-group">
+                <div class="field-label">Tags <span class="opt">comma-separated</span></div>
+                <input type="text" id="a-tags" oninput="rebuildAgent()" />
+              </div>
+              <div class="field-group">
+                <div class="field-label">Category <span class="opt">shared vocabulary across every class</span></div>
+                <select id="a-category" onchange="rebuildAgent()">
+                  <option value="">choose a category…</option>
+                  {CATEGORIES.map((c) => <option value={c}>{c} — {CATEGORY_LABEL[c]}</option>)}
+                </select>
+              </div>
+              <div class="field-group">
+                <div class="field-label">Lifecycle</div>
+                <select id="a-lifecycle" onchange="rebuildAgent()">
+                  <option value="draft">draft</option>
+                  <option value="stable">stable</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- ── Model form ── -->
+            <div class="form-panel" id="form-model">
+              <div class="field-group">
+                <div class="field-label">Slug <span class="req">*</span> <span class="opt">model name as the provider spells it, e.g. llama3.2</span></div>
+                <input type="text" id="m-slug" placeholder="llama3.2" oninput="rebuildModel()" />
+              </div>
+              <div class="field-group">
+                <div class="field-label">Name <span class="req">*</span></div>
+                <input type="text" id="m-name" oninput="rebuildModel()" />
+              </div>
+              <div class="field-group">
+                <div class="field-label">Description <span class="req">*</span></div>
+                <textarea id="m-desc" rows="2" oninput="rebuildModel()"></textarea>
+              </div>
+              <div class="field-group">
+                <div class="field-label">Vendor <span class="req">*</span> <span class="opt">who trained it</span></div>
+                <input type="text" id="m-vendor" placeholder="Meta" oninput="rebuildModel()" />
+              </div>
+              <div class="field-group">
+                <div class="field-label">Family <span class="opt">e.g. Llama 3</span></div>
+                <input type="text" id="m-family" oninput="rebuildModel()" />
+              </div>
+              <div class="field-group">
+                <div class="field-label">Task <span class="req">*</span></div>
+                <select id="m-task" onchange="rebuildModel()">
+                  <option>text-generation</option><option>code-generation</option><option>reasoning</option><option>embedding</option>
+                  <option>vision</option><option>image-generation</option><option>speech-to-text</option><option>text-to-speech</option>
+                  <option>multimodal</option><option>translation</option><option>reranking</option><option>other</option>
+                </select>
+              </div>
+              <div class="field-group">
+                <div class="field-label">Capabilities <span class="opt">comma-separated: tools, vision, thinking, embedding</span></div>
+                <input type="text" id="m-caps" oninput="rebuildModel()" />
+              </div>
+              <div class="field-group">
+                <div class="field-label">Parameter sizes <span class="opt">comma-separated: 1b, 3b, 8x7b</span></div>
+                <input type="text" id="m-sizes" oninput="rebuildModel()" />
+              </div>
+              <div class="field-group">
+                <div class="field-label">Provider <span class="req">*</span></div>
+                <input type="text" id="m-prov-name" placeholder="Ollama" value="Ollama" oninput="rebuildModel()" />
+                <input type="text" id="m-prov-id" placeholder="model id at the provider, e.g. llama3.2" oninput="rebuildModel()" />
+                <input type="text" id="m-prov-url" placeholder="https://ollama.com/library/llama3.2" oninput="rebuildModel()" />
+                <input type="text" id="m-prov-pull" placeholder="ollama pull llama3.2" oninput="rebuildModel()" />
+              </div>
+              <div class="field-group">
+                <div class="field-label">Weights license <span class="opt">SPDX id or the vendor's name for it</span></div>
+                <input type="text" id="m-license" oninput="rebuildModel()" />
+              </div>
+              <div class="field-group">
+                <div class="field-label">Tags <span class="opt">comma-separated</span></div>
+                <input type="text" id="m-tags" oninput="rebuildModel()" />
+              </div>
+              <div class="field-group">
+                <div class="field-label">Category <span class="opt">shared vocabulary across every class</span></div>
+                <select id="m-category" onchange="rebuildModel()">
+                  <option value="ai">ai — AI &amp; Models</option>
+                  {CATEGORIES.filter((c) => c !== "ai").map((c) => <option value={c}>{c} — {CATEGORY_LABEL[c]}</option>)}
+                </select>
+              </div>
+              <div class="field-group">
+                <div class="field-label">Lifecycle</div>
+                <select id="m-lifecycle" onchange="rebuildModel()">
+                  <option value="draft">draft</option>
+                  <option value="stable">stable</option>
+                </select>
+              </div>
+            </div>
+
           <div class="preview-panel">
             <div class="preview-header">
               <h3 class="preview-title">Generated JSON</h3>
               <div class="preview-actions">
                 <span class="copy-flash" id="copy-flash">Copied!</span>
-                <button class="btn btn-ghost" id="btn-copy">Copy</button>
-                <button class="btn btn-primary" id="btn-dl">Download</button>
+                <button class="bbtn" id="btn-copy">Copy</button>
+                <button class="bbtn bbtn-primary" id="btn-dl">Download</button>
               </div>
             </div>
             <div class="val-badge" id="val-badge"></div>
             <pre id="json-out">{}</pre>
-            <p style="font-size: 0.72rem; color: #94a3b8; margin: 0;">
+            <p style="font-size: 0.72rem; color: var(--ink-3); margin: 0;">
               Save as <code id="filename-hint">atom.json</code> in
               <code id="dir-hint">atoms/skill/</code> and open a PR →
-              <a href="https://github.com/convergent-systems-co/ai-atoms" style="color: #818cf8;">convergent-systems-co/ai-atoms</a>
+              <a href="https://github.com/convergent-systems-co/ai-atoms" style="color: var(--accent);">convergent-systems-co/ai-atoms</a>
             </p>
           </div>
         </div>
-      </main>
-
-      <nav class="sidenav">
-        <a class="brand" href="/">
-          <img src="https://brand-atoms.com/dist/brands/atom-family/1.0.0/assets/atom-family-wordmark.png" alt="ATOMS" class="sidenav-wordmark" />
-        </a>
-        <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/atoms/skill/">Skills</a></li>
-          <li><a href="/atoms/hook/">Hooks</a></li>
-          <li><a href="/ai/index.json">AI</a></li>
-          <li><a href="/builder/" aria-current="page">Builder</a></li>
-          <li><a href="https://github.com/convergent-systems-co/ai-atoms">GitHub ↗</a></li>
-        </ul>
-        <div class="aside-meta">
-          <a class="meta-link" href="https://github.com/convergent-systems-co/ai-atoms">github ↗</a>
-        </div>
-      </nav>
-    </div>
-
-    <script is:inline define:vars={{ allTypes, classDescriptions, classSchemas }}>
+  </div>
+  <script is:inline define:vars={{ allTypes, classDescriptions, classSchemas }}>
       // ── State ──
       let currentClass = allTypes[0] || 'skill';
       let currentAtom = {};
@@ -440,12 +722,16 @@ const classSchemas: Record<string, string> = {
             a.href = schema;
             a.target = '_blank';
             a.textContent = schema;
-            a.style.color = '#818cf8';
+            a.style.color = 'var(--accent)';
             schemaEl.appendChild(a);
           }
           document.getElementById('dir-hint').textContent = 'atoms/' + currentClass + '/';
           if (currentClass === 'skill') rebuildSkill();
           else if (currentClass === 'hook') rebuildHook();
+          else if (currentClass === 'prompt') rebuildPrompt();
+          else if (currentClass === 'persona') rebuildPersona();
+          else if (currentClass === 'agent') rebuildAgent();
+          else if (currentClass === 'model') rebuildModel();
           else rebuildGeneric(currentClass);
         });
       });
@@ -521,6 +807,7 @@ const classSchemas: Record<string, string> = {
         };
         if (domains.length) atom.applicable_domains = domains;
         if (invs.length) atom.invocation = invs;
+        if (val('s-category')) atom.category = val('s-category');
         if (tags.length) atom.tags = tags;
         atom.authored_by = 'convergent-systems-key';
         atom.lifecycle = val('s-lifecycle') || 'stable';
@@ -560,6 +847,7 @@ const classSchemas: Record<string, string> = {
         };
         if (fx.length) atom.side_effects = fx;
         if (plats.length < 3 && plats.length) atom.platforms = plats;
+        if (val('h-category')) atom.category = val('h-category');
         if (tags.length) atom.tags = tags;
         atom.authored_by = 'convergent-systems-key';
         atom.lifecycle = val('h-lifecycle') || 'stable';
@@ -569,6 +857,143 @@ const classSchemas: Record<string, string> = {
         renderJSON(atom);
       }
 
+      function lines(id) {
+        var el = document.getElementById(id);
+        if (!el) return [];
+        return el.value.split('\n').map(function(s) { return s.trim(); }).filter(Boolean);
+      }
+      function finish(atom, tags, lifecycleId, required) {
+        var cat = val(lifecycleId.replace('-lifecycle', '-category'));
+        if (cat) atom.category = cat;
+        if (tags.length) atom.tags = tags;
+        atom.authored_by = 'convergent-systems-key';
+        atom.lifecycle = val(lifecycleId) || 'draft';
+        showValidation(validate(atom, required));
+        renderJSON(atom);
+      }
+      // ── Prompt builder ──
+      function rebuildPrompt() {
+        var slug = slugify(val('p-slug'));
+        var subtype = val('p-subtype');
+        var composite = subtype === 'composite';
+        document.getElementById('p-includes-row').style.display = composite ? 'flex' : 'none';
+        var turns = ['system','user','assistant','tool'].filter(function(t) { return checked('p-turn-' + t); });
+        var atom = {
+          schema: 'https://ai-atoms.com/schemas/prompt-v1.json',
+          type: 'prompt',
+          id: slug ? 'prompt/' + slug : '',
+          version: '1.0.0',
+          name: val('p-name'),
+          description: val('p-desc'),
+          subtype: subtype,
+          content: val('p-content'),
+        };
+        if (turns.length) atom.applicable_turns = turns;
+        var vendors = csv('p-vendors');
+        if (vendors.length) atom.vendors = vendors;
+        if (composite) atom.includes = csv('p-includes');
+        var req = ['id','name','description','subtype','content'];
+        if (composite) req.push('includes');
+        finish(atom, csv('p-tags'), 'p-lifecycle', req);
+      }
+      // ── Persona builder ──
+      function rebuildPersona() {
+        var slug = slugify(val('pe-slug'));
+        var role = { job_to_be_done: val('pe-jtbd') };
+        var tasks = lines('pe-tasks'); if (tasks.length) role.primary_tasks = tasks;
+        var oos = lines('pe-oos'); if (oos.length) role.out_of_scope = oos;
+        if (val('pe-domain')) role.domain = val('pe-domain');
+        var atom = {
+          schema: 'https://ai-atoms.com/schemas/persona-v1.json',
+          type: 'persona',
+          id: slug ? 'persona/' + slug : '',
+          version: '1.0.0',
+          name: val('pe-name'),
+          description: val('pe-desc'),
+          role: role,
+        };
+        var voice = {};
+        if (val('pe-formality')) voice.formality = val('pe-formality');
+        if (val('pe-hedging')) voice.hedging_tolerance = val('pe-hedging');
+        if (val('pe-sentences')) voice.sentence_length = val('pe-sentences');
+        if (Object.keys(voice).length) atom.voice = voice;
+        var tone = {};
+        if (val('pe-warmth')) tone.warmth = val('pe-warmth');
+        if (val('pe-directness')) tone.directness = val('pe-directness');
+        if (Object.keys(tone).length) atom.tone = tone;
+        var constraints = lines('pe-constraints').map(function(text, i) {
+          return { name: 'constraint-' + (i + 1), text: text, effect: 'require' };
+        });
+        if (constraints.length) atom.constraints = constraints;
+        atom.vendors = ['any'];
+        var missing = validate(atom, ['id','name','description']);
+        if (!role.job_to_be_done) missing.push('role.job_to_be_done');
+        if (atom.tags = csv('pe-tags'), !atom.tags.length) delete atom.tags;
+        if (val('pe-category')) atom.category = val('pe-category');
+        atom.authored_by = 'convergent-systems-key';
+        atom.lifecycle = val('pe-lifecycle') || 'draft';
+        showValidation(missing);
+        renderJSON(atom);
+      }
+      // ── Agent builder ──
+      function rebuildAgent() {
+        var slug = slugify(val('a-slug'));
+        var subtype = val('a-subtype');
+        var reviewer = subtype === 'reviewer';
+        document.getElementById('a-criteria-row').style.display = reviewer ? 'flex' : 'none';
+        var atom = {
+          schema: 'https://ai-atoms.com/schemas/agent-v1.json',
+          type: 'agent',
+          id: slug ? 'agent/' + slug : '',
+          version: '1.0.0',
+          name: val('a-name'),
+          description: val('a-desc'),
+          subtype: subtype,
+          persona: val('a-persona'),
+        };
+        [['prompts','a-prompts'],['skills','a-skills'],['tools','a-tools'],['policies','a-policies'],['hooks','a-hooks']].forEach(function(pair) {
+          var ids = csv(pair[1]);
+          if (ids.length) atom[pair[0]] = ids;
+        });
+        var execution = {};
+        if (val('a-planner')) execution.planner = val('a-planner');
+        if (val('a-memory')) execution.memory = val('a-memory');
+        if (Object.keys(execution).length) atom.execution = execution;
+        if (reviewer) atom.review_criteria = lines('a-criteria');
+        var req = ['id','name','description','subtype','persona'];
+        if (reviewer) req.push('review_criteria');
+        finish(atom, csv('a-tags'), 'a-lifecycle', req);
+      }
+      // ── Model builder ──
+      function rebuildModel() {
+        var slug = val('m-slug').toLowerCase().replace(/[^a-z0-9.-]/g, '-').replace(/-+/g, '-').replace(/^[-.]|[-.]$/g, '');
+        var provider = { name: val('m-prov-name'), model_id: val('m-prov-id') || slug, url: val('m-prov-url') };
+        if (val('m-prov-pull')) provider.pull_command = val('m-prov-pull');
+        var atom = {
+          schema: 'https://ai-atoms.com/schemas/model-v1.json',
+          type: 'model',
+          id: slug ? 'model/' + slug : '',
+          version: '1.0.0',
+          name: val('m-name') || slug,
+          description: val('m-desc'),
+          vendor: val('m-vendor'),
+        };
+        if (val('m-family')) atom.family = val('m-family');
+        atom.task = val('m-task');
+        var caps = csv('m-caps'); if (caps.length) atom.capabilities = caps;
+        var sizes = csv('m-sizes'); if (sizes.length) atom.parameter_sizes = sizes;
+        if (val('m-license')) atom.license = val('m-license');
+        atom.providers = [provider];
+        var req = ['id','name','description','vendor','task'];
+        var missing = validate(atom, req);
+        if (!provider.name || !provider.url) missing.push('providers[0].name/url');
+        atom.category = val('m-category') || 'ai';
+        var tags = csv('m-tags'); if (tags.length) atom.tags = tags;
+        atom.authored_by = atom.vendor || 'convergent-systems-key';
+        atom.lifecycle = val('m-lifecycle') || 'draft';
+        showValidation(missing);
+        renderJSON(atom);
+      }
       // ── Generic builder (for future classes) ──
       function rebuildGeneric(cls) {
         var atom = { schema: 'https://ai-atoms.com/schemas/' + cls + '-v1.json', type: cls, id: cls + '/', version: '1.0.0' };
@@ -602,5 +1027,4 @@ const classSchemas: Record<string, string> = {
       onTriggerTypeChange();
       rebuildSkill();
     </script>
-  </body>
-</html>
+</Site>

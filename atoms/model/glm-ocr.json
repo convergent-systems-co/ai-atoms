@@ -1,0 +1,47 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/glm-ocr",
+  "version": "1.0.0",
+  "name": "glm-ocr",
+  "description": "GLM-OCR is a multimodal OCR model for complex document understanding, built on the GLM-V encoder–decoder architecture.",
+  "vendor": "Zhipu AI",
+  "family": "GLM",
+  "task": "multimodal",
+  "capabilities": [
+    "vision",
+    "tools"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "glm-ocr",
+      "url": "https://ollama.com/library/glm-ocr",
+      "pull_command": "ollama pull glm-ocr",
+      "run_command": "ollama run glm-ocr",
+      "tag_count": 3,
+      "pulls": "7.1M",
+      "updated_at": "2026-02-02"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/glm-ocr"
+  },
+  "authored_by": "Zhipu AI",
+  "source_url": "https://ollama.com/library/glm-ocr",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/glm-ocr",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "vision",
+    "tools"
+  ],
+  "lifecycle": "stable"
+}

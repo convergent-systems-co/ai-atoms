@@ -54,5 +54,6 @@
     "delivery",
     "ci"
   ],
-  "lifecycle": "stable"
+  "lifecycle": "stable",
+  "category": "coding"
 }

@@ -1,0 +1,42 @@
+{
+  "schema": "https://ai-atoms.com/schemas/agent-v1.json",
+  "type": "agent",
+  "id": "agent/runbook-executor",
+  "version": "1.0.0",
+  "name": "Runbook Executor",
+  "description": "DevOps runbook execution agent. bash exec + scoped writes + outbound HTTP, gated by per-command user approval and container isolation.",
+  "subtype": "actor",
+  "persona": "persona/devops-engineer",
+  "tools": [
+    "tool/bash-exec",
+    "tool/http-fetch",
+    "tool/file-write"
+  ],
+  "policies": [
+    "policy/exec-with-approval",
+    "policy/no-data-exfiltration",
+    "policy/container-with-allowlist"
+  ],
+  "execution": {
+    "planner": "plan-and-execute",
+    "memory": "long-term",
+    "supervisor": "none"
+  },
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/agents/runbook-executor.json",
+  "tags": [
+    "devops",
+    "orchestrator",
+    "spawn",
+    "operations"
+  ],
+  "lifecycle": "draft",
+  "category": "devops",
+  "provenance": {
+    "source": "convergent-systems-co/agent-atoms",
+    "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/agents/runbook-executor.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed by scripts/migrate-retired-atoms.py from the retired catalog."
+  }
+}

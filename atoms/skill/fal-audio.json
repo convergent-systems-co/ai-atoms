@@ -1,0 +1,31 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/fal-audio",
+  "version": "1.0.0",
+  "name": "Fal Audio",
+  "description": "Text-to-speech and speech-to-text using fal.ai audio models",
+  "system_prompt_fragment": "# Fal Audio\n\n## Overview\n\nText-to-speech and speech-to-text using fal.ai audio models\n\n## When to Use This Skill\n\nUse this skill when you need to work with text-to-speech and speech-to-text using fal.ai audio models.\n\n## Instructions\n\nThis skill provides guidance and patterns for text-to-speech and speech-to-text using fal.ai audio models.\n\nFor more information, see the [source repository](https://github.com/fal-ai-community/skills/blob/main/skills/claude.ai/fal-audio/SKILL.md).",
+  "applicable_domains": [
+    "other"
+  ],
+  "category": "other",
+  "invocation": [
+    "/fal-audio"
+  ],
+  "authored_by": "claudeskills.in community",
+  "source_url": "https://claudeskills.in/skill/fal-audio",
+  "provenance": {
+    "source": "claudeskills.in",
+    "source_url": "https://claudeskills.in/skill/fal-audio",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Aggregated by claudeskills.in from community GitHub lists. Upstream as recorded by the aggregator: https://github.com/fal-ai-community/skills/blob/main/skills/claude.ai/fal-audio/SKILL.md."
+  },
+  "tags": [
+    "claudeskills",
+    "other",
+    "risk-reviewed"
+  ],
+  "lifecycle": "draft"
+}

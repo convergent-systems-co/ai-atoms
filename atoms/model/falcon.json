@@ -1,0 +1,47 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/falcon",
+  "version": "1.0.0",
+  "name": "falcon",
+  "description": "A large language model built by the Technology Innovation Institute (TII) for use in summarization, text generation, and chat bots.",
+  "vendor": "TII",
+  "family": "Falcon",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "7b",
+    "40b",
+    "180b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "falcon",
+      "url": "https://ollama.com/library/falcon",
+      "pull_command": "ollama pull falcon",
+      "run_command": "ollama run falcon",
+      "tag_count": 38,
+      "pulls": "1.2M",
+      "updated_at": "2023-10-26"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/falcon"
+  },
+  "authored_by": "TII",
+  "source_url": "https://ollama.com/library/falcon",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/falcon",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

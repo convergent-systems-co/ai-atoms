@@ -23,5 +23,12 @@
   "authored_by": "anthropics",
   "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-diag/skills/android-tombstone-symbolication/SKILL.md",
   "lifecycle": "stable",
-  "category": "dotnet"
+  "category": "dotnet",
+  "provenance": {
+    "source": "dotnet/skills",
+    "source_url": "https://github.com/dotnet/skills/blob/main/plugins/dotnet-diag/skills/android-tombstone-symbolication/SKILL.md",
+    "author": "Microsoft / .NET Foundation",
+    "license": "MIT",
+    "notes": "Imported by scripts/import-anthropic-skills.py."
+  }
 }

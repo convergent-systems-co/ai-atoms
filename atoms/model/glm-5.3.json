@@ -1,0 +1,49 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/glm-5.3",
+  "version": "1.0.0",
+  "name": "glm-5.3",
+  "description": "Z.ai's flagship model and the most capable open-weights model for coding, with major gains on long-horizon agentic tasks.",
+  "vendor": "Zhipu AI",
+  "family": "GLM-5",
+  "task": "reasoning",
+  "capabilities": [
+    "tools",
+    "thinking",
+    "cloud"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "glm-5.3",
+      "url": "https://ollama.com/library/glm-5.3",
+      "pull_command": "ollama pull glm-5.3",
+      "run_command": "ollama run glm-5.3",
+      "tag_count": 1,
+      "pulls": "29.6K",
+      "updated_at": "2026-08-28"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/glm-5.3"
+  },
+  "authored_by": "Zhipu AI",
+  "source_url": "https://ollama.com/library/glm-5.3",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/glm-5.3",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "tools",
+    "thinking",
+    "cloud"
+  ],
+  "lifecycle": "stable"
+}

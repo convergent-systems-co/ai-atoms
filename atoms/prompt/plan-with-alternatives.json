@@ -1,0 +1,32 @@
+{
+  "schema": "https://ai-atoms.com/schemas/prompt-v1.json",
+  "type": "prompt",
+  "id": "prompt/plan-with-alternatives",
+  "version": "1.0.0",
+  "name": "Plan With Alternatives",
+  "description": "Implementation plan with Alternatives Table, scope, approach, testing, risks, dependencies. Markdown shape per Code.md §11.1.",
+  "subtype": "output-schema",
+  "content": "Emit a Markdown document with these required sections, in order: (1) Objective — one sentence; (2) Alternatives — a table with columns 'Alternative | Pros | Cons | Verdict' and at least two rows including 'do nothing' where applicable; (3) Scope — files to create, modify, delete; (4) Approach — numbered steps; (5) Testing — what tests prove it works; (6) Risks — what could go wrong and mitigation; (7) Dependencies — what must land first; (8) Backward Compatibility — what breaks and the migration path. No 'TBD' or 'TODO' entries in the final draft.",
+  "applicable_turns": [
+    "system",
+    "assistant"
+  ],
+  "vendors": [
+    "any"
+  ],
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/output-schema/plan-with-alternatives.json",
+  "tags": [
+    "output",
+    "planning"
+  ],
+  "lifecycle": "draft",
+  "category": "product",
+  "provenance": {
+    "source": "convergent-systems-co/prompt-atoms",
+    "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/output-schema/plan-with-alternatives.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed by scripts/migrate-retired-atoms.py from the retired catalog."
+  }
+}

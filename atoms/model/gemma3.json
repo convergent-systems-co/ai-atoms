@@ -1,0 +1,52 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/gemma3",
+  "version": "1.0.0",
+  "name": "gemma3",
+  "description": "The current, most capable model that runs on a single GPU.",
+  "vendor": "Google",
+  "family": "Gemma 3",
+  "task": "multimodal",
+  "capabilities": [
+    "vision"
+  ],
+  "parameter_sizes": [
+    "270m",
+    "1b",
+    "4b",
+    "12b",
+    "27b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "gemma3",
+      "url": "https://ollama.com/library/gemma3",
+      "pull_command": "ollama pull gemma3",
+      "run_command": "ollama run gemma3",
+      "tag_count": 26,
+      "pulls": "40.1M",
+      "updated_at": "2025-08-15"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/gemma3"
+  },
+  "authored_by": "Google",
+  "source_url": "https://ollama.com/library/gemma3",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/gemma3",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "vision"
+  ],
+  "lifecycle": "stable"
+}

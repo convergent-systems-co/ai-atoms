@@ -1,0 +1,9 @@
+---
+import Site from "../../../layouts/Site.astro";
+import Listing from "../../../components/Listing.astro";
+import { atomsOf, CLASS_META } from "../../../lib/catalog";
+const atoms = atomsOf("model");
+---
+<Site title={CLASS_META["model"].plural} description={`${atoms.length} model atoms — ${CLASS_META["model"].blurb}`} current="/atoms/model/">
+  <Listing cls="model" atoms={atoms} intro={'Reference data about AI models: who made them, what they are for, published sizes, and a providers list with the exact id and command a runtime needs. Every entry links to its provider page.'} facetLabel='Task' />
+</Site>

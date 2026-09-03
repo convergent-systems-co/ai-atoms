@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-atoms.com/schemas/common-v1.json",
+  "title": "ai-atoms common definitions v1",
+  "description": "Definitions shared by every atom class. Class schemas reference these by $ref so the vocabulary is defined once.",
+  "$defs": {
+    "category": {
+      "type": "string",
+      "description": "Single primary category used to group atoms of every class for browsing and installation. Display names: coding=Engineering & Coding, frontend=Frontend & Web, backend=Backend & APIs, devops=DevOps & Cloud, security=Security, testing=Testing & Quality, dotnet=.NET / Microsoft, data=Data & Analytics, ai=AI & Models, design=Design & UX, product=Product & Delivery, operations=Operations & IT, finance=Finance & Accounting, legal=Legal & Compliance, sales=Sales & CRM, marketing=Marketing & Content, hr=People & HR, support=Customer Support, knowledge=Knowledge & Docs, research=Research & Science, governance=Governance & Meta, other=Other.",
+      "enum": [
+        "coding", "frontend", "backend", "devops", "security", "testing", "dotnet",
+        "data", "ai", "design", "product", "operations", "finance", "legal", "sales",
+        "marketing", "hr", "support", "knowledge", "research", "governance", "other"
+      ]
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["source"],
+      "additionalProperties": false,
+      "description": "Where this atom came from and under what terms. Present on every imported atom; optional on atoms authored here.",
+      "properties": {
+        "source": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Catalog, site, or repository the atom was taken from (e.g. 'anthropics/skills', 'claudeskills.in', 'ollama.com/library')."
+        },
+        "source_url": {
+          "type": "string",
+          "description": "URL of the original record or file."
+        },
+        "author": {
+          "type": "string",
+          "description": "Original author or organisation when known."
+        },
+        "license": {
+          "type": "string",
+          "description": "SPDX identifier of the original license, or 'unknown' when the source states none. 'unknown' means the atom is redistributed under the source's stated terms only and should be reviewed before commercial use."
+        },
+        "imported_at": {
+          "type": "string",
+          "format": "date",
+          "description": "ISO-8601 date the atom was imported."
+        },
+        "notes": {
+          "type": "string",
+          "description": "Anything a maintainer needs to know about the origin (aggregator, transformation applied, upstream path)."
+        }
+      }
+    }
+  }
+}

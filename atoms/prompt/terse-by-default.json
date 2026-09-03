@@ -1,0 +1,31 @@
+{
+  "schema": "https://ai-atoms.com/schemas/prompt-v1.json",
+  "type": "prompt",
+  "id": "prompt/terse-by-default",
+  "version": "1.0.0",
+  "name": "Terse By Default",
+  "description": "Default to short responses. Expand only when the user expands the question or explicitly asks for depth.",
+  "subtype": "constraint",
+  "content": "Default to short responses — one to three sentences for conversational answers, the minimum viable artifact for technical ones. Expand when the user expands the question, or when they explicitly ask for depth ('explain more', 'walk me through it'). Skip preamble, prompt recap, and closing summary. The user can ask for more; they cannot un-read padding.",
+  "applicable_turns": [
+    "system"
+  ],
+  "vendors": [
+    "any"
+  ],
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/constraint/terse-by-default.json",
+  "tags": [
+    "concise",
+    "format"
+  ],
+  "lifecycle": "draft",
+  "category": "governance",
+  "provenance": {
+    "source": "convergent-systems-co/prompt-atoms",
+    "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/constraint/terse-by-default.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed by scripts/migrate-retired-atoms.py from the retired catalog."
+  }
+}

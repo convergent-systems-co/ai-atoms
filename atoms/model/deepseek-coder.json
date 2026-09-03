@@ -1,0 +1,47 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/deepseek-coder",
+  "version": "1.0.0",
+  "name": "deepseek-coder",
+  "description": "DeepSeek Coder is a capable coding model trained on two trillion code and natural language tokens.",
+  "vendor": "DeepSeek",
+  "family": "DeepSeek Coder",
+  "task": "code-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "1.3b",
+    "6.7b",
+    "33b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "deepseek-coder",
+      "url": "https://ollama.com/library/deepseek-coder",
+      "pull_command": "ollama pull deepseek-coder",
+      "run_command": "ollama run deepseek-coder",
+      "tag_count": 102,
+      "pulls": "4.6M",
+      "updated_at": "2023-12-28"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/deepseek-coder"
+  },
+  "authored_by": "DeepSeek",
+  "source_url": "https://ollama.com/library/deepseek-coder",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/deepseek-coder",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

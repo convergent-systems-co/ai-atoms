@@ -1,0 +1,46 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/phi3",
+  "version": "1.0.0",
+  "name": "phi3",
+  "description": "Phi-3 is a family of lightweight 3B (Mini) and 14B (Medium) state-of-the-art open models by Microsoft.",
+  "vendor": "Microsoft",
+  "family": "Phi-3",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "3.8b",
+    "14b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "phi3",
+      "url": "https://ollama.com/library/phi3",
+      "pull_command": "ollama pull phi3",
+      "run_command": "ollama run phi3",
+      "tag_count": 72,
+      "pulls": "18.1M",
+      "updated_at": "2024-07-30"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/phi3"
+  },
+  "authored_by": "Microsoft",
+  "source_url": "https://ollama.com/library/phi3",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/phi3",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

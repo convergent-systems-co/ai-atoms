@@ -1,0 +1,42 @@
+{
+  "schema": "https://ai-atoms.com/schemas/agent-v1.json",
+  "type": "agent",
+  "id": "agent/safe-by-default",
+  "version": "1.0.0",
+  "name": "Safe-by-Default Agent Template",
+  "description": "Reference template demonstrating safe agent configuration: minimal capabilities, explicit role boundaries, security policy floor, and strict isolation. Use as the starting point for any new agent definition.",
+  "subtype": "actor",
+  "persona": "persona/research-agent",
+  "policies": [
+    "policy/read-only-workspace",
+    "policy/no-code-execution",
+    "policy/no-network-egress",
+    "policy/no-data-exfiltration",
+    "policy/read-only-sandbox"
+  ],
+  "execution": {
+    "planner": "plan-and-execute",
+    "memory": "scratchpad",
+    "supervisor": "none"
+  },
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/agents/safe-by-default.json",
+  "tags": [
+    "research",
+    "synthesis",
+    "citations",
+    "template",
+    "safe",
+    "reference",
+    "default"
+  ],
+  "lifecycle": "draft",
+  "category": "research",
+  "provenance": {
+    "source": "convergent-systems-co/agent-atoms",
+    "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/agents/safe-by-default.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed by scripts/migrate-retired-atoms.py from the retired catalog."
+  }
+}

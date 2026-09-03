@@ -1,0 +1,31 @@
+{
+  "schema": "https://ai-atoms.com/schemas/prompt-v1.json",
+  "type": "prompt",
+  "id": "prompt/read-then-edit",
+  "version": "1.0.0",
+  "name": "Read Then Edit",
+  "description": "Pair every file edit with a prior read of the same file. Refuse to edit a file you haven't read in the current session.",
+  "subtype": "tool-use",
+  "content": "Before invoking any edit tool on a file, you must have invoked a read tool on the same file in the current session. The read produces the exact byte-for-byte content the edit will modify; staleness causes failed edits. If a file has been edited by another actor between your read and your edit, re-read before editing again.",
+  "applicable_turns": [
+    "tool"
+  ],
+  "vendors": [
+    "any"
+  ],
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/tool-use-template/read-then-edit.json",
+  "tags": [
+    "tools",
+    "discipline"
+  ],
+  "lifecycle": "draft",
+  "category": "governance",
+  "provenance": {
+    "source": "convergent-systems-co/prompt-atoms",
+    "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/tool-use-template/read-then-edit.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed by scripts/migrate-retired-atoms.py from the retired catalog."
+  }
+}

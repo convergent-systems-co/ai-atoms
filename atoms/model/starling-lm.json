@@ -1,0 +1,45 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/starling-lm",
+  "version": "1.0.0",
+  "name": "starling-lm",
+  "description": "Starling is a large language model trained by reinforcement learning from AI feedback focused on improving chatbot helpfulness.",
+  "vendor": "Berkeley",
+  "family": "Starling",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "7b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "starling-lm",
+      "url": "https://ollama.com/library/starling-lm",
+      "pull_command": "ollama pull starling-lm",
+      "run_command": "ollama run starling-lm",
+      "tag_count": 36,
+      "pulls": "981.3K",
+      "updated_at": "2024-04-02"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/starling-lm"
+  },
+  "authored_by": "Berkeley",
+  "source_url": "https://ollama.com/library/starling-lm",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/starling-lm",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

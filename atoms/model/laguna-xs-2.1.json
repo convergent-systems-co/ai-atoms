@@ -1,0 +1,46 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/laguna-xs-2.1",
+  "version": "1.0.0",
+  "name": "laguna-xs-2.1",
+  "description": "Laguna XS 2.1 is a 33B total parameter Mixture-of-Experts model with 3B activated parameters per token designed for agentic coding and long-horizon work on a local machine.",
+  "vendor": "unknown",
+  "task": "reasoning",
+  "capabilities": [
+    "tools",
+    "thinking"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "laguna-xs-2.1",
+      "url": "https://ollama.com/library/laguna-xs-2.1",
+      "pull_command": "ollama pull laguna-xs-2.1",
+      "run_command": "ollama run laguna-xs-2.1",
+      "tag_count": 7,
+      "pulls": "104.4K",
+      "updated_at": "2026-08-31"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/laguna-xs-2.1"
+  },
+  "authored_by": "unknown",
+  "source_url": "https://ollama.com/library/laguna-xs-2.1",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/laguna-xs-2.1",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "tools",
+    "thinking"
+  ],
+  "lifecycle": "stable"
+}

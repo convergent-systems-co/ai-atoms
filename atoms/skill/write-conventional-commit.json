@@ -47,5 +47,6 @@
     "conventional-commits",
     "code-style"
   ],
-  "lifecycle": "stable"
+  "lifecycle": "stable",
+  "category": "coding"
 }

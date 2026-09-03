@@ -1,0 +1,46 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/codegemma",
+  "version": "1.0.0",
+  "name": "codegemma",
+  "description": "CodeGemma is a collection of powerful, lightweight models that can perform a variety of coding tasks like fill-in-the-middle code completion, code generation, natural language understanding, mathematical reasoning, and instruction following.",
+  "vendor": "Google",
+  "family": "Gemma",
+  "task": "code-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "2b",
+    "7b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "codegemma",
+      "url": "https://ollama.com/library/codegemma",
+      "pull_command": "ollama pull codegemma",
+      "run_command": "ollama run codegemma",
+      "tag_count": 85,
+      "pulls": "3.2M",
+      "updated_at": "2024-07-18"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/codegemma"
+  },
+  "authored_by": "Google",
+  "source_url": "https://ollama.com/library/codegemma",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/codegemma",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

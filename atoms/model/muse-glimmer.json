@@ -1,0 +1,51 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/muse-glimmer",
+  "version": "1.0.0",
+  "name": "muse-glimmer",
+  "description": "Meta's latest open model built for always-on local agents. 30B parameters, licensed under Apache 2.0 and runs on a single GPU — tuned for tool use, long tasks, and failure recovery.",
+  "vendor": "unknown",
+  "task": "reasoning",
+  "capabilities": [
+    "vision",
+    "tools",
+    "thinking"
+  ],
+  "parameter_sizes": [
+    "30b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "muse-glimmer",
+      "url": "https://ollama.com/library/muse-glimmer",
+      "pull_command": "ollama pull muse-glimmer",
+      "run_command": "ollama run muse-glimmer",
+      "tag_count": 15,
+      "pulls": "185.3K",
+      "updated_at": "2026-08-28"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/muse-glimmer"
+  },
+  "authored_by": "unknown",
+  "source_url": "https://ollama.com/library/muse-glimmer",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/muse-glimmer",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "vision",
+    "tools",
+    "thinking"
+  ],
+  "lifecycle": "stable"
+}

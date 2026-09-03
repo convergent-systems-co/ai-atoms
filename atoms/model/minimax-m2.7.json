@@ -1,0 +1,49 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/minimax-m2.7",
+  "version": "1.0.0",
+  "name": "minimax-m2.7",
+  "description": "MiniMax's M2-series model for coding, agentic workflows, and professional productivity.",
+  "vendor": "MiniMax",
+  "family": "MiniMax",
+  "task": "reasoning",
+  "capabilities": [
+    "tools",
+    "thinking",
+    "cloud"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "minimax-m2.7",
+      "url": "https://ollama.com/library/minimax-m2.7",
+      "pull_command": "ollama pull minimax-m2.7",
+      "run_command": "ollama run minimax-m2.7",
+      "tag_count": 1,
+      "pulls": "2.4M",
+      "updated_at": "2026-03-18"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/minimax-m2.7"
+  },
+  "authored_by": "MiniMax",
+  "source_url": "https://ollama.com/library/minimax-m2.7",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/minimax-m2.7",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "tools",
+    "thinking",
+    "cloud"
+  ],
+  "lifecycle": "stable"
+}

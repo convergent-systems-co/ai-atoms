@@ -1,0 +1,46 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/llama3-gradient",
+  "version": "1.0.0",
+  "name": "llama3-gradient",
+  "description": "This model extends LLama-3 8B's context length from 8k to over 1m tokens.",
+  "vendor": "Meta",
+  "family": "Llama 3",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "8b",
+    "70b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "llama3-gradient",
+      "url": "https://ollama.com/library/llama3-gradient",
+      "pull_command": "ollama pull llama3-gradient",
+      "run_command": "ollama run llama3-gradient",
+      "tag_count": 35,
+      "pulls": "998.2K",
+      "updated_at": "2024-05-05"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/llama3-gradient"
+  },
+  "authored_by": "Meta",
+  "source_url": "https://ollama.com/library/llama3-gradient",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/llama3-gradient",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

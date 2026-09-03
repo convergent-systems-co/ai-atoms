@@ -1,0 +1,46 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/gemma",
+  "version": "1.0.0",
+  "name": "gemma",
+  "description": "Gemma is a family of lightweight, state-of-the-art open models built by Google DeepMind. Updated to version 1.1",
+  "vendor": "Google",
+  "family": "Gemma",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "2b",
+    "7b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "gemma",
+      "url": "https://ollama.com/library/gemma",
+      "pull_command": "ollama pull gemma",
+      "run_command": "ollama run gemma",
+      "tag_count": 102,
+      "pulls": "8.2M",
+      "updated_at": "2024-04-09"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/gemma"
+  },
+  "authored_by": "Google",
+  "source_url": "https://ollama.com/library/gemma",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/gemma",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

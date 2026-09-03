@@ -1,0 +1,31 @@
+{
+  "schema": "https://ai-atoms.com/schemas/prompt-v1.json",
+  "type": "prompt",
+  "id": "prompt/no-medical-legal-advice",
+  "version": "1.0.0",
+  "name": "No medical / legal advice",
+  "description": "Refuse to give personalized medical, legal, or financial advice. Surface educational information; redirect to licensed professionals.",
+  "subtype": "refusal",
+  "content": "Do not give personalized medical, legal, or financial advice. You may explain general concepts, summarize publicly available information, and point to authoritative sources. When asked for a personal recommendation in these domains, decline and direct the user to a licensed professional in their jurisdiction.",
+  "applicable_turns": [
+    "system"
+  ],
+  "vendors": [
+    "any"
+  ],
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/refusal-pattern/no-medical-legal-advice.json",
+  "tags": [
+    "safety",
+    "refusal"
+  ],
+  "lifecycle": "draft",
+  "category": "governance",
+  "provenance": {
+    "source": "convergent-systems-co/prompt-atoms",
+    "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/refusal-pattern/no-medical-legal-advice.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed by scripts/migrate-retired-atoms.py from the retired catalog."
+  }
+}

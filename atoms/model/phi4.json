@@ -1,0 +1,45 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/phi4",
+  "version": "1.0.0",
+  "name": "phi4",
+  "description": "Phi-4 is a 14B parameter, state-of-the-art open model from Microsoft.",
+  "vendor": "Microsoft",
+  "family": "Phi-4",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "14b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "phi4",
+      "url": "https://ollama.com/library/phi4",
+      "pull_command": "ollama pull phi4",
+      "run_command": "ollama run phi4",
+      "tag_count": 5,
+      "pulls": "7.7M",
+      "updated_at": "2025-01-08"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/phi4"
+  },
+  "authored_by": "Microsoft",
+  "source_url": "https://ollama.com/library/phi4",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/phi4",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

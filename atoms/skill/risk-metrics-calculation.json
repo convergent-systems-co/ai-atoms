@@ -1,0 +1,30 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/risk-metrics-calculation",
+  "version": "1.0.0",
+  "name": "Risk Metrics Calculation",
+  "description": "Calculate portfolio risk metrics including VaR, CVaR, Sharpe, Sortino, and drawdown analysis. Use when measuring portfolio risk, implementing risk limits, or building risk monitoring systems.",
+  "system_prompt_fragment": "# Risk Metrics Calculation\n\nComprehensive risk measurement toolkit for portfolio management, including Value at Risk, Expected Shortfall, and drawdown analysis.\n\n## Use this skill when\n\n- Measuring portfolio risk\n- Implementing risk limits\n- Building risk dashboards\n- Calculating risk-adjusted returns\n- Setting position sizes\n- Regulatory reporting\n\n## Do not use this skill when\n\n- The task is unrelated to risk metrics calculation\n- You need a different domain or tool outside this scope\n\n## Instructions\n\n- Clarify goals, constraints, and required inputs.\n- Apply relevant best practices and validate outcomes.\n- Provide actionable steps and verification.\n- If detailed examples are required, open `resources/implementation-playbook.md`.\n\n## Resources\n\n- `resources/implementation-playbook.md` for detailed patterns and examples.",
+  "applicable_domains": [
+    "other"
+  ],
+  "category": "other",
+  "invocation": [
+    "/risk-metrics-calculation"
+  ],
+  "authored_by": "claudeskills.in community",
+  "source_url": "https://claudeskills.in/skill/risk-metrics-calculation",
+  "provenance": {
+    "source": "claudeskills.in",
+    "source_url": "https://claudeskills.in/skill/risk-metrics-calculation",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Aggregated by claudeskills.in from community GitHub lists."
+  },
+  "tags": [
+    "claudeskills",
+    "other"
+  ],
+  "lifecycle": "draft"
+}

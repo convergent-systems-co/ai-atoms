@@ -1,0 +1,48 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/granite-code",
+  "version": "1.0.0",
+  "name": "granite-code",
+  "description": "A family of open foundation models by IBM for Code Intelligence",
+  "vendor": "IBM",
+  "family": "Granite",
+  "task": "code-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "3b",
+    "8b",
+    "20b",
+    "34b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "granite-code",
+      "url": "https://ollama.com/library/granite-code",
+      "pull_command": "ollama pull granite-code",
+      "run_command": "ollama run granite-code",
+      "tag_count": 162,
+      "pulls": "1.5M",
+      "updated_at": "2024-09-03"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/granite-code"
+  },
+  "authored_by": "IBM",
+  "source_url": "https://ollama.com/library/granite-code",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/granite-code",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

@@ -46,5 +46,6 @@
     "deploy",
     "dns"
   ],
-  "lifecycle": "stable"
+  "lifecycle": "stable",
+  "category": "devops"
 }

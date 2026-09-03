@@ -1,0 +1,57 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/qwen3-vl",
+  "version": "1.0.0",
+  "name": "qwen3-vl",
+  "description": "The most powerful vision-language model in the Qwen model family to date.",
+  "vendor": "Alibaba",
+  "family": "Qwen3-VL",
+  "task": "reasoning",
+  "capabilities": [
+    "vision",
+    "tools",
+    "thinking"
+  ],
+  "parameter_sizes": [
+    "2b",
+    "4b",
+    "8b",
+    "30b",
+    "32b",
+    "235b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "qwen3-vl",
+      "url": "https://ollama.com/library/qwen3-vl",
+      "pull_command": "ollama pull qwen3-vl",
+      "run_command": "ollama run qwen3-vl",
+      "tag_count": 57,
+      "pulls": "5.6M",
+      "updated_at": "2025-10-29"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/qwen3-vl"
+  },
+  "authored_by": "Alibaba",
+  "source_url": "https://ollama.com/library/qwen3-vl",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/qwen3-vl",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "vision",
+    "tools",
+    "thinking"
+  ],
+  "lifecycle": "stable"
+}

@@ -1,0 +1,45 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/dolphin-mistral",
+  "version": "1.0.0",
+  "name": "dolphin-mistral",
+  "description": "The uncensored Dolphin model based on Mistral that excels at coding tasks. Updated to version 2.8.",
+  "vendor": "Cognitive Computations",
+  "family": "Dolphin",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "7b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "dolphin-mistral",
+      "url": "https://ollama.com/library/dolphin-mistral",
+      "pull_command": "ollama pull dolphin-mistral",
+      "run_command": "ollama run dolphin-mistral",
+      "tag_count": 120,
+      "pulls": "1.7M",
+      "updated_at": "2024-03-31"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/dolphin-mistral"
+  },
+  "authored_by": "Cognitive Computations",
+  "source_url": "https://ollama.com/library/dolphin-mistral",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/dolphin-mistral",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

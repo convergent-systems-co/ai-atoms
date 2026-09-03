@@ -1,0 +1,31 @@
+{
+  "schema": "https://ai-atoms.com/schemas/prompt-v1.json",
+  "type": "prompt",
+  "id": "prompt/numbered-steps",
+  "version": "1.0.0",
+  "name": "Numbered Steps",
+  "description": "Procedural output as a numbered list. One action per step. No nested numbering.",
+  "subtype": "format",
+  "content": "Emit the response as a numbered list. Exactly one action per step — if a step has two actions, split it. No nested numbering (no 1.1, 1.2). Each step starts with an imperative verb. Steps that are conditional state the condition first ('If X, then Y'). Steps that involve waiting or external triggers say so explicitly.",
+  "applicable_turns": [
+    "system"
+  ],
+  "vendors": [
+    "any"
+  ],
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/format-instruction/numbered-steps.json",
+  "tags": [
+    "format",
+    "procedure"
+  ],
+  "lifecycle": "draft",
+  "category": "governance",
+  "provenance": {
+    "source": "convergent-systems-co/prompt-atoms",
+    "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/format-instruction/numbered-steps.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed by scripts/migrate-retired-atoms.py from the retired catalog."
+  }
+}

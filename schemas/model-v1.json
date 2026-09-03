@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-atoms.com/schemas/model-v1.json",
+  "title": "ai-atoms model v1",
+  "description": "A model atom — reference data about one AI model: who made it, what it does, how big it is, and where a runtime can get it. A model atom points at providers; it does not host weights.",
+  "type": "object",
+  "required": ["schema", "type", "id", "version", "name", "description", "vendor", "task", "providers"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": { "type": "string", "const": "https://ai-atoms.com/schemas/model-v1.json" },
+    "type": { "type": "string", "enum": ["model"] },
+    "id": {
+      "type": "string",
+      "pattern": "^model/[a-z0-9][a-z0-9.-]*$",
+      "description": "Namespaced identifier in the form model/<slug>. Dots are allowed because model names carry versions (llama3.2, qwen2.5)."
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[A-Za-z0-9.-]+)?$",
+      "description": "Semantic version of this atom (not of the model)."
+    },
+    "name": { "type": "string", "minLength": 1, "maxLength": 80 },
+    "description": { "type": "string", "minLength": 1, "maxLength": 1000 },
+    "vendor": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Organisation that trained the model (Meta, Alibaba, Google, Mistral AI...). 'unknown' when the provider does not say."
+    },
+    "family": {
+      "type": "string",
+      "description": "Model family or series (Llama 3, Qwen 2.5, Gemma 3)."
+    },
+    "task": {
+      "type": "string",
+      "enum": ["text-generation", "code-generation", "reasoning", "embedding", "vision", "image-generation", "speech-to-text", "text-to-speech", "multimodal", "translation", "reranking", "other"],
+      "description": "Primary task the model is built for."
+    },
+    "capabilities": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true,
+      "description": "Feature flags a runtime can rely on: tools, vision, thinking, embedding, structured-output, cloud."
+    },
+    "parameter_sizes": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^[0-9]+(\\.[0-9]+)?(x[0-9]+)?[bm]$" },
+      "uniqueItems": true,
+      "description": "Published sizes, provider notation (1b, 3b, 8x7b, 335m)."
+    },
+    "context_window_tokens": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Maximum context length in tokens, when published."
+    },
+    "license": {
+      "type": "string",
+      "description": "Model weights license (SPDX id or the vendor's name for it, e.g. 'Llama 3.2 Community License'). 'unknown' when not published."
+    },
+    "providers": {
+      "type": "array",
+      "minItems": 1,
+      "description": "Where a runtime can obtain or call this model. One entry per hosting provider.",
+      "items": {
+        "type": "object",
+        "required": ["name", "model_id", "url"],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string", "minLength": 1, "description": "Provider display name (Ollama, Cloudflare Workers AI, Anthropic API)." },
+          "model_id": { "type": "string", "minLength": 1, "description": "The identifier the provider expects (llama3.2, @cf/meta/llama-3.1-8b-instruct)." },
+          "url": { "type": "string", "minLength": 1, "description": "Provider page for this model." },
+          "pull_command": { "type": "string", "description": "Command that obtains the model locally, when the provider has one (ollama pull llama3.2)." },
+          "run_command": { "type": "string", "description": "Command that starts an interactive session, when the provider has one." },
+          "tag_count": { "type": "integer", "minimum": 0, "description": "Number of published variants/tags at the provider." },
+          "pulls": { "type": "string", "description": "Provider-reported download count, as displayed (82.2M)." },
+          "updated_at": { "type": "string", "format": "date", "description": "Date the provider last updated the model." }
+        }
+      }
+    },
+    "links": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "homepage": { "type": "string" },
+        "model_card": { "type": "string" },
+        "paper": { "type": "string" },
+        "weights": { "type": "string" }
+      }
+    },
+    "planned_deprecation": { "type": "boolean", "description": "Whether a deprecation timeline has been announced." },
+    "replacement": { "type": "string", "pattern": "^model/[a-z0-9][a-z0-9.-]*$", "description": "Recommended replacement model atom when deprecated." },
+    "authored_by": { "type": "string" },
+    "source_url": { "type": "string" },
+    "category": { "$ref": "https://ai-atoms.com/schemas/common-v1.json#/$defs/category" },
+    "provenance": { "$ref": "https://ai-atoms.com/schemas/common-v1.json#/$defs/provenance" },
+    "tags": { "type": "array", "items": { "type": "string", "minLength": 1, "maxLength": 40 }, "uniqueItems": true },
+    "lifecycle": { "type": "string", "enum": ["draft", "stable", "deprecated"] }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/typescript-advanced-types",
+  "version": "1.0.0",
+  "name": "Typescript Advanced Types",
+  "description": "Master TypeScript's advanced type system including generics, conditional types, mapped types, template literals, and utility types for building type-safe applications. Use when implementing complex...",
+  "system_prompt_fragment": "# TypeScript Advanced Types\n\nComprehensive guidance for mastering TypeScript's advanced type system including generics, conditional types, mapped types, template literal types, and utility types for building robust, type-safe applications.\n\n## Use this skill when\n\n- Building type-safe libraries or frameworks\n- Creating reusable generic components\n- Implementing complex type inference logic\n- Designing type-safe API clients\n- Building form validation systems\n- Creating strongly-typed configuration objects\n- Implementing type-safe state management\n- Migrating JavaScript codebases to TypeScript\n\n## Do not use this skill when\n\n- The task is unrelated to typescript advanced types\n- You need a different domain or tool outside this scope\n\n## Instructions\n\n- Clarify goals, constraints, and required inputs.\n- Apply relevant best practices and validate outcomes.\n- Provide actionable steps and verification.\n- If detailed examples are required, open `resources/implementation-playbook.md`.\n\n## Resources\n\n- `resources/implementation-playbook.md` for detailed patterns and examples.",
+  "applicable_domains": [
+    "other"
+  ],
+  "category": "other",
+  "invocation": [
+    "/typescript-advanced-types"
+  ],
+  "authored_by": "claudeskills.in community",
+  "source_url": "https://claudeskills.in/skill/typescript-advanced-types",
+  "provenance": {
+    "source": "claudeskills.in",
+    "source_url": "https://claudeskills.in/skill/typescript-advanced-types",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Aggregated by claudeskills.in from community GitHub lists."
+  },
+  "tags": [
+    "claudeskills",
+    "other"
+  ],
+  "lifecycle": "draft"
+}

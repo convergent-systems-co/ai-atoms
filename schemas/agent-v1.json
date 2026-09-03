@@ -1,0 +1,199 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-atoms.com/schemas/agent-v1.json",
+  "title": "ai-atoms agent v1",
+  "description": "An agent atom — a bindable identity: one persona bound to the prompts, skills, tools, policies, and hooks it runs with, plus execution preferences. Actors execute work; reviewers judge work products. Every reference must resolve to an atom in the catalog.",
+  "type": "object",
+  "required": [
+    "schema",
+    "type",
+    "id",
+    "version",
+    "name",
+    "description",
+    "subtype",
+    "persona"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "https://ai-atoms.com/schemas/agent-v1.json"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "agent"
+      ]
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^agent/[a-z0-9][a-z0-9-]*$",
+      "description": "Namespaced identifier in the form agent/<slug>."
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[A-Za-z0-9.-]+)?$",
+      "description": "Semantic version of this agent atom."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80,
+      "description": "Human-readable display name."
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1000,
+      "description": "What this agent does, what it may touch, and what it must not."
+    },
+    "subtype": {
+      "type": "string",
+      "enum": [
+        "actor",
+        "reviewer"
+      ],
+      "description": "actor = produces work products; reviewer = evaluates work products against review_criteria and emits verdicts."
+    },
+    "persona": {
+      "type": "string",
+      "pattern": "^persona/[a-z0-9][a-z0-9-]*$",
+      "description": "The persona atom this agent embodies."
+    },
+    "prompts": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^prompt/[a-z0-9][a-z0-9-]*$"
+      },
+      "uniqueItems": true,
+      "description": "Prompt atoms injected in order after the persona."
+    },
+    "skills": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^skill/[a-z0-9][a-z0-9-]*$"
+      },
+      "uniqueItems": true,
+      "description": "Skill atoms this agent may invoke."
+    },
+    "tools": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^tool/[a-z0-9][a-z0-9-]*$"
+      },
+      "uniqueItems": true,
+      "description": "Tool atoms exposed to this agent. Omit or leave empty for a read-only conversational agent."
+    },
+    "policies": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^policy/[a-z0-9][a-z0-9-]*$"
+      },
+      "uniqueItems": true,
+      "description": "Policy atoms (capability grants, isolation, boundaries) enforced by the runtime for this agent."
+    },
+    "hooks": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^hook/[a-z0-9][a-z0-9-]*$"
+      },
+      "uniqueItems": true,
+      "description": "Hook atoms wired into this agent's runtime."
+    },
+    "execution": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Runtime execution preferences.",
+      "properties": {
+        "planner": {
+          "type": "string",
+          "enum": [
+            "none",
+            "react",
+            "plan-and-execute",
+            "tree-of-thoughts"
+          ],
+          "description": "Reasoning loop shape the runtime should use."
+        },
+        "memory": {
+          "type": "string",
+          "enum": [
+            "none",
+            "scratchpad",
+            "short-term",
+            "long-term",
+            "vector"
+          ],
+          "description": "Memory model the runtime should provide."
+        },
+        "supervisor": {
+          "type": "string",
+          "description": "Agent id that supervises this one, or 'none'."
+        }
+      }
+    },
+    "review_criteria": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true,
+      "description": "For subtype reviewer: the criteria verdicts are judged against."
+    },
+    "authored_by": {
+      "type": "string",
+      "description": "Key atom ID or author identifier."
+    },
+    "source_url": {
+      "type": "string",
+      "description": "URL of the original source when imported from an external repository."
+    },
+    "category": {
+      "$ref": "https://ai-atoms.com/schemas/common-v1.json#/$defs/category"
+    },
+    "provenance": {
+      "$ref": "https://ai-atoms.com/schemas/common-v1.json#/$defs/provenance"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 40
+      },
+      "uniqueItems": true
+    },
+    "lifecycle": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "stable",
+        "deprecated"
+      ],
+      "description": "Lifecycle stage of this agent atom."
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "subtype": {
+            "const": "reviewer"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "review_criteria"
+        ]
+      }
+    }
+  ]
+}

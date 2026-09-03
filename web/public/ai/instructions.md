@@ -1,60 +1,85 @@
 # ai-atoms — AI Instructions
 
 **Site:** https://ai-atoms.com
-**Catalog:** https://ai-atoms.com/exports/catalog.json
 **Index:** https://ai-atoms.com/ai/index.json
+**Catalog:** https://ai-atoms.com/exports/catalog.json
+**Audience:** an AI agent or runtime that wants to discover, query, and install atoms without a human.
 
 ## What is ai-atoms?
 
-ai-atoms is a typed, versioned catalog of AI runtime primitives for AI agents, Claude Code,
-and agentic pipelines. It contains two classes of atom: **skills** and **hooks**.
+A typed, versioned catalog of AI runtime primitives. Six classes: **skill**, **hook**, **prompt**,
+**agent**, **persona**, **model**. Every atom is static JSON validated against its class schema,
+carries a `category` from one shared vocabulary, and (when imported) a `provenance` block naming the
+source, original URL, author, and license.
 
-## Two classes
+## Discover
+
+1. `GET /ai/index.json` — classes, per-class counts, per-category counts, every atom id, endpoint
+   and schema URLs.
+2. `GET /categories/<category>.json` — ids in one category grouped by class. Categories are listed in
+   the index; the full vocabulary is in `/schemas/common-v1.json` under `$defs.category.enum`.
+
+## Query
+
+- One atom: `GET /atoms/<class>/<slug>.json` — the slug is the id without its class prefix
+  (`skill/commit` → `/atoms/skill/commit.json`).
+- Whole catalog: `GET /exports/catalog.json` — every atom inline, plus `classes`, `counts`,
+  `categories`, and `compositions`.
+- Text search is client-side on the HTML pages only; for programmatic search, load the catalog and
+  filter on `name`, `description`, `tags`, `category`.
+
+## Install and use, by class
 
 ### skill
-A skill is a bounded, invocable unit of AI capability. Each skill bundles:
-- A human-readable `description` explaining when to use it and what it prevents
-- A `system_prompt_fragment` — the prompt text injected into an agent's system context
-  when the skill is loaded. It is self-contained and actionable.
-- An `applicable_domains` list (e.g. code, debug, planning, agents)
-- An optional `invocation_contract` with declared inputs, outputs, and side effects
-
-**Use skills to:** load bounded behavior protocols into an AI agent on demand. The
-`system_prompt_fragment` is the operative text; inject it into the agent's system prompt
-or prepend it to the conversation context.
+- Inject `system_prompt_fragment` into the system prompt, or write it to
+  `.claude/skills/<slug>/SKILL.md` with `name` and `description` as frontmatter.
+- `invocation` lists slash-command forms. `depends_on` lists sub-skills to install with it.
+- `ai skills install <slug>` does all of this on a machine with the `ai` CLI.
 
 ### hook
-A hook is an event-driven runtime behavior wired into AI tool infrastructure. Each hook declares:
-- The `event` it responds to (e.g. PreToolUse, PostToolUse, SessionStart, Stop)
-- The `language` it is implemented in (python, bash, javascript, typescript)
-- A `trigger` with a type (tool-name, file-pattern, always, tool-category) and optional pattern
-- Whether it is `blocking` (can abort the triggering operation) or advisory
-- Its `side_effects` (e.g. writes to audit log, emits warning to stderr)
+- `event` and `trigger` say when it fires; `blocking` says whether it can abort the operation.
+- `script` is the complete source. Install it to `~/.ai/hooks/<slug>.<ext>` and wire
+  `ai hooks run <slug>` (or the script path) into the client's hook configuration.
+- `depends_on` (usually `hook/lib`) must be installed alongside. `requires_wrap` names a command
+  wrapper needed for full coverage. `ai hooks install <slug>` handles all of it.
 
-**Use hooks with:** Claude Code (settings.json hooks configuration), Copilot CLI, or any
-AI tool that exposes an event-hook mechanism.
+### prompt
+- Inject `content` verbatim into the turns listed in `applicable_turns` (default: system).
+- `subtype` tells you what kind of text it is. A `composite` prompt's `content` is already the
+  resolved concatenation of `includes`; you do not need to resolve them.
+- `persona_ref` points at the persona a `persona` prompt renders.
 
-## Navigation
+### persona
+- Self-contained identity. Render `role` (job to be done, tasks, out of scope), `voice`, `tone`,
+  `work_contract`, `constraints[].text`, and `knowledge_boundaries[].text` into the system turn.
+  When `system_prompt_fragment` is present, use it as the opening text.
+- Binds nothing. To run it with tools, use an agent.
 
-1. Read `/ai/index.json` — lists all skill IDs and hook IDs
-2. Fetch a skill: `GET /atoms/skill/<slug>.json` — returns the full skill atom
-3. Read `system_prompt_fragment` to understand how to invoke the skill
-4. Fetch a hook: `GET /atoms/hook/<slug>.json` — returns the full hook atom
-5. Read `trigger.event` and `trigger.pattern` to understand when the hook fires
+### agent
+- Resolve `persona`, then `prompts`, `skills`, `hooks`, `tools`, `policies` by id. Every reference
+  resolves in the catalog; `tool/` and `policy/` ids resolve to files under `atoms/` that are not yet
+  schema-typed.
+- `subtype: reviewer` means the agent judges work against `review_criteria` and emits verdicts.
+- `execution.planner` and `execution.memory` are preferences for the runtime loop.
 
-## Integration with Claude Code
+### model
+- Pick an entry in `providers[]`: `model_id` is what the provider's API expects; `pull_command`
+  obtains it locally when the provider supports that (Ollama).
+- `task`, `capabilities`, `parameter_sizes`, and `context_window_tokens` are for selection.
+- `provenance.license: unknown` means the listing did not publish the weights license.
 
-Hooks are wired via `~/.claude/settings.json` (or project `.claude/settings.json`) under the
-`hooks` key. Each hook entry maps an event name to a script command. The `blocking` field
-indicates whether the hook should use the `blocking` hook type (returns exit code) or the
-`non-blocking` type (fire-and-forget).
+## Attribution
 
-## Catalog schema
+Check `provenance.license` before redistributing an atom. `unknown` means the source stated no
+license; the atom is served under the source's own terms and the catalog's CC-BY-4.0 covers only
+the catalog metadata. `authored_by` names the author; `provenance.source_url` is the original.
 
-- Skills validate against: https://ai-atoms.com/schemas/skill-v1.json
-- Hooks validate against: https://ai-atoms.com/schemas/hook-v1.json
-- Full catalog: https://ai-atoms.com/exports/catalog.json
+## Schemas
+
+- Common definitions (category, provenance): https://ai-atoms.com/schemas/common-v1.json
+- Per class: https://ai-atoms.com/schemas/<class>-v1.json
 
 ## License
 
-Code: Apache-2.0. Data: CC-BY-4.0. Part of the convergent-systems.co atoms ecosystem.
+Code: Apache-2.0. Catalog data: CC-BY-4.0. Imported content keeps its source's terms.
+Part of the convergent-systems.co atoms ecosystem.

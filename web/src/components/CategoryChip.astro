@@ -1,0 +1,6 @@
+---
+import { CATEGORY_LABEL } from "../lib/catalog";
+interface Props { category?: string }
+const { category } = Astro.props;
+---
+{category && <a class="chip cat" href={`/categories/${category}/`} title={CATEGORY_LABEL[category] ?? category}>{category}</a>}

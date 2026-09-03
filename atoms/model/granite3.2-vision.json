@@ -1,0 +1,50 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/granite3.2-vision",
+  "version": "1.0.0",
+  "name": "granite3.2-vision",
+  "description": "A compact and efficient vision-language model, specifically designed for visual document understanding, enabling automated content extraction from tables, charts, infographics, plots, diagrams, and more.",
+  "vendor": "IBM",
+  "family": "Granite",
+  "task": "multimodal",
+  "capabilities": [
+    "vision",
+    "tools"
+  ],
+  "parameter_sizes": [
+    "2b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "granite3.2-vision",
+      "url": "https://ollama.com/library/granite3.2-vision",
+      "pull_command": "ollama pull granite3.2-vision",
+      "run_command": "ollama run granite3.2-vision",
+      "tag_count": 5,
+      "pulls": "991.3K",
+      "updated_at": "2025-02-27"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/granite3.2-vision"
+  },
+  "authored_by": "IBM",
+  "source_url": "https://ollama.com/library/granite3.2-vision",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/granite3.2-vision",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "vision",
+    "tools"
+  ],
+  "lifecycle": "stable"
+}

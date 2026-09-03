@@ -1,0 +1,45 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/notus",
+  "version": "1.0.0",
+  "name": "notus",
+  "description": "A 7B chat model fine-tuned with high-quality data and based on Zephyr.",
+  "vendor": "Argilla",
+  "family": "Notus",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "7b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "notus",
+      "url": "https://ollama.com/library/notus",
+      "pull_command": "ollama pull notus",
+      "run_command": "ollama run notus",
+      "tag_count": 18,
+      "pulls": "538K",
+      "updated_at": "2023-12-29"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/notus"
+  },
+  "authored_by": "Argilla",
+  "source_url": "https://ollama.com/library/notus",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/notus",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

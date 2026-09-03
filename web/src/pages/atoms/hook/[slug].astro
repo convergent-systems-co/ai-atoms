@@ -1,173 +1,48 @@
 ---
-import catalog from "../../../../public/exports/catalog.json";
+import Site from "../../../layouts/Site.astro";
+import ActionRail from "../../../components/ActionRail.astro";
+import Provenance from "../../../components/Provenance.astro";
+import CategoryChip from "../../../components/CategoryChip.astro";
+import { ATOMS, BY_ID, hrefOf, slugOf } from "../../../lib/catalog";
 
 export function getStaticPaths() {
-  return (catalog.atoms as any[])
-    .filter((a: any) => a.type === "hook")
-    .map((a: any) => ({
-      params: { slug: a.id.replace("hook/", "") },
-      props: { hook: a },
-    }));
+  return ATOMS.filter((a: any) => a.type === "hook").map((a: any) => ({ params: { slug: slugOf(a.id) }, props: { hook: a } }));
 }
-
 const { hook } = Astro.props;
+const slug = slugOf(hook.id);
+const ext: Record<string, string> = { python: "py", bash: "sh", javascript: "js", typescript: "ts" };
+const scriptName = `${slug}.${ext[hook.language] ?? "txt"}`;
+const deps = (hook.depends_on ?? []).map((id: string) => BY_ID.get(id)).filter(Boolean);
+const usedBy = ATOMS.filter((a: any) => (a.type === "agent" && a.hooks?.includes(hook.id)) || (a.type === "hook" && a.depends_on?.includes(hook.id)));
 ---
+<Site title={hook.name} description={hook.description} current="/atoms/hook/">
+  <div class="detail hue-hook">
+    <article>
+      <a class="small muted" href="/atoms/hook/">← Hooks</a>
+      <div class="detail-hero" style="margin-top:0.8rem;">
+        <div class="chips"><span class="chip cls">Hk hook</span><CategoryChip category={hook.category} />{hook.blocking !== undefined && <span class={`chip ${hook.blocking ? "danger" : "ok"}`}>{hook.blocking ? "blocking" : "advisory"}</span>}{hook.lifecycle && <span class={`lifecycle ${hook.lifecycle}`}>{hook.lifecycle}</span>}</div>
+        <h1>{hook.name}</h1>
+        <p class="lede">{hook.description}</p>
+        <div class="idline"><span>id <b>{hook.id}</b></span><span>v<b>{hook.version}</b></span>{hook.authored_by && <span>by <b>{hook.authored_by}</b></span>}</div>
+      </div>
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content={hook.description} />
-    <title>{hook.name} · ai-atoms</title>
-    <link rel="icon" type="image/svg+xml" href="https://brand-atoms.com/dist/brands/atom-family/1.0.0/assets/favicon.svg" />
-    <link rel="preconnect" href="https://brand-atoms.com" />
-    <link rel="stylesheet" href="https://brand-atoms.com/dist/brands/atom-family/1.0.0/css/tokens.css" />
-    <link rel="stylesheet" href="https://brand-atoms.com/dist/brands/atom-family/1.0.0/ui/atoms-catalog.css" />
-    <style>
-      body { min-height: 100vh; }
-      .sidenav-wordmark { width: 140px; object-fit: contain; display: block; }
-      .hook-hero {
-        padding-bottom: 1.5rem;
-        border-bottom: 1px solid #e2e8f0;
-        margin-bottom: 1.5rem;
-      }
-      .hook-title { font-size: 1.75rem; font-weight: 700; color: #0f172a; margin: 0 0 0.5rem; }
-      .hook-description { font-size: 1rem; color: #475569; line-height: 1.6; max-width: 52rem; margin: 0 0 1rem; }
-      .badge-row { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; margin-bottom: 0.75rem; }
-      .blocking-badge {
-        font-size: 0.72rem; font-weight: 700; padding: 0.2rem 0.6rem;
-        border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.04em;
-      }
-      .blocking-yes { background: #fef2f2; color: #dc2626; }
-      .blocking-no { background: #f0fdf4; color: #16a34a; }
-      .lifecycle-badge { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #16a34a; }
-      .meta-row { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; font-size: 0.8rem; color: #64748b; }
-      .meta-item { display: flex; gap: 0.375rem; align-items: center; }
-      .meta-label { font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; font-size: 0.68rem; }
-      .section-heading {
-        font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
-        letter-spacing: 0.06em; color: #64748b; margin: 1.5rem 0 0.75rem;
-      }
-      .detail-grid {
-        display: grid; grid-template-columns: max-content 1fr; gap: 0.5rem 1.5rem;
-        font-size: 0.875rem; max-width: 44rem; margin-bottom: 1.5rem;
-        background: #f8fafc; padding: 1.125rem 1.25rem; border-radius: 0.5rem;
-      }
-      .dl-label { font-weight: 600; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; color: #64748b; padding-top: 0.1rem; }
-      .dl-value { color: #1e293b; }
-      .dl-value code { background: #e8edf5; padding: 0.1rem 0.35rem; border-radius: 0.2rem; font-size: 0.85em; color: #1e3a5f; }
-      .trigger-pattern { font-family: monospace; font-size: 0.85rem; background: #f1f5f9; color: #334155; padding: 0.1rem 0.35rem; border-radius: 0.2rem; }
-      .side-effects-list { margin: 0; padding-left: 1.25rem; font-size: 0.85rem; color: #475569; }
-      .tag-row { display: flex; flex-wrap: wrap; gap: 0.375rem; margin-bottom: 1.5rem; }
-      .tag { font-size: 0.72rem; padding: 0.15rem 0.5rem; border-radius: 9999px; background: #f1f5f9; color: #475569; }
-      .platform-row { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; margin-bottom: 1rem; }
-      .plat { font-size: 0.7rem; font-weight: 600; padding: 0.1rem 0.45rem; border-radius: 0.25rem; }
-      .plat-linux { background: #fef9c3; color: #854d0e; }
-      .plat-macos { background: #e0f2fe; color: #0369a1; }
-      .plat-windows { background: #ede9fe; color: #6d28d9; }
-      .invoke-box {
-        background: #0f172a; border-radius: 0.375rem; padding: 0.625rem 1rem;
-        font-family: monospace; font-size: 0.85rem; color: #a5f3fc;
-        max-width: 36rem; margin-bottom: 1.5rem;
-      }
-      .attribution { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #e2e8f0; font-size: 0.78rem; color: #94a3b8; }
-      .attribution a { color: #818cf8; }
-    </style>
-  </head>
-  <body>
-    <div class="shell">
-      <main class="content" style="color-scheme:light;background:#ffffff;color:#1e293b;">
-        <p style="margin-bottom: 1rem;"><a href="/atoms/hook/">← All hooks</a></p>
+      <dl class="kv-table">
+        <dt>Event</dt><dd><code>{hook.event || "— (library)"}</code></dd>
+        {hook.trigger && <><dt>Trigger</dt><dd><code>{hook.trigger.type}</code>{hook.trigger.pattern && <> — <code>{hook.trigger.pattern}</code></>}</dd></>}
+        {hook.language && <><dt>Language</dt><dd><code>{hook.language}</code></dd></>}
+        {hook.side_effects?.length > 0 && <><dt>Side effects</dt><dd><ul class="list" style="padding-left:1rem;">{hook.side_effects.map((e: string) => <li>{e}</li>)}</ul></dd></>}
+        {hook.platforms?.length > 0 && <><dt>Platforms</dt><dd>{hook.platforms.map((p: string) => <code style="margin-right:0.3rem;">{p}</code>)}</dd></>}
+        {hook.platform_notes && <><dt>Notes</dt><dd>{hook.platform_notes}</dd></>}
+        {hook.requires_wrap && <><dt>Full coverage</dt><dd>{hook.requires_wrap.description} <code>{hook.requires_wrap.install_hint}</code></dd></>}
+        {deps.length > 0 && <><dt>Depends on</dt><dd>{deps.map((d: any) => <a class="ref" href={hrefOf(d.id)} style="margin-right:0.6rem;">{d.id}</a>)}</dd></>}
+      </dl>
 
-        <div class="hook-hero">
-          <h1 class="hook-title">{hook.name}</h1>
-          <div class="badge-row">
-            {hook.blocking !== undefined && (
-              <span class={`blocking-badge ${hook.blocking ? 'blocking-yes' : 'blocking-no'}`}>
-                {hook.blocking ? 'blocking' : 'non-blocking'}
-              </span>
-            )}
-            {hook.lifecycle && <span class="lifecycle-badge">{hook.lifecycle}</span>}
-          </div>
-          <p class="hook-description">{hook.description}</p>
-          <div class="meta-row">
-            <span class="meta-item"><span class="meta-label">ID</span> <code style="font-size:0.8rem;background:#f1f5f9;padding:0.1rem 0.3rem;border-radius:0.2rem;">{hook.id}</code></span>
-            <span class="meta-item"><span class="meta-label">Version</span> {hook.version}</span>
-            {hook.authored_by && <span class="meta-item"><span class="meta-label">Author</span> {hook.authored_by}</span>}
-          </div>
-        </div>
+      {hook.script ? <><h2 class="h-section">Script · {scriptName}</h2><pre style="max-width:60rem;"><code>{hook.script}</code></pre></> : <p class="empty">This hook ships no script and cannot be installed until one is added.</p>}
 
-        <div class="invoke-box">ai hooks run {hook.id.replace("hook/", "")}</div>
-
-        <div class="detail-grid">
-          <span class="dl-label">Event</span>
-          <span class="dl-value"><code>{hook.event}</code></span>
-
-          {hook.language && <>
-            <span class="dl-label">Language</span>
-            <span class="dl-value"><code>{hook.language}</code></span>
-          </>}
-
-          {hook.trigger && <>
-            <span class="dl-label">Trigger</span>
-            <span class="dl-value">
-              <code>{hook.trigger.type}</code>
-              {hook.trigger.pattern && <> — <span class="trigger-pattern">{hook.trigger.pattern}</span></>}
-            </span>
-          </>}
-
-          {hook.side_effects?.length > 0 && <>
-            <span class="dl-label">Side effects</span>
-            <span class="dl-value">
-              <ul class="side-effects-list">
-                {hook.side_effects.map((e: string) => <li>{e}</li>)}
-              </ul>
-            </span>
-          </>}
-        </div>
-
-        {hook.platforms?.length > 0 && (
-          <div class="platform-row">
-            {hook.platforms.map((p: string) => (
-              <span class={`plat plat-${p}`}>{p}</span>
-            ))}
-            {hook.platform_notes && (
-              <span style="font-size:0.75rem;color:#64748b;font-style:italic;">{hook.platform_notes}</span>
-            )}
-          </div>
-        )}
-
-        {hook.tags?.length > 0 && (
-          <div class="tag-row">
-            {hook.tags.map((t: string) => <span class="tag">{t}</span>)}
-          </div>
-        )}
-
-        {hook.authored_by && (
-          <div class="attribution">
-            Attribution: <strong>{hook.authored_by}</strong>.
-            {hook.source_url && <> <a href={hook.source_url} target="_blank" rel="noopener">View original source ↗</a>.</>}
-          </div>
-        )}
-      </main>
-
-      <nav class="sidenav">
-        <a class="brand" href="/">
-          <img src="https://brand-atoms.com/dist/brands/atom-family/1.0.0/assets/atom-family-wordmark.png" alt="ATOMS" class="sidenav-wordmark" />
-        </a>
-        <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/atoms/skill/">Skills</a></li>
-          <li><a href="/atoms/hook/" aria-current="page">Hooks</a></li>
-          <li><a href="/ai/index.json">AI</a></li>
-          <li><a href="/builder/">Builder</a></li>
-          <li><a href="https://github.com/convergent-systems-co/ai-atoms">GitHub ↗</a></li>
-        </ul>
-        <div class="aside-meta">
-          <a class="meta-link" href="https://github.com/convergent-systems-co/ai-atoms">github ↗</a>
-        </div>
-      </nav>
-    </div>
-  </body>
-</html>
+      {usedBy.length > 0 && <><h2 class="h-section">Used by</h2><ul class="list">{usedBy.map((a: any) => <li><a class="ref" href={hrefOf(a.id)}>{a.id}</a> — {a.name}</li>)}</ul></>}
+      {hook.tags?.length > 0 && <div class="chips" style="margin-top:1.2rem;">{hook.tags.map((t: string) => <span class="tag">{t}</span>)}</div>}
+      <Provenance atom={hook} />
+    </article>
+    <ActionRail atom={hook} text={hook.script} textFilename={scriptName} install={`ai hooks install ${slug}`} commands={[["wire in settings.json", `ai hooks run ${slug}`]]} />
+  </div>
+</Site>

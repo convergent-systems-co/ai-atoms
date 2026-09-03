@@ -1,0 +1,47 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/qwen2-math",
+  "version": "1.0.0",
+  "name": "qwen2-math",
+  "description": "Qwen2 Math is a series of specialized math language models built upon the Qwen2 LLMs, which significantly outperforms the mathematical capabilities of open-source models and even closed-source models (e.g., GPT4o).",
+  "vendor": "Alibaba",
+  "family": "Qwen2",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "1.5b",
+    "7b",
+    "72b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "qwen2-math",
+      "url": "https://ollama.com/library/qwen2-math",
+      "pull_command": "ollama pull qwen2-math",
+      "run_command": "ollama run qwen2-math",
+      "tag_count": 52,
+      "pulls": "1.1M",
+      "updated_at": "2024-08-30"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/qwen2-math"
+  },
+  "authored_by": "Alibaba",
+  "source_url": "https://ollama.com/library/qwen2-math",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/qwen2-math",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

@@ -1,0 +1,30 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/fp-ts-pragmatic",
+  "version": "1.0.0",
+  "name": "Fp Ts Pragmatic",
+  "description": "A pragmatic guide to using fp-ts in TypeScript projects. Focuses on the most common and useful patterns for real-world development.",
+  "system_prompt_fragment": "# Pragmatic fp-ts for TypeScript\n\n[... Rest of the file content for fp-ts-pragmatic ...]",
+  "applicable_domains": [
+    "ai"
+  ],
+  "category": "ai",
+  "invocation": [
+    "/fp-ts-pragmatic"
+  ],
+  "authored_by": "claudeskills.in community",
+  "source_url": "https://claudeskills.in/skill/fp-ts-pragmatic",
+  "provenance": {
+    "source": "claudeskills.in",
+    "source_url": "https://claudeskills.in/skill/fp-ts-pragmatic",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Aggregated by claudeskills.in from community GitHub lists."
+  },
+  "tags": [
+    "claudeskills",
+    "ai"
+  ],
+  "lifecycle": "draft"
+}

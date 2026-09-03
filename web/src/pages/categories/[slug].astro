@@ -1,0 +1,41 @@
+---
+import Site from "../../layouts/Site.astro";
+import AtomCard from "../../components/AtomCard.astro";
+import { ATOMS, CATEGORY_INDEX, CATEGORY_LABEL, CLASSES, CLASS_META } from "../../lib/catalog";
+
+export function getStaticPaths() { return Object.keys(CATEGORY_INDEX).map((slug) => ({ params: { slug } })); }
+const { slug } = Astro.params;
+const label = CATEGORY_LABEL[slug!] ?? slug!;
+const atoms = ATOMS.filter((a) => (a.category ?? "other") === slug);
+const byClass = CLASSES.map((c) => [c, atoms.filter((a) => a.type === c).sort((x, y) => (x.name ?? x.id).localeCompare(y.name ?? y.id))] as const).filter(([, l]) => l.length);
+---
+<Site title={label} description={`${atoms.length} atoms in ${label} across ${byClass.length} classes.`} current="/categories/">
+  <a class="small muted" href="/categories/">← All categories</a>
+  <p class="eyebrow" style="margin-top:0.8rem;">category · {slug}</p>
+  <h1 style="margin-top:0.4rem;">{label} <span class="muted tabular" style="font-weight:500;">{atoms.length}</span></h1>
+  <div class="chips" style="margin-top:0.9rem;">
+    {byClass.map(([c, l]) => <a class={`chip cls hue-${c}`} href={`#${c}`}>{CLASS_META[c].symbol} {l.length} {l.length === 1 ? CLASS_META[c].label.toLowerCase() : CLASS_META[c].plural.toLowerCase()}</a>)}
+    <a class="chip" href={`/categories/${slug}.json`}>JSON ↗</a>
+  </div>
+  <div style="margin-top:1.2rem;max-width:28rem;">
+    <input type="search" placeholder="Filter within this category…" aria-label="Filter" data-cat-filter style="width:100%;padding:0.55rem 0.75rem;border:1px solid var(--line-strong);border-radius:var(--radius-sm);background:var(--surface);color:var(--ink);font:inherit;font-size:0.9rem;" />
+  </div>
+  {byClass.map(([c, l]) => (
+    <section class="section" style="margin-top:2.2rem;">
+      <div class="section-head"><h2 id={c}>{CLASS_META[c].plural} <span class="muted tabular" style="font-weight:500;">{l.length}</span></h2><a class="small" href={`/atoms/${c}/?category=${slug}`}>Open in the {c} list with filters →</a></div>
+      <div class="grid">{l.map((a) => <AtomCard atom={a} />)}</div>
+    </section>
+  ))}
+  <p class="empty" data-empty hidden>Nothing matches.</p>
+  <script>
+    const input = document.querySelector<HTMLInputElement>("[data-cat-filter]")!;
+    const cards = Array.from(document.querySelectorAll<HTMLElement>(".card[data-search]"));
+    const empty = document.querySelector<HTMLElement>("[data-empty]")!;
+    input.addEventListener("input", () => {
+      const q = input.value.trim().toLowerCase(); let shown = 0;
+      for (const c of cards) { const ok = !q || c.dataset.search!.includes(q); c.hidden = !ok; if (ok) shown++; }
+      empty.hidden = shown > 0;
+      document.querySelectorAll<HTMLElement>("section.section").forEach((s) => { s.hidden = !s.querySelector(".card:not([hidden])"); });
+    });
+  </script>
+</Site>

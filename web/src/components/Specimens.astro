@@ -1,0 +1,40 @@
+---
+// "Of the day": one atom per class, chosen by day number over a curated candidate list.
+// The build-day pick is rendered so the page is complete without JavaScript; the script
+// re-picks for the viewer's date so it rotates daily without a rebuild.
+import AtomCard from "./AtomCard.astro";
+import { CLASS_META, specimenCandidates, dayNumber, hrefOf } from "../lib/catalog";
+interface Props { classes: string[] }
+const { classes } = Astro.props;
+const today = dayNumber();
+const sets = classes.map((cls) => {
+  const cands = specimenCandidates(cls);
+  return { cls, pick: cands[today % cands.length], cands: cands.map((a) => ({ id: a.id, n: a.name, d: a.description, k: a.category ?? "other", s: a.subtype ?? a.task ?? "", h: hrefOf(a.id) })) };
+});
+const payload = JSON.stringify(sets.map((s) => ({ cls: s.cls, cands: s.cands })));
+---
+<div class="specimens" data-specimens={payload} data-built={today}>
+  {sets.map(({ cls, pick }) => pick && <AtomCard atom={pick} specimenLabel={`${CLASS_META[cls].label} of the day`} showClass />)}
+</div>
+<script>
+  // Re-pick for the viewer's date. Only the name, description, link, and chips change,
+  // so the server-rendered card structure is reused rather than rebuilt.
+  const host = document.querySelector<HTMLElement>("[data-specimens]");
+  if (host) {
+    const sets = JSON.parse(host.dataset.specimens!);
+    const today = Math.floor(Date.now() / 86400000);
+    if (today !== Number(host.dataset.built)) {
+      host.querySelectorAll<HTMLElement>(".card").forEach((card, i) => {
+        const set = sets[i]; if (!set?.cands.length) return;
+        const pick = set.cands[today % set.cands.length];
+        const a = card.querySelector<HTMLAnchorElement>("h3 a")!; a.textContent = pick.n; a.href = pick.h;
+        card.querySelector("p")!.textContent = pick.d;
+        card.querySelector<HTMLElement>(".kv")?.remove();
+        const cat = card.querySelector<HTMLAnchorElement>(".chip.cat"); if (cat) { cat.textContent = pick.k; cat.href = `/categories/${pick.k}/`; }
+        const sub = card.querySelector<HTMLElement>(".chip.sub"); if (sub) sub.textContent = pick.s;
+        const id = card.querySelector<HTMLElement>(".foot .id"); if (id) id.textContent = pick.id;
+        card.querySelector<HTMLElement>(".foot")!.querySelectorAll("span:not(.id)").forEach((s) => s.remove());
+      });
+    }
+  }
+</script>

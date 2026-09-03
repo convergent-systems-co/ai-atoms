@@ -1,0 +1,45 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/yarn-mistral",
+  "version": "1.0.0",
+  "name": "yarn-mistral",
+  "description": "An extension of Mistral to support context windows of 64K or 128K.",
+  "vendor": "Nous Research",
+  "family": "YaRN",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "7b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "yarn-mistral",
+      "url": "https://ollama.com/library/yarn-mistral",
+      "pull_command": "ollama pull yarn-mistral",
+      "run_command": "ollama run yarn-mistral",
+      "tag_count": 33,
+      "pulls": "899.3K",
+      "updated_at": "2023-11-04"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/yarn-mistral"
+  },
+  "authored_by": "Nous Research",
+  "source_url": "https://ollama.com/library/yarn-mistral",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/yarn-mistral",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

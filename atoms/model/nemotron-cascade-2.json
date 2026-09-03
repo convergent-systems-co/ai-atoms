@@ -1,0 +1,50 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/nemotron-cascade-2",
+  "version": "1.0.0",
+  "name": "nemotron-cascade-2",
+  "description": "An open 30B MoE model from NVIDIA with 3B activated parameters that delivers strong reasoning and agentic capabilities.",
+  "vendor": "NVIDIA",
+  "family": "Nemotron",
+  "task": "reasoning",
+  "capabilities": [
+    "tools",
+    "thinking"
+  ],
+  "parameter_sizes": [
+    "30b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "nemotron-cascade-2",
+      "url": "https://ollama.com/library/nemotron-cascade-2",
+      "pull_command": "ollama pull nemotron-cascade-2",
+      "run_command": "ollama run nemotron-cascade-2",
+      "tag_count": 3,
+      "pulls": "145.3K",
+      "updated_at": "2026-03-20"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/nemotron-cascade-2"
+  },
+  "authored_by": "NVIDIA",
+  "source_url": "https://ollama.com/library/nemotron-cascade-2",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/nemotron-cascade-2",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "tools",
+    "thinking"
+  ],
+  "lifecycle": "stable"
+}

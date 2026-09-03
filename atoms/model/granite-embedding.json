@@ -1,0 +1,49 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/granite-embedding",
+  "version": "1.0.0",
+  "name": "granite-embedding",
+  "description": "The IBM Granite Embedding 30M and 278M models models are text-only dense biencoder embedding models, with 30M available in English only and 278M serving multilingual use cases.",
+  "vendor": "IBM",
+  "family": "Granite",
+  "task": "embedding",
+  "capabilities": [
+    "embedding"
+  ],
+  "parameter_sizes": [
+    "30m",
+    "278m"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "granite-embedding",
+      "url": "https://ollama.com/library/granite-embedding",
+      "pull_command": "ollama pull granite-embedding",
+      "run_command": "ollama run granite-embedding",
+      "tag_count": 6,
+      "pulls": "362.1K",
+      "updated_at": "2024-12-18"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/granite-embedding"
+  },
+  "authored_by": "IBM",
+  "source_url": "https://ollama.com/library/granite-embedding",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/granite-embedding",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "embedding"
+  ],
+  "lifecycle": "stable"
+}

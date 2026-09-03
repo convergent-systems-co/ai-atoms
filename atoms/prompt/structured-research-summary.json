@@ -1,0 +1,31 @@
+{
+  "schema": "https://ai-atoms.com/schemas/prompt-v1.json",
+  "type": "prompt",
+  "id": "prompt/structured-research-summary",
+  "version": "1.0.0",
+  "name": "Structured Research Summary",
+  "description": "Findings / Evidence / Open Questions / Sources layout for research output.",
+  "subtype": "format",
+  "content": "Structure the response as four sections, in order:\n\n1. **Findings** — bulleted; each finding is one sentence stating a claim.\n2. **Evidence** — for each finding, the source(s) supporting it, with direct quotes where possible.\n3. **Open Questions** — claims you could not verify, gaps in the evidence, conflicting accounts.\n4. **Sources** — numbered list; each source includes title, author, year, and a URL or document identifier.",
+  "applicable_turns": [
+    "system"
+  ],
+  "vendors": [
+    "any"
+  ],
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/format-instruction/structured-research-summary.json",
+  "tags": [
+    "research",
+    "format"
+  ],
+  "lifecycle": "draft",
+  "category": "research",
+  "provenance": {
+    "source": "convergent-systems-co/prompt-atoms",
+    "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/format-instruction/structured-research-summary.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed by scripts/migrate-retired-atoms.py from the retired catalog."
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/deepseek-llm",
+  "version": "1.0.0",
+  "name": "deepseek-llm",
+  "description": "An advanced language model crafted with 2 trillion bilingual tokens.",
+  "vendor": "DeepSeek",
+  "family": "DeepSeek",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "7b",
+    "67b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "deepseek-llm",
+      "url": "https://ollama.com/library/deepseek-llm",
+      "pull_command": "ollama pull deepseek-llm",
+      "run_command": "ollama run deepseek-llm",
+      "tag_count": 64,
+      "pulls": "1.2M",
+      "updated_at": "2023-12-11"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/deepseek-llm"
+  },
+  "authored_by": "DeepSeek",
+  "source_url": "https://ollama.com/library/deepseek-llm",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/deepseek-llm",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

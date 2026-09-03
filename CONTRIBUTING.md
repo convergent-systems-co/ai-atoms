@@ -1,34 +1,54 @@
 # Contributing — ai-atoms
 
-## Adding a skill atom
+**Audience:** contributors adding or changing atoms.
+
+## Adding an atom
 
 1. Fork the repository.
-2. Create a JSON file in `atoms/skill/<slug>.json`.
-3. Ensure it validates against `schemas/skill-v1.json`:
+2. Pick the class: `skill`, `hook`, `prompt`, `agent`, `persona`, or `model`. The
+   [builder](https://ai-atoms.com/builder/) generates a valid starting file for any class.
+3. Create `atoms/<class>/<slug>.json`. The `id` must be `<class>/<slug>`.
+4. Validate locally:
    ```bash
+   pip install jsonschema pytest
    python3 scripts/build-exports.py
+   python3 -m pytest
    ```
-4. Open a pull request.
+   The build fails on schema errors and on any reference to an atom that does not exist.
+5. Open a pull request. Merges use merge commits; squash merging is not used.
 
-## Adding a hook atom
+## Class-specific rules
 
-1. Fork the repository.
-2. Create a JSON file in `atoms/hook/<slug>.json`.
-3. Ensure it validates against `schemas/hook-v1.json`:
-   ```bash
-   python3 scripts/build-exports.py
-   ```
-4. Open a pull request.
+- **skill** — `system_prompt_fragment` must be self-contained. Do not reference files
+  (`scripts/`, `references/`, `../CONNECTORS.md`) that are not shipped inside the atom.
+- **hook** — carry the full `script` inline, honour `--self-check`, depend only on the Python
+  standard library plus `hook/lib`, and add a test under `atoms/hook/tests/`.
+- **prompt** — `content` is the injected text, verbatim. One prompt per idea; use a
+  `composite` prompt with `includes` to bundle.
+- **persona** — inline every constraint and boundary as text. A persona binds no tools or
+  skills; that is what an agent is for.
+- **agent** — every `persona`, `prompts`, `skills`, `hooks`, `tools`, and `policies` entry
+  must resolve. Reviewers must declare `review_criteria`.
+- **model** — at least one `providers[]` entry with the provider's own `model_id` and page
+  `url`. Do not guess `vendor`; write `unknown`.
+
+## Category and provenance
+
+Give every atom a `category` from `schemas/common-v1.json`; the site's category pages and
+`ai skills categories` read it. An atom copied from anywhere else carries `provenance` with
+`source`, `source_url`, and `license` — write `unknown` rather than guessing a license. The
+import scripts under `scripts/` do this for their sources and never overwrite an existing slug.
 
 ## Requirements
 
-- Python 3.10+ with `jsonschema` installed (`pip install jsonschema`)
+- Python 3.10+ with `jsonschema` and `pytest`
+- Node 22 for the web build (`cd web && npm ci && npm run build`)
 - `build-exports.py` must exit 0 with no validation errors
 
-## ID conventions
+## Attribution
 
-- Skills: `skill/<slug>` — lowercase alphanumeric with hyphens, no slashes within the slug
-- Hooks: `hook/<slug>` — same convention
+Imported atoms carry `authored_by` and `source_url` pointing at the original file. Keep both
+when editing an imported atom; bump `version` per SPEC.md.
 
 ## Lifecycle
 

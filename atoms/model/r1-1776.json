@@ -1,0 +1,46 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/r1-1776",
+  "version": "1.0.0",
+  "name": "r1-1776",
+  "description": "A version of the DeepSeek-R1 model that has been post trained to provide unbiased, accurate, and factual information by Perplexity.",
+  "vendor": "Perplexity",
+  "family": "R1-1776",
+  "task": "reasoning",
+  "capabilities": [],
+  "parameter_sizes": [
+    "70b",
+    "671b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "r1-1776",
+      "url": "https://ollama.com/library/r1-1776",
+      "pull_command": "ollama pull r1-1776",
+      "run_command": "ollama run r1-1776",
+      "tag_count": 9,
+      "pulls": "420K",
+      "updated_at": "2025-02-21"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/r1-1776"
+  },
+  "authored_by": "Perplexity",
+  "source_url": "https://ollama.com/library/r1-1776",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/r1-1776",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

@@ -1,0 +1,49 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/all-minilm",
+  "version": "1.0.0",
+  "name": "all-minilm",
+  "description": "Embedding models on very large sentence level datasets.",
+  "vendor": "sentence-transformers",
+  "family": "MiniLM",
+  "task": "embedding",
+  "capabilities": [
+    "embedding"
+  ],
+  "parameter_sizes": [
+    "22m",
+    "33m"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "all-minilm",
+      "url": "https://ollama.com/library/all-minilm",
+      "pull_command": "ollama pull all-minilm",
+      "run_command": "ollama run all-minilm",
+      "tag_count": 10,
+      "pulls": "3.5M",
+      "updated_at": "2024-05-06"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/all-minilm"
+  },
+  "authored_by": "sentence-transformers",
+  "source_url": "https://ollama.com/library/all-minilm",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/all-minilm",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "embedding"
+  ],
+  "lifecycle": "stable"
+}

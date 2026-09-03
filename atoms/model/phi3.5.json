@@ -1,0 +1,45 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/phi3.5",
+  "version": "1.0.0",
+  "name": "phi3.5",
+  "description": "A lightweight AI model with 3.8 billion parameters with performance overtaking similarly and larger sized models.",
+  "vendor": "Microsoft",
+  "family": "Phi-3",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "3.8b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "phi3.5",
+      "url": "https://ollama.com/library/phi3.5",
+      "pull_command": "ollama pull phi3.5",
+      "run_command": "ollama run phi3.5",
+      "tag_count": 17,
+      "pulls": "1M",
+      "updated_at": "2024-09-05"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/phi3.5"
+  },
+  "authored_by": "Microsoft",
+  "source_url": "https://ollama.com/library/phi3.5",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/phi3.5",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

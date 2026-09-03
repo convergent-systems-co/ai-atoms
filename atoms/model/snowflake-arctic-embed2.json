@@ -1,0 +1,48 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/snowflake-arctic-embed2",
+  "version": "1.0.0",
+  "name": "snowflake-arctic-embed2",
+  "description": "Snowflake's frontier embedding model. Arctic Embed 2.0 adds multilingual support without sacrificing English performance or scalability.",
+  "vendor": "Snowflake",
+  "family": "Arctic Embed",
+  "task": "embedding",
+  "capabilities": [
+    "embedding"
+  ],
+  "parameter_sizes": [
+    "568m"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "snowflake-arctic-embed2",
+      "url": "https://ollama.com/library/snowflake-arctic-embed2",
+      "pull_command": "ollama pull snowflake-arctic-embed2",
+      "run_command": "ollama run snowflake-arctic-embed2",
+      "tag_count": 3,
+      "pulls": "447.2K",
+      "updated_at": "2024-12-04"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/snowflake-arctic-embed2"
+  },
+  "authored_by": "Snowflake",
+  "source_url": "https://ollama.com/library/snowflake-arctic-embed2",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/snowflake-arctic-embed2",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "embedding"
+  ],
+  "lifecycle": "stable"
+}

@@ -1,0 +1,24 @@
+---
+import Site from "../../layouts/Site.astro";
+import { CATEGORY_INDEX, CATEGORY_LABEL, CLASSES, CLASS_META } from "../../lib/catalog";
+const rows = Object.entries(CATEGORY_INDEX).map(([cat, byClass]) => ({ cat, label: CATEGORY_LABEL[cat] ?? cat, byClass, total: Object.values(byClass).reduce((a, b) => a + b, 0) })).sort((a, b) => b.total - a.total);
+---
+<Site title="Categories" description="Every atom class grouped by one shared category vocabulary." current="/categories/">
+  <p class="eyebrow">categories · {rows.length}</p>
+  <h1 style="margin-top:0.4rem;">One vocabulary, every class.</h1>
+  <p class="lede" style="margin-top:0.8rem;">A category page lists skills, hooks, prompts, agents, personas, and models together, so "everything for security" is one link. Each is also machine-readable at <code>/categories/&lt;slug&gt;.json</code>.</p>
+  <div class="scroll" style="margin-top:1.8rem;">
+    <table class="table">
+      <thead><tr><th>Category</th>{CLASSES.map((c) => <th class="num"><span class={`chip cls hue-${c}`}>{CLASS_META[c].symbol}</span></th>)}<th class="num">Total</th></tr></thead>
+      <tbody>
+        {rows.map((r) => (
+          <tr>
+            <td><a href={`/categories/${r.cat}/`}><b>{r.label}</b></a> <span class="muted small" style="font-family:var(--mono);">{r.cat}</span></td>
+            {CLASSES.map((c) => <td class="num">{r.byClass[c] ?? <span class="muted">·</span>}</td>)}
+            <td class="num"><b>{r.total}</b></td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</Site>

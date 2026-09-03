@@ -1,0 +1,30 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/threat-mitigation-mapping",
+  "version": "1.0.0",
+  "name": "Threat Mitigation Mapping",
+  "description": "Map identified threats to appropriate security controls and mitigations. Use when prioritizing security investments, creating remediation plans, or validating control effectiveness.",
+  "system_prompt_fragment": "# Threat Mitigation Mapping\n\nConnect threats to controls for effective security planning.\n\n## Use this skill when\n\n- Prioritizing security investments\n- Creating remediation roadmaps\n- Validating control coverage\n- Designing defense-in-depth\n- Security architecture review\n- Risk treatment planning\n\n## Do not use this skill when\n\n- The task is unrelated to threat mitigation mapping\n- You need a different domain or tool outside this scope\n\n## Instructions\n\n- Clarify goals, constraints, and required inputs.\n- Apply relevant best practices and validate outcomes.\n- Provide actionable steps and verification.\n- If detailed examples are required, open `resources/implementation-playbook.md`.\n\n## Resources\n\n- `resources/implementation-playbook.md` for detailed patterns and examples.",
+  "applicable_domains": [
+    "security"
+  ],
+  "category": "security",
+  "invocation": [
+    "/threat-mitigation-mapping"
+  ],
+  "authored_by": "claudeskills.in community",
+  "source_url": "https://claudeskills.in/skill/threat-mitigation-mapping",
+  "provenance": {
+    "source": "claudeskills.in",
+    "source_url": "https://claudeskills.in/skill/threat-mitigation-mapping",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Aggregated by claudeskills.in from community GitHub lists."
+  },
+  "tags": [
+    "claudeskills",
+    "security"
+  ],
+  "lifecycle": "draft"
+}

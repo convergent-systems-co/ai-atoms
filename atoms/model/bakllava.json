@@ -1,0 +1,48 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/bakllava",
+  "version": "1.0.0",
+  "name": "bakllava",
+  "description": "BakLLaVA is a multimodal model consisting of the Mistral 7B base model augmented with the LLaVA architecture.",
+  "vendor": "SkunkworksAI",
+  "family": "BakLLaVA",
+  "task": "multimodal",
+  "capabilities": [
+    "vision"
+  ],
+  "parameter_sizes": [
+    "7b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "bakllava",
+      "url": "https://ollama.com/library/bakllava",
+      "pull_command": "ollama pull bakllava",
+      "run_command": "ollama run bakllava",
+      "tag_count": 17,
+      "pulls": "884.7K",
+      "updated_at": "2023-12-13"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/bakllava"
+  },
+  "authored_by": "SkunkworksAI",
+  "source_url": "https://ollama.com/library/bakllava",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/bakllava",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "vision"
+  ],
+  "lifecycle": "stable"
+}

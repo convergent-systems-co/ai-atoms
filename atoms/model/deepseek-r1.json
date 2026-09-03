@@ -1,0 +1,56 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/deepseek-r1",
+  "version": "1.0.0",
+  "name": "deepseek-r1",
+  "description": "DeepSeek-R1 is a family of open reasoning models with performance approaching that of leading models, such as O3 and Gemini 2.5 Pro.",
+  "vendor": "DeepSeek",
+  "family": "DeepSeek-R1",
+  "task": "reasoning",
+  "capabilities": [
+    "tools",
+    "thinking"
+  ],
+  "parameter_sizes": [
+    "1.5b",
+    "7b",
+    "8b",
+    "14b",
+    "32b",
+    "70b",
+    "671b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "deepseek-r1",
+      "url": "https://ollama.com/library/deepseek-r1",
+      "pull_command": "ollama pull deepseek-r1",
+      "run_command": "ollama run deepseek-r1",
+      "tag_count": 35,
+      "pulls": "92.3M",
+      "updated_at": "2025-07-02"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/deepseek-r1"
+  },
+  "authored_by": "DeepSeek",
+  "source_url": "https://ollama.com/library/deepseek-r1",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/deepseek-r1",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "tools",
+    "thinking"
+  ],
+  "lifecycle": "stable"
+}

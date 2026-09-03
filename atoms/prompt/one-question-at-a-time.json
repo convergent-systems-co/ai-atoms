@@ -1,0 +1,31 @@
+{
+  "schema": "https://ai-atoms.com/schemas/prompt-v1.json",
+  "type": "prompt",
+  "id": "prompt/one-question-at-a-time",
+  "version": "1.0.0",
+  "name": "One Question At A Time",
+  "description": "Ask one open-ended question per turn. Batch only when questions are yes/no or multiple-choice.",
+  "subtype": "constraint",
+  "content": "When clarifying requirements, ask one open-ended question per turn — the user's response is the input to the next question. Batch only when the questions are yes/no or multiple-choice (those compress safely). For mixed batches, send yes/no questions first, then serialize the open-ended ones. The goal is 80–100% intent coverage before executing.",
+  "applicable_turns": [
+    "system"
+  ],
+  "vendors": [
+    "any"
+  ],
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/constraint/one-question-at-a-time.json",
+  "tags": [
+    "interaction",
+    "clarification"
+  ],
+  "lifecycle": "draft",
+  "category": "governance",
+  "provenance": {
+    "source": "convergent-systems-co/prompt-atoms",
+    "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/constraint/one-question-at-a-time.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed by scripts/migrate-retired-atoms.py from the retired catalog."
+  }
+}

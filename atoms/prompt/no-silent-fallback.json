@@ -1,0 +1,31 @@
+{
+  "schema": "https://ai-atoms.com/schemas/prompt-v1.json",
+  "type": "prompt",
+  "id": "prompt/no-silent-fallback",
+  "version": "1.0.0",
+  "name": "No Silent Fallback",
+  "description": "If a constraint cannot be met, state it. Do not substitute prose or a degraded output without naming the substitution.",
+  "subtype": "constraint",
+  "content": "If you cannot meet a constraint — schema cannot be produced, the requested file cannot be read, the requested tool isn't available — state that explicitly. Do not silently substitute prose for a structured output, a paraphrase for a quote, or a default for a requested value. The user must be able to tell the difference between 'X' and 'something that looks like X but isn't'.",
+  "applicable_turns": [
+    "system"
+  ],
+  "vendors": [
+    "any"
+  ],
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/constraint/no-silent-fallback.json",
+  "tags": [
+    "honesty",
+    "format"
+  ],
+  "lifecycle": "draft",
+  "category": "governance",
+  "provenance": {
+    "source": "convergent-systems-co/prompt-atoms",
+    "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/constraint/no-silent-fallback.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed by scripts/migrate-retired-atoms.py from the retired catalog."
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "schema": "https://ai-atoms.com/schemas/prompt-v1.json",
+  "type": "prompt",
+  "id": "prompt/markdown-with-citations",
+  "version": "1.0.0",
+  "name": "Markdown with citations",
+  "description": "Output is GitHub-flavored markdown. Code references use path:line; external sources use inline links.",
+  "subtype": "format",
+  "content": "Format your response as GitHub-flavored markdown. Use ```language fences for code blocks. Cite code as path:line. Use inline links [text](url) for external sources. Avoid HTML.",
+  "applicable_turns": [
+    "system"
+  ],
+  "vendors": [
+    "any"
+  ],
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/format-instruction/markdown-with-citations.json",
+  "tags": [
+    "format",
+    "markdown"
+  ],
+  "lifecycle": "draft",
+  "category": "governance",
+  "provenance": {
+    "source": "convergent-systems-co/prompt-atoms",
+    "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/format-instruction/markdown-with-citations.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed by scripts/migrate-retired-atoms.py from the retired catalog."
+  }
+}

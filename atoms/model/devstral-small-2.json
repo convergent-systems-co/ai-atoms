@@ -1,0 +1,50 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/devstral-small-2",
+  "version": "1.0.0",
+  "name": "devstral-small-2",
+  "description": "24B model that excels at using tools to explore codebases, editing multiple files and power software engineering agents.",
+  "vendor": "Mistral AI",
+  "family": "Devstral",
+  "task": "code-generation",
+  "capabilities": [
+    "vision",
+    "tools"
+  ],
+  "parameter_sizes": [
+    "24b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "devstral-small-2",
+      "url": "https://ollama.com/library/devstral-small-2",
+      "pull_command": "ollama pull devstral-small-2",
+      "run_command": "ollama run devstral-small-2",
+      "tag_count": 6,
+      "pulls": "1M",
+      "updated_at": "2025-12-13"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/devstral-small-2"
+  },
+  "authored_by": "Mistral AI",
+  "source_url": "https://ollama.com/library/devstral-small-2",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/devstral-small-2",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "vision",
+    "tools"
+  ],
+  "lifecycle": "stable"
+}

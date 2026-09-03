@@ -1,0 +1,46 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/deepseek-coder-v2",
+  "version": "1.0.0",
+  "name": "deepseek-coder-v2",
+  "description": "An open-source Mixture-of-Experts code language model that achieves performance comparable to GPT4-Turbo in code-specific tasks.",
+  "vendor": "DeepSeek",
+  "family": "DeepSeek Coder",
+  "task": "code-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "16b",
+    "236b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "deepseek-coder-v2",
+      "url": "https://ollama.com/library/deepseek-coder-v2",
+      "pull_command": "ollama pull deepseek-coder-v2",
+      "run_command": "ollama run deepseek-coder-v2",
+      "tag_count": 64,
+      "pulls": "3M",
+      "updated_at": "2024-09-06"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/deepseek-coder-v2"
+  },
+  "authored_by": "DeepSeek",
+  "source_url": "https://ollama.com/library/deepseek-coder-v2",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/deepseek-coder-v2",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}
