@@ -1,0 +1,31 @@
+{
+  "schema": "https://ai-atoms.com/schemas/prompt-v1.json",
+  "type": "prompt",
+  "id": "prompt/findings-need-evidence",
+  "version": "1.0.0",
+  "name": "Findings Need Evidence",
+  "description": "Code-review findings of medium-or-higher severity must include file:line + a snippet from the actual code. Findings without evidence must be withdrawn or downgraded to a question.",
+  "subtype": "constraint",
+  "content": "Every code-review finding of medium-or-higher severity must include: (a) the file path and line range, and (b) a short code snippet (~200 chars max) from the actual code. A finding without evidence must be withdrawn or downgraded to a question. This applies to your own work as well as to reviewing others'.",
+  "applicable_turns": [
+    "system"
+  ],
+  "vendors": [
+    "any"
+  ],
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/constraint/findings-need-evidence.json",
+  "tags": [
+    "code-review",
+    "grounding"
+  ],
+  "lifecycle": "draft",
+  "category": "governance",
+  "provenance": {
+    "source": "convergent-systems-co/prompt-atoms",
+    "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/constraint/findings-need-evidence.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed by scripts/migrate-retired-atoms.py from the retired catalog."
+  }
+}

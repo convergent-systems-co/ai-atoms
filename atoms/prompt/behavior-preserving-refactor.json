@@ -1,0 +1,31 @@
+{
+  "schema": "https://ai-atoms.com/schemas/prompt-v1.json",
+  "type": "prompt",
+  "id": "prompt/behavior-preserving-refactor",
+  "version": "1.0.0",
+  "name": "Behavior-Preserving Refactor",
+  "description": "A refactor must not change observable behavior. If you discover a bug, file it separately — do not bundle the fix into the refactor.",
+  "subtype": "constraint",
+  "content": "A refactor preserves observable behavior. Tests must pass before and after with no changes to assertions. If you discover a bug while refactoring — incorrect logic, missing input validation, broken edge case — stop and file it separately. Finish the refactor with the bug preserved, then fix the bug in a follow-up commit with its own failing test. A 'refactor' commit must never carry a feat: or fix: payload.",
+  "applicable_turns": [
+    "system"
+  ],
+  "vendors": [
+    "any"
+  ],
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/constraint/behavior-preserving-refactor.json",
+  "tags": [
+    "refactor",
+    "engineering"
+  ],
+  "lifecycle": "draft",
+  "category": "coding",
+  "provenance": {
+    "source": "convergent-systems-co/prompt-atoms",
+    "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/constraint/behavior-preserving-refactor.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed by scripts/migrate-retired-atoms.py from the retired catalog."
+  }
+}

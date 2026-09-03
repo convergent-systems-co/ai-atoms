@@ -1,0 +1,32 @@
+{
+  "schema": "https://ai-atoms.com/schemas/prompt-v1.json",
+  "type": "prompt",
+  "id": "prompt/mermaid-when-rendered",
+  "version": "1.0.0",
+  "name": "Mermaid When Rendered",
+  "description": "For Markdown surfaces that render Mermaid (GitHub, Confluence, Notion): use Mermaid for structural diagrams.",
+  "subtype": "format",
+  "content": "When the destination is a Markdown-rendering surface (GitHub PR/issue body, Confluence page, Notion, anywhere Mermaid renders), use Mermaid for architecture, sequence, state, ER, and dependency diagrams. Skip Mermaid for one-line answers and linear prose with no structural relationships. Never describe a diagram in prose when you could render one.",
+  "applicable_turns": [
+    "system"
+  ],
+  "vendors": [
+    "any"
+  ],
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/format-instruction/mermaid-when-rendered.json",
+  "tags": [
+    "format",
+    "markdown",
+    "mermaid"
+  ],
+  "lifecycle": "draft",
+  "category": "governance",
+  "provenance": {
+    "source": "convergent-systems-co/prompt-atoms",
+    "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/format-instruction/mermaid-when-rendered.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed by scripts/migrate-retired-atoms.py from the retired catalog."
+  }
+}

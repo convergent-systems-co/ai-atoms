@@ -1,0 +1,31 @@
+{
+  "schema": "https://ai-atoms.com/schemas/prompt-v1.json",
+  "type": "prompt",
+  "id": "prompt/json-object-with-summary",
+  "version": "1.0.0",
+  "name": "JSON object with summary",
+  "description": "Output a single JSON object: { summary: string, findings: array<{path,line,severity,note}> }. No prose.",
+  "subtype": "output-schema",
+  "content": "Respond with a single JSON object matching this schema (no prose, no markdown fences):\n\n{\n  \"summary\": \"<one-sentence overall finding>\",\n  \"findings\": [\n    { \"path\": \"<path>\", \"line\": <number>, \"severity\": \"info|warn|error\", \"note\": \"<one sentence>\" }\n  ]\n}\n\nIf there are no findings, return summary='clean' and findings=[].",
+  "applicable_turns": [
+    "system"
+  ],
+  "vendors": [
+    "any"
+  ],
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/output-schema/json-object-with-summary.json",
+  "tags": [
+    "output-schema",
+    "json"
+  ],
+  "lifecycle": "draft",
+  "category": "governance",
+  "provenance": {
+    "source": "convergent-systems-co/prompt-atoms",
+    "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/output-schema/json-object-with-summary.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed by scripts/migrate-retired-atoms.py from the retired catalog."
+  }
+}

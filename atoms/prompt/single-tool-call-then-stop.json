@@ -1,0 +1,32 @@
+{
+  "schema": "https://ai-atoms.com/schemas/prompt-v1.json",
+  "type": "prompt",
+  "id": "prompt/single-tool-call-then-stop",
+  "version": "1.0.0",
+  "name": "Single tool call, then stop",
+  "description": "Call exactly one tool, then end the turn. Used when you want a deterministic single-action loop.",
+  "subtype": "tool-use",
+  "content": "When you have everything needed to call a tool, call exactly one tool and then end your turn. Do not narrate before or after the call. Wait for the tool's result before further reasoning.",
+  "applicable_turns": [
+    "system"
+  ],
+  "vendors": [
+    "claude",
+    "gpt"
+  ],
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/tool-use-template/single-tool-call-then-stop.json",
+  "tags": [
+    "tool-use",
+    "deterministic"
+  ],
+  "lifecycle": "draft",
+  "category": "governance",
+  "provenance": {
+    "source": "convergent-systems-co/prompt-atoms",
+    "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/tool-use-template/single-tool-call-then-stop.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed by scripts/migrate-retired-atoms.py from the retired catalog."
+  }
+}

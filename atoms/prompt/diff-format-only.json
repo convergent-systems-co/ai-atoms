@@ -1,0 +1,31 @@
+{
+  "schema": "https://ai-atoms.com/schemas/prompt-v1.json",
+  "type": "prompt",
+  "id": "prompt/diff-format-only",
+  "version": "1.0.0",
+  "name": "Diff Format Only",
+  "description": "Unified-diff output. No narration around the diff. Use one diff block per file.",
+  "subtype": "format",
+  "content": "Emit unified-diff output only. Start each file's diff with the `--- a/<path>` and `+++ b/<path>` headers. One hunk per change, with `@@` markers. No narration before, between, or after diff blocks. If multiple files change, emit one diff block per file in path order. The diff must apply cleanly with `git apply` from the repository root.",
+  "applicable_turns": [
+    "system"
+  ],
+  "vendors": [
+    "any"
+  ],
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/format-instruction/diff-format-only.json",
+  "tags": [
+    "format",
+    "diff"
+  ],
+  "lifecycle": "draft",
+  "category": "governance",
+  "provenance": {
+    "source": "convergent-systems-co/prompt-atoms",
+    "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/format-instruction/diff-format-only.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed by scripts/migrate-retired-atoms.py from the retired catalog."
+  }
+}
