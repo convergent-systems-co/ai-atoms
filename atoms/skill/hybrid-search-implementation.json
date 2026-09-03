@@ -1,0 +1,30 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/hybrid-search-implementation",
+  "version": "1.0.0",
+  "name": "Hybrid Search Implementation",
+  "description": "Combine vector and keyword search for improved retrieval. Use when implementing RAG systems, building search engines, or when neither approach alone provides sufficient recall.",
+  "system_prompt_fragment": "# Hybrid Search Implementation\n\nPatterns for combining vector similarity and keyword-based search.\n\n## Use this skill when\n\n- Building RAG systems with improved recall\n- Combining semantic understanding with exact matching\n- Handling queries with specific terms (names, codes)\n- Improving search for domain-specific vocabulary\n- When pure vector search misses keyword matches\n\n## Do not use this skill when\n\n- The task is unrelated to hybrid search implementation\n- You need a different domain or tool outside this scope\n\n## Instructions\n\n- Clarify goals, constraints, and required inputs.\n- Apply relevant best practices and validate outcomes.\n- Provide actionable steps and verification.\n- If detailed examples are required, open `resources/implementation-playbook.md`.\n\n## Resources\n\n- `resources/implementation-playbook.md` for detailed patterns and examples.",
+  "applicable_domains": [
+    "other"
+  ],
+  "category": "other",
+  "invocation": [
+    "/hybrid-search-implementation"
+  ],
+  "authored_by": "claudeskills.in community",
+  "source_url": "https://claudeskills.in/skill/hybrid-search-implementation",
+  "provenance": {
+    "source": "claudeskills.in",
+    "source_url": "https://claudeskills.in/skill/hybrid-search-implementation",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Aggregated by claudeskills.in from community GitHub lists."
+  },
+  "tags": [
+    "claudeskills",
+    "other"
+  ],
+  "lifecycle": "draft"
+}

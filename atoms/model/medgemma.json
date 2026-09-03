@@ -1,0 +1,49 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/medgemma",
+  "version": "1.0.0",
+  "name": "medgemma",
+  "description": "MedGemma is a collection of Gemma 3 variants that are trained for performance on medical text and image comprehension.",
+  "vendor": "Google",
+  "family": "MedGemma",
+  "task": "multimodal",
+  "capabilities": [
+    "vision"
+  ],
+  "parameter_sizes": [
+    "4b",
+    "27b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "medgemma",
+      "url": "https://ollama.com/library/medgemma",
+      "pull_command": "ollama pull medgemma",
+      "run_command": "ollama run medgemma",
+      "tag_count": 9,
+      "pulls": "342.4K",
+      "updated_at": "2026-04-16"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/medgemma"
+  },
+  "authored_by": "Google",
+  "source_url": "https://ollama.com/library/medgemma",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/medgemma",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "vision"
+  ],
+  "lifecycle": "stable"
+}

@@ -1,0 +1,50 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/mistral-small3.2",
+  "version": "1.0.0",
+  "name": "mistral-small3.2",
+  "description": "An update to Mistral Small that improves on function calling, instruction following, and less repetition errors.",
+  "vendor": "Mistral AI",
+  "family": "Mistral Small",
+  "task": "multimodal",
+  "capabilities": [
+    "vision",
+    "tools"
+  ],
+  "parameter_sizes": [
+    "24b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "mistral-small3.2",
+      "url": "https://ollama.com/library/mistral-small3.2",
+      "pull_command": "ollama pull mistral-small3.2",
+      "run_command": "ollama run mistral-small3.2",
+      "tag_count": 5,
+      "pulls": "2.5M",
+      "updated_at": "2025-06-20"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/mistral-small3.2"
+  },
+  "authored_by": "Mistral AI",
+  "source_url": "https://ollama.com/library/mistral-small3.2",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/mistral-small3.2",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "vision",
+    "tools"
+  ],
+  "lifecycle": "stable"
+}

@@ -1,0 +1,46 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/dolphin-llama3",
+  "version": "1.0.0",
+  "name": "dolphin-llama3",
+  "description": "Dolphin 2.9 is a new model with 8B and 70B sizes by Eric Hartford based on Llama 3 that has a variety of instruction, conversational, and coding skills.",
+  "vendor": "Cognitive Computations",
+  "family": "Dolphin",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "8b",
+    "70b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "dolphin-llama3",
+      "url": "https://ollama.com/library/dolphin-llama3",
+      "pull_command": "ollama pull dolphin-llama3",
+      "run_command": "ollama run dolphin-llama3",
+      "tag_count": 53,
+      "pulls": "2.1M",
+      "updated_at": "2024-05-10"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/dolphin-llama3"
+  },
+  "authored_by": "Cognitive Computations",
+  "source_url": "https://ollama.com/library/dolphin-llama3",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/dolphin-llama3",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

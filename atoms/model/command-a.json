@@ -1,0 +1,48 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/command-a",
+  "version": "1.0.0",
+  "name": "command-a",
+  "description": "111 billion parameter model optimized for demanding enterprises that require fast, secure, and high-quality AI",
+  "vendor": "Cohere",
+  "family": "Command",
+  "task": "text-generation",
+  "capabilities": [
+    "tools"
+  ],
+  "parameter_sizes": [
+    "111b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "command-a",
+      "url": "https://ollama.com/library/command-a",
+      "pull_command": "ollama pull command-a",
+      "run_command": "ollama run command-a",
+      "tag_count": 5,
+      "pulls": "226.9K",
+      "updated_at": "2025-03-13"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/command-a"
+  },
+  "authored_by": "Cohere",
+  "source_url": "https://ollama.com/library/command-a",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/command-a",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "tools"
+  ],
+  "lifecycle": "stable"
+}

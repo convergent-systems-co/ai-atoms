@@ -1,0 +1,31 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/skill-seekers",
+  "version": "1.0.0",
+  "name": "Skill Seekers",
+  "description": "-Automatically convert documentation websites, GitHub repositories, and PDFs into Claude AI skills in minutes.",
+  "system_prompt_fragment": "# Skill Seekers\n\n## Overview\n\n-Automatically convert documentation websites, GitHub repositories, and PDFs into Claude AI skills in minutes.\n\n## When to Use This Skill\n\nUse this skill when you need to work with -automatically convert documentation websites, github repositories, and pdfs into claude ai skills in minutes..\n\n## Instructions\n\nThis skill provides guidance and patterns for -automatically convert documentation websites, github repositories, and pdfs into claude ai skills in minutes..\n\nFor more information, see the [source repository](https://github.com/yusufkaraaslan/Skill_Seekers).",
+  "applicable_domains": [
+    "other"
+  ],
+  "category": "other",
+  "invocation": [
+    "/skill-seekers"
+  ],
+  "authored_by": "claudeskills.in community",
+  "source_url": "https://claudeskills.in/skill/skill-seekers",
+  "provenance": {
+    "source": "claudeskills.in",
+    "source_url": "https://claudeskills.in/skill/skill-seekers",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Aggregated by claudeskills.in from community GitHub lists. Upstream as recorded by the aggregator: https://github.com/yusufkaraaslan/Skill_Seekers."
+  },
+  "tags": [
+    "claudeskills",
+    "other",
+    "risk-reviewed"
+  ],
+  "lifecycle": "draft"
+}

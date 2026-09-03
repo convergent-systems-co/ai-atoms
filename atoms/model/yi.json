@@ -1,0 +1,47 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/yi",
+  "version": "1.0.0",
+  "name": "yi",
+  "description": "Yi 1.5 is a high-performing, bilingual language model.",
+  "vendor": "01.AI",
+  "family": "Yi",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "6b",
+    "9b",
+    "34b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "yi",
+      "url": "https://ollama.com/library/yi",
+      "pull_command": "ollama pull yi",
+      "run_command": "ollama run yi",
+      "tag_count": 174,
+      "pulls": "1.4M",
+      "updated_at": "2024-05-13"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/yi"
+  },
+  "authored_by": "01.AI",
+  "source_url": "https://ollama.com/library/yi",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/yi",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

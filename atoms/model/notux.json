@@ -1,0 +1,45 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/notux",
+  "version": "1.0.0",
+  "name": "notux",
+  "description": "A top-performing mixture of experts model, fine-tuned with high-quality data.",
+  "vendor": "Argilla",
+  "family": "Notux",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "8x7b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "notux",
+      "url": "https://ollama.com/library/notux",
+      "pull_command": "ollama pull notux",
+      "run_command": "ollama run notux",
+      "tag_count": 18,
+      "pulls": "536.7K",
+      "updated_at": "2023-12-29"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/notux"
+  },
+  "authored_by": "Argilla",
+  "source_url": "https://ollama.com/library/notux",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/notux",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

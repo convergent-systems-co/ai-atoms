@@ -1,0 +1,60 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/qwen3.5",
+  "version": "1.0.0",
+  "name": "qwen3.5",
+  "description": "Qwen 3.5 is a family of open-source multimodal models that delivers exceptional utility and performance.",
+  "vendor": "Alibaba",
+  "family": "Qwen3",
+  "task": "reasoning",
+  "capabilities": [
+    "vision",
+    "tools",
+    "thinking",
+    "cloud"
+  ],
+  "parameter_sizes": [
+    "0.8b",
+    "2b",
+    "4b",
+    "9b",
+    "27b",
+    "35b",
+    "122b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "qwen3.5",
+      "url": "https://ollama.com/library/qwen3.5",
+      "pull_command": "ollama pull qwen3.5",
+      "run_command": "ollama run qwen3.5",
+      "tag_count": 64,
+      "pulls": "19.3M",
+      "updated_at": "2026-09-01"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/qwen3.5"
+  },
+  "authored_by": "Alibaba",
+  "source_url": "https://ollama.com/library/qwen3.5",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/qwen3.5",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "vision",
+    "tools",
+    "thinking",
+    "cloud"
+  ],
+  "lifecycle": "stable"
+}

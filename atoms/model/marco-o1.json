@@ -1,0 +1,45 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/marco-o1",
+  "version": "1.0.0",
+  "name": "marco-o1",
+  "description": "An open large reasoning model for real-world solutions by the Alibaba International Digital Commerce Group (AIDC-AI).",
+  "vendor": "Alibaba",
+  "family": "Marco",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "7b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "marco-o1",
+      "url": "https://ollama.com/library/marco-o1",
+      "pull_command": "ollama pull marco-o1",
+      "run_command": "ollama run marco-o1",
+      "tag_count": 5,
+      "pulls": "211.8K",
+      "updated_at": "2024-12-04"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/marco-o1"
+  },
+  "authored_by": "Alibaba",
+  "source_url": "https://ollama.com/library/marco-o1",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/marco-o1",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

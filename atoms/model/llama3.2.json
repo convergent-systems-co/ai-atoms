@@ -1,0 +1,49 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/llama3.2",
+  "version": "1.0.0",
+  "name": "llama3.2",
+  "description": "Meta's Llama 3.2 goes small with 1B and 3B models.",
+  "vendor": "Meta",
+  "family": "Llama 3",
+  "task": "text-generation",
+  "capabilities": [
+    "tools"
+  ],
+  "parameter_sizes": [
+    "1b",
+    "3b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "llama3.2",
+      "url": "https://ollama.com/library/llama3.2",
+      "pull_command": "ollama pull llama3.2",
+      "run_command": "ollama run llama3.2",
+      "tag_count": 63,
+      "pulls": "82.2M",
+      "updated_at": "2024-09-25"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/llama3.2"
+  },
+  "authored_by": "Meta",
+  "source_url": "https://ollama.com/library/llama3.2",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/llama3.2",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "tools"
+  ],
+  "lifecycle": "stable"
+}

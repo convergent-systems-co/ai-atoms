@@ -1,0 +1,46 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/deepseek-v2",
+  "version": "1.0.0",
+  "name": "deepseek-v2",
+  "description": "A strong, economical, and efficient Mixture-of-Experts language model.",
+  "vendor": "DeepSeek",
+  "family": "DeepSeek-V",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "16b",
+    "236b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "deepseek-v2",
+      "url": "https://ollama.com/library/deepseek-v2",
+      "pull_command": "ollama pull deepseek-v2",
+      "run_command": "ollama run deepseek-v2",
+      "tag_count": 34,
+      "pulls": "1.2M",
+      "updated_at": "2024-06-22"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/deepseek-v2"
+  },
+  "authored_by": "DeepSeek",
+  "source_url": "https://ollama.com/library/deepseek-v2",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/deepseek-v2",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

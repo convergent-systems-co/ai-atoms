@@ -1,0 +1,48 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/mistral-nemo",
+  "version": "1.0.0",
+  "name": "mistral-nemo",
+  "description": "A state-of-the-art 12B model with 128k context length, built by Mistral AI in collaboration with NVIDIA.",
+  "vendor": "Mistral AI",
+  "family": "Mistral NeMo",
+  "task": "text-generation",
+  "capabilities": [
+    "tools"
+  ],
+  "parameter_sizes": [
+    "12b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "mistral-nemo",
+      "url": "https://ollama.com/library/mistral-nemo",
+      "pull_command": "ollama pull mistral-nemo",
+      "run_command": "ollama run mistral-nemo",
+      "tag_count": 17,
+      "pulls": "5.6M",
+      "updated_at": "2025-07-23"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/mistral-nemo"
+  },
+  "authored_by": "Mistral AI",
+  "source_url": "https://ollama.com/library/mistral-nemo",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/mistral-nemo",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "tools"
+  ],
+  "lifecycle": "stable"
+}

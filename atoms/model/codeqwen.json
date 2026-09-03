@@ -1,0 +1,45 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/codeqwen",
+  "version": "1.0.0",
+  "name": "codeqwen",
+  "description": "CodeQwen1.5 is a large language model pretrained on a large amount of code data.",
+  "vendor": "Alibaba",
+  "family": "Qwen",
+  "task": "code-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "7b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "codeqwen",
+      "url": "https://ollama.com/library/codeqwen",
+      "pull_command": "ollama pull codeqwen",
+      "run_command": "ollama run codeqwen",
+      "tag_count": 30,
+      "pulls": "1.1M",
+      "updated_at": "2024-06-24"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/codeqwen"
+  },
+  "authored_by": "Alibaba",
+  "source_url": "https://ollama.com/library/codeqwen",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/codeqwen",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

@@ -1,0 +1,42 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/llama-pro",
+  "version": "1.0.0",
+  "name": "llama-pro",
+  "description": "An expansion of Llama 2 that specializes in integrating both general language understanding and domain-specific knowledge, particularly in programming and mathematics.",
+  "vendor": "Tencent ARC",
+  "family": "LLaMA Pro",
+  "task": "text-generation",
+  "capabilities": [],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "llama-pro",
+      "url": "https://ollama.com/library/llama-pro",
+      "pull_command": "ollama pull llama-pro",
+      "run_command": "ollama run llama-pro",
+      "tag_count": 33,
+      "pulls": "908.9K",
+      "updated_at": "2024-01-09"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/llama-pro"
+  },
+  "authored_by": "Tencent ARC",
+  "source_url": "https://ollama.com/library/llama-pro",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/llama-pro",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

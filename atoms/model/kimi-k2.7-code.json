@@ -1,0 +1,51 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/kimi-k2.7-code",
+  "version": "1.0.0",
+  "name": "kimi-k2.7-code",
+  "description": "Kimi K2.7 Code is Moonshot AI's coding-focused agentic model built upon Kimi K2.6, with substantial improvements on real-world long-horizon coding tasks and roughly 30% lower thinking-token usage.",
+  "vendor": "Moonshot AI",
+  "family": "Kimi",
+  "task": "code-generation",
+  "capabilities": [
+    "vision",
+    "tools",
+    "thinking",
+    "cloud"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "kimi-k2.7-code",
+      "url": "https://ollama.com/library/kimi-k2.7-code",
+      "pull_command": "ollama pull kimi-k2.7-code",
+      "run_command": "ollama run kimi-k2.7-code",
+      "tag_count": 1,
+      "pulls": "230.8K",
+      "updated_at": "2026-06-13"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/kimi-k2.7-code"
+  },
+  "authored_by": "Moonshot AI",
+  "source_url": "https://ollama.com/library/kimi-k2.7-code",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/kimi-k2.7-code",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "vision",
+    "tools",
+    "thinking",
+    "cloud"
+  ],
+  "lifecycle": "stable"
+}

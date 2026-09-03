@@ -1,0 +1,47 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/exaone3.5",
+  "version": "1.0.0",
+  "name": "exaone3.5",
+  "description": "EXAONE 3.5 is a collection of instruction-tuned bilingual (English and Korean) generative models ranging from 2.4B to 32B parameters, developed and released by LG AI Research.",
+  "vendor": "LG AI Research",
+  "family": "EXAONE",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "2.4b",
+    "7.8b",
+    "32b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "exaone3.5",
+      "url": "https://ollama.com/library/exaone3.5",
+      "pull_command": "ollama pull exaone3.5",
+      "run_command": "ollama run exaone3.5",
+      "tag_count": 13,
+      "pulls": "553.3K",
+      "updated_at": "2024-12-10"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/exaone3.5"
+  },
+  "authored_by": "LG AI Research",
+  "source_url": "https://ollama.com/library/exaone3.5",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/exaone3.5",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

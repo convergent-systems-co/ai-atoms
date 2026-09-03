@@ -23,5 +23,12 @@
   "authored_by": "kepano",
   "source_url": "https://github.com/kepano/obsidian-skills/blob/main/skills/json-canvas/SKILL.md",
   "lifecycle": "stable",
-  "category": "knowledge"
+  "category": "knowledge",
+  "provenance": {
+    "source": "kepano/obsidian-skills",
+    "source_url": "https://github.com/kepano/obsidian-skills/blob/main/skills/json-canvas/SKILL.md",
+    "author": "Steph Ango (kepano)",
+    "license": "MIT",
+    "notes": "Imported by scripts/import-anthropic-skills.py."
+  }
 }

@@ -1,0 +1,47 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/wizard-math",
+  "version": "1.0.0",
+  "name": "wizard-math",
+  "description": "Model focused on math and logic problems",
+  "vendor": "WizardLM",
+  "family": "WizardMath",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "7b",
+    "13b",
+    "70b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "wizard-math",
+      "url": "https://ollama.com/library/wizard-math",
+      "pull_command": "ollama pull wizard-math",
+      "run_command": "ollama run wizard-math",
+      "tag_count": 64,
+      "pulls": "1M",
+      "updated_at": "2023-12-19"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/wizard-math"
+  },
+  "authored_by": "WizardLM",
+  "source_url": "https://ollama.com/library/wizard-math",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/wizard-math",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

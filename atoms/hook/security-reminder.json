@@ -28,5 +28,6 @@
     "macos",
     "windows"
   ],
-  "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run security-reminder' in settings.json — the ai binary discovers Python on each OS. Pure Python; writes to stderr. Works on all platforms."
+  "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run security-reminder' in settings.json — the ai binary discovers Python on each OS. Pure Python; writes to stderr. Works on all platforms.",
+  "category": "security"
 }

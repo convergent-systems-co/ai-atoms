@@ -1,0 +1,48 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/paraphrase-multilingual",
+  "version": "1.0.0",
+  "name": "paraphrase-multilingual",
+  "description": "Sentence-transformers model that can be used for tasks like clustering or semantic search.",
+  "vendor": "sentence-transformers",
+  "family": "MiniLM",
+  "task": "embedding",
+  "capabilities": [
+    "embedding"
+  ],
+  "parameter_sizes": [
+    "278m"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "paraphrase-multilingual",
+      "url": "https://ollama.com/library/paraphrase-multilingual",
+      "pull_command": "ollama pull paraphrase-multilingual",
+      "run_command": "ollama run paraphrase-multilingual",
+      "tag_count": 3,
+      "pulls": "939.1K",
+      "updated_at": "2024-08-07"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/paraphrase-multilingual"
+  },
+  "authored_by": "sentence-transformers",
+  "source_url": "https://ollama.com/library/paraphrase-multilingual",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/paraphrase-multilingual",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "embedding"
+  ],
+  "lifecycle": "stable"
+}

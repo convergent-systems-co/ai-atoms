@@ -1,0 +1,51 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/glm-5.3-flash",
+  "version": "1.0.0",
+  "name": "glm-5.3-flash",
+  "description": "Z.ai's first natively multimodal model, approaching Claude Opus 4.8 on coding and agentic benchmarks with just 18B active parameters.",
+  "vendor": "Zhipu AI",
+  "family": "GLM-5",
+  "task": "reasoning",
+  "capabilities": [
+    "vision",
+    "tools",
+    "thinking",
+    "cloud"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "glm-5.3-flash",
+      "url": "https://ollama.com/library/glm-5.3-flash",
+      "pull_command": "ollama pull glm-5.3-flash",
+      "run_command": "ollama run glm-5.3-flash",
+      "tag_count": 1,
+      "pulls": "65.2K",
+      "updated_at": "2026-08-26"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/glm-5.3-flash"
+  },
+  "authored_by": "Zhipu AI",
+  "source_url": "https://ollama.com/library/glm-5.3-flash",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/glm-5.3-flash",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "vision",
+    "tools",
+    "thinking",
+    "cloud"
+  ],
+  "lifecycle": "stable"
+}

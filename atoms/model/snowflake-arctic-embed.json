@@ -1,0 +1,52 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/snowflake-arctic-embed",
+  "version": "1.0.0",
+  "name": "snowflake-arctic-embed",
+  "description": "A suite of text embedding models by Snowflake, optimized for performance.",
+  "vendor": "Snowflake",
+  "family": "Arctic Embed",
+  "task": "embedding",
+  "capabilities": [
+    "embedding"
+  ],
+  "parameter_sizes": [
+    "22m",
+    "33m",
+    "110m",
+    "137m",
+    "335m"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "snowflake-arctic-embed",
+      "url": "https://ollama.com/library/snowflake-arctic-embed",
+      "pull_command": "ollama pull snowflake-arctic-embed",
+      "run_command": "ollama run snowflake-arctic-embed",
+      "tag_count": 16,
+      "pulls": "3.1M",
+      "updated_at": "2024-04-16"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/snowflake-arctic-embed"
+  },
+  "authored_by": "Snowflake",
+  "source_url": "https://ollama.com/library/snowflake-arctic-embed",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/snowflake-arctic-embed",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "embedding"
+  ],
+  "lifecycle": "stable"
+}

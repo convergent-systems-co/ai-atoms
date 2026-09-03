@@ -1,0 +1,48 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/llava-llama3",
+  "version": "1.0.0",
+  "name": "llava-llama3",
+  "description": "A LLaVA model fine-tuned from Llama 3 Instruct with better scores in several benchmarks.",
+  "vendor": "LLaVA",
+  "family": "LLaVA",
+  "task": "multimodal",
+  "capabilities": [
+    "vision"
+  ],
+  "parameter_sizes": [
+    "8b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "llava-llama3",
+      "url": "https://ollama.com/library/llava-llama3",
+      "pull_command": "ollama pull llava-llama3",
+      "run_command": "ollama run llava-llama3",
+      "tag_count": 4,
+      "pulls": "2.3M",
+      "updated_at": "2024-05-07"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/llava-llama3"
+  },
+  "authored_by": "LLaVA",
+  "source_url": "https://ollama.com/library/llava-llama3",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/llava-llama3",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "vision"
+  ],
+  "lifecycle": "stable"
+}

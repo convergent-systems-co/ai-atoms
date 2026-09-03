@@ -1,0 +1,45 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/neural-chat",
+  "version": "1.0.0",
+  "name": "neural-chat",
+  "description": "A fine-tuned model based on Mistral with good coverage of domain and language.",
+  "vendor": "Intel",
+  "family": "Neural Chat",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "7b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "neural-chat",
+      "url": "https://ollama.com/library/neural-chat",
+      "pull_command": "ollama pull neural-chat",
+      "run_command": "ollama run neural-chat",
+      "tag_count": 50,
+      "pulls": "1.1M",
+      "updated_at": "2023-12-20"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/neural-chat"
+  },
+  "authored_by": "Intel",
+  "source_url": "https://ollama.com/library/neural-chat",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/neural-chat",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

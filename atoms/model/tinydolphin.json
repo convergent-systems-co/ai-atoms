@@ -1,0 +1,45 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/tinydolphin",
+  "version": "1.0.0",
+  "name": "tinydolphin",
+  "description": "An experimental 1.1B parameter model trained on the new Dolphin 2.8 dataset by Eric Hartford and based on TinyLlama.",
+  "vendor": "Cognitive Computations",
+  "family": "Dolphin",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "1.1b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "tinydolphin",
+      "url": "https://ollama.com/library/tinydolphin",
+      "pull_command": "ollama pull tinydolphin",
+      "run_command": "ollama run tinydolphin",
+      "tag_count": 18,
+      "pulls": "723.2K",
+      "updated_at": "2024-01-30"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/tinydolphin"
+  },
+  "authored_by": "Cognitive Computations",
+  "source_url": "https://ollama.com/library/tinydolphin",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/tinydolphin",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

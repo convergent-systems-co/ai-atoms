@@ -1,0 +1,50 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/lfm2.5",
+  "version": "1.0.0",
+  "name": "lfm2.5",
+  "description": "LFM2.5-8B-A1B, an edge model built for fast, reliable tool calling on consumer hardware.",
+  "vendor": "Liquid AI",
+  "family": "LFM",
+  "task": "reasoning",
+  "capabilities": [
+    "tools",
+    "thinking"
+  ],
+  "parameter_sizes": [
+    "8b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "lfm2.5",
+      "url": "https://ollama.com/library/lfm2.5",
+      "pull_command": "ollama pull lfm2.5",
+      "run_command": "ollama run lfm2.5",
+      "tag_count": 5,
+      "pulls": "137.7K",
+      "updated_at": "2026-05-31"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/lfm2.5"
+  },
+  "authored_by": "Liquid AI",
+  "source_url": "https://ollama.com/library/lfm2.5",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/lfm2.5",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "tools",
+    "thinking"
+  ],
+  "lifecycle": "stable"
+}

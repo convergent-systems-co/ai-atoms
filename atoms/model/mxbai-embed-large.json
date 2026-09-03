@@ -1,0 +1,48 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/mxbai-embed-large",
+  "version": "1.0.0",
+  "name": "mxbai-embed-large",
+  "description": "State-of-the-art large embedding model from mixedbread.ai",
+  "vendor": "Mixedbread",
+  "family": "mxbai",
+  "task": "embedding",
+  "capabilities": [
+    "embedding"
+  ],
+  "parameter_sizes": [
+    "335m"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "mxbai-embed-large",
+      "url": "https://ollama.com/library/mxbai-embed-large",
+      "pull_command": "ollama pull mxbai-embed-large",
+      "run_command": "ollama run mxbai-embed-large",
+      "tag_count": 4,
+      "pulls": "14.3M",
+      "updated_at": "2024-05-06"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/mxbai-embed-large"
+  },
+  "authored_by": "Mixedbread",
+  "source_url": "https://ollama.com/library/mxbai-embed-large",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/mxbai-embed-large",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "embedding"
+  ],
+  "lifecycle": "stable"
+}

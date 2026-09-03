@@ -1,0 +1,42 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/openhermes",
+  "version": "1.0.0",
+  "name": "openhermes",
+  "description": "OpenHermes 2.5 is a 7B model fine-tuned by Teknium on Mistral with fully open datasets.",
+  "vendor": "Nous Research",
+  "family": "Hermes",
+  "task": "text-generation",
+  "capabilities": [],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "openhermes",
+      "url": "https://ollama.com/library/openhermes",
+      "pull_command": "ollama pull openhermes",
+      "run_command": "ollama run openhermes",
+      "tag_count": 35,
+      "pulls": "1.1M",
+      "updated_at": "2023-12-29"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/openhermes"
+  },
+  "authored_by": "Nous Research",
+  "source_url": "https://ollama.com/library/openhermes",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/openhermes",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

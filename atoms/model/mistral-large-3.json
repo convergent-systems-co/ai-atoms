@@ -1,0 +1,49 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/mistral-large-3",
+  "version": "1.0.0",
+  "name": "mistral-large-3",
+  "description": "A general-purpose multimodal mixture-of-experts model for production-grade tasks and enterprise workloads.",
+  "vendor": "Mistral AI",
+  "family": "Mistral Large",
+  "task": "multimodal",
+  "capabilities": [
+    "vision",
+    "tools",
+    "cloud"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "mistral-large-3",
+      "url": "https://ollama.com/library/mistral-large-3",
+      "pull_command": "ollama pull mistral-large-3",
+      "run_command": "ollama run mistral-large-3",
+      "tag_count": 1,
+      "pulls": "99.5K",
+      "updated_at": "2025-12-02"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/mistral-large-3"
+  },
+  "authored_by": "Mistral AI",
+  "source_url": "https://ollama.com/library/mistral-large-3",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/mistral-large-3",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "vision",
+    "tools",
+    "cloud"
+  ],
+  "lifecycle": "stable"
+}

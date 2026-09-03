@@ -46,5 +46,6 @@
     "implementation",
     "adr"
   ],
-  "lifecycle": "stable"
+  "lifecycle": "stable",
+  "category": "product"
 }

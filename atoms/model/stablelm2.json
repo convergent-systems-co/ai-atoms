@@ -1,0 +1,46 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/stablelm2",
+  "version": "1.0.0",
+  "name": "stablelm2",
+  "description": "Stable LM 2 is a state-of-the-art 1.6B and 12B parameter language model trained on multilingual data in English, Spanish, German, Italian, French, Portuguese, and Dutch.",
+  "vendor": "Stability AI",
+  "family": "StableLM",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "1.6b",
+    "12b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "stablelm2",
+      "url": "https://ollama.com/library/stablelm2",
+      "pull_command": "ollama pull stablelm2",
+      "run_command": "ollama run stablelm2",
+      "tag_count": 84,
+      "pulls": "1.1M",
+      "updated_at": "2024-05-07"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/stablelm2"
+  },
+  "authored_by": "Stability AI",
+  "source_url": "https://ollama.com/library/stablelm2",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/stablelm2",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

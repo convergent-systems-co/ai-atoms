@@ -1,0 +1,46 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/yi-coder",
+  "version": "1.0.0",
+  "name": "yi-coder",
+  "description": "Yi-Coder is a series of open-source code language models that delivers state-of-the-art coding performance with fewer than 10 billion parameters.",
+  "vendor": "01.AI",
+  "family": "Yi",
+  "task": "code-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "1.5b",
+    "9b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "yi-coder",
+      "url": "https://ollama.com/library/yi-coder",
+      "pull_command": "ollama pull yi-coder",
+      "run_command": "ollama run yi-coder",
+      "tag_count": 67,
+      "pulls": "1.1M",
+      "updated_at": "2024-09-11"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/yi-coder"
+  },
+  "authored_by": "01.AI",
+  "source_url": "https://ollama.com/library/yi-coder",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/yi-coder",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

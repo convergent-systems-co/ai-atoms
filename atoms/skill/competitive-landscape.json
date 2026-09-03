@@ -1,0 +1,30 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/competitive-landscape",
+  "version": "1.0.0",
+  "name": "Competitive Landscape",
+  "description": "This skill should be used when the user asks to \\\\\"analyze",
+  "system_prompt_fragment": "# Competitive Landscape Analysis\n\nComprehensive frameworks for analyzing competition, identifying differentiation opportunities, and developing winning market positioning strategies.\n\n## Use this skill when\n\n- Working on competitive landscape analysis tasks or workflows\n- Needing guidance, best practices, or checklists for competitive landscape analysis\n\n## Do not use this skill when\n\n- The task is unrelated to competitive landscape analysis\n- You need a different domain or tool outside this scope\n\n## Instructions\n\n- Clarify goals, constraints, and required inputs.\n- Apply relevant best practices and validate outcomes.\n- Provide actionable steps and verification.\n- If detailed examples are required, open `resources/implementation-playbook.md`.\n\n## Resources\n\n- `resources/implementation-playbook.md` for detailed patterns and examples.",
+  "applicable_domains": [
+    "other"
+  ],
+  "category": "other",
+  "invocation": [
+    "/competitive-landscape"
+  ],
+  "authored_by": "claudeskills.in community",
+  "source_url": "https://claudeskills.in/skill/competitive-landscape",
+  "provenance": {
+    "source": "claudeskills.in",
+    "source_url": "https://claudeskills.in/skill/competitive-landscape",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Aggregated by claudeskills.in from community GitHub lists."
+  },
+  "tags": [
+    "claudeskills",
+    "other"
+  ],
+  "lifecycle": "draft"
+}

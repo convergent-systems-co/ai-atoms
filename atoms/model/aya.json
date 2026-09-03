@@ -1,0 +1,46 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/aya",
+  "version": "1.0.0",
+  "name": "aya",
+  "description": "Aya 23, released by Cohere, is a new family of state-of-the-art, multilingual models that support 23 languages.",
+  "vendor": "Cohere",
+  "family": "Aya",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "8b",
+    "35b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "aya",
+      "url": "https://ollama.com/library/aya",
+      "pull_command": "ollama pull aya",
+      "run_command": "ollama run aya",
+      "tag_count": 33,
+      "pulls": "1.1M",
+      "updated_at": "2024-05-23"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/aya"
+  },
+  "authored_by": "Cohere",
+  "source_url": "https://ollama.com/library/aya",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/aya",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

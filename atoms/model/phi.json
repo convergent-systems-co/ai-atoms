@@ -1,0 +1,45 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/phi",
+  "version": "1.0.0",
+  "name": "phi",
+  "description": "Phi-2: a 2.7B language model by Microsoft Research that demonstrates outstanding reasoning and language understanding capabilities.",
+  "vendor": "Microsoft",
+  "family": "Phi",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "2.7b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "phi",
+      "url": "https://ollama.com/library/phi",
+      "pull_command": "ollama pull phi",
+      "run_command": "ollama run phi",
+      "tag_count": 18,
+      "pulls": "1.5M",
+      "updated_at": "2024-01-06"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/phi"
+  },
+  "authored_by": "Microsoft",
+  "source_url": "https://ollama.com/library/phi",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/phi",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

@@ -1,0 +1,47 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/granite4.2",
+  "version": "1.0.0",
+  "name": "granite4.2",
+  "description": "IBM Granite Models are a family of enterprise-ready, open foundation models that support multilingual capabilities, coding, retrieval-augmented generation (RAG), tool use, thinking and structured JSON output. Released under Apache 2.0 license.",
+  "vendor": "IBM",
+  "family": "Granite",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "3b",
+    "8b",
+    "30b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "granite4.2",
+      "url": "https://ollama.com/library/granite4.2",
+      "pull_command": "ollama pull granite4.2",
+      "run_command": "ollama run granite4.2",
+      "tag_count": 49,
+      "pulls": "29K",
+      "updated_at": "2026-08-27"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/granite4.2"
+  },
+  "authored_by": "IBM",
+  "source_url": "https://ollama.com/library/granite4.2",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/granite4.2",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

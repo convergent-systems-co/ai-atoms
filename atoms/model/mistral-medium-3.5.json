@@ -1,0 +1,52 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/mistral-medium-3.5",
+  "version": "1.0.0",
+  "name": "mistral-medium-3.5",
+  "description": "Mistral Medium 3.5 is the first flagship model of Mistral AI that merged instruction-following, reasoning, and coding in a single set of 128B weights.",
+  "vendor": "Mistral AI",
+  "family": "Mistral",
+  "task": "reasoning",
+  "capabilities": [
+    "vision",
+    "tools",
+    "thinking"
+  ],
+  "parameter_sizes": [
+    "128b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "mistral-medium-3.5",
+      "url": "https://ollama.com/library/mistral-medium-3.5",
+      "pull_command": "ollama pull mistral-medium-3.5",
+      "run_command": "ollama run mistral-medium-3.5",
+      "tag_count": 5,
+      "pulls": "372.4K",
+      "updated_at": "2026-05-05"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/mistral-medium-3.5"
+  },
+  "authored_by": "Mistral AI",
+  "source_url": "https://ollama.com/library/mistral-medium-3.5",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/mistral-medium-3.5",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "vision",
+    "tools",
+    "thinking"
+  ],
+  "lifecycle": "stable"
+}

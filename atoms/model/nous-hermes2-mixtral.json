@@ -1,0 +1,45 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/nous-hermes2-mixtral",
+  "version": "1.0.0",
+  "name": "nous-hermes2-mixtral",
+  "description": "The Nous Hermes 2 model from Nous Research, now trained over Mixtral.",
+  "vendor": "Nous Research",
+  "family": "Hermes",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "8x7b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "nous-hermes2-mixtral",
+      "url": "https://ollama.com/library/nous-hermes2-mixtral",
+      "pull_command": "ollama pull nous-hermes2-mixtral",
+      "run_command": "ollama run nous-hermes2-mixtral",
+      "tag_count": 18,
+      "pulls": "589.1K",
+      "updated_at": "2024-12-20"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/nous-hermes2-mixtral"
+  },
+  "authored_by": "Nous Research",
+  "source_url": "https://ollama.com/library/nous-hermes2-mixtral",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/nous-hermes2-mixtral",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

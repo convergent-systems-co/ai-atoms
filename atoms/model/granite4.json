@@ -1,0 +1,50 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/granite4",
+  "version": "1.0.0",
+  "name": "granite4",
+  "description": "Granite 4 features improved instruction following (IF) and tool-calling capabilities, making them more effective in enterprise applications.",
+  "vendor": "IBM",
+  "family": "Granite",
+  "task": "text-generation",
+  "capabilities": [
+    "tools"
+  ],
+  "parameter_sizes": [
+    "350m",
+    "1b",
+    "3b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "granite4",
+      "url": "https://ollama.com/library/granite4",
+      "pull_command": "ollama pull granite4",
+      "run_command": "ollama run granite4",
+      "tag_count": 17,
+      "pulls": "1.5M",
+      "updated_at": "2025-10-29"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/granite4"
+  },
+  "authored_by": "IBM",
+  "source_url": "https://ollama.com/library/granite4",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/granite4",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "tools"
+  ],
+  "lifecycle": "stable"
+}

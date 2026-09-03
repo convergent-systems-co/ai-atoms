@@ -1,0 +1,45 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/nomic-embed-text",
+  "version": "1.0.0",
+  "name": "nomic-embed-text",
+  "description": "A high-performing open embedding model with a large token context window.",
+  "vendor": "Nomic AI",
+  "family": "Nomic Embed",
+  "task": "embedding",
+  "capabilities": [
+    "embedding"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "nomic-embed-text",
+      "url": "https://ollama.com/library/nomic-embed-text",
+      "pull_command": "ollama pull nomic-embed-text",
+      "run_command": "ollama run nomic-embed-text",
+      "tag_count": 3,
+      "pulls": "84.4M",
+      "updated_at": "2024-02-21"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/nomic-embed-text"
+  },
+  "authored_by": "Nomic AI",
+  "source_url": "https://ollama.com/library/nomic-embed-text",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/nomic-embed-text",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "embedding"
+  ],
+  "lifecycle": "stable"
+}

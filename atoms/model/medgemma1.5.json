@@ -1,0 +1,48 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/medgemma1.5",
+  "version": "1.0.0",
+  "name": "medgemma1.5",
+  "description": "MedGemma 1.5 4B is an updated version of the MedGemma 4B model.",
+  "vendor": "Google",
+  "family": "MedGemma",
+  "task": "multimodal",
+  "capabilities": [
+    "vision"
+  ],
+  "parameter_sizes": [
+    "4b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "medgemma1.5",
+      "url": "https://ollama.com/library/medgemma1.5",
+      "pull_command": "ollama pull medgemma1.5",
+      "run_command": "ollama run medgemma1.5",
+      "tag_count": 5,
+      "pulls": "160.7K",
+      "updated_at": "2026-04-16"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/medgemma1.5"
+  },
+  "authored_by": "Google",
+  "source_url": "https://ollama.com/library/medgemma1.5",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/medgemma1.5",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "vision"
+  ],
+  "lifecycle": "stable"
+}

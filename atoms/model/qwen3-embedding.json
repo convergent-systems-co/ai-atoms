@@ -1,0 +1,50 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/qwen3-embedding",
+  "version": "1.0.0",
+  "name": "qwen3-embedding",
+  "description": "Building upon the foundational models of the Qwen3 series, Qwen3 Embedding provides a comprehensive range of text embeddings models in various sizes",
+  "vendor": "Alibaba",
+  "family": "Qwen3-Embedding",
+  "task": "embedding",
+  "capabilities": [
+    "embedding"
+  ],
+  "parameter_sizes": [
+    "0.6b",
+    "4b",
+    "8b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "qwen3-embedding",
+      "url": "https://ollama.com/library/qwen3-embedding",
+      "pull_command": "ollama pull qwen3-embedding",
+      "run_command": "ollama run qwen3-embedding",
+      "tag_count": 12,
+      "pulls": "3.8M",
+      "updated_at": "2025-09-23"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/qwen3-embedding"
+  },
+  "authored_by": "Alibaba",
+  "source_url": "https://ollama.com/library/qwen3-embedding",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/qwen3-embedding",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "embedding"
+  ],
+  "lifecycle": "stable"
+}

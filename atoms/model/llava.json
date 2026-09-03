@@ -1,0 +1,50 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/llava",
+  "version": "1.0.0",
+  "name": "llava",
+  "description": "🌋 LLaVA is a novel end-to-end trained large multimodal model that combines a vision encoder and Vicuna for general-purpose visual and language understanding. Updated to version 1.6.",
+  "vendor": "LLaVA",
+  "family": "LLaVA",
+  "task": "multimodal",
+  "capabilities": [
+    "vision"
+  ],
+  "parameter_sizes": [
+    "7b",
+    "13b",
+    "34b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "llava",
+      "url": "https://ollama.com/library/llava",
+      "pull_command": "ollama pull llava",
+      "run_command": "ollama run llava",
+      "tag_count": 98,
+      "pulls": "14.8M",
+      "updated_at": "2024-02-01"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/llava"
+  },
+  "authored_by": "LLaVA",
+  "source_url": "https://ollama.com/library/llava",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/llava",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "vision"
+  ],
+  "lifecycle": "stable"
+}

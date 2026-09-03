@@ -1,0 +1,49 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/mistral-small",
+  "version": "1.0.0",
+  "name": "mistral-small",
+  "description": "Mistral Small 3 sets a new benchmark in the “small” Large Language Models category below 70B.",
+  "vendor": "Mistral AI",
+  "family": "Mistral Small",
+  "task": "text-generation",
+  "capabilities": [
+    "tools"
+  ],
+  "parameter_sizes": [
+    "22b",
+    "24b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "mistral-small",
+      "url": "https://ollama.com/library/mistral-small",
+      "pull_command": "ollama pull mistral-small",
+      "run_command": "ollama run mistral-small",
+      "tag_count": 21,
+      "pulls": "3.1M",
+      "updated_at": "2025-01-30"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/mistral-small"
+  },
+  "authored_by": "Mistral AI",
+  "source_url": "https://ollama.com/library/mistral-small",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/mistral-small",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "tools"
+  ],
+  "lifecycle": "stable"
+}

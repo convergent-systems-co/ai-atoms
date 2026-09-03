@@ -1,0 +1,51 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/minimax-m3",
+  "version": "1.0.0",
+  "name": "minimax-m3",
+  "description": "MiniMax M3: Coding & Agentic Frontier. 1M context window. Native Multimodality.",
+  "vendor": "MiniMax",
+  "family": "MiniMax",
+  "task": "reasoning",
+  "capabilities": [
+    "vision",
+    "tools",
+    "thinking",
+    "cloud"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "minimax-m3",
+      "url": "https://ollama.com/library/minimax-m3",
+      "pull_command": "ollama pull minimax-m3",
+      "run_command": "ollama run minimax-m3",
+      "tag_count": 1,
+      "pulls": "502.1K",
+      "updated_at": "2026-06-01"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/minimax-m3"
+  },
+  "authored_by": "MiniMax",
+  "source_url": "https://ollama.com/library/minimax-m3",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/minimax-m3",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "vision",
+    "tools",
+    "thinking",
+    "cloud"
+  ],
+  "lifecycle": "stable"
+}

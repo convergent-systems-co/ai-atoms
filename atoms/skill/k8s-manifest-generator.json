@@ -1,0 +1,30 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/k8s-manifest-generator",
+  "version": "1.0.0",
+  "name": "K8S Manifest Generator",
+  "description": "Create production-ready Kubernetes manifests for Deployments, Services, ConfigMaps, and Secrets following best practices and security standards. Use when generating Kubernetes YAML manifests, creat...",
+  "system_prompt_fragment": "# Kubernetes Manifest Generator\n\nStep-by-step guidance for creating production-ready Kubernetes manifests including Deployments, Services, ConfigMaps, Secrets, and PersistentVolumeClaims.\n\n## Use this skill when\n\nUse this skill when you need to:\n- Create new Kubernetes Deployment manifests\n- Define Service resources for network connectivity\n- Generate ConfigMap and Secret resources for configuration management\n- Create PersistentVolumeClaim manifests for stateful workloads\n- Follow Kubernetes best practices and naming conventions\n- Implement resource limits, health checks, and security contexts\n- Design manifests for multi-environment deployments\n\n## Do not use this skill when\n\n- The task is unrelated to kubernetes manifest generator\n- You need a different domain or tool outside this scope\n\n## Instructions\n\n- Clarify goals, constraints, and required inputs.\n- Apply relevant best practices and validate outcomes.\n- Provide actionable steps and verification.\n- If detailed examples are required, open `resources/implementation-playbook.md`.\n\n## Resources\n\n- `resources/implementation-playbook.md` for detailed patterns and examples.",
+  "applicable_domains": [
+    "devops"
+  ],
+  "category": "devops",
+  "invocation": [
+    "/k8s-manifest-generator"
+  ],
+  "authored_by": "claudeskills.in community",
+  "source_url": "https://claudeskills.in/skill/k8s-manifest-generator",
+  "provenance": {
+    "source": "claudeskills.in",
+    "source_url": "https://claudeskills.in/skill/k8s-manifest-generator",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Aggregated by claudeskills.in from community GitHub lists."
+  },
+  "tags": [
+    "claudeskills",
+    "devops"
+  ],
+  "lifecycle": "draft"
+}

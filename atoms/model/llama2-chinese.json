@@ -1,0 +1,46 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/llama2-chinese",
+  "version": "1.0.0",
+  "name": "llama2-chinese",
+  "description": "Llama 2 based model fine tuned to improve Chinese dialogue ability.",
+  "vendor": "Meta",
+  "family": "Llama 2",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "7b",
+    "13b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "llama2-chinese",
+      "url": "https://ollama.com/library/llama2-chinese",
+      "pull_command": "ollama pull llama2-chinese",
+      "run_command": "ollama run llama2-chinese",
+      "tag_count": 35,
+      "pulls": "1.1M",
+      "updated_at": "2023-10-28"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/llama2-chinese"
+  },
+  "authored_by": "Meta",
+  "source_url": "https://ollama.com/library/llama2-chinese",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/llama2-chinese",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

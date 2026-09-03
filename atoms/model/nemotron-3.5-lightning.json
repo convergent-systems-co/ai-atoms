@@ -1,0 +1,50 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/nemotron-3.5-lightning",
+  "version": "1.0.0",
+  "name": "nemotron-3.5-lightning",
+  "description": "NVIDIA Nemotron 3.5 Lightning is an open 30B mixture-of-experts (MoE) model with 3B active parameters built for always-on agents.",
+  "vendor": "NVIDIA",
+  "family": "Nemotron 3",
+  "task": "reasoning",
+  "capabilities": [
+    "tools",
+    "thinking"
+  ],
+  "parameter_sizes": [
+    "30b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "nemotron-3.5-lightning",
+      "url": "https://ollama.com/library/nemotron-3.5-lightning",
+      "pull_command": "ollama pull nemotron-3.5-lightning",
+      "run_command": "ollama run nemotron-3.5-lightning",
+      "tag_count": 11,
+      "pulls": "147.8K",
+      "updated_at": "2026-08-31"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/nemotron-3.5-lightning"
+  },
+  "authored_by": "NVIDIA",
+  "source_url": "https://ollama.com/library/nemotron-3.5-lightning",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/nemotron-3.5-lightning",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "tools",
+    "thinking"
+  ],
+  "lifecycle": "stable"
+}

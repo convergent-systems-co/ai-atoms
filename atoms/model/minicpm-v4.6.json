@@ -1,0 +1,47 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/minicpm-v4.6",
+  "version": "1.0.0",
+  "name": "minicpm-v4.6",
+  "description": "A Pocket-Sized MLLM for Ultra-Efficient Image and Video Understanding on Your Phone",
+  "vendor": "unknown",
+  "task": "multimodal",
+  "capabilities": [
+    "vision"
+  ],
+  "parameter_sizes": [
+    "1b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "minicpm-v4.6",
+      "url": "https://ollama.com/library/minicpm-v4.6",
+      "pull_command": "ollama pull minicpm-v4.6",
+      "run_command": "ollama run minicpm-v4.6",
+      "tag_count": 13,
+      "pulls": "42.7K",
+      "updated_at": "2026-06-02"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/minicpm-v4.6"
+  },
+  "authored_by": "unknown",
+  "source_url": "https://ollama.com/library/minicpm-v4.6",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/minicpm-v4.6",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "vision"
+  ],
+  "lifecycle": "stable"
+}

@@ -47,5 +47,6 @@
     "quality",
     "merge"
   ],
-  "lifecycle": "stable"
+  "lifecycle": "stable",
+  "category": "governance"
 }

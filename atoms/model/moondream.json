@@ -1,0 +1,48 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/moondream",
+  "version": "1.0.0",
+  "name": "moondream",
+  "description": "moondream2 is a small vision language model designed to run efficiently on edge devices.",
+  "vendor": "vikhyat",
+  "family": "Moondream",
+  "task": "multimodal",
+  "capabilities": [
+    "vision"
+  ],
+  "parameter_sizes": [
+    "1.8b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "moondream",
+      "url": "https://ollama.com/library/moondream",
+      "pull_command": "ollama pull moondream",
+      "run_command": "ollama run moondream",
+      "tag_count": 18,
+      "pulls": "1.8M",
+      "updated_at": "2024-05-07"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/moondream"
+  },
+  "authored_by": "vikhyat",
+  "source_url": "https://ollama.com/library/moondream",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/moondream",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "vision"
+  ],
+  "lifecycle": "stable"
+}

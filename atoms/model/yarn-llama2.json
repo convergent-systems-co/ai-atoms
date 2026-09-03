@@ -1,0 +1,46 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/yarn-llama2",
+  "version": "1.0.0",
+  "name": "yarn-llama2",
+  "description": "An extension of Llama 2 that supports a context of up to 128k tokens.",
+  "vendor": "Nous Research",
+  "family": "YaRN",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "7b",
+    "13b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "yarn-llama2",
+      "url": "https://ollama.com/library/yarn-llama2",
+      "pull_command": "ollama pull yarn-llama2",
+      "run_command": "ollama run yarn-llama2",
+      "tag_count": 67,
+      "pulls": "975.5K",
+      "updated_at": "2023-11-04"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/yarn-llama2"
+  },
+  "authored_by": "Nous Research",
+  "source_url": "https://ollama.com/library/yarn-llama2",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/yarn-llama2",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

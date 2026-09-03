@@ -1,0 +1,52 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/nemotron3",
+  "version": "1.0.0",
+  "name": "nemotron3",
+  "description": "NVIDIA Nemotron 3 Nano Omni is a multimodal large language model that unifies video, audio, image, and text understanding to support enterprise-grade Q&A, summarization, transcription, and document intelligence workflows.",
+  "vendor": "NVIDIA",
+  "family": "Nemotron",
+  "task": "reasoning",
+  "capabilities": [
+    "vision",
+    "tools",
+    "thinking"
+  ],
+  "parameter_sizes": [
+    "33b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "nemotron3",
+      "url": "https://ollama.com/library/nemotron3",
+      "pull_command": "ollama pull nemotron3",
+      "run_command": "ollama run nemotron3",
+      "tag_count": 4,
+      "pulls": "654.3K",
+      "updated_at": "2026-04-27"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/nemotron3"
+  },
+  "authored_by": "NVIDIA",
+  "source_url": "https://ollama.com/library/nemotron3",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/nemotron3",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "vision",
+    "tools",
+    "thinking"
+  ],
+  "lifecycle": "stable"
+}

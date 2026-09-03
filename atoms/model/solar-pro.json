@@ -1,0 +1,45 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/solar-pro",
+  "version": "1.0.0",
+  "name": "solar-pro",
+  "description": "Solar Pro Preview: an advanced large language model (LLM) with 22 billion parameters designed to fit into a single GPU",
+  "vendor": "Upstage",
+  "family": "Solar",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "22b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "solar-pro",
+      "url": "https://ollama.com/library/solar-pro",
+      "pull_command": "ollama pull solar-pro",
+      "run_command": "ollama run solar-pro",
+      "tag_count": 18,
+      "pulls": "556.9K",
+      "updated_at": "2024-09-18"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/solar-pro"
+  },
+  "authored_by": "Upstage",
+  "source_url": "https://ollama.com/library/solar-pro",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/solar-pro",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

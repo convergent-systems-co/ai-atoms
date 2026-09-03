@@ -1,0 +1,53 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/qwen3.6",
+  "version": "1.0.0",
+  "name": "qwen3.6",
+  "description": "Qwen3.6 delivers substantial upgrades in agentic coding and thinking preservation than previous Qwen models.",
+  "vendor": "Alibaba",
+  "family": "Qwen3",
+  "task": "reasoning",
+  "capabilities": [
+    "vision",
+    "tools",
+    "thinking"
+  ],
+  "parameter_sizes": [
+    "27b",
+    "35b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "qwen3.6",
+      "url": "https://ollama.com/library/qwen3.6",
+      "pull_command": "ollama pull qwen3.6",
+      "run_command": "ollama run qwen3.6",
+      "tag_count": 35,
+      "pulls": "6.4M",
+      "updated_at": "2026-09-01"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/qwen3.6"
+  },
+  "authored_by": "Alibaba",
+  "source_url": "https://ollama.com/library/qwen3.6",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/qwen3.6",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "vision",
+    "tools",
+    "thinking"
+  ],
+  "lifecycle": "stable"
+}

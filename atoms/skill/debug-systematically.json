@@ -70,5 +70,6 @@
     "root-cause",
     "regression"
   ],
-  "lifecycle": "stable"
+  "lifecycle": "stable",
+  "category": "testing"
 }

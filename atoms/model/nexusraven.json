@@ -1,0 +1,45 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/nexusraven",
+  "version": "1.0.0",
+  "name": "nexusraven",
+  "description": "Nexus Raven is a 13B instruction tuned model for function calling tasks.",
+  "vendor": "Nexusflow",
+  "family": "NexusRaven",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "13b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "nexusraven",
+      "url": "https://ollama.com/library/nexusraven",
+      "pull_command": "ollama pull nexusraven",
+      "run_command": "ollama run nexusraven",
+      "tag_count": 32,
+      "pulls": "894.3K",
+      "updated_at": "2024-01-17"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/nexusraven"
+  },
+  "authored_by": "Nexusflow",
+  "source_url": "https://ollama.com/library/nexusraven",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/nexusraven",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

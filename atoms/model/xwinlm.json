@@ -1,0 +1,46 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/xwinlm",
+  "version": "1.0.0",
+  "name": "xwinlm",
+  "description": "Conversational model based on Llama 2 that performs competitively on various benchmarks.",
+  "vendor": "Xwin-LM",
+  "family": "Xwin-LM",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "7b",
+    "13b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "xwinlm",
+      "url": "https://ollama.com/library/xwinlm",
+      "pull_command": "ollama pull xwinlm",
+      "run_command": "ollama run xwinlm",
+      "tag_count": 80,
+      "pulls": "996.1K",
+      "updated_at": "2023-11-04"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/xwinlm"
+  },
+  "authored_by": "Xwin-LM",
+  "source_url": "https://ollama.com/library/xwinlm",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/xwinlm",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

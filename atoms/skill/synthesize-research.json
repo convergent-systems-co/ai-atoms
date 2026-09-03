@@ -22,5 +22,12 @@
   "authored_by": "anthropics",
   "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/product-management/skills/synthesize-research/SKILL.md",
   "lifecycle": "stable",
-  "category": "product"
+  "category": "product",
+  "provenance": {
+    "source": "anthropics/knowledge-work-plugins",
+    "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/product-management/skills/synthesize-research/SKILL.md",
+    "author": "Anthropic",
+    "license": "Apache-2.0",
+    "notes": "Imported by scripts/import-anthropic-skills.py."
+  }
 }

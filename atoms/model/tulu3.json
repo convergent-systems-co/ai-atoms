@@ -1,0 +1,46 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/tulu3",
+  "version": "1.0.0",
+  "name": "tulu3",
+  "description": "Tülu 3 is a leading instruction following model family, offering fully open-source data, code, and recipes by the The Allen Institute for AI.",
+  "vendor": "AI2",
+  "family": "Tülu",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "8b",
+    "70b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "tulu3",
+      "url": "https://ollama.com/library/tulu3",
+      "pull_command": "ollama pull tulu3",
+      "run_command": "ollama run tulu3",
+      "tag_count": 9,
+      "pulls": "392.1K",
+      "updated_at": "2024-12-21"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/tulu3"
+  },
+  "authored_by": "AI2",
+  "source_url": "https://ollama.com/library/tulu3",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/tulu3",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

@@ -1,0 +1,48 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/athene-v2",
+  "version": "1.0.0",
+  "name": "athene-v2",
+  "description": "Athene-V2 is a 72B parameter model which excels at code completion, mathematics, and log extraction tasks.",
+  "vendor": "Nexusflow",
+  "family": "Athene",
+  "task": "text-generation",
+  "capabilities": [
+    "tools"
+  ],
+  "parameter_sizes": [
+    "72b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "athene-v2",
+      "url": "https://ollama.com/library/athene-v2",
+      "pull_command": "ollama pull athene-v2",
+      "run_command": "ollama run athene-v2",
+      "tag_count": 17,
+      "pulls": "588.1K",
+      "updated_at": "2024-11-15"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/athene-v2"
+  },
+  "authored_by": "Nexusflow",
+  "source_url": "https://ollama.com/library/athene-v2",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/athene-v2",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "tools"
+  ],
+  "lifecycle": "stable"
+}

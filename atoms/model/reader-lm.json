@@ -1,0 +1,46 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/reader-lm",
+  "version": "1.0.0",
+  "name": "reader-lm",
+  "description": "A series of models that convert HTML content to Markdown content, which is useful for content conversion tasks.",
+  "vendor": "Jina AI",
+  "family": "Reader-LM",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "0.5b",
+    "1.5b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "reader-lm",
+      "url": "https://ollama.com/library/reader-lm",
+      "pull_command": "ollama pull reader-lm",
+      "run_command": "ollama run reader-lm",
+      "tag_count": 33,
+      "pulls": "925.9K",
+      "updated_at": "2024-09-11"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/reader-lm"
+  },
+  "authored_by": "Jina AI",
+  "source_url": "https://ollama.com/library/reader-lm",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/reader-lm",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

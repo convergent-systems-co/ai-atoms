@@ -43,5 +43,6 @@
     "feedback",
     "quality"
   ],
-  "lifecycle": "stable"
+  "lifecycle": "stable",
+  "category": "governance"
 }

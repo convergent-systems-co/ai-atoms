@@ -1,0 +1,31 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/infinite-gratitude",
+  "version": "1.0.0",
+  "name": "Infinite Gratitude",
+  "description": "Multi-agent research skill for parallel research execution (10 agents, battle-tested with real case studies).",
+  "system_prompt_fragment": "# Infinite Gratitude\n\n> **Source**: [sstklen/infinite-gratitude](https://github.com/sstklen/infinite-gratitude)\n\n## Description\n\nA multi-agent research skill designed for parallel research execution. It orchestrates 10 agents to conduct deep research, battle-tested with real case studies.\n\n## When to Use\n\nUse this skill when you need to perform extensive, parallelized research on a topic, leveraging multiple agents to gather and synthesize information more efficiently than a single linear process.\n\n## How to Use\n\nThis is an external skill. Please refer to the [official repository](https://github.com/sstklen/infinite-gratitude) for installation and usage instructions.\n\n```bash\ngit clone https://github.com/sstklen/infinite-gratitude\n```",
+  "applicable_domains": [
+    "other"
+  ],
+  "category": "other",
+  "invocation": [
+    "/infinite-gratitude"
+  ],
+  "authored_by": "claudeskills.in community",
+  "source_url": "https://claudeskills.in/skill/infinite-gratitude",
+  "provenance": {
+    "source": "claudeskills.in",
+    "source_url": "https://claudeskills.in/skill/infinite-gratitude",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Aggregated by claudeskills.in from community GitHub lists. Upstream as recorded by the aggregator: https://github.com/sstklen/infinite-gratitude."
+  },
+  "tags": [
+    "claudeskills",
+    "other",
+    "risk-reviewed"
+  ],
+  "lifecycle": "draft"
+}

@@ -1,0 +1,45 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/bespoke-minicheck",
+  "version": "1.0.0",
+  "name": "bespoke-minicheck",
+  "description": "A state-of-the-art fact-checking model developed by Bespoke Labs.",
+  "vendor": "Bespoke Labs",
+  "family": "Bespoke",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "7b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "bespoke-minicheck",
+      "url": "https://ollama.com/library/bespoke-minicheck",
+      "pull_command": "ollama pull bespoke-minicheck",
+      "run_command": "ollama run bespoke-minicheck",
+      "tag_count": 17,
+      "pulls": "527.4K",
+      "updated_at": "2024-09-18"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/bespoke-minicheck"
+  },
+  "authored_by": "Bespoke Labs",
+  "source_url": "https://ollama.com/library/bespoke-minicheck",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/bespoke-minicheck",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

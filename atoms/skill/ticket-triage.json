@@ -22,5 +22,12 @@
   "authored_by": "anthropics",
   "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/customer-support/skills/ticket-triage/SKILL.md",
   "lifecycle": "stable",
-  "category": "support"
+  "category": "support",
+  "provenance": {
+    "source": "anthropics/knowledge-work-plugins",
+    "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/customer-support/skills/ticket-triage/SKILL.md",
+    "author": "Anthropic",
+    "license": "Apache-2.0",
+    "notes": "Imported by scripts/import-anthropic-skills.py."
+  }
 }

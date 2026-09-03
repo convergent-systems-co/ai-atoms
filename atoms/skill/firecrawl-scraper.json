@@ -1,0 +1,30 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/firecrawl-scraper",
+  "version": "1.0.0",
+  "name": "Firecrawl Scraper",
+  "description": "Deep web scraping, screenshots, PDF parsing, and website crawling using Firecrawl API",
+  "system_prompt_fragment": "# firecrawl-scraper\n\n## Overview\nDeep web scraping, screenshots, PDF parsing, and website crawling using Firecrawl API\n\n## When to Use\n- When you need deep content extraction from web pages\n- When page interaction is required (clicking, scrolling, etc.)\n- When you want screenshots or PDF parsing\n- When batch scraping multiple URLs\n\n## Installation\n```bash\nnpx skills add -g BenedictKing/firecrawl-scraper\n```\n\n## Step-by-Step Guide\n1. Install the skill using the command above\n2. Configure Firecrawl API key\n3. Use naturally in Claude Code conversations\n\n## Examples\nSee [GitHub Repository](https://github.com/BenedictKing/firecrawl-scraper) for examples.\n\n## Best Practices\n- Configure API keys via environment variables\n\n## Troubleshooting\nSee the GitHub repository for troubleshooting guides.\n\n## Related Skills\n- context7-auto-research, tavily-web, exa-search, codex-review",
+  "applicable_domains": [
+    "other"
+  ],
+  "category": "other",
+  "invocation": [
+    "/firecrawl-scraper"
+  ],
+  "authored_by": "claudeskills.in community",
+  "source_url": "https://claudeskills.in/skill/firecrawl-scraper",
+  "provenance": {
+    "source": "claudeskills.in",
+    "source_url": "https://claudeskills.in/skill/firecrawl-scraper",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Aggregated by claudeskills.in from community GitHub lists."
+  },
+  "tags": [
+    "claudeskills",
+    "other"
+  ],
+  "lifecycle": "draft"
+}

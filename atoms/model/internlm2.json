@@ -1,0 +1,48 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/internlm2",
+  "version": "1.0.0",
+  "name": "internlm2",
+  "description": "InternLM2.5 is a 7B parameter model tailored for practical scenarios with outstanding reasoning capability.",
+  "vendor": "Shanghai AI Lab",
+  "family": "InternLM",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "1m",
+    "1.8b",
+    "7b",
+    "20b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "internlm2",
+      "url": "https://ollama.com/library/internlm2",
+      "pull_command": "ollama pull internlm2",
+      "run_command": "ollama run internlm2",
+      "tag_count": 65,
+      "pulls": "1M",
+      "updated_at": "2024-08-16"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/internlm2"
+  },
+  "authored_by": "Shanghai AI Lab",
+  "source_url": "https://ollama.com/library/internlm2",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/internlm2",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

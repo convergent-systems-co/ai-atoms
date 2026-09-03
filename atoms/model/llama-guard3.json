@@ -1,0 +1,46 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/llama-guard3",
+  "version": "1.0.0",
+  "name": "llama-guard3",
+  "description": "Llama Guard 3 is a series of models fine-tuned for content safety classification of LLM inputs and responses.",
+  "vendor": "Meta",
+  "family": "Llama Guard",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "1b",
+    "8b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "llama-guard3",
+      "url": "https://ollama.com/library/llama-guard3",
+      "pull_command": "ollama pull llama-guard3",
+      "run_command": "ollama run llama-guard3",
+      "tag_count": 33,
+      "pulls": "1M",
+      "updated_at": "2024-10-11"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/llama-guard3"
+  },
+  "authored_by": "Meta",
+  "source_url": "https://ollama.com/library/llama-guard3",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/llama-guard3",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

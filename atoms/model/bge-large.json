@@ -1,0 +1,48 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/bge-large",
+  "version": "1.0.0",
+  "name": "bge-large",
+  "description": "Embedding model from BAAI mapping texts to vectors.",
+  "vendor": "BAAI",
+  "family": "BGE",
+  "task": "embedding",
+  "capabilities": [
+    "embedding"
+  ],
+  "parameter_sizes": [
+    "335m"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "bge-large",
+      "url": "https://ollama.com/library/bge-large",
+      "pull_command": "ollama pull bge-large",
+      "run_command": "ollama run bge-large",
+      "tag_count": 3,
+      "pulls": "283.1K",
+      "updated_at": "2024-08-07"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/bge-large"
+  },
+  "authored_by": "BAAI",
+  "source_url": "https://ollama.com/library/bge-large",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/bge-large",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "embedding"
+  ],
+  "lifecycle": "stable"
+}

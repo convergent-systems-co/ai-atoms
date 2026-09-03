@@ -1,0 +1,47 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/gemma2",
+  "version": "1.0.0",
+  "name": "gemma2",
+  "description": "Google Gemma 2 is a high-performing and efficient model available in three sizes: 2B, 9B, and 27B.",
+  "vendor": "Google",
+  "family": "Gemma 2",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "2b",
+    "9b",
+    "27b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "gemma2",
+      "url": "https://ollama.com/library/gemma2",
+      "pull_command": "ollama pull gemma2",
+      "run_command": "ollama run gemma2",
+      "tag_count": 94,
+      "pulls": "31.7M",
+      "updated_at": "2024-08-01"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/gemma2"
+  },
+  "authored_by": "Google",
+  "source_url": "https://ollama.com/library/gemma2",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/gemma2",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

@@ -1,0 +1,45 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/codestral",
+  "version": "1.0.0",
+  "name": "codestral",
+  "description": "Codestral is Mistral AI’s first-ever code model designed for code generation tasks.",
+  "vendor": "Mistral AI",
+  "family": "Codestral",
+  "task": "code-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "22b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "codestral",
+      "url": "https://ollama.com/library/codestral",
+      "pull_command": "ollama pull codestral",
+      "run_command": "ollama run codestral",
+      "tag_count": 17,
+      "pulls": "1.3M",
+      "updated_at": "2024-09-03"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/codestral"
+  },
+  "authored_by": "Mistral AI",
+  "source_url": "https://ollama.com/library/codestral",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/codestral",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}

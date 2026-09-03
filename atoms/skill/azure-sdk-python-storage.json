@@ -1,0 +1,30 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/azure-sdk-python-storage",
+  "version": "1.0.0",
+  "name": "Azure Sdk Python Storage",
+  "description": "Azure Storage SDK (Python): Blobs, Queues, and Tables management with best practices for security and performance.",
+  "system_prompt_fragment": "# Azure Storage SDK (Python)\n\nComprehensive guide to Azure Storage operations using Python.\n\n## Blob Storage\n\n```python\nfrom azure.storage.blob import BlobServiceClient\n\nclient = BlobServiceClient.from_connection_string(conn_str)\ncontainer = client.get_container_client(\"my-container\")\nblob = container.get_blob_client(\"my-blob\")\nblob.upload_blob(data)\n```\n\n## Security\n\n- **Use Managed Identities** instead of connection strings where possible.\n- **Implement SAS tokens** with limited scope and expiration for clients.\n- **Enable Storage Analytics** for monitoring and logging.",
+  "applicable_domains": [
+    "devops"
+  ],
+  "category": "devops",
+  "invocation": [
+    "/azure-sdk-python-storage"
+  ],
+  "authored_by": "claudeskills.in community",
+  "source_url": "https://claudeskills.in/skill/azure-sdk-python-storage",
+  "provenance": {
+    "source": "claudeskills.in",
+    "source_url": "https://claudeskills.in/skill/azure-sdk-python-storage",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Aggregated by claudeskills.in from community GitHub lists."
+  },
+  "tags": [
+    "claudeskills",
+    "devops"
+  ],
+  "lifecycle": "draft"
+}

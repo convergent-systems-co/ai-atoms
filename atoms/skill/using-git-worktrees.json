@@ -49,5 +49,6 @@
     "worktree",
     "isolation"
   ],
-  "lifecycle": "stable"
+  "lifecycle": "stable",
+  "category": "coding"
 }

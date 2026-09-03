@@ -1,0 +1,48 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/llama3.3",
+  "version": "1.0.0",
+  "name": "llama3.3",
+  "description": "New state of the art 70B model. Llama 3.3 70B offers similar performance compared to the Llama 3.1 405B model.",
+  "vendor": "Meta",
+  "family": "Llama 3",
+  "task": "text-generation",
+  "capabilities": [
+    "tools"
+  ],
+  "parameter_sizes": [
+    "70b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "llama3.3",
+      "url": "https://ollama.com/library/llama3.3",
+      "pull_command": "ollama pull llama3.3",
+      "run_command": "ollama run llama3.3",
+      "tag_count": 14,
+      "pulls": "4.1M",
+      "updated_at": "2024-12-06"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/llama3.3"
+  },
+  "authored_by": "Meta",
+  "source_url": "https://ollama.com/library/llama3.3",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/llama3.3",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "tools"
+  ],
+  "lifecycle": "stable"
+}

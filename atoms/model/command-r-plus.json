@@ -1,0 +1,48 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/command-r-plus",
+  "version": "1.0.0",
+  "name": "command-r-plus",
+  "description": "Command R+ is a powerful, scalable large language model purpose-built to excel at real-world enterprise use cases.",
+  "vendor": "Cohere",
+  "family": "Command",
+  "task": "text-generation",
+  "capabilities": [
+    "tools"
+  ],
+  "parameter_sizes": [
+    "104b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "command-r-plus",
+      "url": "https://ollama.com/library/command-r-plus",
+      "pull_command": "ollama pull command-r-plus",
+      "run_command": "ollama run command-r-plus",
+      "tag_count": 21,
+      "pulls": "797.4K",
+      "updated_at": "2024-08-31"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/command-r-plus"
+  },
+  "authored_by": "Cohere",
+  "source_url": "https://ollama.com/library/command-r-plus",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/command-r-plus",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local",
+    "tools"
+  ],
+  "lifecycle": "stable"
+}

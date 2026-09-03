@@ -1,0 +1,48 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/orca-mini",
+  "version": "1.0.0",
+  "name": "orca-mini",
+  "description": "A general-purpose model ranging from 3 billion parameters to 70 billion, suitable for entry-level hardware.",
+  "vendor": "Pankaj Mathur",
+  "family": "Orca Mini",
+  "task": "text-generation",
+  "capabilities": [],
+  "parameter_sizes": [
+    "3b",
+    "7b",
+    "13b",
+    "70b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "orca-mini",
+      "url": "https://ollama.com/library/orca-mini",
+      "pull_command": "ollama pull orca-mini",
+      "run_command": "ollama run orca-mini",
+      "tag_count": 119,
+      "pulls": "3M",
+      "updated_at": "2023-10-29"
+    }
+  ],
+  "links": {
+    "model_card": "https://ollama.com/library/orca-mini"
+  },
+  "authored_by": "Pankaj Mathur",
+  "source_url": "https://ollama.com/library/orca-mini",
+  "category": "ai",
+  "provenance": {
+    "source": "ollama.com/library",
+    "source_url": "https://ollama.com/library/orca-mini",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+  },
+  "tags": [
+    "ollama",
+    "local"
+  ],
+  "lifecycle": "stable"
+}
