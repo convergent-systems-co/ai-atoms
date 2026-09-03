@@ -6,3 +6,4 @@ web/**/.astro/
 *.log
 __pycache__/
 .pytest_cache/
+web/public/schemas/
