@@ -233,6 +233,7 @@ const personaIds: string[] = (catalog.atoms as any[]).filter(a => a.type === "pe
         <div class="class-desc" id="class-desc">
           {classDescriptions[allTypes[0]] ?? `Atoms of class "${allTypes[0]}".`}
         </div>
+        <p class="small muted" style="margin:0.4rem 0 0;">Prefer to start from a file? Every class has a minimal valid example at <a id="example-ref" href="/schemas/examples/skill.json">/schemas/examples/&lt;class&gt;.json</a>.</p>
         <div class="schema-ref" id="schema-ref">
           {classSchemas[allTypes[0]] && (
             <>Schema: <a href={classSchemas[allTypes[0]]} target="_blank">{classSchemas[allTypes[0]]}</a></>
@@ -726,6 +727,8 @@ const personaIds: string[] = (catalog.atoms as any[]).filter(a => a.type === "pe
             schemaEl.appendChild(a);
           }
           document.getElementById('dir-hint').textContent = 'atoms/' + currentClass + '/';
+          var ex = document.getElementById('example-ref');
+          if (ex) { ex.href = '/schemas/examples/' + currentClass + '.json'; ex.textContent = '/schemas/examples/' + currentClass + '.json'; }
           if (currentClass === 'skill') rebuildSkill();
           else if (currentClass === 'hook') rebuildHook();
           else if (currentClass === 'prompt') rebuildPrompt();

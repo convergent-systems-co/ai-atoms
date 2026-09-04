@@ -3,6 +3,25 @@
 All notable changes to this catalog are documented here.
 Versioning follows [Semantic Versioning](https://semver.org/).
 
+## v0.6.0 — 2026-09-03
+
+A ninth class for the documents a runtime renders.
+
+### Added
+- `schemas/template-v1.json`: a document skeleton (`body` with `{{placeholders}}`), the
+  placeholders it expects, the rules the finished document must obey, one rendered `example`, and
+  the skills that produce it. The build rejects a body and placeholder list that disagree.
+- Eight templates from the constitution's required documents: README, ADR (MADR), runbook,
+  HANDOFF, plan, commit message, pull request, postmortem. Template pages show the skeleton and
+  the rendered example side by side.
+- `schemas/examples/<class>.json`: one minimal valid atom per class for starting a new one by hand,
+  validated in CI and linked from the builder. These replace the idea of "template atoms" for
+  authoring, which the first pass removed from the catalog.
+
+### Removed
+- `prompt/handoff-md` and `prompt/plan-with-alternatives`, which described these two documents in
+  prose; `template/handoff` and `template/plan` carry the skeletons.
+
 ## v0.5.0 — 2026-09-03
 
 Second curation pass: the defects the first pass could only list.

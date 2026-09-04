@@ -1,0 +1,9 @@
+---
+import Site from "../../../layouts/Site.astro";
+import Listing from "../../../components/Listing.astro";
+import { atomsOf, CLASS_META } from "../../../lib/catalog";
+const atoms = atomsOf("template");
+---
+<Site title={CLASS_META["template"].plural} description={`${atoms.length} template atoms — ${CLASS_META["template"].blurb}`} current="/atoms/template/">
+  <Listing cls="template" atoms={atoms} intro="Document skeletons a runtime fills. Each template carries the <code>body</code> with its <code>{{placeholders}}</code>, what each placeholder wants, the rules the finished document must obey, and one rendered example. The first set is the documents the convergent-systems constitution requires: README, ADR, runbook, HANDOFF, plan, commit message, pull request, postmortem." facetLabel="Subtype" />
+</Site>

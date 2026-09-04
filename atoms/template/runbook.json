@@ -1,0 +1,77 @@
+{
+  "schema": "https://ai-atoms.com/schemas/template-v1.json",
+  "type": "template",
+  "id": "template/runbook",
+  "version": "1.0.0",
+  "name": "Runbook",
+  "description": "The operations runbook every production system must have: what healthy looks like, what sick looks like, how to recover, whom to escalate to, and what on-call is expected to do. Every alert must map to an entry here.",
+  "subtype": "runbook",
+  "format": "markdown",
+  "body": "# Runbook — {{system}}\n\nOwner: {{owner}} · Last verified: {{last_verified}}\n\n## Healthy state\n\n{{healthy}}\n\n## Sick state\n\n{{sick}}\n\n## Recovery procedure\n\n{{recovery}}\n\n## Escalation path\n\n{{escalation}}\n\n## On-call expectations\n\n{{oncall}}\n",
+  "placeholders": [
+    {
+      "name": "system",
+      "description": "The system or service this runbook covers.",
+      "example": "ai-atoms.com static site"
+    },
+    {
+      "name": "owner",
+      "description": "Team or person accountable.",
+      "example": "convergent-systems-co"
+    },
+    {
+      "name": "last_verified",
+      "description": "Date the procedure was last exercised.",
+      "example": "2026-09-03"
+    },
+    {
+      "name": "healthy",
+      "description": "Observable signals of a healthy system: URLs that return 200, latencies, error rates, dashboards.",
+      "example": "GET / returns 200 within 500 ms; /ai/index.json parses."
+    },
+    {
+      "name": "sick",
+      "description": "Symptoms and the alerts that fire for each; how to confirm it is this system and not a dependency.",
+      "example": "5xx from Cloudflare Pages; deploy workflow red."
+    },
+    {
+      "name": "recovery",
+      "description": "Numbered steps, each with the exact command and the expected result. Reversible steps first.",
+      "example": "1. Re-run the deploy workflow…"
+    },
+    {
+      "name": "escalation",
+      "description": "Who to page, in order, and when to move to the next.",
+      "example": "Repo owner, then the Cloudflare account admin."
+    },
+    {
+      "name": "oncall",
+      "description": "What the on-call person checks, how often, and what they may do without approval.",
+      "example": "Check the deploy status after every merge to main."
+    }
+  ],
+  "example": "# Runbook — ai-atoms.com static site\n\nOwner: convergent-systems-co · Last verified: 2026-09-03\n\n## Healthy state\n\nGET https://ai-atoms.com/ returns 200 within 500 ms; /ai/index.json parses and reports the current catalog version; the latest deploy workflow run on main is green.\n\n## Sick state\n\nThe site serves the HTML fallback for a JSON path (content-type text/html on /atoms/<class>/<slug>.json), or the deploy workflow is red. Confirm with `curl -sI` before acting; a Cloudflare-wide outage looks the same from outside.\n\n## Recovery procedure\n\n1. `gh run list --workflow=deploy.yml --limit 1` — if failed, open the log.\n2. Re-run the failed workflow. Expected: green within 5 minutes and the site serves the new catalog version.\n3. If the build itself fails, revert the last merge to main with a new PR; never force-push.\n\n## Escalation path\n\nRepository owner first; if Cloudflare Pages itself is unhealthy, the Cloudflare account admin.\n\n## On-call expectations\n\nCheck the deploy status after every merge to main. Re-running a workflow needs no approval; reverting a merge does.\n",
+  "rules": [
+    "An alert without a runbook entry is noise; add the entry before the alert.",
+    "Recovery steps are commands with expected results, not prose.",
+    "Re-verify and update last_verified whenever the procedure is exercised."
+  ],
+  "produced_by": [
+    "skill/runbook",
+    "skill/incident-response"
+  ],
+  "authored_by": "convergent-systems-key",
+  "category": "devops",
+  "provenance": {
+    "source": "ai-atoms",
+    "author": "convergent-systems-co",
+    "license": "CC-BY-4.0",
+    "notes": "Section set as required by the AI Constitution §4.9.1 (healthy state, sick state, recovery, escalation, on-call)."
+  },
+  "tags": [
+    "runbook",
+    "operations",
+    "required-document"
+  ],
+  "lifecycle": "stable"
+}

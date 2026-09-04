@@ -1,0 +1,54 @@
+---
+import Site from "../../../layouts/Site.astro";
+import ActionRail from "../../../components/ActionRail.astro";
+import Provenance from "../../../components/Provenance.astro";
+import CategoryChip from "../../../components/CategoryChip.astro";
+import { ATOMS, BY_ID, hrefOf, slugOf } from "../../../lib/catalog";
+
+export function getStaticPaths() {
+  return ATOMS.filter((a: any) => a.type === "template").map((a: any) => ({ params: { slug: slugOf(a.id) }, props: { template: a } }));
+}
+const { template } = Astro.props;
+const producers = (template.produced_by ?? []).map((id: string) => BY_ID.get(id)).filter(Boolean);
+const ext: Record<string, string> = { markdown: "md", json: "json", yaml: "yaml", text: "txt" };
+const filename = `${slugOf(template.id)}.template.${ext[template.format] ?? "txt"}`;
+// Highlight placeholders in the skeleton without trusting any HTML in the body.
+const esc = (s: string) => s.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]!));
+const bodyHtml = esc(template.body).replace(/\{\{([a-z][a-z0-9_]*)\}\}/g, '<span class="placeholder">{{$1}}</span>');
+---
+<Site title={template.name} description={template.description} current="/atoms/template/">
+  <div class="detail hue-template">
+    <article>
+      <a class="small muted" href="/atoms/template/">← Templates</a>
+      <div class="detail-hero" style="margin-top:0.8rem;">
+        <div class="chips"><span class="chip cls">Te template</span><span class="chip sub">{template.subtype}</span><span class="chip sub">{template.format}</span><CategoryChip category={template.category} />{template.lifecycle && <span class={`lifecycle ${template.lifecycle}`}>{template.lifecycle}</span>}</div>
+        <h1>{template.name}</h1>
+        <p class="lede">{template.description}</p>
+        <div class="idline"><span>id <b>{template.id}</b></span><span>v<b>{template.version}</b></span><span>placeholders <b>{template.placeholders.length}</b></span></div>
+      </div>
+
+      <div class="template-pair">
+        <div>
+          <h2 class="h-section">Skeleton</h2>
+          <pre><code set:html={bodyHtml} /></pre>
+        </div>
+        {template.example && <div>
+          <h2 class="h-section">Rendered example</h2>
+          <pre><code>{template.example}</code></pre>
+        </div>}
+      </div>
+
+      <h2 class="h-section">Placeholders</h2>
+      <div class="scroll"><table class="table" style="max-width:64rem;">
+        <thead><tr><th>Name</th><th>Required</th><th>What goes here</th><th>Example</th></tr></thead>
+        <tbody>{template.placeholders.map((p: any) => <tr><td><code>{`{{${p.name}}}`}</code></td><td>{p.required === false ? "no" : "yes"}</td><td>{p.description}</td><td class="small muted">{p.example ?? ""}</td></tr>)}</tbody>
+      </table></div>
+
+      {template.rules?.length > 0 && <><h2 class="h-section">Rules for the finished document</h2><ul class="list">{template.rules.map((r: string) => <li>{r}</li>)}</ul></>}
+      {producers.length > 0 && <><h2 class="h-section">Produced by</h2><ul class="list">{producers.map((s: any) => <li><a class="ref" href={hrefOf(s.id)}>{s.id}</a> — {s.name}</li>)}</ul></>}
+      {template.tags?.length > 0 && <div class="chips" style="margin-top:1.2rem;">{template.tags.map((t: string) => <span class="tag">{t}</span>)}</div>}
+      <Provenance atom={template} />
+    </article>
+    <ActionRail atom={template} text={template.body} textFilename={filename} commands={template.example ? [] : []} />
+  </div>
+</Site>

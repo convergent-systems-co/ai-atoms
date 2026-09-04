@@ -1,0 +1,22 @@
+{
+  "schema": "https://ai-atoms.com/schemas/prompt-v1.json",
+  "type": "prompt",
+  "id": "prompt/example-constraint",
+  "version": "1.0.0",
+  "name": "Example Constraint",
+  "description": "One rule the model must follow, stated once.",
+  "subtype": "constraint",
+  "content": "Never invent an API, flag, or citation. If you do not know, say so.",
+  "applicable_turns": [
+    "system"
+  ],
+  "vendors": [
+    "any"
+  ],
+  "category": "governance",
+  "authored_by": "your-key-or-name",
+  "tags": [
+    "example"
+  ],
+  "lifecycle": "draft"
+}

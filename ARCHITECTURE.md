@@ -4,14 +4,14 @@
 
 ## Overview
 
-ai-atoms is a typed, versioned catalog of AI runtime primitives. It contains eight atom classes,
+ai-atoms is a typed, versioned catalog of AI runtime primitives. It contains nine atom classes,
 each with its own JSON Schema, validated at build time. Three of the classes are parts a runtime
 uses directly (skill, hook, prompt); one is an identity (persona); one composes an identity with
 the parts it runs with (agent); one is reference data (model). Every class shares two fields
 defined once in `schemas/common-v1.json`: `category` (one vocabulary for browsing across classes)
 and `provenance` (where an imported atom came from and under what license).
 
-## Eight atom classes
+## Nine atom classes
 
 | Class | Runtime action | Directory | Schema |
 |---|---|---|---|
@@ -23,6 +23,7 @@ and `provenance` (where an imported atom came from and under what license).
 | `model` | looks up reference data: vendor, task, sizes, and `providers[]` with the id and command a runtime needs | `atoms/model/` | `schemas/model-v1.json` |
 | `policy` | permits, forbids, or bounds: boundaries, capability grants, isolation | `atoms/policy/` | `schemas/policy-v1.json` |
 | `tool` | exposes an executable affordance: the signature the model sees and the side effects to gate | `atoms/tool/` | `schemas/tool-v1.json` |
+| `template` | renders a document by filling `{{placeholders}}` in a skeleton: ADR, runbook, handoff, plan, PR, postmortem | `atoms/template/` | `schemas/template-v1.json` |
 
 Atoms are keyed by `<class>/<slug>`. The file name is `atoms/<class>/<slug>.json`.
 
@@ -86,6 +87,13 @@ network, and filesystem for isolation; domains and refusals for a boundary). A t
 function signature a model sees and the `side_effects` a runtime must gate with a capability policy.
 Agents reference both by id; the build resolves every reference.
 
+### template
+A template is a document skeleton a runtime fills. `body` carries the skeleton with `{{name}}`
+placeholders, `placeholders` says what each one wants, `rules` carries the constraints a skeleton
+cannot express, and `example` shows one finished instance. The first eight are the documents the
+convergent-systems constitution requires. Blank starting files for authoring atoms are not
+templates; they live in `schemas/examples/`.
+
 ## Compositions
 
 `workflows/` holds four Olympus workflow compositions from the retired workflow-atoms catalog.
@@ -103,7 +111,8 @@ atoms/agent/*.json   ──┤        │  validate each class against its schem
 atoms/persona/*.json ──┤        │  fail on any dangling cross-atom reference
 atoms/model/*.json   ──┤        │  index atoms by category
 atoms/policy/*.json  ──┤
-atoms/tool/*.json    ──┘
+atoms/tool/*.json    ──┤
+atoms/template/*.json──┘
                                 ▼
                      web/public/exports/catalog.json
                                 │

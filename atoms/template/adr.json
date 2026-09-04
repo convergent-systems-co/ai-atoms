@@ -1,0 +1,84 @@
+{
+  "schema": "https://ai-atoms.com/schemas/template-v1.json",
+  "type": "template",
+  "id": "template/adr",
+  "version": "1.0.0",
+  "name": "Architecture Decision Record (MADR)",
+  "description": "A MADR-format decision record: title, status, date, context, decision, consequences, alternatives considered. ADRs are immutable once accepted; a change is a new ADR that supersedes the old one.",
+  "subtype": "adr",
+  "format": "markdown",
+  "body": "# {{number}}. {{title}}\n\n- Status: {{status}}\n- Date: {{date}}\n{{relations}}\n\n## Context\n\n{{context}}\n\n## Decision\n\n{{decision}}\n\n## Consequences\n\n{{consequences}}\n\n## Alternatives considered\n\n{{alternatives}}\n",
+  "placeholders": [
+    {
+      "name": "number",
+      "description": "Four-digit sequence number within docs/adr/.",
+      "example": "0004"
+    },
+    {
+      "name": "title",
+      "description": "Imperative, specific: what was decided, not the topic.",
+      "example": "Add a template class for rendered documents"
+    },
+    {
+      "name": "status",
+      "description": "proposed, accepted, deprecated, or superseded by NNNN.",
+      "example": "proposed"
+    },
+    {
+      "name": "date",
+      "description": "ISO-8601 date the decision was recorded.",
+      "example": "2026-09-03"
+    },
+    {
+      "name": "relations",
+      "description": "Optional bullet lines: 'Supersedes NNNN', 'Builds on NNNN'.",
+      "required": false,
+      "example": "- Builds on: 0001, 0002"
+    },
+    {
+      "name": "context",
+      "description": "The forces at play: the problem, constraints, measured facts. Cite sources for anything not obvious.",
+      "example": "Agents asked to write an ADR had no skeleton to fill…"
+    },
+    {
+      "name": "decision",
+      "description": "What was decided, stated as a decision, with the reasoning that carried it.",
+      "example": "Add template-v1 with body, placeholders, and example…"
+    },
+    {
+      "name": "consequences",
+      "description": "What becomes easier, what becomes harder, what must follow. Include the negative ones.",
+      "example": "Nine classes instead of eight; the site nav grows…"
+    },
+    {
+      "name": "alternatives",
+      "description": "Each alternative with why it was rejected. Include 'do nothing' when it was a real option.",
+      "example": "Keep templates as prompt/output-schema atoms — rejected because…"
+    }
+  ],
+  "example": "# 0004. Add a template class for rendered documents\n\n- Status: proposed\n- Date: 2026-09-03\n- Builds on: 0001, 0002\n\n## Context\n\nAn agent told to write an ADR, runbook, or handoff had no skeleton to fill; two prompt atoms described the shapes in prose.\n\n## Decision\n\nAdd template-v1: a document skeleton with typed placeholders and one rendered example. Rendering is a distinct runtime action from injecting text, which is the taxonomy's test for a class.\n\n## Consequences\n\nNine classes. The two prose-shaped prompts migrate. Blank atom files for authoring are not templates; they live in schemas/examples/.\n\n## Alternatives considered\n\n- Keep describing document shapes as prompt/output-schema atoms. Rejected: a description is not a skeleton a runtime can fill.\n- Put templates in doc-atoms. Rejected: they are consumed by AI runtimes, which is this catalog's scope.\n",
+  "rules": [
+    "Never edit an accepted ADR; write a new one that supersedes it.",
+    "Every non-trivial decision gets an ADR before the conversation that made it ends.",
+    "Consequences must include the negative ones."
+  ],
+  "produced_by": [
+    "skill/architecture",
+    "skill/amendment-author"
+  ],
+  "authored_by": "convergent-systems-key",
+  "category": "governance",
+  "provenance": {
+    "source": "ai-atoms",
+    "author": "convergent-systems-co",
+    "license": "CC-BY-4.0",
+    "notes": "MADR field set as required by the AI Constitution §4.9.1 (title, status, context, decision, consequences, alternatives)."
+  },
+  "tags": [
+    "adr",
+    "madr",
+    "decision",
+    "required-document"
+  ],
+  "lifecycle": "stable"
+}

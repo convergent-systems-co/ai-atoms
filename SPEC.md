@@ -159,6 +159,30 @@ Model ids allow dots (`model/llama3.2`) because model names carry versions.
 | `spec` | object | yes | `function_name` (snake_case), `summary`, `returns` required; `parameters` (name → type, description, required); `side_effects` from `fs-read`, `fs-write`, `exec`, `network`, `user-prompt` |
 | `gated_by` | array of policy ids | no | Policies that must permit the tool |
 
+## template-v1.json
+
+**`$id`:** `https://ai-atoms.com/schemas/template-v1.json`
+
+| Field | Type | Required | Notes |
+|---|---|---|---|
+| `subtype` | enum | yes | `adr`, `runbook`, `handoff`, `plan`, `pull-request`, `commit-message`, `postmortem`, `readme`, `spec`, `other` |
+| `format` | enum | yes | `markdown`, `json`, `yaml`, `text` |
+| `body` | string | yes | The skeleton; placeholders are `{{name}}` and every one must be declared |
+| `placeholders` | array of objects | yes | `name` (snake_case) and `description` required; `required` (default true), `example` |
+| `example` | string | no | One complete rendered instance |
+| `rules` | array of strings | no | Constraints the skeleton cannot express (line length, ordering, forbidden words) |
+| `produced_by` | array of skill ids | no | Skills whose output is this document |
+
+The build rejects a template whose `body` uses a placeholder it does not declare, or declares one
+it never uses.
+
+## Examples
+
+`schemas/examples/<class>.json` holds one minimal valid atom per class for starting a new one by
+hand. They are not catalog atoms; `scripts/tests/test_examples.py` validates them against the
+schemas and checks their references against the real catalog. Served at
+`https://ai-atoms.com/schemas/examples/<class>.json`.
+
 ## Reference resolution
 
 The build fails on any reference that does not resolve:
@@ -169,6 +193,7 @@ The build fails on any reference that does not resolve:
 | agent | `prompts`, `skills`, `hooks` | atoms of that class |
 | agent | `tools`, `policies` | atoms of that class |
 | tool | `gated_by` | policy atoms |
+| template | `produced_by` | skill atoms |
 | prompt | `persona_ref` | a persona atom |
 | prompt | `includes` | prompt atoms |
 | skill, hook | `depends_on` | atoms of the same class |
@@ -192,10 +217,10 @@ All atoms use semantic versioning (`MAJOR.MINOR.PATCH`):
 ```json
 {
   "catalog": "ai-atoms",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "built_at": "<ISO-8601>",
-  "classes": ["skill", "hook", "prompt", "agent", "persona", "model", "policy", "tool"],
-  "counts": {"skill": 0, "hook": 0, "prompt": 0, "agent": 0, "persona": 0, "model": 0, "policy": 0, "tool": 0},
+  "classes": ["skill", "hook", "prompt", "agent", "persona", "model", "policy", "tool", "template"],
+  "counts": {"skill": 0, "hook": 0, "prompt": 0, "agent": 0, "persona": 0, "model": 0, "policy": 0, "tool": 0, "template": 0},
   "categories": {"security": {"skill": 0, "hook": 0}},
   "atoms": [...],
   "compositions": [...],

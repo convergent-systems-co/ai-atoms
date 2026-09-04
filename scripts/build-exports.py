@@ -15,6 +15,7 @@ Walks workflows/ (no schema — compositions). Assembles a single machine-readab
 catalog manifest. Exits 1 on any validation failure.
 """
 import json
+import re
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -32,10 +33,10 @@ ATOMS_DIR = REPO / "atoms"
 COMPOSITIONS_DIR = REPO / "workflows"
 EXPORT_PATH = REPO / "exports" / "catalog.json"
 CATALOG_NAME = "ai-atoms"
-CATALOG_VERSION = "0.5.0"
+CATALOG_VERSION = "0.6.0"
 
 # Atom classes with a published schema, in catalog display order.
-TYPED_CLASSES = ("skill", "hook", "prompt", "agent", "persona", "model", "policy", "tool")
+TYPED_CLASSES = ("skill", "hook", "prompt", "agent", "persona", "model", "policy", "tool", "template")
 COMMON_SCHEMA = "common-v1.json"
 
 # Fields whose values are references to other atoms, by owning class.
@@ -56,6 +57,9 @@ REFERENCE_FIELDS: dict[str, list[tuple[str, str | None]]] = {
     ],
     "tool": [
         ("gated_by", "policy"),
+    ],
+    "template": [
+        ("produced_by", "skill"),
     ],
     "skill": [
         ("depends_on", "skill"),
@@ -146,6 +150,24 @@ def untyped_atom_exists(atoms_dir: Path, ref: str) -> bool:
     return any(class_dir.rglob(f"{slug}.json"))
 
 
+PLACEHOLDER = re.compile(r"\{\{([a-z][a-z0-9_]*)\}\}")
+
+
+def find_template_defects(atoms: list[dict]) -> list[str]:
+    """A template's body and its placeholders list must agree exactly."""
+    problems: list[str] = []
+    for atom in atoms:
+        if atom.get("type") != "template":
+            continue
+        used = set(PLACEHOLDER.findall(atom["body"]))
+        declared = {p["name"] for p in atom["placeholders"]}
+        for name in sorted(used - declared):
+            problems.append(f"{atom['id']}: body uses {{{{{name}}}}} but placeholders does not declare it")
+        for name in sorted(declared - used):
+            problems.append(f"{atom['id']}: placeholders declares {name} but body never uses it")
+    return problems
+
+
 def find_dangling_references(atoms: list[dict], atoms_dir: Path = ATOMS_DIR) -> list[str]:
     """Return human-readable descriptions of every reference that does not resolve."""
     known_ids = {a["id"] for a in atoms}
@@ -194,9 +216,9 @@ def category_index(atoms: list[dict]) -> dict[str, dict[str, int]]:
 def main() -> int:
     atoms = collect_atoms(ATOMS_DIR)
 
-    dangling = find_dangling_references(atoms)
+    dangling = find_dangling_references(atoms) + find_template_defects(atoms)
     if dangling:
-        print("x dangling references:", file=sys.stderr)
+        print("x dangling references or template defects:", file=sys.stderr)
         for problem in dangling:
             print(f"    {problem}", file=sys.stderr)
         return 1

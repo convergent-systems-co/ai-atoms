@@ -1,0 +1,91 @@
+{
+  "schema": "https://ai-atoms.com/schemas/template-v1.json",
+  "type": "template",
+  "id": "template/postmortem",
+  "version": "1.0.0",
+  "name": "Incident Postmortem",
+  "description": "A blameless postmortem written within 48 hours of resolution: impact, timeline, root cause, contributing factors, what went well, and dated action items with owners.",
+  "subtype": "postmortem",
+  "format": "markdown",
+  "body": "# Postmortem — {{incident_title}}\n\nSeverity: {{severity}} · Declared: {{declared_at}} · Resolved: {{resolved_at}} · Author: {{author}}\n\n## Impact\n\n{{impact}}\n\n## Timeline\n\n{{timeline}}\n\n## Root cause\n\n{{root_cause}}\n\n## Contributing factors\n\n{{contributing_factors}}\n\n## What went well\n\n{{went_well}}\n\n## Action items\n\n| Action | Owner | Due | Status |\n|---|---|---|---|\n{{action_rows}}\n",
+  "placeholders": [
+    {
+      "name": "incident_title",
+      "description": "One line naming what broke.",
+      "example": "Schema URLs served the HTML fallback"
+    },
+    {
+      "name": "severity",
+      "description": "SEV1, SEV2, or SEV3.",
+      "example": "SEV3"
+    },
+    {
+      "name": "declared_at",
+      "description": "ISO-8601 timestamp.",
+      "example": "2026-09-03T22:40Z"
+    },
+    {
+      "name": "resolved_at",
+      "description": "ISO-8601 timestamp.",
+      "example": "2026-09-03T23:25Z"
+    },
+    {
+      "name": "author",
+      "description": "Who wrote it (usually the incident commander).",
+      "example": "incident commander"
+    },
+    {
+      "name": "impact",
+      "description": "Who was affected, how, for how long. Numbers where they exist.",
+      "example": "Every /schemas/*.json URL returned HTML for 45 minutes after the v0.3.0 deploy."
+    },
+    {
+      "name": "timeline",
+      "description": "Timestamped events from first signal to resolution, one per line.",
+      "example": "22:40 deploy completes; 22:58 curl check finds text/html; 23:10 PR #51 opened…"
+    },
+    {
+      "name": "root_cause",
+      "description": "The one thing that, had it been different, would have prevented the incident. Not a person.",
+      "example": "schemas/ was never copied into the web build."
+    },
+    {
+      "name": "contributing_factors",
+      "description": "Conditions that made it likelier or worse.",
+      "example": "The old site served 200 for every path, so the check passed on status code alone."
+    },
+    {
+      "name": "went_well",
+      "description": "What limited the damage.",
+      "example": "Content-type check caught it within 20 minutes."
+    },
+    {
+      "name": "action_rows",
+      "description": "One table row per action: concrete, owned, dated.",
+      "example": "| Add a content-type assertion to the post-deploy check | repo owner | 2026-09-10 | open |"
+    }
+  ],
+  "example": "# Postmortem — Schema URLs served the HTML fallback\n\nSeverity: SEV3 · Declared: 2026-09-03T22:58Z · Resolved: 2026-09-03T23:25Z · Author: incident commander\n\n## Impact\n\nEvery /schemas/*.json URL returned the HTML fallback for about 45 minutes after the v0.3.0 deploy. Atom validation from the published URLs was impossible during that window; no users reported it.\n\n## Timeline\n\n- 22:40 v0.3.0 deploy completes.\n- 22:58 Post-deploy curl finds content-type text/html on /schemas/skill-v1.json.\n- 23:10 PR #51 opened: prebuild copies schemas/ into the web build.\n- 23:25 Deploy of #51 completes; URLs serve application/json.\n\n## Root cause\n\nThe web build never copied schemas/ into its public directory, so the static host served its fallback page.\n\n## Contributing factors\n\nThe previous site returned 200 for every path, so a status-code-only check passed.\n\n## What went well\n\nThe post-deploy check inspected content-type, not just status, and caught it within 20 minutes.\n\n## Action items\n\n| Action | Owner | Due | Status |\n|---|---|---|---|\n| Assert content-type in the post-deploy check for every documented JSON URL | repo owner | 2026-09-10 | open |\n",
+  "rules": [
+    "Blameless: root cause is a condition, never a person.",
+    "Write it within 48 hours of resolution.",
+    "Every action item has an owner and a date."
+  ],
+  "produced_by": [
+    "skill/incident-response"
+  ],
+  "authored_by": "convergent-systems-key",
+  "category": "devops",
+  "provenance": {
+    "source": "ai-atoms",
+    "author": "convergent-systems-co",
+    "license": "CC-BY-4.0",
+    "notes": "Structure is the common blameless-postmortem form; the 48-hour rule comes from persona/incident-commander's job to be done."
+  },
+  "tags": [
+    "postmortem",
+    "incident",
+    "sre"
+  ],
+  "lifecycle": "stable"
+}

@@ -1,0 +1,24 @@
+{
+  "schema": "https://ai-atoms.com/schemas/policy-v1.json",
+  "type": "policy",
+  "id": "policy/example-capability",
+  "version": "1.0.0",
+  "name": "Example Capability",
+  "description": "What the runtime grants, and under what elevation.",
+  "subtype": "capability",
+  "effect": "permit",
+  "rule": {
+    "text": "May read files in the workspace; may not write, execute, or reach the network.",
+    "grants": [
+      "read-files"
+    ],
+    "elevation": "declared",
+    "audit": false
+  },
+  "category": "security",
+  "authored_by": "your-key-or-name",
+  "tags": [
+    "example"
+  ],
+  "lifecycle": "draft"
+}

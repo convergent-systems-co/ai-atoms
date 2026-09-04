@@ -1,0 +1,31 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/example-model",
+  "version": "1.0.0",
+  "name": "example-model",
+  "description": "One model and where a runtime can get it.",
+  "vendor": "Example Labs",
+  "family": "Example",
+  "task": "text-generation",
+  "capabilities": [
+    "tools"
+  ],
+  "parameter_sizes": [
+    "8b"
+  ],
+  "providers": [
+    {
+      "name": "Ollama",
+      "model_id": "example-model",
+      "url": "https://ollama.com/library/example-model",
+      "pull_command": "ollama pull example-model"
+    }
+  ],
+  "category": "ai",
+  "authored_by": "Example Labs",
+  "tags": [
+    "example"
+  ],
+  "lifecycle": "draft"
+}

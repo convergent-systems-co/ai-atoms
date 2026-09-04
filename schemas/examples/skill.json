@@ -1,0 +1,21 @@
+{
+  "schema": "https://ai-atoms.com/schemas/skill-v1.json",
+  "type": "skill",
+  "id": "skill/example-skill",
+  "version": "1.0.0",
+  "name": "Example Skill",
+  "description": "What this skill does, when to invoke it, and what it prevents. Replace every field before submitting.",
+  "system_prompt_fragment": "When the user asks for X, do Y in this order:\n1. …\n2. …\nNever Z.",
+  "applicable_domains": [
+    "code"
+  ],
+  "category": "coding",
+  "invocation": [
+    "/example-skill"
+  ],
+  "authored_by": "your-key-or-name",
+  "tags": [
+    "example"
+  ],
+  "lifecycle": "draft"
+}
