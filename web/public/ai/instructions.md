@@ -87,6 +87,8 @@ source, original URL, author, and license.
 - Render `body` by replacing each `{{name}}` with a value that satisfies its entry in
   `placeholders`; every placeholder marked required must be filled. Apply `rules` to the result.
 - `example` is one finished instance; `produced_by` lists the skills whose output is this document.
+- `subtype: agent` is the shape of a one-shot subagent definition (Claude Code `.claude/agents/*.md`);
+  `subtype: persona` is the shape of a conversational character. Render either to a markdown file.
 - Minimal valid starting files for every class: `/schemas/examples/<class>.json`.
 
 ## Attribution

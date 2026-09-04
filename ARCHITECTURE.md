@@ -72,6 +72,7 @@ number of providers so the same model can list Cloudflare Workers AI or a vendor
 | `scripts/migrate-policy-tool.py` | the staged policy and tool trees from the same PR | Apache-2.0 |
 | `scripts/discover-licenses.py` | GitHub API for atoms whose provenance names an upstream repository | fills `provenance.license` with the repository's SPDX id |
 | `scripts/import-cloudflare-models.py` | model-atoms.com (Cloudflare Workers AI cards) | adds a Cloudflare `providers[]` entry to the matching Ollama atom, or a new atom; weights license recorded as `unknown` |
+| `scripts/import-house-templates.py` | `~/.ai/templates/*.md` (the house ADR, agent, and persona templates) | MADR text MIT OR CC0-1.0; house text CC-BY-4.0; free-form placeholders renamed to `{{snake_case}}` with the original guidance kept as descriptions |
 | `scripts/repair-descriptions.py` | the original SKILL.md, from GitHub or the claudeskills table | re-reads descriptions the old importer mangled; follows moved files |
 
 All SKILL.md frontmatter is parsed by `scripts/skillmd.py`, which understands folded and literal

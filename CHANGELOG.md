@@ -3,6 +3,29 @@
 All notable changes to this catalog are documented here.
 Versioning follows [Semantic Versioning](https://semver.org/).
 
+## v0.7.0 — 2026-09-03
+
+The house templates from `~/.ai/templates/` join the catalog.
+
+### Added
+- `template/agent` (subtype `agent`): the definition shape for a one-shot, task-executing
+  subagent — frontmatter with a tool allowlist, a numbered job, ranked priorities, worktree
+  discipline, a STATUS report contract, worked examples, red flags, a `RESULT_JSON` line, and a
+  capacity rule.
+- `template/persona` (subtype `persona`): the definition shape for a conversational,
+  character-driven persona — voice, always/never behaviours, situation handling, ranked
+  priorities, fixed versus shifting traits, hard limits, staying in character under pressure, and
+  a closing restatement of the limits that never bend.
+- `scripts/import-house-templates.py`: converts the free-form `{{…}}` placeholders in those files
+  to template-v1's named form, keeping every comment and the original guidance as the placeholder
+  descriptions, and is re-runnable when a house file changes.
+- Template subtypes `agent` and `persona`.
+
+### Changed
+- `template/adr` is now the full MADR 4.0.0 template (metadata, decision drivers, confirmation,
+  pros and cons per option, more information) rather than the six-section summary shipped in
+  v0.6.0. Attributed to the MADR project (MIT OR CC0-1.0).
+
 ## v0.6.0 — 2026-09-03
 
 A ninth class for the documents a runtime renders.

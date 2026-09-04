@@ -33,7 +33,7 @@ ATOMS_DIR = REPO / "atoms"
 COMPOSITIONS_DIR = REPO / "workflows"
 EXPORT_PATH = REPO / "exports" / "catalog.json"
 CATALOG_NAME = "ai-atoms"
-CATALOG_VERSION = "0.6.0"
+CATALOG_VERSION = "0.7.0"
 
 # Atom classes with a published schema, in catalog display order.
 TYPED_CLASSES = ("skill", "hook", "prompt", "agent", "persona", "model", "policy", "tool", "template")
