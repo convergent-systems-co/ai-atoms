@@ -1,7 +1,7 @@
 {
   "catalog": "ai-atoms",
-  "version": "0.5.0",
-  "built_at": "2026-09-04T00:54:29+00:00",
+  "version": "0.6.0",
+  "built_at": "2026-09-04T01:07:27+00:00",
   "classes": [
     "skill",
     "hook",
@@ -10,17 +10,19 @@
     "persona",
     "model",
     "policy",
-    "tool"
+    "tool",
+    "template"
   ],
   "counts": {
     "skill": 681,
     "hook": 18,
-    "prompt": 55,
+    "prompt": 53,
     "agent": 3,
     "persona": 47,
     "model": 283,
     "policy": 54,
-    "tool": 20
+    "tool": 20,
+    "template": 8
   },
   "categories": {
     "coding": {
@@ -28,6 +30,7 @@
       "policy": 2,
       "prompt": 2,
       "skill": 24,
+      "template": 2,
       "tool": 13
     },
     "frontend": {
@@ -44,6 +47,7 @@
       "policy": 3,
       "prompt": 2,
       "skill": 103,
+      "template": 2,
       "tool": 5
     },
     "security": {
@@ -82,8 +86,9 @@
     "product": {
       "persona": 3,
       "policy": 1,
-      "prompt": 3,
-      "skill": 24
+      "prompt": 2,
+      "skill": 24,
+      "template": 1
     },
     "operations": {
       "skill": 13
@@ -112,7 +117,8 @@
       "persona": 8,
       "policy": 2,
       "prompt": 3,
-      "skill": 14
+      "skill": 14,
+      "template": 1
     },
     "research": {
       "agent": 1,
@@ -125,8 +131,9 @@
       "hook": 11,
       "persona": 5,
       "policy": 28,
-      "prompt": 33,
-      "skill": 18
+      "prompt": 32,
+      "skill": 18,
+      "template": 2
     },
     "other": {
       "persona": 3,
@@ -20318,39 +20325,6 @@
     {
       "schema": "https://ai-atoms.com/schemas/prompt-v1.json",
       "type": "prompt",
-      "id": "prompt/handoff-md",
-      "version": "1.0.0",
-      "name": "HANDOFF.md",
-      "description": "Cross-session continuity document. State, next steps, open questions, files in flight, last known-good commit.",
-      "subtype": "output-schema",
-      "content": "Emit a Markdown document with these required sections, in order: (1) Current state — what is in flight, what is committed; (2) Next steps — concrete actions for the resuming session; (3) Open questions — decisions awaiting input; (4) Files in flight — paths being modified, with line ranges if helpful; (5) Last known-good commit — SHA + one-line description; (6) Audit references — any in-progress override or violation log entries. No secrets in any section; redact with [REDACTED:<kind>] if a secret would otherwise appear.",
-      "applicable_turns": [
-        "system",
-        "assistant"
-      ],
-      "vendors": [
-        "any"
-      ],
-      "authored_by": "convergent-systems-key",
-      "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/output-schema/handoff-md.json",
-      "tags": [
-        "output",
-        "handoff",
-        "context"
-      ],
-      "lifecycle": "draft",
-      "category": "governance",
-      "provenance": {
-        "source": "convergent-systems-co/prompt-atoms",
-        "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/output-schema/handoff-md.json",
-        "author": "convergent-systems-co",
-        "license": "Apache-2.0",
-        "notes": "Re-typed by scripts/migrate-retired-atoms.py from the retired catalog."
-      }
-    },
-    {
-      "schema": "https://ai-atoms.com/schemas/prompt-v1.json",
-      "type": "prompt",
       "id": "prompt/independent-verification",
       "version": "1.0.0",
       "name": "Independent Verification",
@@ -20972,38 +20946,6 @@
       "provenance": {
         "source": "convergent-systems-co/prompt-atoms",
         "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/tool-use-template/plan-then-execute.json",
-        "author": "convergent-systems-co",
-        "license": "Apache-2.0",
-        "notes": "Re-typed by scripts/migrate-retired-atoms.py from the retired catalog."
-      }
-    },
-    {
-      "schema": "https://ai-atoms.com/schemas/prompt-v1.json",
-      "type": "prompt",
-      "id": "prompt/plan-with-alternatives",
-      "version": "1.0.0",
-      "name": "Plan With Alternatives",
-      "description": "Implementation plan with Alternatives Table, scope, approach, testing, risks, dependencies. Markdown shape per Code.md §11.1.",
-      "subtype": "output-schema",
-      "content": "Emit a Markdown document with these required sections, in order: (1) Objective — one sentence; (2) Alternatives — a table with columns 'Alternative | Pros | Cons | Verdict' and at least two rows including 'do nothing' where applicable; (3) Scope — files to create, modify, delete; (4) Approach — numbered steps; (5) Testing — what tests prove it works; (6) Risks — what could go wrong and mitigation; (7) Dependencies — what must land first; (8) Backward Compatibility — what breaks and the migration path. No 'TBD' or 'TODO' entries in the final draft.",
-      "applicable_turns": [
-        "system",
-        "assistant"
-      ],
-      "vendors": [
-        "any"
-      ],
-      "authored_by": "convergent-systems-key",
-      "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/output-schema/plan-with-alternatives.json",
-      "tags": [
-        "output",
-        "planning"
-      ],
-      "lifecycle": "draft",
-      "category": "product",
-      "provenance": {
-        "source": "convergent-systems-co/prompt-atoms",
-        "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/output-schema/plan-with-alternatives.json",
         "author": "convergent-systems-co",
         "license": "Apache-2.0",
         "notes": "Re-typed by scripts/migrate-retired-atoms.py from the retired catalog."
@@ -43649,6 +43591,612 @@
         "risk-reviewed"
       ],
       "lifecycle": "draft"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/template-v1.json",
+      "type": "template",
+      "id": "template/adr",
+      "version": "1.0.0",
+      "name": "Architecture Decision Record (MADR)",
+      "description": "A MADR-format decision record: title, status, date, context, decision, consequences, alternatives considered. ADRs are immutable once accepted; a change is a new ADR that supersedes the old one.",
+      "subtype": "adr",
+      "format": "markdown",
+      "body": "# {{number}}. {{title}}\n\n- Status: {{status}}\n- Date: {{date}}\n{{relations}}\n\n## Context\n\n{{context}}\n\n## Decision\n\n{{decision}}\n\n## Consequences\n\n{{consequences}}\n\n## Alternatives considered\n\n{{alternatives}}\n",
+      "placeholders": [
+        {
+          "name": "number",
+          "description": "Four-digit sequence number within docs/adr/.",
+          "example": "0004"
+        },
+        {
+          "name": "title",
+          "description": "Imperative, specific: what was decided, not the topic.",
+          "example": "Add a template class for rendered documents"
+        },
+        {
+          "name": "status",
+          "description": "proposed, accepted, deprecated, or superseded by NNNN.",
+          "example": "proposed"
+        },
+        {
+          "name": "date",
+          "description": "ISO-8601 date the decision was recorded.",
+          "example": "2026-09-03"
+        },
+        {
+          "name": "relations",
+          "description": "Optional bullet lines: 'Supersedes NNNN', 'Builds on NNNN'.",
+          "required": false,
+          "example": "- Builds on: 0001, 0002"
+        },
+        {
+          "name": "context",
+          "description": "The forces at play: the problem, constraints, measured facts. Cite sources for anything not obvious.",
+          "example": "Agents asked to write an ADR had no skeleton to fill…"
+        },
+        {
+          "name": "decision",
+          "description": "What was decided, stated as a decision, with the reasoning that carried it.",
+          "example": "Add template-v1 with body, placeholders, and example…"
+        },
+        {
+          "name": "consequences",
+          "description": "What becomes easier, what becomes harder, what must follow. Include the negative ones.",
+          "example": "Nine classes instead of eight; the site nav grows…"
+        },
+        {
+          "name": "alternatives",
+          "description": "Each alternative with why it was rejected. Include 'do nothing' when it was a real option.",
+          "example": "Keep templates as prompt/output-schema atoms — rejected because…"
+        }
+      ],
+      "example": "# 0004. Add a template class for rendered documents\n\n- Status: proposed\n- Date: 2026-09-03\n- Builds on: 0001, 0002\n\n## Context\n\nAn agent told to write an ADR, runbook, or handoff had no skeleton to fill; two prompt atoms described the shapes in prose.\n\n## Decision\n\nAdd template-v1: a document skeleton with typed placeholders and one rendered example. Rendering is a distinct runtime action from injecting text, which is the taxonomy's test for a class.\n\n## Consequences\n\nNine classes. The two prose-shaped prompts migrate. Blank atom files for authoring are not templates; they live in schemas/examples/.\n\n## Alternatives considered\n\n- Keep describing document shapes as prompt/output-schema atoms. Rejected: a description is not a skeleton a runtime can fill.\n- Put templates in doc-atoms. Rejected: they are consumed by AI runtimes, which is this catalog's scope.\n",
+      "rules": [
+        "Never edit an accepted ADR; write a new one that supersedes it.",
+        "Every non-trivial decision gets an ADR before the conversation that made it ends.",
+        "Consequences must include the negative ones."
+      ],
+      "produced_by": [
+        "skill/architecture",
+        "skill/amendment-author"
+      ],
+      "authored_by": "convergent-systems-key",
+      "category": "governance",
+      "provenance": {
+        "source": "ai-atoms",
+        "author": "convergent-systems-co",
+        "license": "CC-BY-4.0",
+        "notes": "MADR field set as required by the AI Constitution §4.9.1 (title, status, context, decision, consequences, alternatives)."
+      },
+      "tags": [
+        "adr",
+        "madr",
+        "decision",
+        "required-document"
+      ],
+      "lifecycle": "stable"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/template-v1.json",
+      "type": "template",
+      "id": "template/commit-message",
+      "version": "1.0.0",
+      "name": "Commit Message",
+      "description": "A Conventional Commits message: typed subject in the imperative under 72 characters, a body that explains why (not what) wrapped at 72, and the provenance trailer when an AI wrote significant code.",
+      "subtype": "commit-message",
+      "format": "text",
+      "body": "{{type}}{{scope}}: {{subject}}\n\n{{body}}\n\n{{trailers}}",
+      "placeholders": [
+        {
+          "name": "type",
+          "description": "feat, fix, refactor, perf, docs, test, build, ci, or chore.",
+          "example": "feat"
+        },
+        {
+          "name": "scope",
+          "description": "Optional parenthesised area, e.g. (schemas).",
+          "required": false,
+          "example": "(schemas)"
+        },
+        {
+          "name": "subject",
+          "description": "Imperative mood, no trailing period, subject line ≤ 72 characters including type and scope.",
+          "example": "add template class for rendered documents"
+        },
+        {
+          "name": "body",
+          "description": "Why this change, the non-obvious decisions, and what alternatives were rejected. Wrap at 72. Omit for trivial changes.",
+          "required": false,
+          "example": "Agents asked to write an ADR had no skeleton…"
+        },
+        {
+          "name": "trailers",
+          "description": "Co-Authored-By and similar trailers, one per line.",
+          "required": false,
+          "example": "Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>"
+        }
+      ],
+      "example": "feat(schemas): add template class for rendered documents\n\nAgents asked to write an ADR, runbook, or handoff had no skeleton to\nfill. A template carries the skeleton, its placeholders, and one rendered\nexample; rendering is a distinct runtime action from injecting text.\n\nCo-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>",
+      "rules": [
+        "Subject line ≤ 72 characters, imperative mood, no trailing period.",
+        "One logical change per commit; refactor commits never carry feat or fix payloads.",
+        "Body explains why; the diff already says what."
+      ],
+      "produced_by": [
+        "skill/commit"
+      ],
+      "authored_by": "convergent-systems-key",
+      "category": "coding",
+      "provenance": {
+        "source": "ai-atoms",
+        "author": "convergent-systems-co",
+        "license": "CC-BY-4.0",
+        "notes": "Rules from the AI Constitution's commit discipline (§4.10.2) and provenance rule (§3.32)."
+      },
+      "tags": [
+        "commit",
+        "conventional-commits",
+        "git"
+      ],
+      "lifecycle": "stable"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/template-v1.json",
+      "type": "template",
+      "id": "template/handoff",
+      "version": "1.0.0",
+      "name": "HANDOFF.md",
+      "description": "Cross-session continuity document written at a context boundary: current state, next steps, open questions, files in flight, last known-good commit, audit references. The resuming session verifies every gating assertion against live state before acting on it.",
+      "subtype": "handoff",
+      "format": "markdown",
+      "body": "# HANDOFF — {{task}}\n\nLast updated: {{updated}} · Branch: {{branch}}\n\n## Current state\n\n{{current_state}}\n\n## Next steps\n\n{{next_steps}}\n\n## Open questions\n\n{{open_questions}}\n\n## Files in flight\n\n{{files_in_flight}}\n\n## Last known-good commit\n\n{{last_good_commit}}\n\n## Audit references\n\n{{audit_refs}}\n",
+      "placeholders": [
+        {
+          "name": "task",
+          "description": "What the work is, in a few words.",
+          "example": "template class for ai-atoms"
+        },
+        {
+          "name": "updated",
+          "description": "ISO-8601 timestamp.",
+          "example": "2026-09-03T20:10:00Z"
+        },
+        {
+          "name": "branch",
+          "description": "Branch the work is on.",
+          "example": "feat/template-class"
+        },
+        {
+          "name": "current_state",
+          "description": "What is in flight and what is committed. Facts a resuming session can verify.",
+          "example": "Schema written; eight atoms written; site pages not yet."
+        },
+        {
+          "name": "next_steps",
+          "description": "Concrete actions for the resuming session, in order.",
+          "example": "1. Add site pages. 2. Run the build."
+        },
+        {
+          "name": "open_questions",
+          "description": "Decisions awaiting input, each with who can answer it.",
+          "example": "None."
+        },
+        {
+          "name": "files_in_flight",
+          "description": "Paths being modified, with line ranges when helpful.",
+          "example": "web/src/lib/catalog.ts, schemas/template-v1.json"
+        },
+        {
+          "name": "last_good_commit",
+          "description": "SHA plus one line.",
+          "example": "0b0be7d Second curation pass"
+        },
+        {
+          "name": "audit_refs",
+          "description": "In-progress override or violation log entries, or 'none'.",
+          "required": false,
+          "example": "none"
+        }
+      ],
+      "example": "# HANDOFF — template class for ai-atoms\n\nLast updated: 2026-09-03T20:10:00Z · Branch: feat/template-class\n\n## Current state\n\nSchema and eight template atoms written and validating. Site pages not started. Nothing committed on this branch yet.\n\n## Next steps\n\n1. Add listing and detail pages under web/src/pages/atoms/template/.\n2. Run `python3 scripts/build-exports.py` and `python3 -m pytest`.\n3. Commit in two pieces: schema+atoms, then site.\n\n## Open questions\n\nNone.\n\n## Files in flight\n\nschemas/template-v1.json, atoms/template/*.json, web/src/lib/catalog.ts\n\n## Last known-good commit\n\n0b0be7d Second curation pass: descriptions, Cloudflare models, vendors, workflow removal (#53)\n\n## Audit references\n\nnone\n",
+      "rules": [
+        "No secrets in any section; write [REDACTED:<kind>] where one would otherwise appear.",
+        "On resume, verify every assertion that gates an action against live state before running it.",
+        "Write or update it whenever continuity is at risk, not only at the end."
+      ],
+      "produced_by": [
+        "skill/checkpoint"
+      ],
+      "authored_by": "convergent-systems-key",
+      "category": "governance",
+      "provenance": {
+        "source": "ai-atoms",
+        "author": "convergent-systems-co",
+        "license": "CC-BY-4.0",
+        "notes": "Section set from the AI Constitution's handoff rule (§3.38); migrated from prompt/handoff-md, whose prose described this shape."
+      },
+      "tags": [
+        "handoff",
+        "checkpoint",
+        "continuity",
+        "required-document"
+      ],
+      "lifecycle": "stable"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/template-v1.json",
+      "type": "template",
+      "id": "template/plan",
+      "version": "1.0.0",
+      "name": "Implementation Plan",
+      "description": "A plan with an alternatives table, scope, numbered approach, tests, risks, dependencies, and backward compatibility. No TBD or TODO in the final draft. Required before non-trivial work starts.",
+      "subtype": "plan",
+      "format": "markdown",
+      "body": "# Plan — {{title}}\n\n## Objective\n\n{{objective}}\n\n## Alternatives\n\n| Alternative | Pros | Cons | Verdict |\n|---|---|---|---|\n{{alternatives_rows}}\n\n## Scope\n\n{{scope}}\n\n## Approach\n\n{{approach}}\n\n## Testing\n\n{{testing}}\n\n## Risks\n\n{{risks}}\n\n## Dependencies\n\n{{dependencies}}\n\n## Backward compatibility\n\n{{compatibility}}\n",
+      "placeholders": [
+        {
+          "name": "title",
+          "description": "What the plan delivers.",
+          "example": "Template class"
+        },
+        {
+          "name": "objective",
+          "description": "One sentence.",
+          "example": "Give runtimes fillable document skeletons."
+        },
+        {
+          "name": "alternatives_rows",
+          "description": "At least two table rows, including 'do nothing' where applicable.",
+          "example": "| Do nothing | no work | agents keep guessing | rejected |"
+        },
+        {
+          "name": "scope",
+          "description": "Files to create, modify, delete.",
+          "example": "create schemas/template-v1.json; modify scripts/build-exports.py"
+        },
+        {
+          "name": "approach",
+          "description": "Numbered steps.",
+          "example": "1. Schema. 2. Atoms. 3. Build. 4. Site."
+        },
+        {
+          "name": "testing",
+          "description": "What tests prove it works.",
+          "example": "Fixture per class; placeholders match body."
+        },
+        {
+          "name": "risks",
+          "description": "What could go wrong and the mitigation for each.",
+          "example": "Nav crowding — shorten labels."
+        },
+        {
+          "name": "dependencies",
+          "description": "What must land first.",
+          "example": "PR #53 merged."
+        },
+        {
+          "name": "compatibility",
+          "description": "What breaks and the migration path.",
+          "example": "Two prompt atoms removed; ids listed in the changelog."
+        }
+      ],
+      "example": "# Plan — Template class\n\n## Objective\n\nGive runtimes fillable document skeletons for the documents the constitution requires.\n\n## Alternatives\n\n| Alternative | Pros | Cons | Verdict |\n|---|---|---|---|\n| Do nothing | no work | agents keep guessing document shapes | rejected |\n| Keep prompt/output-schema prose | no new class | prose is not a skeleton a runtime can fill | rejected |\n| New template class | fillable, typed, exampled | ninth class; nav grows | chosen |\n\n## Scope\n\nCreate schemas/template-v1.json and atoms/template/*.json; modify scripts/build-exports.py, web/src/lib/catalog.ts; delete prompt/handoff-md and prompt/plan-with-alternatives.\n\n## Approach\n\n1. Schema with body, placeholders, example. 2. Eight atoms from the constitution's required documents. 3. Build and tests. 4. Site pages.\n\n## Testing\n\nBuild-script fixture for the class; a test that every {{placeholder}} in a body is declared.\n\n## Risks\n\nNine nav items at 1440 px — shorten the font; move classes into a menu if it wraps.\n\n## Dependencies\n\nPR #53 merged to main.\n\n## Backward compatibility\n\nTwo prompt ids are removed; nothing referenced them. The changelog names them.\n",
+      "rules": [
+        "No 'TBD' or 'TODO' in the final draft.",
+        "Include 'do nothing' as an alternative whenever it is a real option.",
+        "Scope lists files, not features."
+      ],
+      "produced_by": [
+        "skill/write-spec",
+        "skill/project"
+      ],
+      "authored_by": "convergent-systems-key",
+      "category": "product",
+      "provenance": {
+        "source": "ai-atoms",
+        "author": "convergent-systems-co",
+        "license": "CC-BY-4.0",
+        "notes": "Section set from the AI Constitution's plan template (§4.10.1); migrated from prompt/plan-with-alternatives, whose prose described this shape."
+      },
+      "tags": [
+        "plan",
+        "planning",
+        "alternatives"
+      ],
+      "lifecycle": "stable"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/template-v1.json",
+      "type": "template",
+      "id": "template/postmortem",
+      "version": "1.0.0",
+      "name": "Incident Postmortem",
+      "description": "A blameless postmortem written within 48 hours of resolution: impact, timeline, root cause, contributing factors, what went well, and dated action items with owners.",
+      "subtype": "postmortem",
+      "format": "markdown",
+      "body": "# Postmortem — {{incident_title}}\n\nSeverity: {{severity}} · Declared: {{declared_at}} · Resolved: {{resolved_at}} · Author: {{author}}\n\n## Impact\n\n{{impact}}\n\n## Timeline\n\n{{timeline}}\n\n## Root cause\n\n{{root_cause}}\n\n## Contributing factors\n\n{{contributing_factors}}\n\n## What went well\n\n{{went_well}}\n\n## Action items\n\n| Action | Owner | Due | Status |\n|---|---|---|---|\n{{action_rows}}\n",
+      "placeholders": [
+        {
+          "name": "incident_title",
+          "description": "One line naming what broke.",
+          "example": "Schema URLs served the HTML fallback"
+        },
+        {
+          "name": "severity",
+          "description": "SEV1, SEV2, or SEV3.",
+          "example": "SEV3"
+        },
+        {
+          "name": "declared_at",
+          "description": "ISO-8601 timestamp.",
+          "example": "2026-09-03T22:40Z"
+        },
+        {
+          "name": "resolved_at",
+          "description": "ISO-8601 timestamp.",
+          "example": "2026-09-03T23:25Z"
+        },
+        {
+          "name": "author",
+          "description": "Who wrote it (usually the incident commander).",
+          "example": "incident commander"
+        },
+        {
+          "name": "impact",
+          "description": "Who was affected, how, for how long. Numbers where they exist.",
+          "example": "Every /schemas/*.json URL returned HTML for 45 minutes after the v0.3.0 deploy."
+        },
+        {
+          "name": "timeline",
+          "description": "Timestamped events from first signal to resolution, one per line.",
+          "example": "22:40 deploy completes; 22:58 curl check finds text/html; 23:10 PR #51 opened…"
+        },
+        {
+          "name": "root_cause",
+          "description": "The one thing that, had it been different, would have prevented the incident. Not a person.",
+          "example": "schemas/ was never copied into the web build."
+        },
+        {
+          "name": "contributing_factors",
+          "description": "Conditions that made it likelier or worse.",
+          "example": "The old site served 200 for every path, so the check passed on status code alone."
+        },
+        {
+          "name": "went_well",
+          "description": "What limited the damage.",
+          "example": "Content-type check caught it within 20 minutes."
+        },
+        {
+          "name": "action_rows",
+          "description": "One table row per action: concrete, owned, dated.",
+          "example": "| Add a content-type assertion to the post-deploy check | repo owner | 2026-09-10 | open |"
+        }
+      ],
+      "example": "# Postmortem — Schema URLs served the HTML fallback\n\nSeverity: SEV3 · Declared: 2026-09-03T22:58Z · Resolved: 2026-09-03T23:25Z · Author: incident commander\n\n## Impact\n\nEvery /schemas/*.json URL returned the HTML fallback for about 45 minutes after the v0.3.0 deploy. Atom validation from the published URLs was impossible during that window; no users reported it.\n\n## Timeline\n\n- 22:40 v0.3.0 deploy completes.\n- 22:58 Post-deploy curl finds content-type text/html on /schemas/skill-v1.json.\n- 23:10 PR #51 opened: prebuild copies schemas/ into the web build.\n- 23:25 Deploy of #51 completes; URLs serve application/json.\n\n## Root cause\n\nThe web build never copied schemas/ into its public directory, so the static host served its fallback page.\n\n## Contributing factors\n\nThe previous site returned 200 for every path, so a status-code-only check passed.\n\n## What went well\n\nThe post-deploy check inspected content-type, not just status, and caught it within 20 minutes.\n\n## Action items\n\n| Action | Owner | Due | Status |\n|---|---|---|---|\n| Assert content-type in the post-deploy check for every documented JSON URL | repo owner | 2026-09-10 | open |\n",
+      "rules": [
+        "Blameless: root cause is a condition, never a person.",
+        "Write it within 48 hours of resolution.",
+        "Every action item has an owner and a date."
+      ],
+      "produced_by": [
+        "skill/incident-response"
+      ],
+      "authored_by": "convergent-systems-key",
+      "category": "devops",
+      "provenance": {
+        "source": "ai-atoms",
+        "author": "convergent-systems-co",
+        "license": "CC-BY-4.0",
+        "notes": "Structure is the common blameless-postmortem form; the 48-hour rule comes from persona/incident-commander's job to be done."
+      },
+      "tags": [
+        "postmortem",
+        "incident",
+        "sre"
+      ],
+      "lifecycle": "stable"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/template-v1.json",
+      "type": "template",
+      "id": "template/pull-request",
+      "version": "1.0.0",
+      "name": "Pull Request Description",
+      "description": "A PR body a reviewer can act on: a summary that names the non-obvious decisions, what changed by area, a checkable test plan, and anything the reviewer should know before merging.",
+      "subtype": "pull-request",
+      "format": "markdown",
+      "body": "## Summary\n\n{{summary}}\n\n## Changes\n\n{{changes}}\n\n## Test plan\n\n{{test_plan}}\n\n{{reviewer_notes}}\n",
+      "placeholders": [
+        {
+          "name": "summary",
+          "description": "Two to five bullets: what this does and the decisions that were not obvious, with why.",
+          "example": "- Adds template-v1…"
+        },
+        {
+          "name": "changes",
+          "description": "What changed, grouped by area, with counts where they help.",
+          "example": "- schemas: template-v1.json\n- atoms: 8 templates"
+        },
+        {
+          "name": "test_plan",
+          "description": "Checkbox list of what was run and what remains to verify after merge, with the commands.",
+          "example": "- [x] python3 -m pytest — 165 passed"
+        },
+        {
+          "name": "reviewer_notes",
+          "description": "Optional section: deviations from a spec, risks, follow-ups, or a 'Read this first' warning.",
+          "required": false,
+          "example": "## Read this first\nTwo prompt ids are removed."
+        }
+      ],
+      "example": "## Summary\n\n- Adds `template-v1`, a document skeleton with typed placeholders and one rendered example.\n- Migrates `prompt/handoff-md` and `prompt/plan-with-alternatives`, which described these shapes in prose.\n- Chose a ninth class over a prompt subtype because rendering is a distinct runtime action (ADR 0004).\n\n## Changes\n\n- schemas: `template-v1.json`; examples for every class under `schemas/examples/`\n- atoms: 8 templates; 2 prompts removed\n- web: listing and detail pages for templates\n\n## Test plan\n\n- [x] `python3 scripts/build-exports.py` — no dangling references\n- [x] `python3 -m pytest` — all passing\n- [ ] After deploy: `/atoms/template/adr.json` serves JSON\n\n## Read this first\n\nTwo prompt ids are removed; nothing in the catalog referenced them.\n",
+      "rules": [
+        "Explain non-obvious decisions: why this library, why this pattern, why this trade-off.",
+        "The test plan lists commands, not intentions.",
+        "Merge with a merge commit or rebase; never squash on non-release branches."
+      ],
+      "produced_by": [
+        "skill/pr"
+      ],
+      "authored_by": "convergent-systems-key",
+      "category": "coding",
+      "provenance": {
+        "source": "ai-atoms",
+        "author": "convergent-systems-co",
+        "license": "CC-BY-4.0",
+        "notes": "Rules from the AI Constitution's commit and PR discipline (§4.4.4, §4.10.2)."
+      },
+      "tags": [
+        "pull-request",
+        "review",
+        "git"
+      ],
+      "lifecycle": "stable"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/template-v1.json",
+      "type": "template",
+      "id": "template/readme",
+      "version": "1.0.0",
+      "name": "README",
+      "description": "The README every repository must have, answering four questions in order: what is this, who is it for, how do I run it, how do I contribute or extend it. Short by design; detail lives in linked documents.",
+      "subtype": "readme",
+      "format": "markdown",
+      "body": "# {{project_name}}\n\n**What is this?** {{what}}\n\n**Who is it for?** {{audience}}\n\n**How do I run it?**\n\n```bash\n{{run_commands}}\n```\n\n**How do I contribute or extend it?** {{contribute}}\n\n{{license_line}}\n",
+      "placeholders": [
+        {
+          "name": "project_name",
+          "description": "Repository or product name.",
+          "example": "ai-atoms"
+        },
+        {
+          "name": "what",
+          "description": "One or two sentences saying what the thing is and does.",
+          "example": "A typed, versioned catalog of AI runtime primitives."
+        },
+        {
+          "name": "audience",
+          "description": "Who should use it, by role.",
+          "example": "Runtime authors and contributors."
+        },
+        {
+          "name": "run_commands",
+          "description": "The minimal commands that build, test, or start it from a clean machine.",
+          "example": "pip install jsonschema\npython3 scripts/build-exports.py"
+        },
+        {
+          "name": "contribute",
+          "description": "Where the contribution rules, spec, and architecture live.",
+          "example": "See CONTRIBUTING.md and docs/adr/."
+        },
+        {
+          "name": "license_line",
+          "description": "License statement.",
+          "required": false,
+          "example": "Licensing: code Apache-2.0, data CC-BY-4.0."
+        }
+      ],
+      "example": "# ai-atoms\n\n**What is this?** A typed, versioned catalog of AI runtime primitives: skills, hooks, prompts, agents, personas, models, policies, tools, and templates.\n\n**Who is it for?** Runtime authors that install behaviour by id, and contributors who publish it.\n\n**How do I run it?**\n\n```bash\npip install jsonschema pytest\npython3 scripts/build-exports.py\npython3 -m pytest\n```\n\n**How do I contribute or extend it?** See CONTRIBUTING.md for the per-class rules and docs/adr/ for why it is shaped this way.\n\nLicensing: code Apache-2.0, data CC-BY-4.0.\n",
+      "rules": [
+        "Answer the four questions in this order; do not add sections above them.",
+        "Commands must run on a clean machine; test them before committing.",
+        "Write at an 8th–10th grade reading level; link jargon on first use."
+      ],
+      "produced_by": [
+        "skill/documentation",
+        "skill/onboard"
+      ],
+      "authored_by": "convergent-systems-key",
+      "category": "knowledge",
+      "provenance": {
+        "source": "ai-atoms",
+        "author": "convergent-systems-co",
+        "license": "CC-BY-4.0",
+        "notes": "Skeleton follows the README rule in the convergent-systems AI Constitution (required documents §4.9.1)."
+      },
+      "tags": [
+        "readme",
+        "docs",
+        "required-document"
+      ],
+      "lifecycle": "stable"
+    },
+    {
+      "schema": "https://ai-atoms.com/schemas/template-v1.json",
+      "type": "template",
+      "id": "template/runbook",
+      "version": "1.0.0",
+      "name": "Runbook",
+      "description": "The operations runbook every production system must have: what healthy looks like, what sick looks like, how to recover, whom to escalate to, and what on-call is expected to do. Every alert must map to an entry here.",
+      "subtype": "runbook",
+      "format": "markdown",
+      "body": "# Runbook — {{system}}\n\nOwner: {{owner}} · Last verified: {{last_verified}}\n\n## Healthy state\n\n{{healthy}}\n\n## Sick state\n\n{{sick}}\n\n## Recovery procedure\n\n{{recovery}}\n\n## Escalation path\n\n{{escalation}}\n\n## On-call expectations\n\n{{oncall}}\n",
+      "placeholders": [
+        {
+          "name": "system",
+          "description": "The system or service this runbook covers.",
+          "example": "ai-atoms.com static site"
+        },
+        {
+          "name": "owner",
+          "description": "Team or person accountable.",
+          "example": "convergent-systems-co"
+        },
+        {
+          "name": "last_verified",
+          "description": "Date the procedure was last exercised.",
+          "example": "2026-09-03"
+        },
+        {
+          "name": "healthy",
+          "description": "Observable signals of a healthy system: URLs that return 200, latencies, error rates, dashboards.",
+          "example": "GET / returns 200 within 500 ms; /ai/index.json parses."
+        },
+        {
+          "name": "sick",
+          "description": "Symptoms and the alerts that fire for each; how to confirm it is this system and not a dependency.",
+          "example": "5xx from Cloudflare Pages; deploy workflow red."
+        },
+        {
+          "name": "recovery",
+          "description": "Numbered steps, each with the exact command and the expected result. Reversible steps first.",
+          "example": "1. Re-run the deploy workflow…"
+        },
+        {
+          "name": "escalation",
+          "description": "Who to page, in order, and when to move to the next.",
+          "example": "Repo owner, then the Cloudflare account admin."
+        },
+        {
+          "name": "oncall",
+          "description": "What the on-call person checks, how often, and what they may do without approval.",
+          "example": "Check the deploy status after every merge to main."
+        }
+      ],
+      "example": "# Runbook — ai-atoms.com static site\n\nOwner: convergent-systems-co · Last verified: 2026-09-03\n\n## Healthy state\n\nGET https://ai-atoms.com/ returns 200 within 500 ms; /ai/index.json parses and reports the current catalog version; the latest deploy workflow run on main is green.\n\n## Sick state\n\nThe site serves the HTML fallback for a JSON path (content-type text/html on /atoms/<class>/<slug>.json), or the deploy workflow is red. Confirm with `curl -sI` before acting; a Cloudflare-wide outage looks the same from outside.\n\n## Recovery procedure\n\n1. `gh run list --workflow=deploy.yml --limit 1` — if failed, open the log.\n2. Re-run the failed workflow. Expected: green within 5 minutes and the site serves the new catalog version.\n3. If the build itself fails, revert the last merge to main with a new PR; never force-push.\n\n## Escalation path\n\nRepository owner first; if Cloudflare Pages itself is unhealthy, the Cloudflare account admin.\n\n## On-call expectations\n\nCheck the deploy status after every merge to main. Re-running a workflow needs no approval; reverting a merge does.\n",
+      "rules": [
+        "An alert without a runbook entry is noise; add the entry before the alert.",
+        "Recovery steps are commands with expected results, not prose.",
+        "Re-verify and update last_verified whenever the procedure is exercised."
+      ],
+      "produced_by": [
+        "skill/runbook",
+        "skill/incident-response"
+      ],
+      "authored_by": "convergent-systems-key",
+      "category": "devops",
+      "provenance": {
+        "source": "ai-atoms",
+        "author": "convergent-systems-co",
+        "license": "CC-BY-4.0",
+        "notes": "Section set as required by the AI Constitution §4.9.1 (healthy state, sick state, recovery, escalation, on-call)."
+      },
+      "tags": [
+        "runbook",
+        "operations",
+        "required-document"
+      ],
+      "lifecycle": "stable"
     },
     {
       "schema": "https://ai-atoms.com/schemas/tool-v1.json",

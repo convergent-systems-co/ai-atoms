@@ -1,0 +1,33 @@
+{
+  "schema": "https://ai-atoms.com/schemas/template-v1.json",
+  "type": "template",
+  "id": "template/example-template",
+  "version": "1.0.0",
+  "name": "Example Template",
+  "description": "A document skeleton a runtime fills.",
+  "subtype": "other",
+  "format": "markdown",
+  "body": "# {{title}}\n\n{{body}}\n",
+  "placeholders": [
+    {
+      "name": "title",
+      "description": "Document title",
+      "example": "Weekly status"
+    },
+    {
+      "name": "body",
+      "description": "The content",
+      "required": true
+    }
+  ],
+  "example": "# Weekly status\n\nAll green.\n",
+  "rules": [
+    "Keep it under one page."
+  ],
+  "category": "knowledge",
+  "authored_by": "your-key-or-name",
+  "tags": [
+    "example"
+  ],
+  "lifecycle": "draft"
+}

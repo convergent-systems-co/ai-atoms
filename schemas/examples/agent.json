@@ -1,0 +1,35 @@
+{
+  "schema": "https://ai-atoms.com/schemas/agent-v1.json",
+  "type": "agent",
+  "id": "agent/example-reviewer",
+  "version": "1.0.0",
+  "name": "Example Reviewer",
+  "description": "A persona bound to the tools and policies it runs with. Every id here must exist in the catalog.",
+  "subtype": "reviewer",
+  "persona": "persona/code-reviewer",
+  "tools": [
+    "tool/git-diff",
+    "tool/read-file"
+  ],
+  "policies": [
+    "policy/read-only-workspace",
+    "policy/no-code-execution"
+  ],
+  "hooks": [
+    "hook/branch-guard"
+  ],
+  "execution": {
+    "planner": "react",
+    "memory": "scratchpad"
+  },
+  "review_criteria": [
+    "Findings cite path:line.",
+    "No finding without evidence."
+  ],
+  "category": "coding",
+  "authored_by": "your-key-or-name",
+  "tags": [
+    "example"
+  ],
+  "lifecycle": "draft"
+}

@@ -19,6 +19,7 @@ export const CLASS_META: Record<string, ClassMeta> = {
   model:   { symbol: "Mo", label: "Model",   plural: "Models",   blurb: "Reference data about a model and the providers a runtime can get it from.", install: () => undefined, facet: "task" },
   policy:  { symbol: "Po", label: "Policy",  plural: "Policies", blurb: "A rule a runtime permits, forbids, or bounds an agent by: boundary, capability, isolation.", install: () => undefined, facet: "subtype" },
   tool:    { symbol: "To", label: "Tool",    plural: "Tools",    blurb: "An executable affordance: the function the model sees and the side effects to gate.", install: () => undefined, facet: "subtype" },
+  template:{ symbol: "Te", label: "Template",plural: "Templates",blurb: "A document skeleton a runtime fills: ADR, runbook, handoff, plan, PR, postmortem.", install: () => undefined, facet: "subtype" },
 };
 
 export const CATEGORY_LABEL: Record<string, string> = {

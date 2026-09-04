@@ -1,0 +1,36 @@
+{
+  "schema": "https://ai-atoms.com/schemas/tool-v1.json",
+  "type": "tool",
+  "id": "tool/example-tool",
+  "version": "1.0.0",
+  "name": "example-tool",
+  "description": "The function the model sees and the side effects the runtime must gate.",
+  "subtype": "command",
+  "spec": {
+    "function_name": "example_tool",
+    "summary": "Do one thing.",
+    "parameters": {
+      "path": {
+        "type": "string",
+        "description": "File to read",
+        "required": true
+      }
+    },
+    "returns": {
+      "type": "string",
+      "description": "File contents"
+    },
+    "side_effects": [
+      "fs-read"
+    ]
+  },
+  "gated_by": [
+    "policy/read-only-workspace"
+  ],
+  "category": "coding",
+  "authored_by": "your-key-or-name",
+  "tags": [
+    "example"
+  ],
+  "lifecycle": "draft"
+}

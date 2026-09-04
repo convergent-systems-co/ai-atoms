@@ -7,8 +7,8 @@
 
 ## What is ai-atoms?
 
-A typed, versioned catalog of AI runtime primitives. Eight classes: **skill**, **hook**, **prompt**,
-**agent**, **persona**, **model**, **policy**, **tool**. Every atom is static JSON validated against its class schema,
+A typed, versioned catalog of AI runtime primitives. Nine classes: **skill**, **hook**, **prompt**,
+**agent**, **persona**, **model**, **policy**, **tool**, **template**. Every atom is static JSON validated against its class schema,
 carries a `category` from one shared vocabulary, and (when imported) a `provenance` block naming the
 source, original URL, author, and license.
 
@@ -82,6 +82,12 @@ source, original URL, author, and license.
   the tool page renders the JSON-Schema-shaped definition ready to pass to a model.
 - `spec.side_effects` (fs-read, fs-write, exec, network, user-prompt) must be permitted by a
   capability policy before the runtime executes the call. `gated_by` names such policies.
+
+### template
+- Render `body` by replacing each `{{name}}` with a value that satisfies its entry in
+  `placeholders`; every placeholder marked required must be filled. Apply `rules` to the result.
+- `example` is one finished instance; `produced_by` lists the skills whose output is this document.
+- Minimal valid starting files for every class: `/schemas/examples/<class>.json`.
 
 ## Attribution
 

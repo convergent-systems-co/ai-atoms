@@ -1,0 +1,30 @@
+{
+  "schema": "https://ai-atoms.com/schemas/hook-v1.json",
+  "type": "hook",
+  "id": "hook/example-hook",
+  "version": "1.0.0",
+  "name": "Example Hook",
+  "description": "What event it fires on and what it enforces or emits.",
+  "event": "PreToolUse",
+  "language": "python",
+  "trigger": {
+    "type": "tool-name",
+    "pattern": "Bash"
+  },
+  "blocking": false,
+  "side_effects": [
+    "emits a warning to stderr"
+  ],
+  "script": "#!/usr/bin/env python3\nimport json, sys\nif '--self-check' in sys.argv:\n    print('[ai/example-hook] self-check OK'); sys.exit(0)\npayload = json.load(sys.stdin)\nsys.stderr.write('[ai/example-hook] saw ' + payload.get('tool_name', '?') + '\\n')\n",
+  "platforms": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "category": "governance",
+  "authored_by": "your-key-or-name",
+  "tags": [
+    "example"
+  ],
+  "lifecycle": "draft"
+}
