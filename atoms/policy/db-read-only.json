@@ -1,0 +1,29 @@
+{
+  "schema": "https://ai-atoms.com/schemas/policy-v1.json",
+  "type": "policy",
+  "id": "policy/db-read-only",
+  "version": "1.0.0",
+  "name": "DB read-only",
+  "description": "SELECT only against a named DSN. No mutations.",
+  "subtype": "capability",
+  "effect": "permit",
+  "rule": {
+    "text": "SELECT only against a named DSN. No mutations.",
+    "grants": [
+      "network"
+    ],
+    "elevation": "declared",
+    "audit": false
+  },
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/atoms/capability-declaration/db-read-only.json",
+  "category": "governance",
+  "provenance": {
+    "source": "convergent-systems-co/agent-atoms",
+    "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/atoms/capability-declaration/db-read-only.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed from capability-declaration by scripts/migrate-policy-tool.py."
+  },
+  "lifecycle": "stable"
+}

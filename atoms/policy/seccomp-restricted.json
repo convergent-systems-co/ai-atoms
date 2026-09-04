@@ -1,0 +1,30 @@
+{
+  "schema": "https://ai-atoms.com/schemas/policy-v1.json",
+  "type": "policy",
+  "id": "policy/seccomp-restricted",
+  "version": "1.0.0",
+  "name": "Seccomp restricted",
+  "description": "Subprocess with seccomp filter — only whitelisted syscalls allowed. No network; scoped filesystem.",
+  "subtype": "isolation",
+  "effect": "bound",
+  "rule": {
+    "text": "Subprocess with seccomp filter — only whitelisted syscalls allowed. No network; scoped filesystem.",
+    "process": "subprocess",
+    "network": "none",
+    "filesystem": "scoped",
+    "scoped_paths": [
+      "${WORKSPACE_ROOT}"
+    ]
+  },
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/atoms/isolation-constraint/seccomp-restricted.json",
+  "category": "governance",
+  "provenance": {
+    "source": "convergent-systems-co/agent-atoms",
+    "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/atoms/isolation-constraint/seccomp-restricted.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed from isolation-constraint by scripts/migrate-policy-tool.py."
+  },
+  "lifecycle": "stable"
+}

@@ -32,10 +32,10 @@ ATOMS_DIR = REPO / "atoms"
 COMPOSITIONS_DIR = REPO / "workflows"
 EXPORT_PATH = REPO / "exports" / "catalog.json"
 CATALOG_NAME = "ai-atoms"
-CATALOG_VERSION = "0.3.0"
+CATALOG_VERSION = "0.4.0"
 
 # Atom classes with a published schema, in catalog display order.
-TYPED_CLASSES = ("skill", "hook", "prompt", "agent", "persona", "model")
+TYPED_CLASSES = ("skill", "hook", "prompt", "agent", "persona", "model", "policy", "tool")
 COMMON_SCHEMA = "common-v1.json"
 
 # Fields whose values are references to other atoms, by owning class.
@@ -53,6 +53,9 @@ REFERENCE_FIELDS: dict[str, list[tuple[str, str | None]]] = {
     "prompt": [
         ("persona_ref", "persona"),
         ("includes", "prompt"),
+    ],
+    "tool": [
+        ("gated_by", "policy"),
     ],
     "skill": [
         ("depends_on", "skill"),
@@ -215,7 +218,8 @@ def main() -> int:
 
     EXPORT_PATH.parent.mkdir(parents=True, exist_ok=True)
     EXPORT_PATH.write_text(json.dumps(catalog, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    summary = ", ".join(f"{n} {cls}s" for cls, n in counts.items())
+    plural = {"policy": "policies"}
+    summary = ", ".join(f"{n} {plural.get(cls, cls + 's')}" for cls, n in counts.items())
     print(f"wrote {EXPORT_PATH.relative_to(REPO)} — {len(atoms)} atoms ({summary}), {len(compositions)} compositions")
     return 0
 

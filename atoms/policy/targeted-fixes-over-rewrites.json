@@ -1,0 +1,25 @@
+{
+  "schema": "https://ai-atoms.com/schemas/policy-v1.json",
+  "type": "policy",
+  "id": "policy/targeted-fixes-over-rewrites",
+  "version": "1.0.0",
+  "name": "Targeted Fixes Over Rewrites",
+  "description": "Propose the smallest change that addresses the finding. Module rewrites are a last resort and require explicit justification. Prefer targeted, minimal interventions.",
+  "subtype": "boundary",
+  "effect": "require",
+  "rule": {
+    "text": "Propose the smallest change that addresses the finding. Module rewrites are a last resort and require explicit justification. Prefer targeted, minimal interventions.",
+    "boundary_type": "behavioural"
+  },
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/persona-atoms/blob/main/atoms/behavioural-constraint/targeted-fixes-over-rewrites.json",
+  "category": "governance",
+  "provenance": {
+    "source": "convergent-systems-co/persona-atoms",
+    "source_url": "https://github.com/convergent-systems-co/persona-atoms/blob/main/atoms/behavioural-constraint/targeted-fixes-over-rewrites.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed from behavioural-constraint by scripts/migrate-policy-tool.py."
+  },
+  "lifecycle": "stable"
+}

@@ -1,0 +1,43 @@
+{
+  "schema": "https://ai-atoms.com/schemas/tool-v1.json",
+  "type": "tool",
+  "id": "tool/glob",
+  "version": "1.0.0",
+  "name": "glob",
+  "description": "Enumerate paths matching a glob pattern.",
+  "subtype": "command",
+  "spec": {
+    "function_name": "glob",
+    "summary": "Return paths matching a glob.",
+    "parameters": {
+      "pattern": {
+        "type": "string",
+        "description": "Glob pattern",
+        "required": true
+      },
+      "root": {
+        "type": "string",
+        "description": "Root path",
+        "required": false
+      }
+    },
+    "returns": {
+      "type": "array",
+      "description": "Matching paths."
+    },
+    "side_effects": [
+      "fs-read"
+    ]
+  },
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/atoms/tool-definition/glob.json",
+  "category": "coding",
+  "provenance": {
+    "source": "convergent-systems-co/agent-atoms",
+    "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/atoms/tool-definition/glob.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed from tool-definition by scripts/migrate-policy-tool.py."
+  },
+  "lifecycle": "stable"
+}

@@ -1,0 +1,43 @@
+{
+  "schema": "https://ai-atoms.com/schemas/tool-v1.json",
+  "type": "tool",
+  "id": "tool/bash-exec",
+  "version": "1.0.0",
+  "name": "bash-exec",
+  "description": "Execute a shell command. Gated by capability/exec-with-approval and isolation/container-with-allowlist or stricter.",
+  "subtype": "command",
+  "spec": {
+    "function_name": "bash_exec",
+    "summary": "Execute a bash command.",
+    "parameters": {
+      "command": {
+        "type": "string",
+        "description": "Command line to run",
+        "required": true
+      },
+      "timeout_ms": {
+        "type": "number",
+        "description": "Max runtime in ms",
+        "required": false
+      }
+    },
+    "returns": {
+      "type": "object",
+      "description": "{stdout, stderr, exit_code}."
+    },
+    "side_effects": [
+      "exec"
+    ]
+  },
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/atoms/tool-definition/bash-exec.json",
+  "category": "devops",
+  "provenance": {
+    "source": "convergent-systems-co/agent-atoms",
+    "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/atoms/tool-definition/bash-exec.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed from tool-definition by scripts/migrate-policy-tool.py."
+  },
+  "lifecycle": "stable"
+}

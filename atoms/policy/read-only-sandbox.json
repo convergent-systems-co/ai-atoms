@@ -1,0 +1,30 @@
+{
+  "schema": "https://ai-atoms.com/schemas/policy-v1.json",
+  "type": "policy",
+  "id": "policy/read-only-sandbox",
+  "version": "1.0.0",
+  "name": "Read-only sandbox",
+  "description": "Subprocess with read-only filesystem mount, no network, scoped to the workspace root. Used by reviewer / analyst agents.",
+  "subtype": "isolation",
+  "effect": "bound",
+  "rule": {
+    "text": "Subprocess with read-only filesystem mount, no network, scoped to the workspace root. Used by reviewer / analyst agents.",
+    "process": "subprocess",
+    "network": "none",
+    "filesystem": "read-only",
+    "scoped_paths": [
+      "${WORKSPACE_ROOT}"
+    ]
+  },
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/atoms/isolation-constraint/read-only-sandbox.json",
+  "category": "security",
+  "provenance": {
+    "source": "convergent-systems-co/agent-atoms",
+    "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/atoms/isolation-constraint/read-only-sandbox.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed from isolation-constraint by scripts/migrate-policy-tool.py."
+  },
+  "lifecycle": "stable"
+}

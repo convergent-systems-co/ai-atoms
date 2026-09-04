@@ -1,0 +1,33 @@
+{
+  "schema": "https://ai-atoms.com/schemas/policy-v1.json",
+  "type": "policy",
+  "id": "policy/coder-with-approval",
+  "version": "1.0.0",
+  "name": "Coder with approval",
+  "description": "Read + write files in the workspace; exec commands and spawn sub-agents only with explicit user approval. Destructive ops blocked.",
+  "subtype": "capability",
+  "effect": "permit",
+  "rule": {
+    "text": "Read + write files in the workspace; exec commands and spawn sub-agents only with explicit user approval. Destructive ops blocked.",
+    "grants": [
+      "read-files",
+      "write-files",
+      "exec-commands",
+      "user-prompt",
+      "spawn-subagent"
+    ],
+    "elevation": "user-approved",
+    "audit": true
+  },
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/atoms/capability-declaration/coder-with-approval.json",
+  "category": "governance",
+  "provenance": {
+    "source": "convergent-systems-co/agent-atoms",
+    "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/atoms/capability-declaration/coder-with-approval.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed from capability-declaration by scripts/migrate-policy-tool.py."
+  },
+  "lifecycle": "stable"
+}

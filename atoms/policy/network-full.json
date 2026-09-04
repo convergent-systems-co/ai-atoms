@@ -1,0 +1,29 @@
+{
+  "schema": "https://ai-atoms.com/schemas/policy-v1.json",
+  "type": "policy",
+  "id": "policy/network-full",
+  "version": "1.0.0",
+  "name": "Network full",
+  "description": "Any HTTP method against any host on the configured allowlist. Pair with isolation/container-with-allowlist.",
+  "subtype": "capability",
+  "effect": "permit",
+  "rule": {
+    "text": "Any HTTP method against any host on the configured allowlist. Pair with isolation/container-with-allowlist.",
+    "grants": [
+      "network"
+    ],
+    "elevation": "user-approved",
+    "audit": true
+  },
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/atoms/capability-declaration/network-full.json",
+  "category": "security",
+  "provenance": {
+    "source": "convergent-systems-co/agent-atoms",
+    "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/atoms/capability-declaration/network-full.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed from capability-declaration by scripts/migrate-policy-tool.py."
+  },
+  "lifecycle": "stable"
+}

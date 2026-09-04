@@ -1,0 +1,30 @@
+{
+  "schema": "https://ai-atoms.com/schemas/policy-v1.json",
+  "type": "policy",
+  "id": "policy/file-write-scoped",
+  "version": "1.0.0",
+  "name": "File write (scoped)",
+  "description": "Read + write within a configured path prefix only. No exec, no delete, no network.",
+  "subtype": "capability",
+  "effect": "permit",
+  "rule": {
+    "text": "Read + write within a configured path prefix only. No exec, no delete, no network.",
+    "grants": [
+      "read-files",
+      "write-files"
+    ],
+    "elevation": "declared",
+    "audit": true
+  },
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/atoms/capability-declaration/file-write-scoped.json",
+  "category": "governance",
+  "provenance": {
+    "source": "convergent-systems-co/agent-atoms",
+    "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/atoms/capability-declaration/file-write-scoped.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed from capability-declaration by scripts/migrate-policy-tool.py."
+  },
+  "lifecycle": "stable"
+}

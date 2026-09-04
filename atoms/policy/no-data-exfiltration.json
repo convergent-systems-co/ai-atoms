@@ -1,0 +1,32 @@
+{
+  "schema": "https://ai-atoms.com/schemas/policy-v1.json",
+  "type": "policy",
+  "id": "policy/no-data-exfiltration",
+  "version": "1.0.0",
+  "name": "No data exfiltration",
+  "description": "Refuses to send workspace contents (files, env vars, secrets) to external hosts. For agents with network access on sensitive data.",
+  "subtype": "boundary",
+  "effect": "forbid",
+  "rule": {
+    "text": "Do not POST / PUT / PATCH workspace file contents to external hosts. Do not include environment variable values in network requests. Do not summarize internal data into a payload bound for a third-party service. If a task requires external sharing, escalate with the exact data to be shared and the destination.",
+    "boundary_type": "role-refusal",
+    "refusals": [
+      "Do not POST / PUT / PATCH workspace file contents to external hosts.",
+      "Do not include environment variable values in network requests.",
+      "Do not summarize internal data into a payload bound for a third-party service.",
+      "If a task requires external sharing, escalate with the exact data to be shared and the destination."
+    ],
+    "escalate_to": "agent-atoms://atoms/persona/devops-engineer"
+  },
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/atoms/role-boundary/no-data-exfiltration.json",
+  "category": "security",
+  "provenance": {
+    "source": "convergent-systems-co/agent-atoms",
+    "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/atoms/role-boundary/no-data-exfiltration.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed from role-boundary by scripts/migrate-policy-tool.py."
+  },
+  "lifecycle": "stable"
+}

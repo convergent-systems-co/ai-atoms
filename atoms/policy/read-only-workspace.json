@@ -1,0 +1,29 @@
+{
+  "schema": "https://ai-atoms.com/schemas/policy-v1.json",
+  "type": "policy",
+  "id": "policy/read-only-workspace",
+  "version": "1.0.0",
+  "name": "Read-only workspace",
+  "description": "Read files in the workspace; cannot write, exec, or hit the network. Used by reviewer / analyst agents.",
+  "subtype": "capability",
+  "effect": "permit",
+  "rule": {
+    "text": "Read files in the workspace; cannot write, exec, or hit the network. Used by reviewer / analyst agents.",
+    "grants": [
+      "read-files"
+    ],
+    "elevation": "declared",
+    "audit": false
+  },
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/atoms/capability-declaration/read-only-workspace.json",
+  "category": "governance",
+  "provenance": {
+    "source": "convergent-systems-co/agent-atoms",
+    "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/atoms/capability-declaration/read-only-workspace.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed from capability-declaration by scripts/migrate-policy-tool.py."
+  },
+  "lifecycle": "stable"
+}
