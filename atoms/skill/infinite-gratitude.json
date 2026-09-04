@@ -18,9 +18,9 @@
   "provenance": {
     "source": "claudeskills.in",
     "source_url": "https://claudeskills.in/skill/infinite-gratitude",
-    "license": "unknown",
+    "license": "MIT",
     "imported_at": "2026-09-03",
-    "notes": "Aggregated by claudeskills.in from community GitHub lists. Upstream as recorded by the aggregator: https://github.com/sstklen/infinite-gratitude."
+    "notes": "Aggregated by claudeskills.in from community GitHub lists. Upstream as recorded by the aggregator: https://github.com/sstklen/infinite-gratitude. License MIT read from github.com/sstklen/infinite-gratitude on 2026-09-03."
   },
   "tags": [
     "claudeskills",

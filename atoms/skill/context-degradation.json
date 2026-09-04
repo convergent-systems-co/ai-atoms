@@ -18,9 +18,9 @@
   "provenance": {
     "source": "claudeskills.in",
     "source_url": "https://claudeskills.in/skill/context-degradation",
-    "license": "unknown",
+    "license": "MIT",
     "imported_at": "2026-09-03",
-    "notes": "Aggregated by claudeskills.in from community GitHub lists. Upstream as recorded by the aggregator: https://github.com/muratcankoylan/Agent-Skills-for-Context-Engineering/tree/main/skills/context-degradation."
+    "notes": "Aggregated by claudeskills.in from community GitHub lists. Upstream as recorded by the aggregator: https://github.com/muratcankoylan/Agent-Skills-for-Context-Engineering/tree/main/skills/context-degradation. License MIT read from github.com/muratcankoylan/Agent-Skills-for-Context-Engineering on 2026-09-03."
   },
   "tags": [
     "claudeskills",

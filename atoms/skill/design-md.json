@@ -18,9 +18,9 @@
   "provenance": {
     "source": "claudeskills.in",
     "source_url": "https://claudeskills.in/skill/design-md",
-    "license": "unknown",
+    "license": "Apache-2.0",
     "imported_at": "2026-09-03",
-    "notes": "Aggregated by claudeskills.in from community GitHub lists. Upstream as recorded by the aggregator: https://github.com/google-labs-code/stitch-skills/tree/main/skills/design-md."
+    "notes": "Aggregated by claudeskills.in from community GitHub lists. Upstream as recorded by the aggregator: https://github.com/google-labs-code/stitch-skills/tree/main/skills/design-md. License Apache-2.0 read from github.com/google-labs-code/stitch-skills on 2026-09-03."
   },
   "tags": [
     "claudeskills",

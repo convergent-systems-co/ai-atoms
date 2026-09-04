@@ -18,9 +18,9 @@
   "provenance": {
     "source": "claudeskills.in",
     "source_url": "https://claudeskills.in/skill/swiftui-expert-skill",
-    "license": "unknown",
+    "license": "MIT",
     "imported_at": "2026-09-03",
-    "notes": "Aggregated by claudeskills.in from community GitHub lists. Upstream as recorded by the aggregator: https://github.com/AvdLee/SwiftUI-Agent-Skill/tree/main/swiftui-expert-skill."
+    "notes": "Aggregated by claudeskills.in from community GitHub lists. Upstream as recorded by the aggregator: https://github.com/AvdLee/SwiftUI-Agent-Skill/tree/main/swiftui-expert-skill. License MIT read from github.com/AvdLee/SwiftUI-Agent-Skill on 2026-09-03."
   },
   "tags": [
     "claudeskills",

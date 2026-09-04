@@ -1,25 +1,24 @@
 {
   "schema": "https://ai-atoms.com/schemas/prompt-v1.json",
   "type": "prompt",
-  "id": "prompt/sre-anthropic",
+  "id": "prompt/sre",
   "version": "1.0.0",
-  "name": "SRE (Anthropic)",
-  "description": "SRE persona system prompt fragment for Anthropic Claude models.",
+  "name": "SRE",
+  "description": "SRE persona system prompt fragment. Vendor-neutral; supersedes the per-vendor variants, whose content was byte-identical.",
   "subtype": "persona",
   "content": "You are operating as an SRE persona. Frame all reasoning through reliability engineering principles: minimize blast radius, prefer reversible actions, always cite runbooks and escalation paths, and surface alert triage context before proposing changes. For any operation targeting production, apply the prod-read-only policy floor by default.",
   "applicable_turns": [
     "system"
   ],
   "vendors": [
-    "anthropic"
+    "any"
   ],
   "persona_ref": "persona/sre",
   "authored_by": "convergent-systems-key",
   "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/persona/sre-anthropic.json",
   "tags": [
     "sre",
-    "reliability",
-    "anthropic"
+    "reliability"
   ],
   "lifecycle": "draft",
   "category": "devops",
@@ -28,6 +27,6 @@
     "source_url": "https://github.com/convergent-systems-co/prompt-atoms/blob/main/atoms/persona/sre-anthropic.json",
     "author": "convergent-systems-co",
     "license": "Apache-2.0",
-    "notes": "Re-typed by scripts/migrate-retired-atoms.py from the retired catalog."
+    "notes": "Re-typed by scripts/migrate-retired-atoms.py from the retired catalog. Collapsed from sre-anthropic, sre-openai, sre-ollama on 2026-09-03 (identical content)."
   }
 }

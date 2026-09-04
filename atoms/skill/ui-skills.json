@@ -18,9 +18,9 @@
   "provenance": {
     "source": "claudeskills.in",
     "source_url": "https://claudeskills.in/skill/ui-skills",
-    "license": "unknown",
+    "license": "MIT",
     "imported_at": "2026-09-03",
-    "notes": "Aggregated by claudeskills.in from community GitHub lists. Upstream as recorded by the aggregator: https://github.com/ibelick/ui-skills."
+    "notes": "Aggregated by claudeskills.in from community GitHub lists. Upstream as recorded by the aggregator: https://github.com/ibelick/ui-skills. License MIT read from github.com/ibelick/ui-skills on 2026-09-03."
   },
   "tags": [
     "claudeskills",
