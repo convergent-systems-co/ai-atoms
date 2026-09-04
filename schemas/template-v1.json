@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-atoms.com/schemas/template-v1.json",
+  "title": "ai-atoms template v1",
+  "description": "A template atom — a document skeleton a runtime renders by filling placeholders: an ADR, a runbook, a HANDOFF.md, a plan, a pull-request body. It carries the skeleton itself, the placeholders it expects, and one rendered example.",
+  "type": "object",
+  "required": ["schema", "type", "id", "version", "name", "description", "subtype", "format", "body", "placeholders"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": { "type": "string", "const": "https://ai-atoms.com/schemas/template-v1.json" },
+    "type": { "type": "string", "enum": ["template"] },
+    "id": { "type": "string", "pattern": "^template/[a-z0-9][a-z0-9-]*$" },
+    "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[A-Za-z0-9.-]+)?$" },
+    "name": { "type": "string", "minLength": 1, "maxLength": 80 },
+    "description": { "type": "string", "minLength": 1, "maxLength": 1000 },
+    "subtype": {
+      "type": "string",
+      "enum": ["adr", "runbook", "handoff", "plan", "pull-request", "commit-message", "postmortem", "readme", "spec", "other"],
+      "description": "The kind of document the template produces."
+    },
+    "format": { "type": "string", "enum": ["markdown", "json", "yaml", "text"], "description": "Format of the rendered document." },
+    "body": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The skeleton. Placeholders are written {{name}} and must each appear in `placeholders`. Everything else is emitted verbatim."
+    },
+    "placeholders": {
+      "type": "array",
+      "description": "Every {{name}} the body uses, in order of first appearance.",
+      "items": {
+        "type": "object",
+        "required": ["name", "description"],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+          "description": { "type": "string", "minLength": 1, "description": "What goes here, as instruction to whoever fills it." },
+          "required": { "type": "boolean", "description": "Whether the rendered document is invalid without it. Default true." },
+          "example": { "type": "string", "description": "A filled value, so the reader sees the shape." }
+        }
+      }
+    },
+    "example": { "type": "string", "description": "One complete rendered instance of the template." },
+    "rules": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "description": "Constraints on the rendered document that the skeleton alone cannot express (line length, forbidden words, ordering)."
+    },
+    "produced_by": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^skill/[a-z0-9][a-z0-9-]*$" },
+      "uniqueItems": true,
+      "description": "Skill atoms whose output is this document."
+    },
+    "authored_by": { "type": "string" },
+    "source_url": { "type": "string" },
+    "category": { "$ref": "https://ai-atoms.com/schemas/common-v1.json#/$defs/category" },
+    "provenance": { "$ref": "https://ai-atoms.com/schemas/common-v1.json#/$defs/provenance" },
+    "tags": { "type": "array", "items": { "type": "string", "minLength": 1, "maxLength": 40 }, "uniqueItems": true },
+    "lifecycle": { "type": "string", "enum": ["draft", "stable", "deprecated"] }
+  }
+}

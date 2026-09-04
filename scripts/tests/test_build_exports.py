@@ -66,6 +66,11 @@ def tool(slug="git-diff", **fields):
                                    "returns": {"type": "string", "description": "Unified diff"}, "side_effects": ["fs-read"]}}, **fields)
 
 
+def template(slug="adr", **fields):
+    return envelope("template", slug, {"subtype": "adr", "format": "markdown", "body": "# {{title}}\n\n{{context}}\n",
+                                       "placeholders": [{"name": "title", "description": "Decision title"}, {"name": "context", "description": "Forces"}]}, **fields)
+
+
 def hook(slug="branch-guard", **fields):
     return envelope("hook", slug, {"event": "PreToolUse", "language": "python", "trigger": {"type": "always"}}, **fields)
 
@@ -85,7 +90,7 @@ def collect(root: Path, atoms: list[dict]) -> list[dict]:
 
 
 def test_it_accepts_one_valid_atom_of_every_typed_class(tmp_path):
-    atoms = [persona(), prompt(), agent(), skill(), hook(), model(), policy(), tool()]
+    atoms = [persona(), prompt(), agent(), skill(), hook(), model(), policy(), tool(), template()]
     collected = collect(tmp_path, atoms)
     assert {a["type"] for a in collected} == set(build_exports.TYPED_CLASSES)
     assert build_exports.find_dangling_references(collected, tmp_path / "atoms") == []
@@ -168,7 +173,7 @@ def test_it_requires_review_criteria_on_reviewer_agents(tmp_path):
 
 def test_it_counts_every_typed_class_even_when_empty():
     counts = build_exports.count_by_type([skill(), skill("pr")])
-    assert counts == {"skill": 2, "hook": 0, "prompt": 0, "agent": 0, "persona": 0, "model": 0, "policy": 0, "tool": 0}
+    assert counts == {"skill": 2, "hook": 0, "prompt": 0, "agent": 0, "persona": 0, "model": 0, "policy": 0, "tool": 0, "template": 0}
 
 
 def test_it_rejects_a_category_outside_the_shared_vocabulary(tmp_path):
@@ -195,3 +200,19 @@ def test_it_rejects_a_model_without_a_provider(tmp_path):
     bad["providers"] = []
     with pytest.raises(SystemExit):
         collect(tmp_path, [bad])
+
+
+def test_it_reports_a_template_whose_body_and_placeholders_disagree():
+    undeclared = template(body="# {{title}} by {{author}}\n")
+    unused = template("plan", placeholders=[{"name": "title", "description": "t"}, {"name": "context", "description": "c"}, {"name": "extra", "description": "never used"}])
+    problems = build_exports.find_template_defects([template(), undeclared, unused])
+    assert problems == [
+        "template/adr: body uses {{author}} but placeholders does not declare it",
+        "template/adr: placeholders declares context but body never uses it",
+        "template/plan: placeholders declares extra but body never uses it",
+    ]
+
+
+def test_it_reports_a_template_produced_by_a_missing_skill(tmp_path):
+    collected = collect(tmp_path, [template(produced_by=["skill/absent"])])
+    assert build_exports.find_dangling_references(collected, tmp_path / "atoms") == ["template/adr.produced_by -> skill/absent (not in catalog)"]

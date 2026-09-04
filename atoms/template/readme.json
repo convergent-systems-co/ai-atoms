@@ -1,0 +1,68 @@
+{
+  "schema": "https://ai-atoms.com/schemas/template-v1.json",
+  "type": "template",
+  "id": "template/readme",
+  "version": "1.0.0",
+  "name": "README",
+  "description": "The README every repository must have, answering four questions in order: what is this, who is it for, how do I run it, how do I contribute or extend it. Short by design; detail lives in linked documents.",
+  "subtype": "readme",
+  "format": "markdown",
+  "body": "# {{project_name}}\n\n**What is this?** {{what}}\n\n**Who is it for?** {{audience}}\n\n**How do I run it?**\n\n```bash\n{{run_commands}}\n```\n\n**How do I contribute or extend it?** {{contribute}}\n\n{{license_line}}\n",
+  "placeholders": [
+    {
+      "name": "project_name",
+      "description": "Repository or product name.",
+      "example": "ai-atoms"
+    },
+    {
+      "name": "what",
+      "description": "One or two sentences saying what the thing is and does.",
+      "example": "A typed, versioned catalog of AI runtime primitives."
+    },
+    {
+      "name": "audience",
+      "description": "Who should use it, by role.",
+      "example": "Runtime authors and contributors."
+    },
+    {
+      "name": "run_commands",
+      "description": "The minimal commands that build, test, or start it from a clean machine.",
+      "example": "pip install jsonschema\npython3 scripts/build-exports.py"
+    },
+    {
+      "name": "contribute",
+      "description": "Where the contribution rules, spec, and architecture live.",
+      "example": "See CONTRIBUTING.md and docs/adr/."
+    },
+    {
+      "name": "license_line",
+      "description": "License statement.",
+      "required": false,
+      "example": "Licensing: code Apache-2.0, data CC-BY-4.0."
+    }
+  ],
+  "example": "# ai-atoms\n\n**What is this?** A typed, versioned catalog of AI runtime primitives: skills, hooks, prompts, agents, personas, models, policies, tools, and templates.\n\n**Who is it for?** Runtime authors that install behaviour by id, and contributors who publish it.\n\n**How do I run it?**\n\n```bash\npip install jsonschema pytest\npython3 scripts/build-exports.py\npython3 -m pytest\n```\n\n**How do I contribute or extend it?** See CONTRIBUTING.md for the per-class rules and docs/adr/ for why it is shaped this way.\n\nLicensing: code Apache-2.0, data CC-BY-4.0.\n",
+  "rules": [
+    "Answer the four questions in this order; do not add sections above them.",
+    "Commands must run on a clean machine; test them before committing.",
+    "Write at an 8th–10th grade reading level; link jargon on first use."
+  ],
+  "produced_by": [
+    "skill/documentation",
+    "skill/onboard"
+  ],
+  "authored_by": "convergent-systems-key",
+  "category": "knowledge",
+  "provenance": {
+    "source": "ai-atoms",
+    "author": "convergent-systems-co",
+    "license": "CC-BY-4.0",
+    "notes": "Skeleton follows the README rule in the convergent-systems AI Constitution (required documents §4.9.1)."
+  },
+  "tags": [
+    "readme",
+    "docs",
+    "required-document"
+  ],
+  "lifecycle": "stable"
+}

@@ -1,0 +1,57 @@
+{
+  "schema": "https://ai-atoms.com/schemas/template-v1.json",
+  "type": "template",
+  "id": "template/pull-request",
+  "version": "1.0.0",
+  "name": "Pull Request Description",
+  "description": "A PR body a reviewer can act on: a summary that names the non-obvious decisions, what changed by area, a checkable test plan, and anything the reviewer should know before merging.",
+  "subtype": "pull-request",
+  "format": "markdown",
+  "body": "## Summary\n\n{{summary}}\n\n## Changes\n\n{{changes}}\n\n## Test plan\n\n{{test_plan}}\n\n{{reviewer_notes}}\n",
+  "placeholders": [
+    {
+      "name": "summary",
+      "description": "Two to five bullets: what this does and the decisions that were not obvious, with why.",
+      "example": "- Adds template-v1…"
+    },
+    {
+      "name": "changes",
+      "description": "What changed, grouped by area, with counts where they help.",
+      "example": "- schemas: template-v1.json\n- atoms: 8 templates"
+    },
+    {
+      "name": "test_plan",
+      "description": "Checkbox list of what was run and what remains to verify after merge, with the commands.",
+      "example": "- [x] python3 -m pytest — 165 passed"
+    },
+    {
+      "name": "reviewer_notes",
+      "description": "Optional section: deviations from a spec, risks, follow-ups, or a 'Read this first' warning.",
+      "required": false,
+      "example": "## Read this first\nTwo prompt ids are removed."
+    }
+  ],
+  "example": "## Summary\n\n- Adds `template-v1`, a document skeleton with typed placeholders and one rendered example.\n- Migrates `prompt/handoff-md` and `prompt/plan-with-alternatives`, which described these shapes in prose.\n- Chose a ninth class over a prompt subtype because rendering is a distinct runtime action (ADR 0004).\n\n## Changes\n\n- schemas: `template-v1.json`; examples for every class under `schemas/examples/`\n- atoms: 8 templates; 2 prompts removed\n- web: listing and detail pages for templates\n\n## Test plan\n\n- [x] `python3 scripts/build-exports.py` — no dangling references\n- [x] `python3 -m pytest` — all passing\n- [ ] After deploy: `/atoms/template/adr.json` serves JSON\n\n## Read this first\n\nTwo prompt ids are removed; nothing in the catalog referenced them.\n",
+  "rules": [
+    "Explain non-obvious decisions: why this library, why this pattern, why this trade-off.",
+    "The test plan lists commands, not intentions.",
+    "Merge with a merge commit or rebase; never squash on non-release branches."
+  ],
+  "produced_by": [
+    "skill/pr"
+  ],
+  "authored_by": "convergent-systems-key",
+  "category": "coding",
+  "provenance": {
+    "source": "ai-atoms",
+    "author": "convergent-systems-co",
+    "license": "CC-BY-4.0",
+    "notes": "Rules from the AI Constitution's commit and PR discipline (§4.4.4, §4.10.2)."
+  },
+  "tags": [
+    "pull-request",
+    "review",
+    "git"
+  ],
+  "lifecycle": "stable"
+}

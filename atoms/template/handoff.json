@@ -1,0 +1,83 @@
+{
+  "schema": "https://ai-atoms.com/schemas/template-v1.json",
+  "type": "template",
+  "id": "template/handoff",
+  "version": "1.0.0",
+  "name": "HANDOFF.md",
+  "description": "Cross-session continuity document written at a context boundary: current state, next steps, open questions, files in flight, last known-good commit, audit references. The resuming session verifies every gating assertion against live state before acting on it.",
+  "subtype": "handoff",
+  "format": "markdown",
+  "body": "# HANDOFF — {{task}}\n\nLast updated: {{updated}} · Branch: {{branch}}\n\n## Current state\n\n{{current_state}}\n\n## Next steps\n\n{{next_steps}}\n\n## Open questions\n\n{{open_questions}}\n\n## Files in flight\n\n{{files_in_flight}}\n\n## Last known-good commit\n\n{{last_good_commit}}\n\n## Audit references\n\n{{audit_refs}}\n",
+  "placeholders": [
+    {
+      "name": "task",
+      "description": "What the work is, in a few words.",
+      "example": "template class for ai-atoms"
+    },
+    {
+      "name": "updated",
+      "description": "ISO-8601 timestamp.",
+      "example": "2026-09-03T20:10:00Z"
+    },
+    {
+      "name": "branch",
+      "description": "Branch the work is on.",
+      "example": "feat/template-class"
+    },
+    {
+      "name": "current_state",
+      "description": "What is in flight and what is committed. Facts a resuming session can verify.",
+      "example": "Schema written; eight atoms written; site pages not yet."
+    },
+    {
+      "name": "next_steps",
+      "description": "Concrete actions for the resuming session, in order.",
+      "example": "1. Add site pages. 2. Run the build."
+    },
+    {
+      "name": "open_questions",
+      "description": "Decisions awaiting input, each with who can answer it.",
+      "example": "None."
+    },
+    {
+      "name": "files_in_flight",
+      "description": "Paths being modified, with line ranges when helpful.",
+      "example": "web/src/lib/catalog.ts, schemas/template-v1.json"
+    },
+    {
+      "name": "last_good_commit",
+      "description": "SHA plus one line.",
+      "example": "0b0be7d Second curation pass"
+    },
+    {
+      "name": "audit_refs",
+      "description": "In-progress override or violation log entries, or 'none'.",
+      "required": false,
+      "example": "none"
+    }
+  ],
+  "example": "# HANDOFF — template class for ai-atoms\n\nLast updated: 2026-09-03T20:10:00Z · Branch: feat/template-class\n\n## Current state\n\nSchema and eight template atoms written and validating. Site pages not started. Nothing committed on this branch yet.\n\n## Next steps\n\n1. Add listing and detail pages under web/src/pages/atoms/template/.\n2. Run `python3 scripts/build-exports.py` and `python3 -m pytest`.\n3. Commit in two pieces: schema+atoms, then site.\n\n## Open questions\n\nNone.\n\n## Files in flight\n\nschemas/template-v1.json, atoms/template/*.json, web/src/lib/catalog.ts\n\n## Last known-good commit\n\n0b0be7d Second curation pass: descriptions, Cloudflare models, vendors, workflow removal (#53)\n\n## Audit references\n\nnone\n",
+  "rules": [
+    "No secrets in any section; write [REDACTED:<kind>] where one would otherwise appear.",
+    "On resume, verify every assertion that gates an action against live state before running it.",
+    "Write or update it whenever continuity is at risk, not only at the end."
+  ],
+  "produced_by": [
+    "skill/checkpoint"
+  ],
+  "authored_by": "convergent-systems-key",
+  "category": "governance",
+  "provenance": {
+    "source": "ai-atoms",
+    "author": "convergent-systems-co",
+    "license": "CC-BY-4.0",
+    "notes": "Section set from the AI Constitution's handoff rule (§3.38); migrated from prompt/handoff-md, whose prose described this shape."
+  },
+  "tags": [
+    "handoff",
+    "checkpoint",
+    "continuity",
+    "required-document"
+  ],
+  "lifecycle": "stable"
+}

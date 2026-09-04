@@ -1,0 +1,64 @@
+{
+  "schema": "https://ai-atoms.com/schemas/template-v1.json",
+  "type": "template",
+  "id": "template/commit-message",
+  "version": "1.0.0",
+  "name": "Commit Message",
+  "description": "A Conventional Commits message: typed subject in the imperative under 72 characters, a body that explains why (not what) wrapped at 72, and the provenance trailer when an AI wrote significant code.",
+  "subtype": "commit-message",
+  "format": "text",
+  "body": "{{type}}{{scope}}: {{subject}}\n\n{{body}}\n\n{{trailers}}",
+  "placeholders": [
+    {
+      "name": "type",
+      "description": "feat, fix, refactor, perf, docs, test, build, ci, or chore.",
+      "example": "feat"
+    },
+    {
+      "name": "scope",
+      "description": "Optional parenthesised area, e.g. (schemas).",
+      "required": false,
+      "example": "(schemas)"
+    },
+    {
+      "name": "subject",
+      "description": "Imperative mood, no trailing period, subject line ≤ 72 characters including type and scope.",
+      "example": "add template class for rendered documents"
+    },
+    {
+      "name": "body",
+      "description": "Why this change, the non-obvious decisions, and what alternatives were rejected. Wrap at 72. Omit for trivial changes.",
+      "required": false,
+      "example": "Agents asked to write an ADR had no skeleton…"
+    },
+    {
+      "name": "trailers",
+      "description": "Co-Authored-By and similar trailers, one per line.",
+      "required": false,
+      "example": "Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>"
+    }
+  ],
+  "example": "feat(schemas): add template class for rendered documents\n\nAgents asked to write an ADR, runbook, or handoff had no skeleton to\nfill. A template carries the skeleton, its placeholders, and one rendered\nexample; rendering is a distinct runtime action from injecting text.\n\nCo-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>",
+  "rules": [
+    "Subject line ≤ 72 characters, imperative mood, no trailing period.",
+    "One logical change per commit; refactor commits never carry feat or fix payloads.",
+    "Body explains why; the diff already says what."
+  ],
+  "produced_by": [
+    "skill/commit"
+  ],
+  "authored_by": "convergent-systems-key",
+  "category": "coding",
+  "provenance": {
+    "source": "ai-atoms",
+    "author": "convergent-systems-co",
+    "license": "CC-BY-4.0",
+    "notes": "Rules from the AI Constitution's commit discipline (§4.10.2) and provenance rule (§3.32)."
+  },
+  "tags": [
+    "commit",
+    "conventional-commits",
+    "git"
+  ],
+  "lifecycle": "stable"
+}

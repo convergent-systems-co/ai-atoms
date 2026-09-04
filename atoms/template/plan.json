@@ -1,0 +1,82 @@
+{
+  "schema": "https://ai-atoms.com/schemas/template-v1.json",
+  "type": "template",
+  "id": "template/plan",
+  "version": "1.0.0",
+  "name": "Implementation Plan",
+  "description": "A plan with an alternatives table, scope, numbered approach, tests, risks, dependencies, and backward compatibility. No TBD or TODO in the final draft. Required before non-trivial work starts.",
+  "subtype": "plan",
+  "format": "markdown",
+  "body": "# Plan — {{title}}\n\n## Objective\n\n{{objective}}\n\n## Alternatives\n\n| Alternative | Pros | Cons | Verdict |\n|---|---|---|---|\n{{alternatives_rows}}\n\n## Scope\n\n{{scope}}\n\n## Approach\n\n{{approach}}\n\n## Testing\n\n{{testing}}\n\n## Risks\n\n{{risks}}\n\n## Dependencies\n\n{{dependencies}}\n\n## Backward compatibility\n\n{{compatibility}}\n",
+  "placeholders": [
+    {
+      "name": "title",
+      "description": "What the plan delivers.",
+      "example": "Template class"
+    },
+    {
+      "name": "objective",
+      "description": "One sentence.",
+      "example": "Give runtimes fillable document skeletons."
+    },
+    {
+      "name": "alternatives_rows",
+      "description": "At least two table rows, including 'do nothing' where applicable.",
+      "example": "| Do nothing | no work | agents keep guessing | rejected |"
+    },
+    {
+      "name": "scope",
+      "description": "Files to create, modify, delete.",
+      "example": "create schemas/template-v1.json; modify scripts/build-exports.py"
+    },
+    {
+      "name": "approach",
+      "description": "Numbered steps.",
+      "example": "1. Schema. 2. Atoms. 3. Build. 4. Site."
+    },
+    {
+      "name": "testing",
+      "description": "What tests prove it works.",
+      "example": "Fixture per class; placeholders match body."
+    },
+    {
+      "name": "risks",
+      "description": "What could go wrong and the mitigation for each.",
+      "example": "Nav crowding — shorten labels."
+    },
+    {
+      "name": "dependencies",
+      "description": "What must land first.",
+      "example": "PR #53 merged."
+    },
+    {
+      "name": "compatibility",
+      "description": "What breaks and the migration path.",
+      "example": "Two prompt atoms removed; ids listed in the changelog."
+    }
+  ],
+  "example": "# Plan — Template class\n\n## Objective\n\nGive runtimes fillable document skeletons for the documents the constitution requires.\n\n## Alternatives\n\n| Alternative | Pros | Cons | Verdict |\n|---|---|---|---|\n| Do nothing | no work | agents keep guessing document shapes | rejected |\n| Keep prompt/output-schema prose | no new class | prose is not a skeleton a runtime can fill | rejected |\n| New template class | fillable, typed, exampled | ninth class; nav grows | chosen |\n\n## Scope\n\nCreate schemas/template-v1.json and atoms/template/*.json; modify scripts/build-exports.py, web/src/lib/catalog.ts; delete prompt/handoff-md and prompt/plan-with-alternatives.\n\n## Approach\n\n1. Schema with body, placeholders, example. 2. Eight atoms from the constitution's required documents. 3. Build and tests. 4. Site pages.\n\n## Testing\n\nBuild-script fixture for the class; a test that every {{placeholder}} in a body is declared.\n\n## Risks\n\nNine nav items at 1440 px — shorten the font; move classes into a menu if it wraps.\n\n## Dependencies\n\nPR #53 merged to main.\n\n## Backward compatibility\n\nTwo prompt ids are removed; nothing referenced them. The changelog names them.\n",
+  "rules": [
+    "No 'TBD' or 'TODO' in the final draft.",
+    "Include 'do nothing' as an alternative whenever it is a real option.",
+    "Scope lists files, not features."
+  ],
+  "produced_by": [
+    "skill/write-spec",
+    "skill/project"
+  ],
+  "authored_by": "convergent-systems-key",
+  "category": "product",
+  "provenance": {
+    "source": "ai-atoms",
+    "author": "convergent-systems-co",
+    "license": "CC-BY-4.0",
+    "notes": "Section set from the AI Constitution's plan template (§4.10.1); migrated from prompt/plan-with-alternatives, whose prose described this shape."
+  },
+  "tags": [
+    "plan",
+    "planning",
+    "alternatives"
+  ],
+  "lifecycle": "stable"
+}
