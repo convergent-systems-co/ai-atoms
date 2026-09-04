@@ -570,3 +570,14 @@ were repointed to `persona/technical-writer-docs`.
 The evaluator also flagged, without changing them: the nine `description: ">"` YAML-leak atoms from
 §2.1 are still in the catalog (importer fix pending), and `persona/senior-engineer-mentor` carries a
 `knowledge_boundaries` block that reads as copied from another persona. Both are queued for the next pass.
+
+## Second pass — 2026-09-03 (later still)
+
+| Issue | Outcome |
+|---|---|
+| `description: ">"` skills | 111 repaired from the original SKILL.md (a new block-scalar parser, `scripts/skillmd.py`, now serves both importers). Eight dotnet files had moved upstream; `source_url` follows them. Five atoms whose source no longer exists upstream take their description from the fragment's first paragraph, and say so in provenance. None remain broken. |
+| `senior-engineer-mentor` boundaries | Match the retired source exactly; flag withdrawn. |
+| `atoms/workflow/` | Removed (40 files), with the retired root `skills/project-workspace.json`. The four compositions in `workflows/` remain as the only surviving copies. |
+| Ollama unknown vendors | Seven resolved from the model pages (OpenBMB, Google, Essential AI, Meta, Cohere). `ornith`, `ornith-1.5`, `laguna-s-2.1`, `laguna-xs-2.1`, `laguna-xs.2` name no vendor on their pages and stay `unknown`. |
+| model-atoms.com fold-in | 77 Cloudflare cards: 33 became extra `providers[]` entries on the matching Ollama atoms, 44 became new atoms. Matching is exact on the model name after stripping size and variant tokens. |
+| Placeholder fragments | Four claudeskills atoms with `...`/`test content`/truncated bodies deleted. |

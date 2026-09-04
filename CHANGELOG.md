@@ -3,6 +3,30 @@
 All notable changes to this catalog are documented here.
 Versioning follows [Semantic Versioning](https://semver.org/).
 
+## v0.5.0 — 2026-09-03
+
+Second curation pass: the defects the first pass could only list.
+
+### Added
+- `scripts/skillmd.py`, a frontmatter parser that understands YAML block scalars; both skill
+  importers use it. `scripts/repair-descriptions.py` re-read the original SKILL.md for every atom
+  whose description was literally `>` and repaired 111; eight dotnet files had moved upstream and
+  their `source_url` now points at the new path.
+- `scripts/import-cloudflare-models.py`: model-atoms.com's 77 Cloudflare Workers AI cards folded
+  in — 33 as additional `providers[]` entries on the matching Ollama atoms (exact model-name match
+  after stripping size and variant tokens), 44 as new model atoms.
+- Vendors for seven Ollama models whose pages state them (OpenBMB, Google, Essential AI, Meta,
+  Cohere). Five (`ornith`, `laguna`) still say nothing and stay `unknown`.
+
+### Removed
+- `atoms/workflow/` (40 untyped step and gate atoms) and the retired `skills/project-workspace.json`.
+- Four claudeskills atoms whose fragment was a placeholder (`...`, `test content`, a truncated
+  file).
+
+### Noted
+- `persona/senior-engineer-mentor`'s knowledge boundaries match its source exactly; the earlier
+  "miscopied" flag was wrong.
+
 ## v0.4.0 — 2026-09-03
 
 Curation pass from `docs/reviews/2026-09-03-atom-evaluation.md`, plus two more typed classes.
