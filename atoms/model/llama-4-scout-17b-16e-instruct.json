@@ -1,0 +1,44 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/llama-4-scout-17b-16e-instruct",
+  "version": "1.0.0",
+  "name": "Llama 4 Scout 17B 16E Instruct",
+  "description": "17 billion parameter natively multimodal model with 16 experts (mixture-of-experts architecture).",
+  "vendor": "Meta",
+  "family": "Llama 4",
+  "task": "text-generation",
+  "capabilities": [
+    "batch-processing",
+    "function-calling",
+    "vision"
+  ],
+  "providers": [
+    {
+      "name": "Cloudflare Workers AI",
+      "model_id": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "url": "https://developers.cloudflare.com/workers-ai/models/llama-4-scout-17b-16e-instruct/"
+    }
+  ],
+  "links": {
+    "model_card": "https://developers.cloudflare.com/workers-ai/models/llama-4-scout-17b-16e-instruct/"
+  },
+  "authored_by": "Meta",
+  "source_url": "https://model-atoms.com/atoms/model-card/cf-meta-llama-4-scout-17b-16e-instruct/",
+  "category": "ai",
+  "provenance": {
+    "source": "model-atoms.com",
+    "source_url": "https://model-atoms.com/atoms/model-card/cf-meta-llama-4-scout-17b-16e-instruct/",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Card as published by model-atoms.com from the Cloudflare Workers AI model list; weights license not recorded there."
+  },
+  "tags": [
+    "cloudflare",
+    "workers-ai",
+    "batch-processing",
+    "function-calling",
+    "vision"
+  ],
+  "lifecycle": "stable"
+}

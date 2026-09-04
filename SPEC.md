@@ -192,7 +192,7 @@ All atoms use semantic versioning (`MAJOR.MINOR.PATCH`):
 ```json
 {
   "catalog": "ai-atoms",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "built_at": "<ISO-8601>",
   "classes": ["skill", "hook", "prompt", "agent", "persona", "model", "policy", "tool"],
   "counts": {"skill": 0, "hook": 0, "prompt": 0, "agent": 0, "persona": 0, "model": 0, "policy": 0, "tool": 0},

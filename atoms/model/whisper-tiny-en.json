@@ -1,0 +1,37 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/whisper-tiny-en",
+  "version": "1.0.0",
+  "name": "Whisper Tiny EN",
+  "description": "English-only version of the Whisper Tiny model trained on speech recognition.",
+  "vendor": "OpenAI",
+  "family": "Whisper",
+  "task": "other",
+  "capabilities": [],
+  "providers": [
+    {
+      "name": "Cloudflare Workers AI",
+      "model_id": "@cf/openai/whisper-tiny-en",
+      "url": "https://developers.cloudflare.com/workers-ai/models/whisper-tiny-en/"
+    }
+  ],
+  "links": {
+    "model_card": "https://developers.cloudflare.com/workers-ai/models/whisper-tiny-en/"
+  },
+  "authored_by": "OpenAI",
+  "source_url": "https://model-atoms.com/atoms/model-card/cf-openai-whisper-tiny-en/",
+  "category": "ai",
+  "provenance": {
+    "source": "model-atoms.com",
+    "source_url": "https://model-atoms.com/atoms/model-card/cf-openai-whisper-tiny-en/",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Card as published by model-atoms.com from the Cloudflare Workers AI model list; weights license not recorded there."
+  },
+  "tags": [
+    "cloudflare",
+    "workers-ai"
+  ],
+  "lifecycle": "stable"
+}

@@ -1,0 +1,38 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/sqlcoder-7b-2",
+  "version": "1.0.0",
+  "name": "SQLCoder 7B 2",
+  "description": "SQL-specialized model designed to help non-technical users understand and query data in SQL databases.",
+  "vendor": "Defog",
+  "family": "SQLCoder",
+  "task": "text-generation",
+  "capabilities": [],
+  "providers": [
+    {
+      "name": "Cloudflare Workers AI",
+      "model_id": "@cf/defog/sqlcoder-7b-2",
+      "url": "https://developers.cloudflare.com/workers-ai/models/sqlcoder-7b-2/"
+    }
+  ],
+  "links": {
+    "model_card": "https://developers.cloudflare.com/workers-ai/models/sqlcoder-7b-2/"
+  },
+  "planned_deprecation": true,
+  "authored_by": "Defog",
+  "source_url": "https://model-atoms.com/atoms/model-card/cf-defog-sqlcoder-7b-2/",
+  "category": "ai",
+  "provenance": {
+    "source": "model-atoms.com",
+    "source_url": "https://model-atoms.com/atoms/model-card/cf-defog-sqlcoder-7b-2/",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Card as published by model-atoms.com from the Cloudflare Workers AI model list; weights license not recorded there."
+  },
+  "tags": [
+    "cloudflare",
+    "workers-ai"
+  ],
+  "lifecycle": "stable"
+}

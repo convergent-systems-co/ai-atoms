@@ -2,7 +2,7 @@
   "schema": "https://ai-atoms.com/schemas/model-v1.json",
   "type": "model",
   "id": "model/llama2",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "name": "llama2",
   "description": "Llama 2 is a collection of foundation language models ranging from 7B to 70B parameters.",
   "vendor": "Meta",
@@ -24,6 +24,21 @@
       "tag_count": 102,
       "pulls": "7.4M",
       "updated_at": "2023-12-27"
+    },
+    {
+      "name": "Cloudflare Workers AI",
+      "model_id": "@cf/meta/llama-2-7b-chat-fp16",
+      "url": "https://developers.cloudflare.com/workers-ai/models/llama-2-7b-chat-fp16/"
+    },
+    {
+      "name": "Cloudflare Workers AI",
+      "model_id": "@cf/meta/llama-2-7b-chat-hf-lora",
+      "url": "https://developers.cloudflare.com/workers-ai/models/llama-2-7b-chat-hf-lora/"
+    },
+    {
+      "name": "Cloudflare Workers AI",
+      "model_id": "@cf/meta/llama-2-7b-chat-int8",
+      "url": "https://developers.cloudflare.com/workers-ai/models/llama-2-7b-chat-int8/"
     }
   ],
   "links": {
@@ -37,11 +52,12 @@
     "source_url": "https://ollama.com/library/llama2",
     "license": "unknown",
     "imported_at": "2026-09-03",
-    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing. Cloudflare Workers AI provider entry added from model-atoms.com on 2026-09-03. Cloudflare Workers AI provider entry added from model-atoms.com on 2026-09-03. Cloudflare Workers AI provider entry added from model-atoms.com on 2026-09-03."
   },
   "tags": [
-    "ollama",
-    "local"
+    "cloudflare",
+    "local",
+    "ollama"
   ],
   "lifecycle": "stable"
 }

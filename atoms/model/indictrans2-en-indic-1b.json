@@ -1,0 +1,37 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/indictrans2-en-indic-1b",
+  "version": "1.0.0",
+  "name": "IndicTrans2 EN-Indic 1B",
+  "description": "First open-source transformer-based multilingual NMT model supporting high-quality translation across all 22 scheduled Indic languages.",
+  "vendor": "AI4Bharat",
+  "family": "IndicTrans2",
+  "task": "translation",
+  "capabilities": [],
+  "providers": [
+    {
+      "name": "Cloudflare Workers AI",
+      "model_id": "@cf/ai4bharat/indictrans2-en-indic-1B",
+      "url": "https://developers.cloudflare.com/workers-ai/models/indictrans2-en-indic-1B/"
+    }
+  ],
+  "links": {
+    "model_card": "https://developers.cloudflare.com/workers-ai/models/indictrans2-en-indic-1B/"
+  },
+  "authored_by": "AI4Bharat",
+  "source_url": "https://model-atoms.com/atoms/model-card/cf-ai4bharat-indictrans2-en-indic-1B/",
+  "category": "ai",
+  "provenance": {
+    "source": "model-atoms.com",
+    "source_url": "https://model-atoms.com/atoms/model-card/cf-ai4bharat-indictrans2-en-indic-1B/",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Card as published by model-atoms.com from the Cloudflare Workers AI model list; weights license not recorded there."
+  },
+  "tags": [
+    "cloudflare",
+    "workers-ai"
+  ],
+  "lifecycle": "stable"
+}

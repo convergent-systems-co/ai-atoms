@@ -1,0 +1,42 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/smart-turn-v2",
+  "version": "1.0.0",
+  "name": "SmartTurn v2",
+  "description": "Open source community-driven native audio turn detection model in its second version.",
+  "vendor": "Pipecat",
+  "family": "SmartTurn",
+  "task": "other",
+  "capabilities": [
+    "batch-processing",
+    "real-time"
+  ],
+  "providers": [
+    {
+      "name": "Cloudflare Workers AI",
+      "model_id": "@cf/pipecat/smart-turn-v2",
+      "url": "https://developers.cloudflare.com/workers-ai/models/smart-turn-v2/"
+    }
+  ],
+  "links": {
+    "model_card": "https://developers.cloudflare.com/workers-ai/models/smart-turn-v2/"
+  },
+  "authored_by": "Pipecat",
+  "source_url": "https://model-atoms.com/atoms/model-card/cf-pipecat-smart-turn-v2/",
+  "category": "ai",
+  "provenance": {
+    "source": "model-atoms.com",
+    "source_url": "https://model-atoms.com/atoms/model-card/cf-pipecat-smart-turn-v2/",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Card as published by model-atoms.com from the Cloudflare Workers AI model list; weights license not recorded there."
+  },
+  "tags": [
+    "cloudflare",
+    "workers-ai",
+    "batch-processing",
+    "real-time"
+  ],
+  "lifecycle": "stable"
+}

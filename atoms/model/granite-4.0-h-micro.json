@@ -1,0 +1,40 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/granite-4.0-h-micro",
+  "version": "1.0.0",
+  "name": "Granite 4.0 H Micro",
+  "description": "Industry-leading results in agentic tasks including instruction following and function calling; suited for RAG, multi-agent workflows, and edge deployments.",
+  "vendor": "IBM",
+  "family": "Granite 4.0",
+  "task": "text-generation",
+  "capabilities": [
+    "function-calling"
+  ],
+  "providers": [
+    {
+      "name": "Cloudflare Workers AI",
+      "model_id": "@cf/ibm/granite-4.0-h-micro",
+      "url": "https://developers.cloudflare.com/workers-ai/models/granite-4.0-h-micro/"
+    }
+  ],
+  "links": {
+    "model_card": "https://developers.cloudflare.com/workers-ai/models/granite-4.0-h-micro/"
+  },
+  "authored_by": "IBM",
+  "source_url": "https://model-atoms.com/atoms/model-card/cf-ibm-granite-4.0-h-micro/",
+  "category": "ai",
+  "provenance": {
+    "source": "model-atoms.com",
+    "source_url": "https://model-atoms.com/atoms/model-card/cf-ibm-granite-4.0-h-micro/",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Card as published by model-atoms.com from the Cloudflare Workers AI model list; weights license not recorded there."
+  },
+  "tags": [
+    "cloudflare",
+    "workers-ai",
+    "function-calling"
+  ],
+  "lifecycle": "stable"
+}

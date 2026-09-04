@@ -2,10 +2,11 @@
   "schema": "https://ai-atoms.com/schemas/model-v1.json",
   "type": "model",
   "id": "model/rnj-1",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "name": "rnj-1",
   "description": "Rnj-1 is a family of 8B parameter open-weight, dense models trained from scratch by Essential AI, optimized for code and STEM with capabilities on par with SOTA open-weight models.",
-  "vendor": "unknown",
+  "vendor": "Essential AI",
+  "family": "Rnj",
   "task": "text-generation",
   "capabilities": [
     "tools"
@@ -28,7 +29,7 @@
   "links": {
     "model_card": "https://ollama.com/library/rnj-1"
   },
-  "authored_by": "unknown",
+  "authored_by": "Essential AI",
   "source_url": "https://ollama.com/library/rnj-1",
   "category": "ai",
   "provenance": {

@@ -2,10 +2,11 @@
   "schema": "https://ai-atoms.com/schemas/model-v1.json",
   "type": "model",
   "id": "model/minicpm-v",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "name": "minicpm-v",
   "description": "A series of multimodal LLMs (MLLMs) designed for vision-language understanding.",
-  "vendor": "unknown",
+  "vendor": "OpenBMB",
+  "family": "MiniCPM-V",
   "task": "multimodal",
   "capabilities": [
     "vision"
@@ -28,7 +29,7 @@
   "links": {
     "model_card": "https://ollama.com/library/minicpm-v"
   },
-  "authored_by": "unknown",
+  "authored_by": "OpenBMB",
   "source_url": "https://ollama.com/library/minicpm-v",
   "category": "ai",
   "provenance": {

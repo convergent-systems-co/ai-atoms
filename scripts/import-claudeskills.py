@@ -24,6 +24,9 @@ import urllib.request
 from datetime import date
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from skillmd import parse_frontmatter  # noqa: E402
+
 REPO = Path(__file__).resolve().parent.parent
 ATOMS_DIR = REPO / "atoms" / "skill"
 SITE = "https://claudeskills.in"
@@ -71,20 +74,6 @@ def fetch_rows() -> list[dict]:
         if len(batch) < PAGE:
             return rows
         start += PAGE
-
-
-def parse_frontmatter(content: str) -> tuple[dict, str]:
-    if not content.startswith("---"):
-        return {}, content
-    parts = content.split("---", 2)
-    if len(parts) < 3:
-        return {}, content
-    fm: dict = {}
-    for line in parts[1].splitlines():
-        if ":" in line and not line.startswith(" "):
-            key, _, val = line.partition(":")
-            fm[key.strip()] = val.strip().strip('"').strip("'")
-    return fm, parts[2].strip()
 
 
 def license_for(row: dict, fm: dict) -> str:

@@ -2,7 +2,7 @@
   "schema": "https://ai-atoms.com/schemas/model-v1.json",
   "type": "model",
   "id": "model/gpt-oss",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "name": "gpt-oss",
   "description": "OpenAI’s open-weight models designed for powerful reasoning, agentic tasks, and versatile developer use cases.",
   "vendor": "OpenAI",
@@ -27,6 +27,16 @@
       "tag_count": 5,
       "pulls": "12.5M",
       "updated_at": "2025-10-09"
+    },
+    {
+      "name": "Cloudflare Workers AI",
+      "model_id": "@cf/openai/gpt-oss-120b",
+      "url": "https://developers.cloudflare.com/workers-ai/models/gpt-oss-120b/"
+    },
+    {
+      "name": "Cloudflare Workers AI",
+      "model_id": "@cf/openai/gpt-oss-20b",
+      "url": "https://developers.cloudflare.com/workers-ai/models/gpt-oss-20b/"
     }
   ],
   "links": {
@@ -40,14 +50,15 @@
     "source_url": "https://ollama.com/library/gpt-oss",
     "license": "unknown",
     "imported_at": "2026-09-03",
-    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing."
+    "notes": "Description, capabilities, sizes, pulls, tag count and updated date as shown on the Ollama library page. Vendor, family and task are inferred from the model name; weights license is not published on the listing. Cloudflare Workers AI provider entry added from model-atoms.com on 2026-09-03. Cloudflare Workers AI provider entry added from model-atoms.com on 2026-09-03."
   },
   "tags": [
-    "ollama",
+    "cloud",
+    "cloudflare",
     "local",
-    "tools",
+    "ollama",
     "thinking",
-    "cloud"
+    "tools"
   ],
   "lifecycle": "stable"
 }

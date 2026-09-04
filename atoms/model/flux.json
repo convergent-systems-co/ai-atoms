@@ -1,0 +1,40 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/flux",
+  "version": "1.0.0",
+  "name": "Flux ASR",
+  "description": "First conversational speech recognition model built specifically for voice agents.",
+  "vendor": "Deepgram",
+  "family": "Flux ASR",
+  "task": "other",
+  "capabilities": [
+    "real-time"
+  ],
+  "providers": [
+    {
+      "name": "Cloudflare Workers AI",
+      "model_id": "@cf/deepgram/flux",
+      "url": "https://developers.cloudflare.com/workers-ai/models/flux/"
+    }
+  ],
+  "links": {
+    "model_card": "https://developers.cloudflare.com/workers-ai/models/flux/"
+  },
+  "authored_by": "Deepgram",
+  "source_url": "https://model-atoms.com/atoms/model-card/cf-deepgram-flux/",
+  "category": "ai",
+  "provenance": {
+    "source": "model-atoms.com",
+    "source_url": "https://model-atoms.com/atoms/model-card/cf-deepgram-flux/",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Card as published by model-atoms.com from the Cloudflare Workers AI model list; weights license not recorded there."
+  },
+  "tags": [
+    "cloudflare",
+    "workers-ai",
+    "real-time"
+  ],
+  "lifecycle": "stable"
+}

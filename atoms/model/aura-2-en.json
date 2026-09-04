@@ -1,0 +1,42 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/aura-2-en",
+  "version": "1.0.0",
+  "name": "Aura 2 EN",
+  "description": "Context-aware English text-to-speech model that applies natural pacing, expressiveness, and fillers based on context.",
+  "vendor": "Deepgram",
+  "family": "Aura 2",
+  "task": "text-to-speech",
+  "capabilities": [
+    "batch-processing",
+    "real-time"
+  ],
+  "providers": [
+    {
+      "name": "Cloudflare Workers AI",
+      "model_id": "@cf/deepgram/aura-2-en",
+      "url": "https://developers.cloudflare.com/workers-ai/models/aura-2-en/"
+    }
+  ],
+  "links": {
+    "model_card": "https://developers.cloudflare.com/workers-ai/models/aura-2-en/"
+  },
+  "authored_by": "Deepgram",
+  "source_url": "https://model-atoms.com/atoms/model-card/cf-deepgram-aura-2-en/",
+  "category": "ai",
+  "provenance": {
+    "source": "model-atoms.com",
+    "source_url": "https://model-atoms.com/atoms/model-card/cf-deepgram-aura-2-en/",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Card as published by model-atoms.com from the Cloudflare Workers AI model list; weights license not recorded there."
+  },
+  "tags": [
+    "cloudflare",
+    "workers-ai",
+    "batch-processing",
+    "real-time"
+  ],
+  "lifecycle": "stable"
+}

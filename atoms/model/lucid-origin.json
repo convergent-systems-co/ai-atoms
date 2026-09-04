@@ -1,0 +1,37 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/lucid-origin",
+  "version": "1.0.0",
+  "name": "Lucid Origin",
+  "description": "Most adaptable and prompt-responsive model with strengths in sharp graphic design, full-HD renders, and accurate text rendering.",
+  "vendor": "Leonardo",
+  "family": "Lucid",
+  "task": "other",
+  "capabilities": [],
+  "providers": [
+    {
+      "name": "Cloudflare Workers AI",
+      "model_id": "@cf/leonardo/lucid-origin",
+      "url": "https://developers.cloudflare.com/workers-ai/models/lucid-origin/"
+    }
+  ],
+  "links": {
+    "model_card": "https://developers.cloudflare.com/workers-ai/models/lucid-origin/"
+  },
+  "authored_by": "Leonardo",
+  "source_url": "https://model-atoms.com/atoms/model-card/cf-leonardo-lucid-origin/",
+  "category": "ai",
+  "provenance": {
+    "source": "model-atoms.com",
+    "source_url": "https://model-atoms.com/atoms/model-card/cf-leonardo-lucid-origin/",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Card as published by model-atoms.com from the Cloudflare Workers AI model list; weights license not recorded there."
+  },
+  "tags": [
+    "cloudflare",
+    "workers-ai"
+  ],
+  "lifecycle": "stable"
+}

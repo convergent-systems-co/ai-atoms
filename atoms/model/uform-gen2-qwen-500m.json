@@ -1,0 +1,41 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/uform-gen2-qwen-500m",
+  "version": "1.0.0",
+  "name": "UForm Gen2 Qwen 500M",
+  "description": "Small generative vision-language model primarily designed for image captioning and visual question answering.",
+  "vendor": "Unum",
+  "family": "UForm",
+  "task": "multimodal",
+  "capabilities": [
+    "vision"
+  ],
+  "providers": [
+    {
+      "name": "Cloudflare Workers AI",
+      "model_id": "@cf/unum/uform-gen2-qwen-500m",
+      "url": "https://developers.cloudflare.com/workers-ai/models/uform-gen2-qwen-500m/"
+    }
+  ],
+  "links": {
+    "model_card": "https://developers.cloudflare.com/workers-ai/models/uform-gen2-qwen-500m/"
+  },
+  "planned_deprecation": true,
+  "authored_by": "Unum",
+  "source_url": "https://model-atoms.com/atoms/model-card/cf-unum-uform-gen2-qwen-500m/",
+  "category": "ai",
+  "provenance": {
+    "source": "model-atoms.com",
+    "source_url": "https://model-atoms.com/atoms/model-card/cf-unum-uform-gen2-qwen-500m/",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Card as published by model-atoms.com from the Cloudflare Workers AI model list; weights license not recorded there."
+  },
+  "tags": [
+    "cloudflare",
+    "workers-ai",
+    "vision"
+  ],
+  "lifecycle": "stable"
+}

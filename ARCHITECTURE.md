@@ -70,6 +70,11 @@ number of providers so the same model can list Cloudflare Workers AI or a vendor
 | `scripts/migrate-retired-atoms.py` | the retired persona-, prompt-, agent-atoms copies staged by PR #46 | Apache-2.0 (LICENSE-data in each retired repo) |
 | `scripts/migrate-policy-tool.py` | the staged policy and tool trees from the same PR | Apache-2.0 |
 | `scripts/discover-licenses.py` | GitHub API for atoms whose provenance names an upstream repository | fills `provenance.license` with the repository's SPDX id |
+| `scripts/import-cloudflare-models.py` | model-atoms.com (Cloudflare Workers AI cards) | adds a Cloudflare `providers[]` entry to the matching Ollama atom, or a new atom; weights license recorded as `unknown` |
+| `scripts/repair-descriptions.py` | the original SKILL.md, from GitHub or the claudeskills table | re-reads descriptions the old importer mangled; follows moved files |
+
+All SKILL.md frontmatter is parsed by `scripts/skillmd.py`, which understands folded and literal
+block scalars (the source of the old `description: ">"` defect).
 | `scripts/backfill-provenance-category.py` | the current tree | fills missing `category` and `provenance`; never overwrites |
 
 Importers never overwrite an existing atom with the same slug, so the first attribution wins.
@@ -81,10 +86,12 @@ network, and filesystem for isolation; domains and refusals for a boundary). A t
 function signature a model sees and the `side_effects` a runtime must gate with a capability policy.
 Agents reference both by id; the build resolves every reference.
 
-## Staged, untyped content
+## Compositions
 
-`atoms/workflow/` (Olympus step and gate primitives from workflow-atoms) has no schema yet. The
-build skips it with a warning; nothing references it.
+`workflows/` holds four Olympus workflow compositions from the retired workflow-atoms catalog.
+They are collected into the catalog unvalidated and reference `workflow-atoms/...` step and gate
+ids that no longer exist anywhere; they are kept as the only surviving copies until a workflow
+class is designed.
 
 ## Build pipeline
 
@@ -129,11 +136,6 @@ atoms/tool/*.json    ──┘
 4. CI runs the catalog build, the build-script tests (`scripts/tests/`), the hook tests
    (`atoms/hook/tests/`), and the web build on every PR and push. Deployment to Cloudflare Pages
    runs on push to `main`.
-
-## Compositions
-
-Workflow compositions live in `workflows/`. They are collected by the build script without schema
-validation (freeform JSON). Compositions reference atoms by ID.
 
 ## Infrastructure
 

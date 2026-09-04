@@ -1,0 +1,37 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/flux-2-dev",
+  "version": "1.0.0",
+  "name": "FLUX 2 Dev",
+  "description": "Image model capable of generating highly realistic and detailed images with multi-reference support.",
+  "vendor": "Black Forest Labs",
+  "family": "FLUX 2",
+  "task": "other",
+  "capabilities": [],
+  "providers": [
+    {
+      "name": "Cloudflare Workers AI",
+      "model_id": "@cf/black-forest-labs/flux-2-dev",
+      "url": "https://developers.cloudflare.com/workers-ai/models/flux-2-dev/"
+    }
+  ],
+  "links": {
+    "model_card": "https://developers.cloudflare.com/workers-ai/models/flux-2-dev/"
+  },
+  "authored_by": "Black Forest Labs",
+  "source_url": "https://model-atoms.com/atoms/model-card/cf-black-forest-labs-flux-2-dev/",
+  "category": "ai",
+  "provenance": {
+    "source": "model-atoms.com",
+    "source_url": "https://model-atoms.com/atoms/model-card/cf-black-forest-labs-flux-2-dev/",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Card as published by model-atoms.com from the Cloudflare Workers AI model list; weights license not recorded there."
+  },
+  "tags": [
+    "cloudflare",
+    "workers-ai"
+  ],
+  "lifecycle": "stable"
+}
