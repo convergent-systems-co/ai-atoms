@@ -98,7 +98,7 @@ const fullTitle = title === "ai-atoms" ? "ai-atoms — AI runtime primitives" : 
       const status = palette.querySelector<HTMLElement>("[data-status]")!;
       let index: Array<{ id: string; n: string; d: string; c: string; k: string; s: string }> | null = null;
       let selected = 0;
-      const SYMBOL: Record<string, string> = { skill: "Sk", hook: "Hk", prompt: "Pr", agent: "Ag", persona: "Pe", model: "Mo" };
+      const SYMBOL: Record<string, string> = { skill: "Sk", hook: "Hk", prompt: "Pr", agent: "Ag", persona: "Pe", model: "Mo", policy: "Po", tool: "To" };
       async function load() {
         if (index) return;
         status.textContent = "loading…";

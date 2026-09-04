@@ -1,0 +1,51 @@
+---
+import Site from "../../../layouts/Site.astro";
+import ActionRail from "../../../components/ActionRail.astro";
+import Provenance from "../../../components/Provenance.astro";
+import CategoryChip from "../../../components/CategoryChip.astro";
+import { ATOMS, BY_ID, hrefOf, slugOf } from "../../../lib/catalog";
+
+export function getStaticPaths() {
+  return ATOMS.filter((a: any) => a.type === "tool").map((a: any) => ({ params: { slug: slugOf(a.id) }, props: { tool: a } }));
+}
+const { tool } = Astro.props;
+const spec = tool.spec;
+const params = Object.entries(spec.parameters ?? {}) as Array<[string, any]>;
+const usedBy = ATOMS.filter((a: any) => a.type === "agent" && a.tools?.includes(tool.id));
+const gates = (tool.gated_by ?? []).map((id: string) => BY_ID.get(id)).filter(Boolean);
+// The JSON-Schema-shaped definition a runtime hands to the model.
+const definition = JSON.stringify({ name: spec.function_name, description: spec.summary, input_schema: { type: "object",
+  properties: Object.fromEntries(params.map(([k, v]) => [k, { type: v.type, description: v.description }])),
+  required: params.filter(([, v]) => v.required).map(([k]) => k) } }, null, 2);
+---
+<Site title={tool.name} description={tool.description} current="/atoms/tool/">
+  <div class="detail hue-tool">
+    <article>
+      <a class="small muted" href="/atoms/tool/">← Tools</a>
+      <div class="detail-hero" style="margin-top:0.8rem;">
+        <div class="chips"><span class="chip cls">To tool</span><span class="chip sub">{tool.subtype}</span><CategoryChip category={tool.category} />{spec.side_effects?.map((e: string) => <span class={`chip ${e === "fs-read" ? "ok" : "warn"}`}>{e}</span>)}{tool.lifecycle && <span class={`lifecycle ${tool.lifecycle}`}>{tool.lifecycle}</span>}</div>
+        <h1>{tool.name}</h1>
+        <p class="lede">{tool.description}</p>
+        <div class="idline"><span>id <b>{tool.id}</b></span><span>v<b>{tool.version}</b></span><span>function <b>{spec.function_name}</b></span></div>
+      </div>
+
+      <h2 class="h-section">Signature</h2>
+      <div class="scroll"><table class="table" style="max-width:60rem;">
+        <thead><tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+        <tbody>
+          {params.map(([k, v]) => <tr><td><code>{k}</code></td><td><code>{v.type}</code></td><td>{v.required ? "yes" : "no"}</td><td>{v.description}</td></tr>)}
+          <tr><td><i>returns</i></td><td><code>{spec.returns.type}</code></td><td></td><td>{spec.returns.description}</td></tr>
+        </tbody>
+      </table></div>
+
+      <h2 class="h-section">Tool definition for the model</h2>
+      <pre style="max-width:60rem;"><code>{definition}</code></pre>
+
+      {gates.length > 0 && <><h2 class="h-section">Gated by</h2><ul class="list">{gates.map((p: any) => <li><a class="ref" href={hrefOf(p.id)}>{p.id}</a> — {p.name}</li>)}</ul></>}
+      {usedBy.length > 0 && <><h2 class="h-section">Used by</h2><ul class="list">{usedBy.map((a: any) => <li><a class="ref" href={hrefOf(a.id)}>{a.id}</a> — {a.name}</li>)}</ul></>}
+      {tool.tags?.length > 0 && <div class="chips" style="margin-top:1.2rem;">{tool.tags.map((t: string) => <span class="tag">{t}</span>)}</div>}
+      <Provenance atom={tool} />
+    </article>
+    <ActionRail atom={tool} text={definition} textFilename={`${slugOf(tool.id)}.tool.json`} />
+  </div>
+</Site>

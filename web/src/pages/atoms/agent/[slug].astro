@@ -10,7 +10,7 @@ export function getStaticPaths() {
 }
 const { agent } = Astro.props;
 const persona = BY_ID.get(agent.persona);
-const LINKED = new Set(["persona", "prompt", "skill", "hook", "agent", "model"]);
+const LINKED = new Set(["persona", "prompt", "skill", "hook", "agent", "model", "policy", "tool"]);
 const bindings: Array<[string, string[]]> = ([["Prompts", agent.prompts ?? []], ["Skills", agent.skills ?? []], ["Tools", agent.tools ?? []], ["Policies", agent.policies ?? []], ["Hooks", agent.hooks ?? []]] as Array<[string, string[]]>).filter(([, ids]) => ids.length);
 ---
 <Site title={agent.name} description={agent.description} current="/atoms/agent/">

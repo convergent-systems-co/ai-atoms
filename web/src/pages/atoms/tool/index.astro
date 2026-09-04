@@ -1,0 +1,9 @@
+---
+import Site from "../../../layouts/Site.astro";
+import Listing from "../../../components/Listing.astro";
+import { atomsOf, CLASS_META } from "../../../lib/catalog";
+const atoms = atomsOf("tool");
+---
+<Site title={CLASS_META["tool"].plural} description={`${atoms.length} tool atoms — ${CLASS_META["tool"].blurb}`} current="/atoms/tool/">
+  <Listing cls="tool" atoms={atoms} intro={'Executable affordances. Each tool carries the function signature the model sees (<code>spec.function_name</code>, parameters, returns) and the <code>side_effects</code> a runtime must gate with a capability policy before the call runs.'} facetLabel="Subtype" />
+</Site>

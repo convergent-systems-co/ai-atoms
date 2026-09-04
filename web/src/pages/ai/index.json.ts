@@ -8,7 +8,7 @@ const CATEGORIES = (catalog as any).categories as Record<string, Record<string, 
 const idsByClass = Object.fromEntries(
   CLASSES.map(cls => [cls, (catalog.atoms as any[]).filter(a => a.type === cls).map(a => a.id)])
 );
-const PLURAL: Record<string, string> = { skill: "skills", hook: "hooks", prompt: "prompts", agent: "agents", persona: "personas", model: "models" };
+const PLURAL: Record<string, string> = { skill: "skills", hook: "hooks", prompt: "prompts", agent: "agents", persona: "personas", model: "models", policy: "policies", tool: "tools" };
 
 export const GET: APIRoute = () => {
   const body = JSON.stringify({
@@ -17,7 +17,7 @@ export const GET: APIRoute = () => {
     site: "https://ai-atoms.com",
     catalog_version: catalog.version,
     built_at: (catalog as any).built_at,
-    description: "AI runtime primitives — skills, hooks, prompts, agents, personas, and models for AI agents and agentic pipelines.",
+    description: "AI runtime primitives — skills, hooks, prompts, agents, personas, models, policies, and tools for AI agents and agentic pipelines.",
     classes: CLASSES,
     counts: (catalog as any).counts,
     categories: CATEGORIES,
@@ -39,6 +39,8 @@ export const GET: APIRoute = () => {
       "5. persona: render role, voice, tone, constraints, and knowledge_boundaries into the system turn",
       "6. agent: resolve persona, prompts, skills, tools, policies, and hooks by id, then run with the execution preferences",
       "7. model: pick a providers[] entry and call it by model_id, or run pull_command locally",
+      "7a. policy: enforce rule.text; capability grants/elevation gate tool calls; isolation fields configure the sandbox",
+      "7b. tool: hand spec (function_name, parameters, returns) to the model; gate spec.side_effects with a capability policy",
       "8. Check provenance.license before redistributing: 'unknown' means the source stated none",
       "9. Whole catalog with every atom inline: GET /exports/catalog.json"
     ],
