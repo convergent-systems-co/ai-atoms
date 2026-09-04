@@ -1,0 +1,41 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/mistral-7b-instruct-v0.2-lora",
+  "version": "1.0.0",
+  "name": "Mistral 7B Instruct v0.2 LoRA",
+  "description": "Mistral 7B instruct v0.2 dedicated for inference with LoRA adapters.",
+  "vendor": "MistralAI",
+  "family": "Mistral 7B",
+  "task": "text-generation",
+  "capabilities": [
+    "lora"
+  ],
+  "context_window_tokens": 32000,
+  "providers": [
+    {
+      "name": "Cloudflare Workers AI",
+      "model_id": "@cf/mistralai/mistral-7b-instruct-v0.2-lora",
+      "url": "https://developers.cloudflare.com/workers-ai/models/mistral-7b-instruct-v0.2-lora/"
+    }
+  ],
+  "links": {
+    "model_card": "https://developers.cloudflare.com/workers-ai/models/mistral-7b-instruct-v0.2-lora/"
+  },
+  "authored_by": "MistralAI",
+  "source_url": "https://model-atoms.com/atoms/model-card/cf-mistralai-mistral-7b-instruct-v0.2-lora/",
+  "category": "ai",
+  "provenance": {
+    "source": "model-atoms.com",
+    "source_url": "https://model-atoms.com/atoms/model-card/cf-mistralai-mistral-7b-instruct-v0.2-lora/",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Card as published by model-atoms.com from the Cloudflare Workers AI model list; weights license not recorded there."
+  },
+  "tags": [
+    "cloudflare",
+    "workers-ai",
+    "lora"
+  ],
+  "lifecycle": "stable"
+}

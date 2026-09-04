@@ -2,10 +2,11 @@
   "schema": "https://ai-atoms.com/schemas/model-v1.json",
   "type": "model",
   "id": "model/north-mini-code-1.0",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "name": "north-mini-code-1.0",
   "description": "North Mini Code is Cohere's first model for developers — a 30B Mixture-of-Experts model with 3B active parameters, built for agentic software engineering.",
-  "vendor": "unknown",
+  "vendor": "Cohere",
+  "family": "North",
   "task": "code-generation",
   "capabilities": [
     "tools",
@@ -26,7 +27,7 @@
   "links": {
     "model_card": "https://ollama.com/library/north-mini-code-1.0"
   },
-  "authored_by": "unknown",
+  "authored_by": "Cohere",
   "source_url": "https://ollama.com/library/north-mini-code-1.0",
   "category": "ai",
   "provenance": {

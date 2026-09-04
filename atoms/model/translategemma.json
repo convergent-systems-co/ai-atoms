@@ -2,10 +2,11 @@
   "schema": "https://ai-atoms.com/schemas/model-v1.json",
   "type": "model",
   "id": "model/translategemma",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "name": "translategemma",
   "description": "A new collection of open translation models built on Gemma 3, helping people communicate across 55 languages.",
-  "vendor": "unknown",
+  "vendor": "Google",
+  "family": "TranslateGemma",
   "task": "multimodal",
   "capabilities": [
     "vision"
@@ -30,7 +31,7 @@
   "links": {
     "model_card": "https://ollama.com/library/translategemma"
   },
-  "authored_by": "unknown",
+  "authored_by": "Google",
   "source_url": "https://ollama.com/library/translategemma",
   "category": "ai",
   "provenance": {

@@ -1,0 +1,45 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/kimi-k2.5",
+  "version": "1.0.0",
+  "name": "Kimi K2.5",
+  "description": "Frontier-scale open-source model with a 256k context window.",
+  "vendor": "Moonshot AI",
+  "family": "Kimi K2",
+  "task": "text-generation",
+  "capabilities": [
+    "function-calling",
+    "reasoning",
+    "vision"
+  ],
+  "context_window_tokens": 256000,
+  "providers": [
+    {
+      "name": "Cloudflare Workers AI",
+      "model_id": "@cf/moonshot/kimi-k2.5",
+      "url": "https://developers.cloudflare.com/workers-ai/models/kimi-k2.5/"
+    }
+  ],
+  "links": {
+    "model_card": "https://developers.cloudflare.com/workers-ai/models/kimi-k2.5/"
+  },
+  "authored_by": "Moonshot AI",
+  "source_url": "https://model-atoms.com/atoms/model-card/cf-moonshot-kimi-k2.5/",
+  "category": "ai",
+  "provenance": {
+    "source": "model-atoms.com",
+    "source_url": "https://model-atoms.com/atoms/model-card/cf-moonshot-kimi-k2.5/",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Card as published by model-atoms.com from the Cloudflare Workers AI model list; weights license not recorded there."
+  },
+  "tags": [
+    "cloudflare",
+    "workers-ai",
+    "function-calling",
+    "reasoning",
+    "vision"
+  ],
+  "lifecycle": "stable"
+}

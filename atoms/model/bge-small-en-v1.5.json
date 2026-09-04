@@ -1,0 +1,40 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/bge-small-en-v1.5",
+  "version": "1.0.0",
+  "name": "BGE Small EN v1.5",
+  "description": "General embedding small model transforming text into 384-dimensional vectors.",
+  "vendor": "BAAI",
+  "family": "BGE",
+  "task": "other",
+  "capabilities": [
+    "batch-processing"
+  ],
+  "providers": [
+    {
+      "name": "Cloudflare Workers AI",
+      "model_id": "@cf/baai/bge-small-en-v1.5",
+      "url": "https://developers.cloudflare.com/workers-ai/models/bge-small-en-v1.5/"
+    }
+  ],
+  "links": {
+    "model_card": "https://developers.cloudflare.com/workers-ai/models/bge-small-en-v1.5/"
+  },
+  "authored_by": "BAAI",
+  "source_url": "https://model-atoms.com/atoms/model-card/cf-baai-bge-small-en-v1.5/",
+  "category": "ai",
+  "provenance": {
+    "source": "model-atoms.com",
+    "source_url": "https://model-atoms.com/atoms/model-card/cf-baai-bge-small-en-v1.5/",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Card as published by model-atoms.com from the Cloudflare Workers AI model list; weights license not recorded there."
+  },
+  "tags": [
+    "cloudflare",
+    "workers-ai",
+    "batch-processing"
+  ],
+  "lifecycle": "stable"
+}

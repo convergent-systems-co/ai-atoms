@@ -1,0 +1,37 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/stable-diffusion-v1-5-img2img",
+  "version": "1.0.0",
+  "name": "Stable Diffusion v1.5 Img2Img",
+  "description": "Generate a new image from an input image using Stable Diffusion.",
+  "vendor": "RunwayML",
+  "family": "Stable Diffusion v1.5",
+  "task": "other",
+  "capabilities": [],
+  "providers": [
+    {
+      "name": "Cloudflare Workers AI",
+      "model_id": "@cf/runwayml/stable-diffusion-v1-5-img2img",
+      "url": "https://developers.cloudflare.com/workers-ai/models/stable-diffusion-v1-5-img2img/"
+    }
+  ],
+  "links": {
+    "model_card": "https://developers.cloudflare.com/workers-ai/models/stable-diffusion-v1-5-img2img/"
+  },
+  "authored_by": "RunwayML",
+  "source_url": "https://model-atoms.com/atoms/model-card/cf-runwayml-stable-diffusion-v1-5-img2img/",
+  "category": "ai",
+  "provenance": {
+    "source": "model-atoms.com",
+    "source_url": "https://model-atoms.com/atoms/model-card/cf-runwayml-stable-diffusion-v1-5-img2img/",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Card as published by model-atoms.com from the Cloudflare Workers AI model list; weights license not recorded there."
+  },
+  "tags": [
+    "cloudflare",
+    "workers-ai"
+  ],
+  "lifecycle": "stable"
+}

@@ -1,0 +1,40 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/deepseek-r1-distill-qwen-32b",
+  "version": "1.0.0",
+  "name": "DeepSeek R1 Distill Qwen 32B",
+  "description": "Distilled from DeepSeek-R1 based on Qwen2.5; outperforms OpenAI o1-mini on several benchmarks.",
+  "vendor": "DeepSeek",
+  "family": "DeepSeek R1",
+  "task": "text-generation",
+  "capabilities": [
+    "reasoning"
+  ],
+  "providers": [
+    {
+      "name": "Cloudflare Workers AI",
+      "model_id": "@cf/meta/deepseek-r1-distill-qwen-32b",
+      "url": "https://developers.cloudflare.com/workers-ai/models/deepseek-r1-distill-qwen-32b/"
+    }
+  ],
+  "links": {
+    "model_card": "https://developers.cloudflare.com/workers-ai/models/deepseek-r1-distill-qwen-32b/"
+  },
+  "authored_by": "DeepSeek",
+  "source_url": "https://model-atoms.com/atoms/model-card/cf-meta-deepseek-r1-distill-qwen-32b/",
+  "category": "ai",
+  "provenance": {
+    "source": "model-atoms.com",
+    "source_url": "https://model-atoms.com/atoms/model-card/cf-meta-deepseek-r1-distill-qwen-32b/",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Card as published by model-atoms.com from the Cloudflare Workers AI model list; weights license not recorded there."
+  },
+  "tags": [
+    "cloudflare",
+    "workers-ai",
+    "reasoning"
+  ],
+  "lifecycle": "stable"
+}

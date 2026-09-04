@@ -1,0 +1,37 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/dreamshaper-8-lcm",
+  "version": "1.0.0",
+  "name": "DreamShaper 8 LCM",
+  "description": "Stable Diffusion model fine-tuned to be better at photorealism.",
+  "vendor": "Lykon",
+  "family": "DreamShaper",
+  "task": "other",
+  "capabilities": [],
+  "providers": [
+    {
+      "name": "Cloudflare Workers AI",
+      "model_id": "@cf/lykon/dreamshaper-8-lcm",
+      "url": "https://developers.cloudflare.com/workers-ai/models/dreamshaper-8-lcm/"
+    }
+  ],
+  "links": {
+    "model_card": "https://developers.cloudflare.com/workers-ai/models/dreamshaper-8-lcm/"
+  },
+  "authored_by": "Lykon",
+  "source_url": "https://model-atoms.com/atoms/model-card/cf-lykon-dreamshaper-8-lcm/",
+  "category": "ai",
+  "provenance": {
+    "source": "model-atoms.com",
+    "source_url": "https://model-atoms.com/atoms/model-card/cf-lykon-dreamshaper-8-lcm/",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Card as published by model-atoms.com from the Cloudflare Workers AI model list; weights license not recorded there."
+  },
+  "tags": [
+    "cloudflare",
+    "workers-ai"
+  ],
+  "lifecycle": "stable"
+}

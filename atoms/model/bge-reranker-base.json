@@ -1,0 +1,37 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/bge-reranker-base",
+  "version": "1.0.0",
+  "name": "BGE Reranker Base",
+  "description": "Reranker model that takes question and document as input and outputs a relevance similarity score.",
+  "vendor": "BAAI",
+  "family": "BGE",
+  "task": "other",
+  "capabilities": [],
+  "providers": [
+    {
+      "name": "Cloudflare Workers AI",
+      "model_id": "@cf/baai/bge-reranker-base",
+      "url": "https://developers.cloudflare.com/workers-ai/models/bge-reranker-base/"
+    }
+  ],
+  "links": {
+    "model_card": "https://developers.cloudflare.com/workers-ai/models/bge-reranker-base/"
+  },
+  "authored_by": "BAAI",
+  "source_url": "https://model-atoms.com/atoms/model-card/cf-baai-bge-reranker-base/",
+  "category": "ai",
+  "provenance": {
+    "source": "model-atoms.com",
+    "source_url": "https://model-atoms.com/atoms/model-card/cf-baai-bge-reranker-base/",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Card as published by model-atoms.com from the Cloudflare Workers AI model list; weights license not recorded there."
+  },
+  "tags": [
+    "cloudflare",
+    "workers-ai"
+  ],
+  "lifecycle": "stable"
+}

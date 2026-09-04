@@ -1,0 +1,37 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/distilbert-sst-2-int8",
+  "version": "1.0.0",
+  "name": "DistilBERT SST-2 INT8",
+  "description": "Distilled BERT model fine-tuned on SST-2 for sentiment classification.",
+  "vendor": "HuggingFace",
+  "family": "DistilBERT",
+  "task": "other",
+  "capabilities": [],
+  "providers": [
+    {
+      "name": "Cloudflare Workers AI",
+      "model_id": "@cf/huggingface/distilbert-sst-2-int8",
+      "url": "https://developers.cloudflare.com/workers-ai/models/distilbert-sst-2-int8/"
+    }
+  ],
+  "links": {
+    "model_card": "https://developers.cloudflare.com/workers-ai/models/distilbert-sst-2-int8/"
+  },
+  "authored_by": "HuggingFace",
+  "source_url": "https://model-atoms.com/atoms/model-card/cf-huggingface-distilbert-sst-2-int8/",
+  "category": "ai",
+  "provenance": {
+    "source": "model-atoms.com",
+    "source_url": "https://model-atoms.com/atoms/model-card/cf-huggingface-distilbert-sst-2-int8/",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Card as published by model-atoms.com from the Cloudflare Workers AI model list; weights license not recorded there."
+  },
+  "tags": [
+    "cloudflare",
+    "workers-ai"
+  ],
+  "lifecycle": "stable"
+}

@@ -1,0 +1,37 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/stable-diffusion-v1-5-inpainting",
+  "version": "1.0.0",
+  "name": "Stable Diffusion v1.5 Inpainting",
+  "description": "Stable Diffusion model with inpainting capability using a mask to selectively edit image regions.",
+  "vendor": "RunwayML",
+  "family": "Stable Diffusion v1.5",
+  "task": "other",
+  "capabilities": [],
+  "providers": [
+    {
+      "name": "Cloudflare Workers AI",
+      "model_id": "@cf/runwayml/stable-diffusion-v1-5-inpainting",
+      "url": "https://developers.cloudflare.com/workers-ai/models/stable-diffusion-v1-5-inpainting/"
+    }
+  ],
+  "links": {
+    "model_card": "https://developers.cloudflare.com/workers-ai/models/stable-diffusion-v1-5-inpainting/"
+  },
+  "authored_by": "RunwayML",
+  "source_url": "https://model-atoms.com/atoms/model-card/cf-runwayml-stable-diffusion-v1-5-inpainting/",
+  "category": "ai",
+  "provenance": {
+    "source": "model-atoms.com",
+    "source_url": "https://model-atoms.com/atoms/model-card/cf-runwayml-stable-diffusion-v1-5-inpainting/",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Card as published by model-atoms.com from the Cloudflare Workers AI model list; weights license not recorded there."
+  },
+  "tags": [
+    "cloudflare",
+    "workers-ai"
+  ],
+  "lifecycle": "stable"
+}

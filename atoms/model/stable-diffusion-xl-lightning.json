@@ -1,0 +1,37 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/stable-diffusion-xl-lightning",
+  "version": "1.0.0",
+  "name": "Stable Diffusion XL Lightning",
+  "description": "Lightning-fast text-to-image generation model capable of producing high-quality 1024px images in a few steps.",
+  "vendor": "ByteDance",
+  "family": "Stable Diffusion XL Lightning",
+  "task": "other",
+  "capabilities": [],
+  "providers": [
+    {
+      "name": "Cloudflare Workers AI",
+      "model_id": "@cf/bytedance/stable-diffusion-xl-lightning",
+      "url": "https://developers.cloudflare.com/workers-ai/models/stable-diffusion-xl-lightning/"
+    }
+  ],
+  "links": {
+    "model_card": "https://developers.cloudflare.com/workers-ai/models/stable-diffusion-xl-lightning/"
+  },
+  "authored_by": "ByteDance",
+  "source_url": "https://model-atoms.com/atoms/model-card/cf-bytedance-stable-diffusion-xl-lightning/",
+  "category": "ai",
+  "provenance": {
+    "source": "model-atoms.com",
+    "source_url": "https://model-atoms.com/atoms/model-card/cf-bytedance-stable-diffusion-xl-lightning/",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Card as published by model-atoms.com from the Cloudflare Workers AI model list; weights license not recorded there."
+  },
+  "tags": [
+    "cloudflare",
+    "workers-ai"
+  ],
+  "lifecycle": "stable"
+}

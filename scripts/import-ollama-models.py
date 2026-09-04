@@ -79,6 +79,8 @@ VENDORS: list[tuple[str, str, str]] = [
     ("tinydolphin", "Cognitive Computations", "Dolphin"), ("dolphin-mistral", "Cognitive Computations", "Dolphin"),
     ("dolphin-llama3", "Cognitive Computations", "Dolphin"), ("dolphin-phi", "Cognitive Computations", "Dolphin"),
     ("dolphin3", "Cognitive Computations", "Dolphin"), ("nemotron-3", "NVIDIA", "Nemotron 3"), ("qwen2", "Alibaba", "Qwen2"),
+    ("minicpm", "OpenBMB", "MiniCPM-V"), ("translategemma", "Google", "TranslateGemma"), ("rnj", "Essential AI", "Rnj"),
+    ("muse", "Meta", "Muse"), ("north", "Cohere", "North"),
     ("qwen2.5", "Alibaba", "Qwen2.5"), ("qwen2.5-coder", "Alibaba", "Qwen2.5-Coder"), ("qwen3-coder", "Alibaba", "Qwen3-Coder"),
     ("qwen3-embedding", "Alibaba", "Qwen3-Embedding"), ("qwen3-vl", "Alibaba", "Qwen3-VL"), ("glm-4", "Zhipu AI", "GLM-4"),
     ("glm-5", "Zhipu AI", "GLM-5"), ("gemma2", "Google", "Gemma 2"), ("gemma3n", "Google", "Gemma 3n"),

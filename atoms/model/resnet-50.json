@@ -1,0 +1,37 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/resnet-50",
+  "version": "1.0.0",
+  "name": "ResNet-50",
+  "description": "50 layers deep image classification CNN trained on more than 1 million images from the ImageNet dataset.",
+  "vendor": "Microsoft",
+  "family": "ResNet",
+  "task": "vision",
+  "capabilities": [],
+  "providers": [
+    {
+      "name": "Cloudflare Workers AI",
+      "model_id": "@cf/microsoft/resnet-50",
+      "url": "https://developers.cloudflare.com/workers-ai/models/resnet-50/"
+    }
+  ],
+  "links": {
+    "model_card": "https://developers.cloudflare.com/workers-ai/models/resnet-50/"
+  },
+  "authored_by": "Microsoft",
+  "source_url": "https://model-atoms.com/atoms/model-card/cf-microsoft-resnet-50/",
+  "category": "ai",
+  "provenance": {
+    "source": "model-atoms.com",
+    "source_url": "https://model-atoms.com/atoms/model-card/cf-microsoft-resnet-50/",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Card as published by model-atoms.com from the Cloudflare Workers AI model list; weights license not recorded there."
+  },
+  "tags": [
+    "cloudflare",
+    "workers-ai"
+  ],
+  "lifecycle": "stable"
+}

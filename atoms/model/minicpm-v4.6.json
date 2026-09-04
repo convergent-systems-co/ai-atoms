@@ -2,10 +2,11 @@
   "schema": "https://ai-atoms.com/schemas/model-v1.json",
   "type": "model",
   "id": "model/minicpm-v4.6",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "name": "minicpm-v4.6",
   "description": "A Pocket-Sized MLLM for Ultra-Efficient Image and Video Understanding on Your Phone",
-  "vendor": "unknown",
+  "vendor": "OpenBMB",
+  "family": "MiniCPM-V",
   "task": "multimodal",
   "capabilities": [
     "vision"
@@ -28,7 +29,7 @@
   "links": {
     "model_card": "https://ollama.com/library/minicpm-v4.6"
   },
-  "authored_by": "unknown",
+  "authored_by": "OpenBMB",
   "source_url": "https://ollama.com/library/minicpm-v4.6",
   "category": "ai",
   "provenance": {

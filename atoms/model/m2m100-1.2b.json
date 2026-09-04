@@ -1,0 +1,40 @@
+{
+  "schema": "https://ai-atoms.com/schemas/model-v1.json",
+  "type": "model",
+  "id": "model/m2m100-1.2b",
+  "version": "1.0.0",
+  "name": "M2M-100 1.2B",
+  "description": "Multilingual encoder-decoder model trained for many-to-many multilingual translation.",
+  "vendor": "Meta",
+  "family": "M2M-100",
+  "task": "translation",
+  "capabilities": [
+    "batch-processing"
+  ],
+  "providers": [
+    {
+      "name": "Cloudflare Workers AI",
+      "model_id": "@cf/meta/m2m100-1.2b",
+      "url": "https://developers.cloudflare.com/workers-ai/models/m2m100-1.2b/"
+    }
+  ],
+  "links": {
+    "model_card": "https://developers.cloudflare.com/workers-ai/models/m2m100-1.2b/"
+  },
+  "authored_by": "Meta",
+  "source_url": "https://model-atoms.com/atoms/model-card/cf-meta-m2m100-1.2b/",
+  "category": "ai",
+  "provenance": {
+    "source": "model-atoms.com",
+    "source_url": "https://model-atoms.com/atoms/model-card/cf-meta-m2m100-1.2b/",
+    "license": "unknown",
+    "imported_at": "2026-09-03",
+    "notes": "Card as published by model-atoms.com from the Cloudflare Workers AI model list; weights license not recorded there."
+  },
+  "tags": [
+    "cloudflare",
+    "workers-ai",
+    "batch-processing"
+  ],
+  "lifecycle": "stable"
+}
