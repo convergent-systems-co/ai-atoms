@@ -4,7 +4,7 @@
   "id": "hook/destructive-gh-guard",
   "version": "1.0.1",
   "name": "Destructive GitHub CLI Guard",
-  "description": "Blocks high-blast-radius, irreversible gh CLI operations per Common.md §2.2. Denies without explicit --force-i-mean-it confirmation: gh repo delete, gh release delete, gh secret delete, and gh auth logout. All other gh subcommands pass through.",
+  "description": "Blocks high-blast-radius, irreversible gh CLI operations. Denies without explicit --force-i-mean-it confirmation: gh repo delete, gh release delete, gh secret delete, and gh auth logout. All other gh subcommands pass through.",
   "event": "PreToolUse",
   "language": "python",
   "trigger": {

@@ -4,7 +4,7 @@
   "id": "hook/destructive-terraform-guard",
   "version": "1.0.1",
   "name": "Destructive Terraform Guard",
-  "description": "Blocks terraform destroy and terraform apply per Common.md §2.2. Opt-in via command-wrappers.toml. Requires explicit bypass via AI_ALLOW_DESTRUCTIVE_TERRAFORM=1. Prevents accidental infrastructure destruction or unreviewed applies. Other tofu/terraform subcommands (plan, init, validate, output) pass through.",
+  "description": "Blocks terraform destroy and terraform apply. Opt-in via command-wrappers.toml. Requires explicit bypass via AI_ALLOW_DESTRUCTIVE_TERRAFORM=1. Prevents accidental infrastructure destruction or unreviewed applies. Other tofu/terraform subcommands (plan, init, validate, output) pass through.",
   "event": "PreToolUse",
   "language": "python",
   "trigger": {

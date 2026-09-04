@@ -53,6 +53,16 @@
       "type": "string",
       "description": "The AI tool event this hook responds to (e.g. PreToolUse, PostToolUse, SessionStart, Stop, UserPromptSubmit, SessionEnd, SubagentStop, PreCompact). Empty string for library-type atoms (trigger.type = library)."
     },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 2,
+      "uniqueItems": true,
+      "description": "Every event this hook should be wired to when it fires on more than one (e.g. [\"Stop\", \"SubagentStop\"]). `event` stays the primary and must be included. Consumers that read only `event` still work."
+    },
     "language": {
       "type": "string",
       "enum": [

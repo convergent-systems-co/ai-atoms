@@ -6,6 +6,10 @@
   "name": "Test Coverage Gate",
   "description": "Fires on Stop/SubagentStop. Compares changed source files on the current branch against changed test files. If code files changed but no corresponding test files changed, emits a TEST-COVERAGE-VIOLATION sentinel — non-blocking.",
   "event": "Stop",
+  "events": [
+    "Stop",
+    "SubagentStop"
+  ],
   "language": "python",
   "trigger": {
     "type": "always"

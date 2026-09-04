@@ -4,7 +4,7 @@
   "id": "hook/branch-guard",
   "version": "1.0.0",
   "name": "Branch Guard",
-  "description": "Prevents direct mutations to protected branches (main, release/*). Intercepts git commit, merge, rebase, cherry-pick, revert, am, pull, and push operations when the current HEAD is a protected branch. Requires explicit approval per Common.md §2.2.",
+  "description": "Prevents direct mutations to protected branches (main, release/*). Intercepts git commit, merge, rebase, cherry-pick, revert, am, pull, and push operations when the current HEAD is a protected branch. Requires explicit approval",
   "event": "PreToolUse",
   "language": "python",
   "trigger": {
