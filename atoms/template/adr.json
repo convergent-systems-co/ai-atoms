@@ -2,77 +2,125 @@
   "schema": "https://ai-atoms.com/schemas/template-v1.json",
   "type": "template",
   "id": "template/adr",
-  "version": "1.0.0",
-  "name": "Architecture Decision Record (MADR)",
-  "description": "A MADR-format decision record: title, status, date, context, decision, consequences, alternatives considered. ADRs are immutable once accepted; a change is a new ADR that supersedes the old one.",
+  "version": "1.0.2",
+  "name": "Architecture Decision Record (MADR 4.0.0)",
+  "description": "The MADR 4.0.0 decision-record template: metadata, context and problem statement, decision drivers, considered options, decision outcome with consequences and confirmation, pros and cons per option, more information. One file per decision under docs/adr/. Sections marked optional in the comments may be deleted.",
   "subtype": "adr",
   "format": "markdown",
-  "body": "# {{number}}. {{title}}\n\n- Status: {{status}}\n- Date: {{date}}\n{{relations}}\n\n## Context\n\n{{context}}\n\n## Decision\n\n{{decision}}\n\n## Consequences\n\n{{consequences}}\n\n## Alternatives considered\n\n{{alternatives}}\n",
+  "body": "<!--\n  adr.md — Architecture Decision Record template, MADR (Markdown Any\n  Decision Records) format v4.0.0: https://adr.github.io/madr/\n  One file per decision, named e.g. docs/adr/0001-use-postgres.md.\n  Every {{...}}/{...} placeholder below is meant to be filled in or, for\n  a section explicitly marked optional, deleted if it doesn't apply.\n-->\n\n---\n# These are optional metadata elements. Feel free to remove any of them.\nstatus: \"{{status}}\"\ndate: {{date}}\ndecision-makers: {{decision_makers}}\nconsulted: {{consulted}}\ninformed: {{informed}}\n---\n\n# {{title}}\n\n## Context and Problem Statement\n\n{{context}}\n\n<!-- This is an optional element. Feel free to remove. -->\n## Decision Drivers\n\n* {{decision_driver_1}}\n* {{decision_driver_2}}\n* … <!-- numbers of drivers can vary -->\n\n## Considered Options\n\n* {{option_1}}\n* {{option_2}}\n* {{option_3}}\n* … <!-- numbers of options can vary -->\n\n## Decision Outcome\n\nChosen option: \"{{option_1}}\", because {{justification}}.\n\n<!-- This is an optional element. Feel free to remove. -->\n### Consequences\n\n* Good, because {{good_consequence}}\n* Bad, because {{bad_consequence}}\n* … <!-- numbers of consequences can vary -->\n\n<!-- This is an optional element. Feel free to remove. -->\n### Confirmation\n\n{{confirmation}}\n\n<!-- This is an optional element. Feel free to remove. -->\n## Pros and Cons of the Options\n\n### {{option_1}}\n\n<!-- This is an optional element. Feel free to remove. -->\n{{option_details}}\n\n* Good, because {{argument_a}}\n* Good, because {{argument_b}}\n<!-- use \"neutral\" if the given argument weights neither for good nor bad -->\n* Neutral, because {{argument_c}}\n* Bad, because {{argument_d}}\n* … <!-- numbers of pros and cons can vary -->\n\n### {{other_option}}\n\n{{option_details}}\n\n* Good, because {{argument_a}}\n* Neutral, because {{argument_b}}\n* Bad, because {{argument_c}}\n* …\n\n<!-- This is an optional element. Feel free to remove. -->\n## More Information\n\n{{more_information}}\n",
   "placeholders": [
     {
-      "name": "number",
-      "description": "Four-digit sequence number within docs/adr/.",
-      "example": "0004"
-    },
-    {
-      "name": "title",
-      "description": "Imperative, specific: what was decided, not the topic.",
-      "example": "Add a template class for rendered documents"
-    },
-    {
       "name": "status",
-      "description": "proposed, accepted, deprecated, or superseded by NNNN.",
-      "example": "proposed"
+      "description": "proposed | rejected | accepted | deprecated | … | superseded by ADR-0123"
     },
     {
       "name": "date",
-      "description": "ISO-8601 date the decision was recorded.",
-      "example": "2026-09-03"
+      "description": "YYYY-MM-DD when the decision was last updated"
     },
     {
-      "name": "relations",
-      "description": "Optional bullet lines: 'Supersedes NNNN', 'Builds on NNNN'.",
-      "required": false,
-      "example": "- Builds on: 0001, 0002"
+      "name": "decision_makers",
+      "description": "list everyone involved in the decision"
+    },
+    {
+      "name": "consulted",
+      "description": "list everyone whose opinions are sought (typically subject-matter experts); and with whom there is a two-way communication"
+    },
+    {
+      "name": "informed",
+      "description": "list everyone who is kept up-to-date on progress; and with whom there is a one-way communication"
+    },
+    {
+      "name": "title",
+      "description": "short title, representative of solved problem and found solution"
     },
     {
       "name": "context",
-      "description": "The forces at play: the problem, constraints, measured facts. Cite sources for anything not obvious.",
-      "example": "Agents asked to write an ADR had no skeleton to fill…"
+      "description": "Describe the context and problem statement, e.g., in free form using two to three sentences or in the form of an illustrative story. You may want to articulate the problem in form of a question. Consider adding links to collaboration boards or issue management systems. Make the scope of the decision explicit, for instance, by calling out or pointing at structural architecture elements (components, connectors, ...)."
     },
     {
-      "name": "decision",
-      "description": "What was decided, stated as a decision, with the reasoning that carried it.",
-      "example": "Add template-v1 with body, placeholders, and example…"
+      "name": "decision_driver_1",
+      "description": "decision driver 1, for instance, a desired software quality, faced concern, constraint or force"
     },
     {
-      "name": "consequences",
-      "description": "What becomes easier, what becomes harder, what must follow. Include the negative ones.",
-      "example": "Nine classes instead of eight; the site nav grows…"
+      "name": "decision_driver_2",
+      "description": "decision driver 2"
     },
     {
-      "name": "alternatives",
-      "description": "Each alternative with why it was rejected. Include 'do nothing' when it was a real option.",
-      "example": "Keep templates as prompt/output-schema atoms — rejected because…"
+      "name": "option_1",
+      "description": "title of option 1"
+    },
+    {
+      "name": "option_2",
+      "description": "title of option 2"
+    },
+    {
+      "name": "option_3",
+      "description": "title of option 3"
+    },
+    {
+      "name": "justification",
+      "description": "justification"
+    },
+    {
+      "name": "good_consequence",
+      "description": "positive consequence, e.g., improvement of one or more desired qualities, …"
+    },
+    {
+      "name": "bad_consequence",
+      "description": "negative consequence, e.g., compromising one or more desired qualities, …"
+    },
+    {
+      "name": "confirmation",
+      "description": "Describe how the implementation / compliance of the ADR can/will be confirmed. Is there any automated or manual fitness function? If so, list it and explain how it is applied. Is the chosen design and its implementation in line with the decision? E.g., a design/code review or a test with a library such as ArchUnit can help validate this. Note that although we classify this element as optional, it is included in many ADRs."
+    },
+    {
+      "name": "option_details",
+      "description": "example | description | pointer to more information | …"
+    },
+    {
+      "name": "argument_a",
+      "description": "argument a"
+    },
+    {
+      "name": "argument_b",
+      "description": "argument b"
+    },
+    {
+      "name": "argument_c",
+      "description": "argument c"
+    },
+    {
+      "name": "argument_d",
+      "description": "argument d"
+    },
+    {
+      "name": "other_option",
+      "description": "title of other option"
+    },
+    {
+      "name": "more_information",
+      "description": "You might want to provide additional evidence/confidence for the decision outcome here and/or document the team agreement on the decision and/or define when/how this decision the decision should be realized and if/when it should be re-visited. Links to other decisions and resources might appear here as well."
     }
   ],
-  "example": "# 0004. Add a template class for rendered documents\n\n- Status: proposed\n- Date: 2026-09-03\n- Builds on: 0001, 0002\n\n## Context\n\nAn agent told to write an ADR, runbook, or handoff had no skeleton to fill; two prompt atoms described the shapes in prose.\n\n## Decision\n\nAdd template-v1: a document skeleton with typed placeholders and one rendered example. Rendering is a distinct runtime action from injecting text, which is the taxonomy's test for a class.\n\n## Consequences\n\nNine classes. The two prose-shaped prompts migrate. Blank atom files for authoring are not templates; they live in schemas/examples/.\n\n## Alternatives considered\n\n- Keep describing document shapes as prompt/output-schema atoms. Rejected: a description is not a skeleton a runtime can fill.\n- Put templates in doc-atoms. Rejected: they are consumed by AI runtimes, which is this catalog's scope.\n",
+  "example": "---\nstatus: \"proposed\"\ndate: 2026-09-03\ndecision-makers: catalog steward\nconsulted: none\ninformed: contributors\n---\n\n# Add a template class for documents a runtime renders\n\n## Context and Problem Statement\n\nAn agent told to write an ADR, runbook, or handoff had no skeleton to fill; two prompt atoms described those shapes in prose. Should document skeletons be a class of their own, a prompt subtype, or stay outside the catalog?\n\n## Decision Drivers\n\n* Rendering a document by filling placeholders is a distinct runtime action from injecting text.\n* The constitution mandates fixed section sets for several documents.\n* Blank atom files for authoring had already polluted the catalog once.\n\n## Considered Options\n\n* A new template class\n* A template subtype of prompt\n* Keep describing shapes in prompt/output-schema prose\n\n## Decision Outcome\n\nChosen option: \"A new template class\", because it is the only option that carries placeholders and a rendered example, and the runtime action is distinct.\n\n### Consequences\n\n* Good, because a runtime can fill a skeleton instead of guessing a shape.\n* Bad, because the catalog has a ninth class and the navigation grows.\n\n### Confirmation\n\nThe build rejects a template whose body and placeholder list disagree; scripts/tests cover it.\n\n## Pros and Cons of the Options\n\n### A new template class\n\n* Good, because placeholders are typed and checked.\n* Bad, because it is one more schema to maintain.\n\n### A template subtype of prompt\n\n* Good, because no new class.\n* Bad, because a prompt has no place for placeholders or a rendered example.\n\n## More Information\n\nSee docs/adr/0004-template-class.md in convergent-systems-co/ai-atoms.\n",
   "rules": [
     "Never edit an accepted ADR; write a new one that supersedes it.",
     "Every non-trivial decision gets an ADR before the conversation that made it ends.",
-    "Consequences must include the negative ones."
+    "Delete an optional section rather than leave its heading empty."
   ],
   "produced_by": [
     "skill/architecture",
     "skill/amendment-author"
   ],
   "authored_by": "convergent-systems-key",
+  "source_url": "https://adr.github.io/madr/",
   "category": "governance",
   "provenance": {
-    "source": "ai-atoms",
-    "author": "convergent-systems-co",
-    "license": "CC-BY-4.0",
-    "notes": "MADR field set as required by the AI Constitution §4.9.1 (title, status, context, decision, consequences, alternatives)."
+    "source": "adr/madr",
+    "source_url": "https://adr.github.io/madr/",
+    "author": "MADR project",
+    "license": "MIT",
+    "notes": "Template text is MADR 4.0.0 (github.com/adr/madr, MIT), carried in ~/.ai/templates/adr.md; placeholders renamed to template-v1's {{snake_case}} form with the original guidance kept as each placeholder's description."
   },
   "tags": [
     "adr",
