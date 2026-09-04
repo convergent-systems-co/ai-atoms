@@ -19,6 +19,9 @@ import urllib.request
 import urllib.error
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from skillmd import parse_frontmatter  # noqa: E402
+
 REPO_ROOT = Path(__file__).resolve().parent.parent
 ATOMS_DIR = REPO_ROOT / "atoms" / "skill"
 ATOMS_DIR.mkdir(parents=True, exist_ok=True)
@@ -83,20 +86,8 @@ def list_dir(owner: str, repo: str, path: str) -> list[dict]:
 
 
 def parse_skill_md(content: str) -> dict:
-    """Parse a SKILL.md file into {name, description, invocation, body}."""
-    frontmatter = {}
-    body = content
-
-    if content.startswith("---"):
-        parts = content.split("---", 2)
-        if len(parts) >= 3:
-            fm_text = parts[1]
-            body = parts[2].strip()
-            for line in fm_text.splitlines():
-                if ":" in line:
-                    key, _, val = line.partition(":")
-                    frontmatter[key.strip()] = val.strip().strip('"')
-
+    """Parse a SKILL.md file into {name, description, argument_hint, body}."""
+    frontmatter, body = parse_frontmatter(content)
     return {
         "name": frontmatter.get("name", ""),
         "description": frontmatter.get("description", ""),
