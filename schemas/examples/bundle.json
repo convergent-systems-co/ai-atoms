@@ -1,0 +1,38 @@
+{
+  "schema": "https://ai-atoms.com/schemas/bundle-v1.json",
+  "type": "bundle",
+  "id": "bundle/example-bundle",
+  "version": "1.0.0",
+  "name": "Example Bundle",
+  "description": "What this bundle does, when to invoke it, and what it prevents. Replace every field before submitting.",
+  "entry_point": "SKILL.md",
+  "files": [
+    {
+      "path": "SKILL.md",
+      "role": "entry",
+      "content": "---\nname: example-bundle\ndescription: What this bundle does.\n---\n\nInstructions go here. Reference agents/reviewer.md and templates/report.md by relative path.\n"
+    },
+    {
+      "path": "agents/reviewer.md",
+      "role": "agent",
+      "content": "---\nname: reviewer\ndescription: Reviews output before it is returned.\n---\n\nReview instructions go here.\n"
+    },
+    {
+      "path": "templates/report.md",
+      "role": "template",
+      "content": "# Report\n\n<summary>\n"
+    }
+  ],
+  "applicable_domains": [
+    "code"
+  ],
+  "category": "coding",
+  "invocation": [
+    "/example-bundle"
+  ],
+  "authored_by": "your-key-or-name",
+  "tags": [
+    "example"
+  ],
+  "lifecycle": "draft"
+}

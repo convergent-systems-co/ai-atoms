@@ -36,7 +36,7 @@ CATALOG_NAME = "ai-atoms"
 CATALOG_VERSION = "0.7.0"
 
 # Atom classes with a published schema, in catalog display order.
-TYPED_CLASSES = ("skill", "hook", "prompt", "agent", "persona", "model", "policy", "tool", "template")
+TYPED_CLASSES = ("skill", "hook", "prompt", "agent", "persona", "model", "policy", "tool", "template", "bundle")
 COMMON_SCHEMA = "common-v1.json"
 
 # Fields whose values are references to other atoms, by owning class.
@@ -66,6 +66,9 @@ REFERENCE_FIELDS: dict[str, list[tuple[str, str | None]]] = {
     ],
     "hook": [
         ("depends_on", "hook"),
+    ],
+    "bundle": [
+        ("depends_on", None),
     ],
 }
 

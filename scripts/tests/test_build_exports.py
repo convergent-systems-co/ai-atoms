@@ -75,6 +75,14 @@ def hook(slug="branch-guard", **fields):
     return envelope("hook", slug, {"event": "PreToolUse", "language": "python", "trigger": {"type": "always"}}, **fields)
 
 
+def bundle(slug="develop", **fields):
+    return envelope("bundle", slug, {
+        "entry_point": "SKILL.md",
+        "files": [{"path": "SKILL.md", "role": "entry", "content": "Do the thing."}],
+        "applicable_domains": ["code"],
+    }, **fields)
+
+
 def write_tree(root: Path, atoms: list[dict]) -> Path:
     atoms_dir = root / "atoms"
     for atom in atoms:
@@ -90,9 +98,19 @@ def collect(root: Path, atoms: list[dict]) -> list[dict]:
 
 
 def test_it_accepts_one_valid_atom_of_every_typed_class(tmp_path):
-    atoms = [persona(), prompt(), agent(), skill(), hook(), model(), policy(), tool(), template()]
+    atoms = [persona(), prompt(), agent(), skill(), hook(), model(), policy(), tool(), template(), bundle()]
     collected = collect(tmp_path, atoms)
     assert {a["type"] for a in collected} == set(build_exports.TYPED_CLASSES)
+    assert build_exports.find_dangling_references(collected, tmp_path / "atoms") == []
+
+
+def test_it_rejects_a_bundle_with_no_files(tmp_path):
+    with pytest.raises(SystemExit):
+        collect(tmp_path, [bundle(files=[])])
+
+
+def test_it_resolves_bundle_depends_on_across_bundle_and_skill(tmp_path):
+    collected = collect(tmp_path, [skill(), bundle(depends_on=["skill/commit"])])
     assert build_exports.find_dangling_references(collected, tmp_path / "atoms") == []
 
 
@@ -173,7 +191,7 @@ def test_it_requires_review_criteria_on_reviewer_agents(tmp_path):
 
 def test_it_counts_every_typed_class_even_when_empty():
     counts = build_exports.count_by_type([skill(), skill("pr")])
-    assert counts == {"skill": 2, "hook": 0, "prompt": 0, "agent": 0, "persona": 0, "model": 0, "policy": 0, "tool": 0, "template": 0}
+    assert counts == {"skill": 2, "hook": 0, "prompt": 0, "agent": 0, "persona": 0, "model": 0, "policy": 0, "tool": 0, "template": 0, "bundle": 0}
 
 
 def test_it_rejects_a_category_outside_the_shared_vocabulary(tmp_path):

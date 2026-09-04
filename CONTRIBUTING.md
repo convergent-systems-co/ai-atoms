@@ -5,8 +5,9 @@
 ## Adding an atom
 
 1. Fork the repository.
-2. Pick the class: `skill`, `hook`, `prompt`, `agent`, `persona`, or `model`. The
-   [builder](https://ai-atoms.com/builder/) generates a valid starting file for any class.
+2. Pick the class: `skill`, `hook`, `prompt`, `agent`, `persona`, `model`, `policy`, `tool`,
+   `template`, or `bundle`. The [builder](https://ai-atoms.com/builder/) generates a valid
+   starting file for any class.
 3. Create `atoms/<class>/<slug>.json`. The `id` must be `<class>/<slug>`.
 4. Validate locally:
    ```bash
@@ -31,6 +32,10 @@
   must resolve. Reviewers must declare `review_criteria`.
 - **model** — at least one `providers[]` entry with the provider's own `model_id` and page
   `url`. Do not guess `vendor`; write `unknown`.
+- **bundle** — every `files[].content` must be fully inlined; a bundle never references a file
+  it does not ship. `entry_point` must match one `files[].path` exactly. Prefer a `skill` atom
+  when the whole capability fits in one `system_prompt_fragment` — reach for `bundle` only when
+  it genuinely doesn't (agent personas, contracts, runtime code, or docs beyond the entry point).
 
 ## Category and provenance
 

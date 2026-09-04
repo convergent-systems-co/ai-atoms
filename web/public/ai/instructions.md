@@ -7,8 +7,8 @@
 
 ## What is ai-atoms?
 
-A typed, versioned catalog of AI runtime primitives. Nine classes: **skill**, **hook**, **prompt**,
-**agent**, **persona**, **model**, **policy**, **tool**, **template**. Every atom is static JSON validated against its class schema,
+A typed, versioned catalog of AI runtime primitives. Ten classes: **skill**, **hook**, **prompt**,
+**agent**, **persona**, **model**, **policy**, **tool**, **template**, **bundle**. Every atom is static JSON validated against its class schema,
 carries a `category` from one shared vocabulary, and (when imported) a `provenance` block naming the
 source, original URL, author, and license.
 
@@ -90,6 +90,16 @@ source, original URL, author, and license.
 - `subtype: agent` is the shape of a one-shot subagent definition (Claude Code `.claude/agents/*.md`);
   `subtype: persona` is the shape of a conversational character. Render either to a markdown file.
 - Minimal valid starting files for every class: `/schemas/examples/<class>.json`.
+
+### bundle
+- A multi-file skill. Read `entry_point`'s content in `files[]` first; it names the primary
+  document (usually `SKILL.md`-shaped) the same way a `skill` atom's `system_prompt_fragment` does.
+- Materialize the whole atom by writing every `files[].content` to `files[].path`, relative to a
+  directory named for the slug (e.g. `.claude/skills/<slug>/`). Never resolve a path the bundle
+  does not ship in `files[]`. `role` on each file (`entry`, `agent`, `contract`, `template`, `doc`,
+  `runtime`, `config`) says what kind of file it is.
+- `invocation` lists slash-command forms; `depends_on` lists other bundle or skill atoms to install
+  alongside. `ai skills install <slug>` does all of this on a machine with the `ai` CLI.
 
 ## Attribution
 

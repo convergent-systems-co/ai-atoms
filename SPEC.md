@@ -176,6 +176,22 @@ Model ids allow dots (`model/llama3.2`) because model names carry versions.
 The build rejects a template whose `body` uses a placeholder it does not declare, or declares one
 it never uses.
 
+## bundle-v1.json
+
+**`$id`:** `https://ai-atoms.com/schemas/bundle-v1.json`
+
+| Field | Type | Required | Notes |
+|---|---|---|---|
+| `entry_point` | string | yes | Path, relative to the bundle root, of the primary document; must match a `files[].path` |
+| `files` | array of objects | yes | Every shipped file, min 1: `path`, `role` (`entry`, `agent`, `contract`, `template`, `doc`, `runtime`, `config`), `content` (verbatim), all required |
+| `applicable_domains` | array of strings | yes | At least one domain (e.g. `code`, `debug`, `planning`) |
+| `depends_on` | array of bundle/skill ids | no | Other bundle or skill atoms this one depends on or installs alongside |
+| `category` | enum | no | Single primary category for grouping |
+| `invocation` | array of strings | no | Slash-command forms, e.g. `/develop`, `/develop clean` |
+
+A bundle never references a file it does not ship in `files[]` — the same self-containment rule
+the skill class already enforces for its single `system_prompt_fragment`.
+
 ## Examples
 
 `schemas/examples/<class>.json` holds one minimal valid atom per class for starting a new one by
@@ -197,6 +213,7 @@ The build fails on any reference that does not resolve:
 | prompt | `persona_ref` | a persona atom |
 | prompt | `includes` | prompt atoms |
 | skill, hook | `depends_on` | atoms of the same class |
+| bundle | `depends_on` | a bundle or skill atom |
 
 ## ID patterns
 
@@ -219,8 +236,8 @@ All atoms use semantic versioning (`MAJOR.MINOR.PATCH`):
   "catalog": "ai-atoms",
   "version": "0.7.0",
   "built_at": "<ISO-8601>",
-  "classes": ["skill", "hook", "prompt", "agent", "persona", "model", "policy", "tool", "template"],
-  "counts": {"skill": 0, "hook": 0, "prompt": 0, "agent": 0, "persona": 0, "model": 0, "policy": 0, "tool": 0, "template": 0},
+  "classes": ["skill", "hook", "prompt", "agent", "persona", "model", "policy", "tool", "template", "bundle"],
+  "counts": {"skill": 0, "hook": 0, "prompt": 0, "agent": 0, "persona": 0, "model": 0, "policy": 0, "tool": 0, "template": 0, "bundle": 0},
   "categories": {"security": {"skill": 0, "hook": 0}},
   "atoms": [...],
   "compositions": [...],

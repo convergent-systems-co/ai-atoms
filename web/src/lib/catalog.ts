@@ -20,6 +20,7 @@ export const CLASS_META: Record<string, ClassMeta> = {
   policy:  { symbol: "Po", label: "Policy",  plural: "Policies", blurb: "A rule a runtime permits, forbids, or bounds an agent by: boundary, capability, isolation.", install: () => undefined, facet: "subtype" },
   tool:    { symbol: "To", label: "Tool",    plural: "Tools",    blurb: "An executable affordance: the function the model sees and the side effects to gate.", install: () => undefined, facet: "subtype" },
   template:{ symbol: "Te", label: "Template",plural: "Templates",blurb: "A document skeleton a runtime fills: ADR, runbook, handoff, plan, PR, postmortem.", install: () => undefined, facet: "subtype" },
+  bundle:  { symbol: "Bu", label: "Bundle",  plural: "Bundles",  blurb: "A multi-file skill: agent personas, contracts, templates, docs, and runtime code shipped together.", install: (s) => `ai skills install ${s}`, facet: null },
 };
 
 export const CATEGORY_LABEL: Record<string, string> = {

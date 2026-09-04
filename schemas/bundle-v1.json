@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-atoms.com/schemas/bundle-v1.json",
+  "title": "ai-atoms bundle v1",
+  "description": "A bundle atom — a multi-file skill that does not fit in a single system-prompt fragment: agent personas, templates, contracts, docs, and/or a runtime module shipped together as one self-contained unit. Every file is inlined; a bundle never references content that is not shipped inside the atom.",
+  "type": "object",
+  "required": [
+    "schema",
+    "type",
+    "id",
+    "version",
+    "name",
+    "description",
+    "entry_point",
+    "files",
+    "applicable_domains"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "https://ai-atoms.com/schemas/bundle-v1.json"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "bundle"
+      ]
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^bundle/[a-z0-9][a-z0-9-]*$",
+      "description": "Namespaced identifier in the form bundle/<slug>."
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[A-Za-z0-9.-]+)?$",
+      "description": "Semantic version of this bundle atom."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80,
+      "description": "Human-readable display name."
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1000,
+      "description": "What this bundle does, when to invoke it, and what it prevents."
+    },
+    "entry_point": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Path, relative to the bundle root, of the primary document a consumer should read/execute first (e.g. \"SKILL.md\"). Must match the `path` of one entry in `files`."
+    },
+    "files": {
+      "type": "array",
+      "minItems": 1,
+      "description": "Every file shipped inside this bundle, fully inlined. A bundle must never reference a file it does not ship here.",
+      "items": {
+        "type": "object",
+        "required": [
+          "path",
+          "role",
+          "content"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^(?!/)(?!.*\\.\\.)[^\\n]+$",
+            "description": "Relative path from the bundle root, forward-slash separated. No leading slash, no `..` segments."
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "entry",
+              "agent",
+              "contract",
+              "template",
+              "doc",
+              "runtime",
+              "config"
+            ],
+            "description": "What this file is for: entry = primary document, agent = a subagent/persona definition, contract = a machine-checked schema/interface, template = text a caller fills in and dispatches, doc = human-facing narrative documentation, runtime = executable implementation code, config = declarative configuration (permissions, graphs, etc.)."
+          },
+          "content": {
+            "type": "string",
+            "description": "The complete, verbatim file content."
+          }
+        }
+      },
+      "uniqueItems": false
+    },
+    "applicable_domains": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "uniqueItems": true,
+      "description": "Domains where this bundle applies (e.g. code, design, planning, debug, agents)."
+    },
+    "depends_on": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^(bundle|skill)/[a-z0-9][a-z0-9-]*$"
+      },
+      "uniqueItems": true,
+      "description": "Other bundle or skill atoms this one depends on or installs alongside."
+    },
+    "invocation": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": "Slash-command invocation forms, e.g. [\"/develop\", \"/develop clean\"]. Omit for bundles with no slash-command entry point.",
+      "uniqueItems": true
+    },
+    "authored_by": {
+      "type": "string",
+      "description": "Key atom ID or author identifier (e.g. 'convergent-systems-key', 'anthropics', 'kepano')."
+    },
+    "source_url": {
+      "type": "string",
+      "description": "URL of the original source file when this atom was imported from an external open-source repository. Used for attribution and tracking upstream changes."
+    },
+    "category": {
+      "$ref": "https://ai-atoms.com/schemas/common-v1.json#/$defs/category"
+    },
+    "provenance": {
+      "$ref": "https://ai-atoms.com/schemas/common-v1.json#/$defs/provenance"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 40
+      },
+      "uniqueItems": true
+    },
+    "lifecycle": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "stable",
+        "deprecated"
+      ],
+      "description": "Lifecycle stage of this bundle atom."
+    }
+  }
+}
