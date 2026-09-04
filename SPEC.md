@@ -165,7 +165,7 @@ Model ids allow dots (`model/llama3.2`) because model names carry versions.
 
 | Field | Type | Required | Notes |
 |---|---|---|---|
-| `subtype` | enum | yes | `adr`, `runbook`, `handoff`, `plan`, `pull-request`, `commit-message`, `postmortem`, `readme`, `spec`, `other` |
+| `subtype` | enum | yes | `adr`, `runbook`, `handoff`, `plan`, `pull-request`, `commit-message`, `postmortem`, `readme`, `spec`, `agent`, `persona`, `other` |
 | `format` | enum | yes | `markdown`, `json`, `yaml`, `text` |
 | `body` | string | yes | The skeleton; placeholders are `{{name}}` and every one must be declared |
 | `placeholders` | array of objects | yes | `name` (snake_case) and `description` required; `required` (default true), `example` |
@@ -217,7 +217,7 @@ All atoms use semantic versioning (`MAJOR.MINOR.PATCH`):
 ```json
 {
   "catalog": "ai-atoms",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "built_at": "<ISO-8601>",
   "classes": ["skill", "hook", "prompt", "agent", "persona", "model", "policy", "tool", "template"],
   "counts": {"skill": 0, "hook": 0, "prompt": 0, "agent": 0, "persona": 0, "model": 0, "policy": 0, "tool": 0, "template": 0},
