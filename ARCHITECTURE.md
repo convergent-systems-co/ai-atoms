@@ -4,14 +4,14 @@
 
 ## Overview
 
-ai-atoms is a typed, versioned catalog of AI runtime primitives. It contains six atom classes,
+ai-atoms is a typed, versioned catalog of AI runtime primitives. It contains eight atom classes,
 each with its own JSON Schema, validated at build time. Three of the classes are parts a runtime
 uses directly (skill, hook, prompt); one is an identity (persona); one composes an identity with
 the parts it runs with (agent); one is reference data (model). Every class shares two fields
 defined once in `schemas/common-v1.json`: `category` (one vocabulary for browsing across classes)
 and `provenance` (where an imported atom came from and under what license).
 
-## Six atom classes
+## Eight atom classes
 
 | Class | Runtime action | Directory | Schema |
 |---|---|---|---|
@@ -21,6 +21,8 @@ and `provenance` (where an imported atom came from and under what license).
 | `persona` | renders an identity (role, voice, tone, work contract, constraints, boundaries) | `atoms/persona/` | `schemas/persona-v1.json` |
 | `agent` | binds one persona to prompts, skills, tools, policies, hooks, and execution preferences | `atoms/agent/` | `schemas/agent-v1.json` |
 | `model` | looks up reference data: vendor, task, sizes, and `providers[]` with the id and command a runtime needs | `atoms/model/` | `schemas/model-v1.json` |
+| `policy` | permits, forbids, or bounds: boundaries, capability grants, isolation | `atoms/policy/` | `schemas/policy-v1.json` |
+| `tool` | exposes an executable affordance: the signature the model sees and the side effects to gate | `atoms/tool/` | `schemas/tool-v1.json` |
 
 Atoms are keyed by `<class>/<slug>`. The file name is `atoms/<class>/<slug>.json`.
 
@@ -66,16 +68,23 @@ number of providers so the same model can list Cloudflare Workers AI or a vendor
 | `scripts/import-claudeskills.py` | claudeskills.in (public Supabase table behind the site) | `provenance.license` from the SKILL.md frontmatter or the aggregator's `source` field; `unknown` otherwise |
 | `scripts/import-ollama-models.py` | https://ollama.com/library (HTML listing) | weights license not published on the listing; recorded as `unknown` |
 | `scripts/migrate-retired-atoms.py` | the retired persona-, prompt-, agent-atoms copies staged by PR #46 | Apache-2.0 (LICENSE-data in each retired repo) |
+| `scripts/migrate-policy-tool.py` | the staged policy and tool trees from the same PR | Apache-2.0 |
+| `scripts/discover-licenses.py` | GitHub API for atoms whose provenance names an upstream repository | fills `provenance.license` with the repository's SPDX id |
 | `scripts/backfill-provenance-category.py` | the current tree | fills missing `category` and `provenance`; never overwrites |
 
 Importers never overwrite an existing atom with the same slug, so the first attribution wins.
 
+### policy and tool
+A policy is one rule: `effect` says what it does, `rule.text` is the rule as read, and the
+subtype-specific fields beside it make it checkable (grants and elevation for a capability; process,
+network, and filesystem for isolation; domains and refusals for a boundary). A tool carries the
+function signature a model sees and the `side_effects` a runtime must gate with a capability policy.
+Agents reference both by id; the build resolves every reference.
+
 ## Staged, untyped content
 
-`atoms/policy/`, `atoms/tool/`, and `atoms/workflow/` hold atoms migrated from the retired
-agent-atoms and workflow-atoms catalogs that do not yet have a schema. The build skips them with a
-warning; they are not published. Agents may reference them by id (`policy/<slug>`, `tool/<slug>`);
-the build checks that a file with that slug exists. Typing them is tracked in the ADR.
+`atoms/workflow/` (Olympus step and gate primitives from workflow-atoms) has no schema yet. The
+build skips it with a warning; nothing references it.
 
 ## Build pipeline
 
@@ -85,7 +94,9 @@ atoms/hook/*.json    ──┤
 atoms/prompt/*.json  ──┼─► scripts/build-exports.py ──► exports/catalog.json
 atoms/agent/*.json   ──┤        │  validate each class against its schema
 atoms/persona/*.json ──┤        │  fail on any dangling cross-atom reference
-atoms/model/*.json   ──┘        │  index atoms by category
+atoms/model/*.json   ──┤        │  index atoms by category
+atoms/policy/*.json  ──┤
+atoms/tool/*.json    ──┘
                                 ▼
                      web/public/exports/catalog.json
                                 │

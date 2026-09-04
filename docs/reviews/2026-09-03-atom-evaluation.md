@@ -530,3 +530,43 @@ Every atom now has a `category`; 244 GitHub-imported skills and 119 re-typed ato
 `provenance` block with the license their repository publishes. Four personas could only be
 categorised `other` (`creative-challenger`, `devils-advocate`, `none`, `triage-agent`), and the
 hook/prompt/agent categories were assigned by keyword and are reviewable.
+
+
+## Curation pass — 2026-09-03 (later)
+
+Executed §5 of this report on branch `curate/evaluation-backlog` (ADR 0003 records the decisions).
+
+| Item | Outcome |
+|---|---|
+| 1. Unknown licenses | Upstream discovery via the GitHub API resolved 17 atoms (MIT 11, Apache-2.0 5, CC-BY-SA-4.0 1). Principal's decision: the rest stay as drafts. claudeskills licenses now: unknown 351, Apache-2.0 31, MIT 14, CC-BY-SA-4.0 1. |
+| 2. Out-of-scope skills | Principal's decision: keep, filterable by category. |
+| 3. Drops and duplicates | 7 skills deleted (`atom-status`, `business-pulse`, `canva-creator`, `cash-flow-snapshot`, `code-testing-extensions`, `debug-systematically`, `test-publish`). Duplicate pairs: see below. |
+| 4. Hooks | `security-reminder` ships a script with 5 tests. `events` added to the schema and set on `audit-logger` (8 events), `dirty-tree-guard`, `test-coverage-gate`. `secret-precommit` typed as `git-pre-commit`. 10 descriptions stripped of `Common.md §` citations. |
+| 5. Prompts | Vendor variants collapsed into `prompt/sre`, `prompt/documentation-writer`, `prompt/security-architect` (−4). 9 persona prompts linked to personas; `terse-cli-assistant` has no matching persona and stays unlinked. |
+| 6. Personas and agents | `persona/none` deleted. Nine agents that bound nothing folded back into their personas (deleted); `code-reviewer`, `runbook-executor`, `safe-by-default` remain. Persona groups: see below. |
+| 7. policy and tool | `policy-v1` and `tool-v1` schemas; 54 policies and 20 tools re-typed; every agent reference now resolves to a typed atom. `atoms/workflow/` is the last untyped tree. |
+
+### Duplicate verdicts (read in full by an evaluator; applied as deprecations)
+
+| Pair | Verdict | Survivor |
+|---|---|---|
+| `competitive-brief` / `competitive-intelligence` | both distinct: marketing positioning report vs sales intel | keep both |
+| `crm-cleanup` / `crm-maintenance` | both distinct: hygiene sweep vs ongoing maintenance | keep both |
+| `customer-pulse-check` / `customer-pulse` | both distinct: read-only sentiment report vs outreach with approval gate | keep both |
+| `systematic-debugging` / `debug` | same five-phase protocol; `debug` carries the full contract | `debug` (`systematic-debugging` deprecated) |
+| `journal-entry-prep` / `journal-entry` | reference notes vs the actual workflow | `journal-entry` |
+| `price-check` / `margin-analyzer` | same margin table; `margin-analyzer` self-labels MVP draft with a broken description | `price-check` |
+| `search-strategy` / `search` | methodology vs the packaged skill | `search` |
+| `tax-prep` / `tax-season-organizer` | same two jobs; organizer is complete | `tax-season-organizer` |
+| `atom-status` / `atom-state` | already deleted in §2.2 | `atom-state` |
+
+Persona groups: `coding-assistant-strict` / `senior-engineer-mentor` keep both (opposed voices on one
+role); `coordinator-devops-engineer` / `devops-engineer-runbook` keep both (coordinator vs executor
+contract); `documentation-writer` deprecated in favour of `technical-writer-docs`, with the brand-bound
+`convergent-systems-docs-writer` and the contract-bearing `executor-document-writer` kept;
+`creative-challenger` deprecated in favour of `devils-advocate` (byte-identical rules). Two prompts
+were repointed to `persona/technical-writer-docs`.
+
+The evaluator also flagged, without changing them: the nine `description: ">"` YAML-leak atoms from
+§2.1 are still in the catalog (importer fix pending), and `persona/senior-engineer-mentor` carries a
+`knowledge_boundaries` block that reads as copied from another persona. Both are queued for the next pass.
