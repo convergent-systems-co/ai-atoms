@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-atoms.com/schemas/policy-v1.json",
+  "title": "ai-atoms policy v1",
+  "description": "A policy atom — a rule a runtime permits, forbids, or bounds an agent by. One class for everything that answers 'what may this agent do?': boundaries (topics, scope, refusals), capabilities (grants), and isolation (sandboxing).",
+  "type": "object",
+  "required": ["schema", "type", "id", "version", "name", "description", "subtype", "effect", "rule"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": { "type": "string", "const": "https://ai-atoms.com/schemas/policy-v1.json" },
+    "type": { "type": "string", "enum": ["policy"] },
+    "id": { "type": "string", "pattern": "^policy/[a-z0-9][a-z0-9-]*$" },
+    "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[A-Za-z0-9.-]+)?$" },
+    "name": { "type": "string", "minLength": 1, "maxLength": 80 },
+    "description": { "type": "string", "minLength": 1, "maxLength": 1000 },
+    "subtype": {
+      "type": "string",
+      "enum": ["boundary", "capability", "isolation"],
+      "description": "boundary = what the agent knows, refuses, or must do (text a model reads and a runtime can check); capability = what the runtime grants; isolation = how the runtime sandboxes."
+    },
+    "effect": {
+      "type": "string",
+      "enum": ["forbid", "require", "permit", "bound"],
+      "description": "What the rule does: forbid an action, require a behaviour, permit a capability, or bound a scope."
+    },
+    "rule": {
+      "type": "object",
+      "required": ["text"],
+      "additionalProperties": false,
+      "description": "The rule as it should be read. Always carries `text`; the other fields make it machine-checkable.",
+      "properties": {
+        "text": { "type": "string", "minLength": 1, "description": "The rule in plain language, as a model or operator reads it." },
+        "boundary_type": { "type": "string", "enum": ["domain-expertise", "omitted-topic", "scope-limit", "cutoff-date", "role-refusal", "behavioural"] },
+        "covered_domains": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "excluded_domains": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "refusals": { "type": "array", "items": { "type": "string", "minLength": 1 }, "description": "Concrete things the agent must decline." },
+        "escalate_to": { "type": "string", "description": "Who or what receives the request the agent declines ('none' when nobody)." },
+        "grants": { "type": "array", "items": { "type": "string", "enum": ["read-files", "write-files", "exec-commands", "network", "user-prompt", "spawn-subagent"] }, "uniqueItems": true },
+        "elevation": { "type": "string", "enum": ["declared", "user-approved"], "description": "Whether the grant is simply declared or requires per-use user approval." },
+        "audit": { "type": "boolean", "description": "Whether every use is written to the audit log." },
+        "process": { "type": "string", "enum": ["subprocess", "container", "vm"] },
+        "network": { "type": "string", "enum": ["none", "allowlist", "full"] },
+        "filesystem": { "type": "string", "enum": ["read-only", "scoped", "tmpfs", "full"] },
+        "scoped_paths": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+      }
+    },
+    "rationale": { "type": "string", "description": "Why the rule exists, when that is not obvious from the text." },
+    "vendors": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "authored_by": { "type": "string" },
+    "source_url": { "type": "string" },
+    "category": { "$ref": "https://ai-atoms.com/schemas/common-v1.json#/$defs/category" },
+    "provenance": { "$ref": "https://ai-atoms.com/schemas/common-v1.json#/$defs/provenance" },
+    "tags": { "type": "array", "items": { "type": "string", "minLength": 1, "maxLength": 40 }, "uniqueItems": true },
+    "lifecycle": { "type": "string", "enum": ["draft", "stable", "deprecated"] }
+  },
+  "allOf": [
+    { "if": { "properties": { "subtype": { "const": "capability" } } }, "then": { "properties": { "rule": { "required": ["grants", "elevation"] } } } },
+    { "if": { "properties": { "subtype": { "const": "isolation" } } }, "then": { "properties": { "rule": { "required": ["process", "network", "filesystem"] } } } }
+  ]
+}

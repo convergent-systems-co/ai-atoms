@@ -68,6 +68,7 @@ is the original record; `author` is the original author when known.
 | `platform_notes` | string | no | Platform-specific behaviour |
 | `depends_on` | array of hook ids | no | e.g. `hook/lib` |
 | `requires_wrap` | object | no | `binary`, `description`, `install_hint` when full coverage needs a command wrapper |
+| `events` | array of strings | no | Every event to wire when the hook fires on more than one; `event` stays the primary |
 
 ## prompt-v1.json
 
@@ -136,6 +137,28 @@ A persona binds no tools, skills, or policies. That is what makes it portable.
 
 Model ids allow dots (`model/llama3.2`) because model names carry versions.
 
+## policy-v1.json
+
+**`$id`:** `https://ai-atoms.com/schemas/policy-v1.json`
+
+| Field | Type | Required | Notes |
+|---|---|---|---|
+| `subtype` | enum | yes | `boundary`, `capability`, `isolation` |
+| `effect` | enum | yes | `forbid`, `require`, `permit`, `bound` |
+| `rule` | object | yes | `text` required. Boundary: `boundary_type`, `covered_domains`, `excluded_domains`, `refusals`, `escalate_to`. Capability: `grants` and `elevation` required, `audit`. Isolation: `process`, `network`, `filesystem` required, `scoped_paths` |
+| `rationale` | string | no | Why the rule exists |
+| `vendors` | array of strings | no | |
+
+## tool-v1.json
+
+**`$id`:** `https://ai-atoms.com/schemas/tool-v1.json`
+
+| Field | Type | Required | Notes |
+|---|---|---|---|
+| `subtype` | enum | yes | `command`, `http`, `mcp`, `builtin` |
+| `spec` | object | yes | `function_name` (snake_case), `summary`, `returns` required; `parameters` (name → type, description, required); `side_effects` from `fs-read`, `fs-write`, `exec`, `network`, `user-prompt` |
+| `gated_by` | array of policy ids | no | Policies that must permit the tool |
+
 ## Reference resolution
 
 The build fails on any reference that does not resolve:
@@ -144,7 +167,8 @@ The build fails on any reference that does not resolve:
 |---|---|---|
 | agent | `persona` | a persona atom |
 | agent | `prompts`, `skills`, `hooks` | atoms of that class |
-| agent | `tools`, `policies` | a file `atoms/<class>/**/<slug>.json` (untyped today) |
+| agent | `tools`, `policies` | atoms of that class |
+| tool | `gated_by` | policy atoms |
 | prompt | `persona_ref` | a persona atom |
 | prompt | `includes` | prompt atoms |
 | skill, hook | `depends_on` | atoms of the same class |
@@ -168,10 +192,10 @@ All atoms use semantic versioning (`MAJOR.MINOR.PATCH`):
 ```json
 {
   "catalog": "ai-atoms",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "built_at": "<ISO-8601>",
-  "classes": ["skill", "hook", "prompt", "agent", "persona", "model"],
-  "counts": {"skill": 0, "hook": 0, "prompt": 0, "agent": 0, "persona": 0, "model": 0},
+  "classes": ["skill", "hook", "prompt", "agent", "persona", "model", "policy", "tool"],
+  "counts": {"skill": 0, "hook": 0, "prompt": 0, "agent": 0, "persona": 0, "model": 0, "policy": 0, "tool": 0},
   "categories": {"security": {"skill": 0, "hook": 0}},
   "atoms": [...],
   "compositions": [...],

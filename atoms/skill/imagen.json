@@ -18,9 +18,9 @@
   "provenance": {
     "source": "claudeskills.in",
     "source_url": "https://claudeskills.in/skill/imagen",
-    "license": "unknown",
+    "license": "Apache-2.0",
     "imported_at": "2026-09-03",
-    "notes": "Aggregated by claudeskills.in from community GitHub lists. Upstream as recorded by the aggregator: https://github.com/sanjay3290/ai-skills/tree/main/skills/imagen."
+    "notes": "Aggregated by claudeskills.in from community GitHub lists. Upstream as recorded by the aggregator: https://github.com/sanjay3290/ai-skills/tree/main/skills/imagen. License Apache-2.0 read from github.com/sanjay3290/ai-skills on 2026-09-03."
   },
   "tags": [
     "claudeskills",

@@ -1,0 +1,53 @@
+{
+  "schema": "https://ai-atoms.com/schemas/tool-v1.json",
+  "type": "tool",
+  "id": "tool/grep",
+  "version": "1.0.0",
+  "name": "grep",
+  "description": "Pattern search across files. Returns matching lines with file:line locations.",
+  "subtype": "command",
+  "spec": {
+    "function_name": "grep",
+    "summary": "Search for a regex pattern across files.",
+    "parameters": {
+      "pattern": {
+        "type": "string",
+        "description": "Regex to match",
+        "required": true
+      },
+      "path": {
+        "type": "string",
+        "description": "Root path or file",
+        "required": true
+      },
+      "case_insensitive": {
+        "type": "boolean",
+        "description": "Ignore case",
+        "required": false
+      },
+      "max_matches": {
+        "type": "number",
+        "description": "Cap on returned matches",
+        "required": false
+      }
+    },
+    "returns": {
+      "type": "array",
+      "description": "Match objects {file, line, text}."
+    },
+    "side_effects": [
+      "fs-read"
+    ]
+  },
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/atoms/tool-definition/grep.json",
+  "category": "coding",
+  "provenance": {
+    "source": "convergent-systems-co/agent-atoms",
+    "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/atoms/tool-definition/grep.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed from tool-definition by scripts/migrate-policy-tool.py."
+  },
+  "lifecycle": "stable"
+}

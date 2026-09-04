@@ -4,8 +4,18 @@
   "id": "hook/audit-logger",
   "version": "1.0.0",
   "name": "Interaction Audit Logger",
-  "description": "Appends a JSONL record to ~/.ai/audit/interactions/<YYYY-MM>.jsonl for every Claude Code hook event: SessionStart, UserPromptSubmit, PreToolUse, PostToolUse, Stop, SessionEnd, SubagentStop, PreCompact. Non-blocking. Implements Common.md §5.2.",
+  "description": "Appends a JSONL record to ~/.ai/audit/interactions/<YYYY-MM>.jsonl for every Claude Code hook event: SessionStart, UserPromptSubmit, PreToolUse, PostToolUse, Stop, SessionEnd, SubagentStop, PreCompact. Non-blocking.",
   "event": "PreToolUse",
+  "events": [
+    "PreToolUse",
+    "SessionStart",
+    "UserPromptSubmit",
+    "PostToolUse",
+    "Stop",
+    "SessionEnd",
+    "SubagentStop",
+    "PreCompact"
+  ],
   "language": "python",
   "trigger": {
     "type": "always"

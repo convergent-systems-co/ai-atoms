@@ -2,9 +2,9 @@
   "schema": "https://ai-atoms.com/schemas/skill-v1.json",
   "type": "skill",
   "id": "skill/systematic-debugging",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "name": "Systematic Debugging",
-  "description": "Five-phase debugging protocol: reproduce → isolate → root cause → fix with regression test → verify. Use when encountering any bug, test failure, or unexpected behavior. Never proposes a fix before root cause is confirmed. Enforces the 3-cycle local cap and 5-cycle total cap to prevent thrashing.",
+  "description": "[Deprecated — use skill/debug instead] Five-phase debugging protocol: reproduce → isolate → root cause → fix with regression test → verify. Use when encountering any bug, test failure, or unexpected behavior. Never proposes a fix before root cause is confirmed. Enforces the 3-cycle local cap and 5-cycle total cap to prevent thrashing.",
   "system_prompt_fragment": "Debug using five phases in order — no skipping. Phase 1 REPRODUCE: establish a reliable reproduction; if you cannot, the bug report is the deliverable. Phase 2 ISOLATE: narrow to the smallest surface. Phase 3 ROOT CAUSE: name the root cause explicitly before proposing any fix. Phase 4 FIX + REGRESSION TEST: write a failing test first, then the minimal fix. Phase 5 VERIFY: run the suite and cite the output. After fixing: 'Why was this not caught?' — name the gap. Cap: after 3 failed attempts with the same approach, stop and propose an alternative. After 5 total attempts, escalate.",
   "applicable_domains": [
     "code",
@@ -17,6 +17,6 @@
     "tdd",
     "regression"
   ],
-  "lifecycle": "stable",
+  "lifecycle": "deprecated",
   "category": "coding"
 }

@@ -1,0 +1,39 @@
+{
+  "schema": "https://ai-atoms.com/schemas/tool-v1.json",
+  "type": "tool",
+  "id": "tool/file-delete",
+  "version": "1.0.0",
+  "name": "file-delete",
+  "description": "Remove a file. Destructive. Requires explicit user approval.",
+  "subtype": "command",
+  "spec": {
+    "function_name": "file_delete",
+    "summary": "Delete a file at a path.",
+    "parameters": {
+      "path": {
+        "type": "string",
+        "description": "File path",
+        "required": true
+      }
+    },
+    "returns": {
+      "type": "object",
+      "description": "{path, removed}."
+    },
+    "side_effects": [
+      "fs-write",
+      "user-prompt"
+    ]
+  },
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/atoms/tool-definition/file-delete.json",
+  "category": "coding",
+  "provenance": {
+    "source": "convergent-systems-co/agent-atoms",
+    "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/atoms/tool-definition/file-delete.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed from tool-definition by scripts/migrate-policy-tool.py."
+  },
+  "lifecycle": "stable"
+}

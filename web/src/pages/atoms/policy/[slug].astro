@@ -1,0 +1,50 @@
+---
+import Site from "../../../layouts/Site.astro";
+import ActionRail from "../../../components/ActionRail.astro";
+import Provenance from "../../../components/Provenance.astro";
+import CategoryChip from "../../../components/CategoryChip.astro";
+import { ATOMS, hrefOf, slugOf } from "../../../lib/catalog";
+
+export function getStaticPaths() {
+  return ATOMS.filter((a: any) => a.type === "policy").map((a: any) => ({ params: { slug: slugOf(a.id) }, props: { policy: a } }));
+}
+const { policy } = Astro.props;
+const r = policy.rule;
+const usedBy = ATOMS.filter((a: any) => (a.type === "agent" && a.policies?.includes(policy.id)) || (a.type === "tool" && a.gated_by?.includes(policy.id)));
+---
+<Site title={policy.name} description={policy.description} current="/atoms/policy/">
+  <div class="detail hue-policy">
+    <article>
+      <a class="small muted" href="/atoms/policy/">← Policies</a>
+      <div class="detail-hero" style="margin-top:0.8rem;">
+        <div class="chips"><span class="chip cls">Po policy</span><span class="chip sub">{policy.subtype}</span><span class={`chip ${policy.effect === "forbid" ? "danger" : policy.effect === "permit" ? "ok" : "warn"}`}>{policy.effect}</span><CategoryChip category={policy.category} />{policy.lifecycle && <span class={`lifecycle ${policy.lifecycle}`}>{policy.lifecycle}</span>}</div>
+        <h1>{policy.name}</h1>
+        <p class="lede">{policy.description}</p>
+        <div class="idline"><span>id <b>{policy.id}</b></span><span>v<b>{policy.version}</b></span>{policy.authored_by && <span>by <b>{policy.authored_by}</b></span>}</div>
+      </div>
+
+      <h2 class="h-section">Rule</h2>
+      <div class="content-text" style="font-family:var(--body);font-size:1rem;">{r.text}</div>
+      <dl class="kv-table" style="margin-top:1rem;">
+        {r.boundary_type && <><dt>Boundary type</dt><dd><code>{r.boundary_type}</code></dd></>}
+        {r.covered_domains?.length > 0 && <><dt>Covers</dt><dd><span class="chips">{r.covered_domains.map((d: string) => <span class="chip cat">{d}</span>)}</span></dd></>}
+        {r.excluded_domains?.length > 0 && <><dt>Excludes</dt><dd><span class="chips">{r.excluded_domains.map((d: string) => <span class="tag">{d}</span>)}</span></dd></>}
+        {r.refusals?.length > 0 && <><dt>Refuses</dt><dd><ul class="list" style="padding-left:1rem;">{r.refusals.map((x: string) => <li>{x}</li>)}</ul></dd></>}
+        {r.escalate_to && <><dt>Escalates to</dt><dd><code>{r.escalate_to}</code></dd></>}
+        {r.grants?.length > 0 && <><dt>Grants</dt><dd><span class="chips">{r.grants.map((g: string) => <span class="chip ok">{g}</span>)}</span></dd></>}
+        {r.elevation && <><dt>Elevation</dt><dd><code>{r.elevation}</code></dd></>}
+        {r.audit !== undefined && <><dt>Audited</dt><dd>{r.audit ? "yes" : "no"}</dd></>}
+        {r.process && <><dt>Process</dt><dd><code>{r.process}</code></dd></>}
+        {r.network && <><dt>Network</dt><dd><code>{r.network}</code></dd></>}
+        {r.filesystem && <><dt>Filesystem</dt><dd><code>{r.filesystem}</code></dd></>}
+        {r.scoped_paths?.length > 0 && <><dt>Paths</dt><dd>{r.scoped_paths.map((x: string) => <code style="margin-right:0.3rem;">{x}</code>)}</dd></>}
+      </dl>
+      {policy.rationale && <p class="small muted" style="max-width:60rem;">Why: {policy.rationale}</p>}
+
+      {usedBy.length > 0 && <><h2 class="h-section">Used by</h2><ul class="list">{usedBy.map((a: any) => <li><a class="ref" href={hrefOf(a.id)}>{a.id}</a> — {a.name}</li>)}</ul></>}
+      {policy.tags?.length > 0 && <div class="chips" style="margin-top:1.2rem;">{policy.tags.map((t: string) => <span class="tag">{t}</span>)}</div>}
+      <Provenance atom={policy} />
+    </article>
+    <ActionRail atom={policy} text={r.text} textFilename={`${slugOf(policy.id)}.md`} />
+  </div>
+</Site>

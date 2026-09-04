@@ -1,0 +1,53 @@
+{
+  "schema": "https://ai-atoms.com/schemas/tool-v1.json",
+  "type": "tool",
+  "id": "tool/file-edit",
+  "version": "1.0.0",
+  "name": "file-edit",
+  "description": "Targeted string replacement in a file. Requires a prior read of the same file.",
+  "subtype": "command",
+  "spec": {
+    "function_name": "file_edit",
+    "summary": "Replace exact string with new string in a file.",
+    "parameters": {
+      "path": {
+        "type": "string",
+        "description": "File path",
+        "required": true
+      },
+      "old_string": {
+        "type": "string",
+        "description": "Exact existing string",
+        "required": true
+      },
+      "new_string": {
+        "type": "string",
+        "description": "Replacement",
+        "required": true
+      },
+      "replace_all": {
+        "type": "boolean",
+        "description": "Replace every occurrence",
+        "required": false
+      }
+    },
+    "returns": {
+      "type": "object",
+      "description": "{path, replacements}."
+    },
+    "side_effects": [
+      "fs-write"
+    ]
+  },
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/atoms/tool-definition/file-edit.json",
+  "category": "coding",
+  "provenance": {
+    "source": "convergent-systems-co/agent-atoms",
+    "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/atoms/tool-definition/file-edit.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed from tool-definition by scripts/migrate-policy-tool.py."
+  },
+  "lifecycle": "stable"
+}

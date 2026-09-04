@@ -1,0 +1,49 @@
+{
+  "schema": "https://ai-atoms.com/schemas/tool-v1.json",
+  "type": "tool",
+  "id": "tool/git-diff",
+  "version": "1.0.0",
+  "name": "git-diff",
+  "description": "Show changes between commits, branches, or working tree. Read-only.",
+  "subtype": "command",
+  "spec": {
+    "function_name": "git_diff",
+    "summary": "Run `git diff` and return the unified diff.",
+    "parameters": {
+      "base": {
+        "type": "string",
+        "description": "Base ref (commit, branch, tag).",
+        "required": false
+      },
+      "head": {
+        "type": "string",
+        "description": "Head ref (default: HEAD).",
+        "required": false
+      },
+      "paths": {
+        "type": "array",
+        "description": "Limit diff to these paths.",
+        "required": false
+      }
+    },
+    "returns": {
+      "type": "string",
+      "description": "Unified diff output."
+    },
+    "side_effects": [
+      "fs-read",
+      "exec"
+    ]
+  },
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/atoms/tool-definition/git-diff.json",
+  "category": "coding",
+  "provenance": {
+    "source": "convergent-systems-co/agent-atoms",
+    "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/atoms/tool-definition/git-diff.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed from tool-definition by scripts/migrate-policy-tool.py."
+  },
+  "lifecycle": "stable"
+}

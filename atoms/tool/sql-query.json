@@ -1,0 +1,48 @@
+{
+  "schema": "https://ai-atoms.com/schemas/tool-v1.json",
+  "type": "tool",
+  "id": "tool/sql-query",
+  "version": "1.0.0",
+  "name": "sql-query",
+  "description": "Read-only SELECT against a named DSN.",
+  "subtype": "command",
+  "spec": {
+    "function_name": "sql_query",
+    "summary": "Run a SELECT and return rows.",
+    "parameters": {
+      "dsn": {
+        "type": "string",
+        "description": "Named DSN identifier",
+        "required": true
+      },
+      "sql": {
+        "type": "string",
+        "description": "SELECT statement",
+        "required": true
+      },
+      "params": {
+        "type": "array",
+        "description": "Parameterized values",
+        "required": false
+      }
+    },
+    "returns": {
+      "type": "array",
+      "description": "Result rows as objects."
+    },
+    "side_effects": [
+      "network"
+    ]
+  },
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/atoms/tool-definition/sql-query.json",
+  "category": "data",
+  "provenance": {
+    "source": "convergent-systems-co/agent-atoms",
+    "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/atoms/tool-definition/sql-query.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed from tool-definition by scripts/migrate-policy-tool.py."
+  },
+  "lifecycle": "stable"
+}

@@ -18,9 +18,9 @@
   "provenance": {
     "source": "claudeskills.in",
     "source_url": "https://claudeskills.in/skill/using-neon",
-    "license": "unknown",
+    "license": "Apache-2.0",
     "imported_at": "2026-09-03",
-    "notes": "Aggregated by claudeskills.in from community GitHub lists. Upstream as recorded by the aggregator: https://github.com/neondatabase/agent-skills/tree/main/skills/neon-postgres."
+    "notes": "Aggregated by claudeskills.in from community GitHub lists. Upstream as recorded by the aggregator: https://github.com/neondatabase/agent-skills/tree/main/skills/neon-postgres. License Apache-2.0 read from github.com/neondatabase/agent-skills on 2026-09-03."
   },
   "tags": [
     "claudeskills",

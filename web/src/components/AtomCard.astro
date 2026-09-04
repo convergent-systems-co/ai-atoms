@@ -12,6 +12,8 @@ if (cls === "hook") { facts.push(["event", atom.event || "library"]); if (atom.t
 if (cls === "prompt") facts.push(["turns", (atom.applicable_turns ?? ["system"]).join(", ")]);
 if (cls === "agent") facts.push(["persona", atom.persona]);
 if (cls === "persona") { facts.push(["job", atom.role?.job_to_be_done]); if (atom.role?.domain) facts.push(["domain", atom.role.domain]); }
+if (cls === "policy") { facts.push(["effect", atom.effect]); if (atom.rule?.grants?.length) facts.push(["grants", atom.rule.grants.join(", ")]); if (atom.rule?.process) facts.push(["sandbox", `${atom.rule.process} · net ${atom.rule.network} · fs ${atom.rule.filesystem}`]); }
+if (cls === "tool") { facts.push(["function", atom.spec?.function_name]); if (atom.spec?.side_effects?.length) facts.push(["effects", atom.spec.side_effects.join(", ")]); }
 if (cls === "model") { facts.push(["vendor", atom.vendor + (atom.family ? ` · ${atom.family}` : "")]); if (atom.parameter_sizes?.length) facts.push(["sizes", atom.parameter_sizes.join(" ")]); if (atom.providers?.[0]?.pull_command) facts.push([atom.providers[0].name.toLowerCase(), atom.providers[0].pull_command]); }
 ---
 <article class={`card ${specimenLabel ? "specimen" : ""} hue-${cls}`} data-category={atom.category ?? "other"} data-facet={facet ?? ""} data-source={sourceOf(atom)} data-license={licenseOf(atom)} data-search={searchText(atom)}>
@@ -26,7 +28,7 @@ if (cls === "model") { facts.push(["vendor", atom.vendor + (atom.family ? ` · $
   <p>{atom.description}</p>
   {facts.length > 0 && (
     <dl class="kv">
-      {facts.map(([k, v]) => <><dt>{k}</dt><dd>{typeof v === "string" && (k === "invoke" || k === "persona" || k.endsWith("ollama") || k === "trigger") ? <code>{v}</code> : v}</dd></>)}
+      {facts.map(([k, v]) => <><dt>{k}</dt><dd>{typeof v === "string" && (k === "invoke" || k === "persona" || k.endsWith("ollama") || k === "trigger" || k === "function") ? <code>{v}</code> : v}</dd></>)}
     </dl>
   )}
   <div class="chips">

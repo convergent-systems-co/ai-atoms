@@ -1,0 +1,30 @@
+{
+  "schema": "https://ai-atoms.com/schemas/policy-v1.json",
+  "type": "policy",
+  "id": "policy/architecture-domain",
+  "version": "1.0.0",
+  "name": "Architecture Domain",
+  "description": "Expertise covers component boundaries, trust boundaries, service interactions, data flows, failure modes, scalability, and long-term structural integrity.",
+  "subtype": "boundary",
+  "effect": "bound",
+  "rule": {
+    "text": "Expertise covers component boundaries, trust boundaries, service interactions, data flows, failure modes, scalability, and long-term structural integrity.",
+    "boundary_type": "domain-expertise",
+    "covered_domains": [
+      "architecture",
+      "distributed-systems",
+      "systems-design"
+    ]
+  },
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/persona-atoms/blob/main/atoms/knowledge-boundary/architecture-domain.json",
+  "category": "coding",
+  "provenance": {
+    "source": "convergent-systems-co/persona-atoms",
+    "source_url": "https://github.com/convergent-systems-co/persona-atoms/blob/main/atoms/knowledge-boundary/architecture-domain.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed from knowledge-boundary by scripts/migrate-policy-tool.py."
+  },
+  "lifecycle": "stable"
+}

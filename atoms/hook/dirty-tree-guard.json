@@ -6,6 +6,10 @@
   "name": "Dirty Tree Guard",
   "description": "Checks the session working directory for uncommitted tracked changes and unpushed commits at Stop and SubagentStop. Emits GIT-HYGIENE-VIOLATION sentinel lines to stdout and stderr — non-blocking.",
   "event": "Stop",
+  "events": [
+    "Stop",
+    "SubagentStop"
+  ],
   "language": "python",
   "trigger": {
     "type": "always"

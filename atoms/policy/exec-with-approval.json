@@ -1,0 +1,32 @@
+{
+  "schema": "https://ai-atoms.com/schemas/policy-v1.json",
+  "type": "policy",
+  "id": "policy/exec-with-approval",
+  "version": "1.0.0",
+  "name": "Exec with approval",
+  "description": "Execute shell commands with per-command user approval. Read + write filesystem; no unscoped network.",
+  "subtype": "capability",
+  "effect": "permit",
+  "rule": {
+    "text": "Execute shell commands with per-command user approval. Read + write filesystem; no unscoped network.",
+    "grants": [
+      "read-files",
+      "write-files",
+      "exec-commands",
+      "user-prompt"
+    ],
+    "elevation": "user-approved",
+    "audit": true
+  },
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/atoms/capability-declaration/exec-with-approval.json",
+  "category": "security",
+  "provenance": {
+    "source": "convergent-systems-co/agent-atoms",
+    "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/atoms/capability-declaration/exec-with-approval.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed from capability-declaration by scripts/migrate-policy-tool.py."
+  },
+  "lifecycle": "stable"
+}

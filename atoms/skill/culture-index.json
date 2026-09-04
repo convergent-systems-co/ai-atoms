@@ -18,9 +18,9 @@
   "provenance": {
     "source": "claudeskills.in",
     "source_url": "https://claudeskills.in/skill/culture-index",
-    "license": "unknown",
+    "license": "CC-BY-SA-4.0",
     "imported_at": "2026-09-03",
-    "notes": "Aggregated by claudeskills.in from community GitHub lists. Upstream as recorded by the aggregator: https://github.com/trailofbits/skills/tree/main/plugins/culture-index."
+    "notes": "Aggregated by claudeskills.in from community GitHub lists. Upstream as recorded by the aggregator: https://github.com/trailofbits/skills/tree/main/plugins/culture-index. License CC-BY-SA-4.0 read from github.com/trailofbits/skills on 2026-09-03."
   },
   "tags": [
     "claudeskills",

@@ -4,7 +4,7 @@
   "id": "hook/destructive-kubectl-guard",
   "version": "1.0.1",
   "name": "Destructive kubectl Guard",
-  "description": "Blocks destructive kubectl operations per Common.md §2.2. Opt-in via command-wrappers.toml. Denies kubectl delete, kubectl drain, and kubectl cordon without the bypass env AI_ALLOW_DESTRUCTIVE_KUBECTL=1. All other kubectl subcommands pass through.",
+  "description": "Blocks destructive kubectl operations. Opt-in via command-wrappers.toml. Denies kubectl delete, kubectl drain, and kubectl cordon without the bypass env AI_ALLOW_DESTRUCTIVE_KUBECTL=1. All other kubectl subcommands pass through.",
   "event": "PreToolUse",
   "language": "python",
   "trigger": {

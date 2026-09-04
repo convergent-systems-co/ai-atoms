@@ -1,0 +1,43 @@
+{
+  "schema": "https://ai-atoms.com/schemas/tool-v1.json",
+  "type": "tool",
+  "id": "tool/file-write",
+  "version": "1.0.0",
+  "name": "file-write",
+  "description": "Create or overwrite a file. Side-effecting.",
+  "subtype": "command",
+  "spec": {
+    "function_name": "file_write",
+    "summary": "Write content to a file path.",
+    "parameters": {
+      "path": {
+        "type": "string",
+        "description": "Destination path",
+        "required": true
+      },
+      "content": {
+        "type": "string",
+        "description": "Bytes / UTF-8 content",
+        "required": true
+      }
+    },
+    "returns": {
+      "type": "object",
+      "description": "{path, bytes_written}."
+    },
+    "side_effects": [
+      "fs-write"
+    ]
+  },
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/atoms/tool-definition/file-write.json",
+  "category": "coding",
+  "provenance": {
+    "source": "convergent-systems-co/agent-atoms",
+    "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/atoms/tool-definition/file-write.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed from tool-definition by scripts/migrate-policy-tool.py."
+  },
+  "lifecycle": "stable"
+}

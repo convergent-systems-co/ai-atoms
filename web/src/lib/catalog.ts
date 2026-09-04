@@ -17,6 +17,8 @@ export const CLASS_META: Record<string, ClassMeta> = {
   agent:   { symbol: "Ag", label: "Agent",   plural: "Agents",   blurb: "A persona bound to the prompts, skills, tools, policies, and hooks it runs with.", install: () => undefined, facet: "subtype" },
   persona: { symbol: "Pe", label: "Persona", plural: "Personas", blurb: "A portable identity: role, voice, tone, work contract, constraints, boundaries.", install: () => undefined, facet: null },
   model:   { symbol: "Mo", label: "Model",   plural: "Models",   blurb: "Reference data about a model and the providers a runtime can get it from.", install: () => undefined, facet: "task" },
+  policy:  { symbol: "Po", label: "Policy",  plural: "Policies", blurb: "A rule a runtime permits, forbids, or bounds an agent by: boundary, capability, isolation.", install: () => undefined, facet: "subtype" },
+  tool:    { symbol: "To", label: "Tool",    plural: "Tools",    blurb: "An executable affordance: the function the model sees and the side effects to gate.", install: () => undefined, facet: "subtype" },
 };
 
 export const CATEGORY_LABEL: Record<string, string> = {
@@ -58,6 +60,7 @@ export function specimenCandidates(cls: string, limit = 90): any[] {
   const pool = atomsOf(cls).filter((a) =>
     (a.description?.length ?? 0) > 50 &&
     (cls === "model" || licenseOf(a) !== "unknown") &&
+    a.lifecycle !== "deprecated" &&
     (cls !== "skill" || a.lifecycle === "stable") &&
     (a.category ?? "other") !== "other" &&
     !/^\[retired/i.test(a.description ?? ""));

@@ -1,0 +1,48 @@
+{
+  "schema": "https://ai-atoms.com/schemas/tool-v1.json",
+  "type": "tool",
+  "id": "tool/schedule-task",
+  "version": "1.0.0",
+  "name": "schedule-task",
+  "description": "Register a cron / timer task. Side-effecting (creates persistent schedule).",
+  "subtype": "command",
+  "spec": {
+    "function_name": "schedule_task",
+    "summary": "Register a recurring task.",
+    "parameters": {
+      "cron": {
+        "type": "string",
+        "description": "Cron expression",
+        "required": true
+      },
+      "name": {
+        "type": "string",
+        "description": "Task name",
+        "required": true
+      },
+      "payload": {
+        "type": "object",
+        "description": "Task definition",
+        "required": true
+      }
+    },
+    "returns": {
+      "type": "object",
+      "description": "{task_id, next_run}."
+    },
+    "side_effects": [
+      "network"
+    ]
+  },
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/atoms/tool-definition/schedule-task.json",
+  "category": "devops",
+  "provenance": {
+    "source": "convergent-systems-co/agent-atoms",
+    "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/atoms/tool-definition/schedule-task.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed from tool-definition by scripts/migrate-policy-tool.py."
+  },
+  "lifecycle": "stable"
+}

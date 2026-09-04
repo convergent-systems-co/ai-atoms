@@ -7,8 +7,8 @@
 
 ## What is ai-atoms?
 
-A typed, versioned catalog of AI runtime primitives. Six classes: **skill**, **hook**, **prompt**,
-**agent**, **persona**, **model**. Every atom is static JSON validated against its class schema,
+A typed, versioned catalog of AI runtime primitives. Eight classes: **skill**, **hook**, **prompt**,
+**agent**, **persona**, **model**, **policy**, **tool**. Every atom is static JSON validated against its class schema,
 carries a `category` from one shared vocabulary, and (when imported) a `provenance` block naming the
 source, original URL, author, and license.
 
@@ -37,7 +37,8 @@ source, original URL, author, and license.
 - `ai skills install <slug>` does all of this on a machine with the `ai` CLI.
 
 ### hook
-- `event` and `trigger` say when it fires; `blocking` says whether it can abort the operation.
+- `event` and `trigger` say when it fires; `events`, when present, lists every event to wire it to;
+  `blocking` says whether it can abort the operation.
 - `script` is the complete source. Install it to `~/.ai/hooks/<slug>.<ext>` and wire
   `ai hooks run <slug>` (or the script path) into the client's hook configuration.
 - `depends_on` (usually `hook/lib`) must be installed alongside. `requires_wrap` names a command
@@ -57,8 +58,7 @@ source, original URL, author, and license.
 
 ### agent
 - Resolve `persona`, then `prompts`, `skills`, `hooks`, `tools`, `policies` by id. Every reference
-  resolves in the catalog; `tool/` and `policy/` ids resolve to files under `atoms/` that are not yet
-  schema-typed.
+  resolves to a typed atom in the catalog.
 - `subtype: reviewer` means the agent judges work against `review_criteria` and emits verdicts.
 - `execution.planner` and `execution.memory` are preferences for the runtime loop.
 
@@ -67,6 +67,21 @@ source, original URL, author, and license.
   obtains it locally when the provider supports that (Ollama).
 - `task`, `capabilities`, `parameter_sizes`, and `context_window_tokens` are for selection.
 - `provenance.license: unknown` means the listing did not publish the weights license.
+
+### policy
+- `rule.text` is the rule as a model or operator reads it. `effect` says whether it forbids, requires,
+  permits, or bounds.
+- `subtype: capability` carries `rule.grants` and `rule.elevation` (`declared` or `user-approved`);
+  gate tool calls whose `spec.side_effects` need those grants.
+- `subtype: isolation` carries `rule.process`, `rule.network`, `rule.filesystem`, `rule.scoped_paths`
+  for the sandbox.
+- `subtype: boundary` carries covered and excluded domains or explicit `rule.refusals`.
+
+### tool
+- `spec.function_name`, `spec.parameters`, and `spec.returns` are the signature the model sees;
+  the tool page renders the JSON-Schema-shaped definition ready to pass to a model.
+- `spec.side_effects` (fs-read, fs-write, exec, network, user-prompt) must be permitted by a
+  capability policy before the runtime executes the call. `gated_by` names such policies.
 
 ## Attribution
 

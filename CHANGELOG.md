@@ -3,6 +3,42 @@
 All notable changes to this catalog are documented here.
 Versioning follows [Semantic Versioning](https://semver.org/).
 
+## v0.4.0 — 2026-09-03
+
+Curation pass from `docs/reviews/2026-09-03-atom-evaluation.md`, plus two more typed classes.
+
+### Added
+- `schemas/policy-v1.json` and `schemas/tool-v1.json`; 54 policy and 20 tool atoms re-typed from
+  the staged agent-atoms and persona-atoms trees by `scripts/migrate-policy-tool.py`. Agent
+  `policies` and `tools` references now resolve to typed atoms; `tool.gated_by` names the policies
+  that must permit a tool.
+- `scripts/discover-licenses.py`: reads the upstream repository's license through the GitHub API
+  for atoms whose provenance names one; 17 claudeskills atoms moved from `unknown` to a real SPDX id.
+- `hook.events`: every event a hook fires on when there is more than one (`audit-logger`,
+  `dirty-tree-guard`, `test-coverage-gate`). `event` stays the primary for consumers that read one.
+- `hook/security-reminder` finally ships a script, with tests; it flags untrusted `${{ }}`
+  interpolations in edited workflow files.
+- Site: listing and detail pages for policies and tools; a tool page renders the JSON-Schema-shaped
+  definition a runtime hands to the model.
+
+### Changed
+- `hook/secret-precommit` is typed as a `git-pre-commit` event, not `PreToolUse`.
+- Ten hook descriptions no longer cite the private `Common.md` constitution.
+- Vendor-variant prompts with byte-identical content collapsed: `prompt/sre`,
+  `prompt/documentation-writer`, `prompt/security-architect` (−4 atoms). Nine persona prompts now
+  carry `persona_ref`.
+- Decisions recorded: claudeskills atoms whose license stays unknown remain in the catalog as
+  drafts; the 111 knowledge-work skills stay, filterable by category.
+
+### Removed
+- Seven skills the evaluation recommended dropping: `atom-status`, `business-pulse`,
+  `canva-creator`, `cash-flow-snapshot`, `code-testing-extensions`, `debug-systematically`,
+  `test-publish`.
+- `persona/none` (a pass-through with three missing parts) and nine agents that bound nothing but a
+  persona and a planner preference; their personas remain.
+- The staged `atoms/policy/{boundary,capability,isolation}/` and `atoms/tool/command/` trees,
+  replaced by the typed atoms above.
+
 ## v0.3.0 — 2026-09-03
 
 A sixth class, a shared vocabulary, a second wave of imports, and a redesigned site.

@@ -28,5 +28,6 @@
     "author": "convergent-systems-co",
     "license": "Apache-2.0",
     "notes": "Re-typed by scripts/migrate-retired-atoms.py from the retired catalog."
-  }
+  },
+  "persona_ref": "persona/refactor-scout"
 }

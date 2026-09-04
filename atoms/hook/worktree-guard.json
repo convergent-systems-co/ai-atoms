@@ -4,7 +4,7 @@
   "id": "hook/worktree-guard",
   "version": "1.3.0",
   "name": "Worktree Guard",
-  "description": "Enforces worktree-based feature development per Common.md §U17. Rule 1: blocks ‘git checkout -b’ and ‘git switch -c’ in the primary worktree — feature work must live in a linked worktree so the primary repo stays on main. Rule 2: blocks ‘git worktree add’ to non-canonical paths. Canonical paths: <repo>/.worktrees/<name>/ for single-repo work, <repo>/.claude/worktrees/<name>/ for Claude Code's native EnterWorktree tool, ~/.ai/worktrees/<name>/ for cross-repo or persistent worktrees.",
+  "description": "Enforces worktree-based feature development. Rule 1: blocks ‘git checkout -b’ and ‘git switch -c’ in the primary worktree — feature work must live in a linked worktree so the primary repo stays on main. Rule 2: blocks ‘git worktree add’ to non-canonical paths. Canonical paths: <repo>/.worktrees/<name>/ for single-repo work, <repo>/.claude/worktrees/<name>/ for Claude Code's native EnterWorktree tool, ~/.ai/worktrees/<name>/ for cross-repo or persistent worktrees.",
   "event": "PreToolUse",
   "language": "python",
   "trigger": {

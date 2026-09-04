@@ -18,9 +18,9 @@
   "provenance": {
     "source": "claudeskills.in",
     "source_url": "https://claudeskills.in/skill/expo-deployment",
-    "license": "unknown",
+    "license": "MIT",
     "imported_at": "2026-09-03",
-    "notes": "Aggregated by claudeskills.in from community GitHub lists. Upstream as recorded by the aggregator: https://github.com/expo/skills/tree/main/plugins/expo-deployment."
+    "notes": "Aggregated by claudeskills.in from community GitHub lists. Upstream as recorded by the aggregator: https://github.com/expo/skills/tree/main/plugins/expo-deployment. License MIT read from github.com/expo/skills on 2026-09-03."
   },
   "tags": [
     "claudeskills",

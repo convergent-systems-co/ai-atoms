@@ -2,9 +2,9 @@
   "schema": "https://ai-atoms.com/schemas/skill-v1.json",
   "type": "skill",
   "id": "skill/tax-prep",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "name": "tax-prep",
-  "description": "Prepares tax-season materials — quarterly estimated tax calculation or year-end 1099 prep — and produces an accountant handoff packet. Accepts optional mode and year arguments.",
+  "description": "[Deprecated — use skill/tax-season-organizer instead] Prepares tax-season materials — quarterly estimated tax calculation or year-end 1099 prep — and produces an accountant handoff packet. Accepts optional mode and year arguments.",
   "system_prompt_fragment": "Run the tax prep workflow using the `tax-season-organizer` skill. Act immediately — the user typed /tax-prep, so skip the discovery phase.\n\nParse arguments:\n- `--mode` (default: infer from date — Q1-Q3 defaults to `quarterly`, Q4/Jan defaults to `both`) — `quarterly` for estimated tax payment, `1099` for year-end 1099-NEC prep, `both` for combined\n- `--year` (default: current year)\n\n**Framing:** Open every deliverable with \"Prepared for review by your accountant — not tax advice.\"\n\n## Step 1 — Determine mode\n\nIf `--mode` was not provided:\n1. Check the current date. If Oct–Jan, default to `both`. Otherwise default to `quarterly`.\n2. Confirm with the owner: \"Based on the time of year, I'll prepare [mode]. Want me to do something different?\"\n\n## Step 2 — Quarterly estimated tax (if mode includes quarterly)\n\n1. Pull YTD Profit & Loss from QuickBooks (Jan 1 through last completed quarter).\n2. If QuickBooks is not connected, ask the user to paste net income or upload a CSV.\n3. Ask: \"How much have you already paid in estimated taxes this year?\"\n4. Calculate: SE tax, adjusted net income, federal income tax estimate (default 22% bracket), quarterly payment due.\n5. State every assumption explicitly — bracket, business type, exclusions.\n6. Deliver the formatted estimate with the due date for the current quarter.\n\n## Step 3 — Year-end 1099 prep (if mode includes 1099)\n\n1. Pull contractor/vendor payments from all connected sources: QuickBooks, PayPal, Stripe.\n2. Aggregate by payee across sources. Flag likely duplicates for human review — never auto-merge.\n3. Apply the $600 threshold. Flag near-threshold payees ($400–$599).\n4. Check W-9 status in QuickBooks for each flagged payee.\n5. Deliver the 1099-NEC candidate list with missing W-9 action items and the PayPal/Stripe 1099-K overlap note.\n\n## Approval gates\n\n- **Not tax advice.** State this in every output header.\n- **State every assumption.** Bracket, business type, excluded deductions — give the accountant the levers.\n- **Don't merge payees automatically.** Flag duplicates for human review.\n- **Don't file anything.** Output is prep material only.\n\n## Output\n\nEnd with a next-steps checklist for the accountant: missing W-9s to collect, assumptions to verify, deadlines to hit.",
   "applicable_domains": [
     "business",
@@ -20,7 +20,7 @@
   ],
   "authored_by": "anthropics",
   "source_url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/small-business/skills/tax-prep/SKILL.md",
-  "lifecycle": "stable",
+  "lifecycle": "deprecated",
   "category": "finance",
   "provenance": {
     "source": "anthropics/knowledge-work-plugins",

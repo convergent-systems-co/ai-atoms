@@ -1,0 +1,29 @@
+{
+  "schema": "https://ai-atoms.com/schemas/policy-v1.json",
+  "type": "policy",
+  "id": "policy/network-read-only",
+  "version": "1.0.0",
+  "name": "Network read-only",
+  "description": "Outbound HTTP GET only. No POST/PUT/PATCH/DELETE.",
+  "subtype": "capability",
+  "effect": "permit",
+  "rule": {
+    "text": "Outbound HTTP GET only. No POST/PUT/PATCH/DELETE.",
+    "grants": [
+      "network"
+    ],
+    "elevation": "declared",
+    "audit": true
+  },
+  "authored_by": "convergent-systems-key",
+  "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/atoms/capability-declaration/network-read-only.json",
+  "category": "security",
+  "provenance": {
+    "source": "convergent-systems-co/agent-atoms",
+    "source_url": "https://github.com/convergent-systems-co/agent-atoms/blob/main/atoms/capability-declaration/network-read-only.json",
+    "author": "convergent-systems-co",
+    "license": "Apache-2.0",
+    "notes": "Re-typed from capability-declaration by scripts/migrate-policy-tool.py."
+  },
+  "lifecycle": "stable"
+}

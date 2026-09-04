@@ -1,0 +1,9 @@
+---
+import Site from "../../../layouts/Site.astro";
+import Listing from "../../../components/Listing.astro";
+import { atomsOf, CLASS_META } from "../../../lib/catalog";
+const atoms = atomsOf("policy");
+---
+<Site title={CLASS_META["policy"].plural} description={`${atoms.length} policy atoms — ${CLASS_META["policy"].blurb}`} current="/atoms/policy/">
+  <Listing cls="policy" atoms={atoms} intro={'Rules a runtime enforces. <b>Boundaries</b> say what an agent knows, refuses, or must do; <b>capabilities</b> say what the runtime grants; <b>isolation</b> says how it is sandboxed. Every rule carries its text, and the machine-checkable fields beside it.'} facetLabel="Subtype" />
+</Site>

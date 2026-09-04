@@ -2,18 +2,19 @@
   "schema": "https://ai-atoms.com/schemas/hook-v1.json",
   "type": "hook",
   "id": "hook/security-reminder",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "name": "GitHub Actions Security Reminder",
   "description": "Fires when Claude Code edits a GitHub Actions workflow file. Non-blocking reminder about command injection risks, untrusted input in run: steps, and the SAFE pattern (env: with proper quoting vs direct ${{ expression }} interpolation).",
   "event": "PreToolUse",
   "language": "python",
   "trigger": {
-    "type": "file-pattern",
-    "pattern": ".github/workflows/*.yml"
+    "type": "tool-name",
+    "pattern": "Edit|Write"
   },
   "blocking": false,
   "side_effects": [
-    "emits security guidance to stderr"
+    "emits security guidance to stderr",
+    "flags untrusted ${{ }} interpolations found in the edited content"
   ],
   "authored_by": "convergent-systems-key",
   "tags": [
@@ -28,6 +29,7 @@
     "macos",
     "windows"
   ],
-  "platform_notes": "Logic is cross-platform. Wiring: use 'ai hooks run security-reminder' in settings.json — the ai binary discovers Python on each OS. Pure Python; writes to stderr. Works on all platforms.",
-  "category": "security"
+  "platform_notes": "Pure Python, stdlib only; writes to stderr. Reads tool_input.file_path (and content/new_string) from the PreToolUse payload. Works on all platforms via 'ai hooks run security-reminder'.",
+  "category": "security",
+  "script": "#!/usr/bin/env python3\n\"\"\"hooks/security-reminder.py — remind about injection risks when a GitHub Actions\nworkflow file is edited.\n\nFires on PreToolUse for Edit/Write tools whose target path is under\n.github/workflows/. Non-blocking: prints guidance to stderr and always exits 0.\nThe guidance covers the failure that ships most often — untrusted event data\ninterpolated straight into a run: step with ${{ ... }} — and the safe pattern\n(pass it through env: and quote the variable).\n\nHonours --self-check (exit 0 when the hook can load and its rules compile).\n\"\"\"\nimport json\nimport re\nimport sys\n\nWORKFLOW_PATH = re.compile(r\"(^|/)\\.github/workflows/[^/]+\\.ya?ml$\")\nUNTRUSTED = re.compile(\n    r\"\\$\\{\\{\\s*(github\\.event\\.(issue|pull_request|comment|review|head_commit|commits|discussion)[\\w.\\[\\]]*\"\n    r\"|github\\.head_ref|steps\\.[\\w-]+\\.outputs\\.[\\w-]+)\\s*\\}\\}\"\n)\nGUIDANCE = (\n    \"[ai/security-reminder] You are editing a GitHub Actions workflow.\\n\"\n    \"  - Never interpolate untrusted event data (issue titles, PR bodies, branch names,\\n\"\n    \"    commit messages) directly into a run: step with ${{ ... }} — it is shell injection.\\n\"\n    \"  - Pass it through env: instead and quote the variable: env: TITLE: ${{ github.event.issue.title }}\\n\"\n    \"    then run: echo \\\"$TITLE\\\".\\n\"\n    \"  - Pin third-party actions to a full commit SHA; keep permissions: to the minimum.\\n\"\n)\n\n\ndef main() -> int:\n    if \"--self-check\" in sys.argv:\n        WORKFLOW_PATH.search(\".github/workflows/ci.yml\")\n        print(\"[ai/security-reminder] self-check OK\")\n        return 0\n    try:\n        payload = json.load(sys.stdin)\n    except (json.JSONDecodeError, ValueError):\n        return 0  # not a hook payload; nothing to say\n    tool_input = payload.get(\"tool_input\") or {}\n    path = tool_input.get(\"file_path\") or tool_input.get(\"path\") or \"\"\n    if not WORKFLOW_PATH.search(path.replace(\"\\\\\", \"/\")):\n        return 0\n    sys.stderr.write(GUIDANCE)\n    content = tool_input.get(\"content\") or tool_input.get(\"new_string\") or \"\"\n    for match in UNTRUSTED.finditer(content):\n        sys.stderr.write(f\"  ! untrusted interpolation in this edit: {match.group(0)}\\n\")\n    return 0\n\n\nif __name__ == \"__main__\":\n    sys.exit(main())\n"
 }

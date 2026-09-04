@@ -1,0 +1,190 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-atoms.com/schemas/tool-v1.json",
+  "title": "ai-atoms tool v1",
+  "description": "A tool atom — an executable affordance a runtime exposes to an agent, described by the function signature the model sees and the side effects the runtime must gate.",
+  "type": "object",
+  "required": [
+    "schema",
+    "type",
+    "id",
+    "version",
+    "name",
+    "description",
+    "subtype",
+    "spec"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "https://ai-atoms.com/schemas/tool-v1.json"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "tool"
+      ]
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^tool/[a-z0-9][a-z0-9-]*$"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[A-Za-z0-9.-]+)?$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1000
+    },
+    "subtype": {
+      "type": "string",
+      "enum": [
+        "command",
+        "http",
+        "mcp",
+        "builtin"
+      ],
+      "description": "command = runs a local process or file operation; http = calls a URL; mcp = a Model Context Protocol server tool; builtin = provided by the runtime itself."
+    },
+    "spec": {
+      "type": "object",
+      "required": [
+        "function_name",
+        "summary",
+        "returns"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "function_name": {
+          "type": "string",
+          "pattern": "^[a-z_][a-z0-9_]*$",
+          "description": "The name the model calls."
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1,
+          "description": "One sentence shown to the model as the tool description."
+        },
+        "parameters": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": [
+              "type",
+              "description"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "string",
+                  "number",
+                  "integer",
+                  "boolean",
+                  "array",
+                  "object"
+                ]
+              },
+              "description": {
+                "type": "string",
+                "minLength": 1
+              },
+              "required": {
+                "type": "boolean"
+              }
+            }
+          },
+          "description": "Named parameters the model may pass. Omit for a tool that takes none."
+        },
+        "returns": {
+          "type": "object",
+          "required": [
+            "type",
+            "description"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "string",
+                "number",
+                "integer",
+                "boolean",
+                "array",
+                "object",
+                "null"
+              ]
+            },
+            "description": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "side_effects": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "fs-read",
+              "fs-write",
+              "exec",
+              "network",
+              "user-prompt"
+            ]
+          },
+          "uniqueItems": true,
+          "description": "What the runtime must gate with a capability policy before the tool runs."
+        }
+      }
+    },
+    "gated_by": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^policy/[a-z0-9][a-z0-9-]*$"
+      },
+      "uniqueItems": true,
+      "description": "Policy atoms that must permit this tool before an agent may call it."
+    },
+    "authored_by": {
+      "type": "string"
+    },
+    "source_url": {
+      "type": "string"
+    },
+    "category": {
+      "$ref": "https://ai-atoms.com/schemas/common-v1.json#/$defs/category"
+    },
+    "provenance": {
+      "$ref": "https://ai-atoms.com/schemas/common-v1.json#/$defs/provenance"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 40
+      },
+      "uniqueItems": true
+    },
+    "lifecycle": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "stable",
+        "deprecated"
+      ]
+    }
+  }
+}

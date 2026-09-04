@@ -18,9 +18,9 @@
   "provenance": {
     "source": "claudeskills.in",
     "source_url": "https://claudeskills.in/skill/skill-seekers",
-    "license": "unknown",
+    "license": "MIT",
     "imported_at": "2026-09-03",
-    "notes": "Aggregated by claudeskills.in from community GitHub lists. Upstream as recorded by the aggregator: https://github.com/yusufkaraaslan/Skill_Seekers."
+    "notes": "Aggregated by claudeskills.in from community GitHub lists. Upstream as recorded by the aggregator: https://github.com/yusufkaraaslan/Skill_Seekers. License MIT read from github.com/yusufkaraaslan/Skill_Seekers on 2026-09-03."
   },
   "tags": [
     "claudeskills",

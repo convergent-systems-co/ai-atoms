@@ -4,7 +4,7 @@
   "id": "hook/op-redact",
   "version": "1.0.0",
   "name": "1Password & Secret Redactor",
-  "description": "PreToolUse hook that redacts 1Password references and secret-shaped values from Claude Code tool-use payloads before they execute. Unlike secret-block which denies, this hook redacts in-place and always exits 0 — it never blocks the tool call. Patterns: GitHub tokens (gho_/ghp_/ghu_/ghs_/ghr_), Bearer tokens, op:// references, OpenAI sk- keys, PEM blocks. Writes a violation record on detection. Implements Common.md §4 (non-overridable secret handling).",
+  "description": "PreToolUse hook that redacts 1Password references and secret-shaped values from Claude Code tool-use payloads before they execute. Unlike secret-block which denies, this hook redacts in-place and always exits 0 — it never blocks the tool call. Patterns: GitHub tokens (gho_/ghp_/ghu_/ghs_/ghr_), Bearer tokens, op:// references, OpenAI sk- keys, PEM blocks. Writes a violation record on detection.",
   "event": "PreToolUse",
   "language": "python",
   "trigger": {
