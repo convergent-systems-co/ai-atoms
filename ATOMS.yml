@@ -16,7 +16,9 @@ description: |
   context window. Personas are portable identities. Agents bind a persona to the prompts,
   skills, tools, policies, and hooks it runs with. Models are reference data about AI models
   and the providers a runtime can get them from. Policies permit, forbid, or bound; tools are
-  the affordances a runtime exposes; templates are document skeletons a runtime fills.
+  the affordances a runtime exposes; templates are document skeletons a runtime fills. Bundles
+  are multi-file skills — agent personas, contracts, templates, docs, and/or runtime code shipped
+  together as one self-contained unit, for capability too large for a single prompt fragment.
 atom_types:
   - skill
   - hook
@@ -27,6 +29,7 @@ atom_types:
   - policy
   - tool
   - template
+  - bundle
 composition_type: workflows
 composition_dir: workflows
 runtime_consumers:

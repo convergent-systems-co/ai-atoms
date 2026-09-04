@@ -1,0 +1,9 @@
+---
+import Site from "../../../layouts/Site.astro";
+import Listing from "../../../components/Listing.astro";
+import { atomsOf, CLASS_META } from "../../../lib/catalog";
+const atoms = atomsOf("bundle");
+---
+<Site title={CLASS_META["bundle"].plural} description={`${atoms.length} bundle atoms — ${CLASS_META["bundle"].blurb}`} current="/atoms/bundle/">
+  <Listing cls="bundle" atoms={atoms} intro="Multi-file skills: agent personas, contracts, templates, docs, and runtime code shipped together as one self-contained atom. Every file is inlined in <code>files[]</code>; <code>entry_point</code> says which one to read first. Reach for a plain <code>skill</code> atom when the whole capability fits in one prompt fragment — a bundle is for when it doesn't." />
+</Site>

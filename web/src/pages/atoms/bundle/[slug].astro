@@ -1,0 +1,60 @@
+---
+import Site from "../../../layouts/Site.astro";
+import ActionRail from "../../../components/ActionRail.astro";
+import Provenance from "../../../components/Provenance.astro";
+import CategoryChip from "../../../components/CategoryChip.astro";
+import { ATOMS, BY_ID, hrefOf, slugOf } from "../../../lib/catalog";
+
+export function getStaticPaths() {
+  return ATOMS.filter((a: any) => a.type === "bundle").map((a: any) => ({ params: { slug: slugOf(a.id) }, props: { bundle: a } }));
+}
+const { bundle } = Astro.props;
+const slug = slugOf(bundle.id);
+const files: any[] = bundle.files ?? [];
+const entry = files.find((f: any) => f.path === bundle.entry_point);
+const others = files.filter((f: any) => f.path !== bundle.entry_point);
+const roleLabel: Record<string, string> = { entry: "entry", agent: "agent", contract: "contract", template: "template", doc: "doc", runtime: "runtime", config: "config" };
+const deps = (bundle.depends_on ?? []).map((id: string) => BY_ID.get(id)).filter(Boolean);
+const totalBytes = files.reduce((n: number, f: any) => n + (f.content?.length ?? 0), 0);
+---
+<Site title={bundle.name} description={bundle.description} current="/atoms/bundle/">
+  <div class="detail hue-bundle">
+    <article>
+      <a class="small muted" href="/atoms/bundle/">← Bundles</a>
+      <div class="detail-hero" style="margin-top:0.8rem;">
+        <div class="chips"><span class="chip cls">Bu bundle</span><CategoryChip category={bundle.category} />{bundle.lifecycle && <span class={`lifecycle ${bundle.lifecycle}`}>{bundle.lifecycle}</span>}</div>
+        <h1>{bundle.name}</h1>
+        <p class="lede">{bundle.description}</p>
+        <div class="idline"><span>id <b>{bundle.id}</b></span><span>v<b>{bundle.version}</b></span><span>files <b>{files.length}</b></span><span>~<b>{Math.round(totalBytes / 1024)}</b> KB</span></div>
+      </div>
+
+      {entry && <>
+        <h2 class="h-section">Entry point · {bundle.entry_point}</h2>
+        <pre style="max-width:60rem;"><code>{entry.content}</code></pre>
+      </>}
+
+      <h2 class="h-section">Files ({files.length})</h2>
+      <div class="scroll"><table class="table" style="max-width:64rem;">
+        <thead><tr><th>Path</th><th>Role</th><th>Size</th></tr></thead>
+        <tbody>{files.map((f: any) => <tr><td><code>{f.path}</code></td><td>{roleLabel[f.role] ?? f.role}</td><td class="small muted">{f.content?.length ?? 0} B</td></tr>)}</tbody>
+      </table></div>
+
+      {others.length > 0 && <>
+        <h2 class="h-section">File contents</h2>
+        {others.map((f: any) => (
+          <details class="facet">
+            <summary><code>{f.path}</code> <span class="small muted">({roleLabel[f.role] ?? f.role})</span></summary>
+            <pre style="max-width:60rem;"><code>{f.content}</code></pre>
+          </details>
+        ))}
+      </>}
+
+      {bundle.applicable_domains?.length > 0 && <><h2 class="h-section">Applicable domains</h2><div class="chips">{bundle.applicable_domains.map((d: string) => <span class="tag">{d}</span>)}</div></>}
+      {bundle.invocation?.length > 0 && <><h2 class="h-section">Invocation</h2><ul class="list">{bundle.invocation.map((i: string) => <li><code>{i}</code></li>)}</ul></>}
+      {deps.length > 0 && <><h2 class="h-section">Depends on</h2><ul class="list">{deps.map((d: any) => <li><a class="ref" href={hrefOf(d.id)}>{d.id}</a> — {d.name}</li>)}</ul></>}
+      {bundle.tags?.length > 0 && <div class="chips" style="margin-top:1.2rem;">{bundle.tags.map((t: string) => <span class="tag">{t}</span>)}</div>}
+      <Provenance atom={bundle} />
+    </article>
+    <ActionRail atom={bundle} text={entry?.content} textFilename={bundle.entry_point} install={`ai skills install ${slug}`} />
+  </div>
+</Site>

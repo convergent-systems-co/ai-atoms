@@ -4,14 +4,15 @@
 
 ## Overview
 
-ai-atoms is a typed, versioned catalog of AI runtime primitives. It contains nine atom classes,
+ai-atoms is a typed, versioned catalog of AI runtime primitives. It contains ten atom classes,
 each with its own JSON Schema, validated at build time. Three of the classes are parts a runtime
 uses directly (skill, hook, prompt); one is an identity (persona); one composes an identity with
-the parts it runs with (agent); one is reference data (model). Every class shares two fields
-defined once in `schemas/common-v1.json`: `category` (one vocabulary for browsing across classes)
-and `provenance` (where an imported atom came from and under what license).
+the parts it runs with (agent); one is reference data (model); one is a skill too large for a
+single prompt fragment (bundle). Every class shares two fields defined once in
+`schemas/common-v1.json`: `category` (one vocabulary for browsing across classes) and
+`provenance` (where an imported atom came from and under what license).
 
-## Nine atom classes
+## Ten atom classes
 
 | Class | Runtime action | Directory | Schema |
 |---|---|---|---|
@@ -24,6 +25,7 @@ and `provenance` (where an imported atom came from and under what license).
 | `policy` | permits, forbids, or bounds: boundaries, capability grants, isolation | `atoms/policy/` | `schemas/policy-v1.json` |
 | `tool` | exposes an executable affordance: the signature the model sees and the side effects to gate | `atoms/tool/` | `schemas/tool-v1.json` |
 | `template` | renders a document by filling `{{placeholders}}` in a skeleton: ADR, runbook, handoff, plan, PR, postmortem | `atoms/template/` | `schemas/template-v1.json` |
+| `bundle` | ships a multi-file skill — agents, contracts, templates, docs, runtime code — as one self-contained unit; `entry_point` says which shipped file to read first | `atoms/bundle/` | `schemas/bundle-v1.json` |
 
 Atoms are keyed by `<class>/<slug>`. The file name is `atoms/<class>/<slug>.json`.
 
@@ -94,6 +96,14 @@ placeholders, `placeholders` says what each one wants, `rules` carries the const
 cannot express, and `example` shows one finished instance. The first eight are the documents the
 convergent-systems constitution requires. Blank starting files for authoring atoms are not
 templates; they live in `schemas/examples/`.
+
+### bundle
+A bundle is a skill with more than one file: agent personas, contracts, templates, docs, and/or
+runtime code shipped together. `entry_point` names the file a consumer reads first (usually a
+`SKILL.md`-shaped document); `files[]` inlines every other file the entry point references, each
+tagged with a `role` (`entry`, `agent`, `contract`, `template`, `doc`, `runtime`, `config`). Like
+every other class, a bundle is fully self-contained — it never references a file it does not ship
+inside `files[]`, the same rule the skill class already enforces for its own single file.
 
 ## Compositions
 
